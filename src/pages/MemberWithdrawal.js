@@ -5,8 +5,8 @@ function MemberWithdrawal() {
   const navigate = useNavigate();
   const [showConfirm, setShowConfirm] = useState(false);
 
-  const goToChat = () => {
-    navigate('/chat');
+  const goToProfile = () => {
+    navigate('/profile');
   };
 
   const goToMain = () => {
@@ -30,7 +30,7 @@ function MemberWithdrawal() {
       {/* 헤더 */}
       <header className="bg-gray-200 p-4 flex items-center justify-between">
         <div className="flex items-center">
-          <button onClick={goToChat} className="mr-2">
+          <button onClick={goToProfile} className="mr-2">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
@@ -55,7 +55,7 @@ function MemberWithdrawal() {
           </button>
           
           <button
-            onClick={goToChat}
+            onClick={goToProfile}
             className="w-full bg-gray-200 text-black p-3 rounded-md text-center"
           >
             취소
@@ -96,7 +96,7 @@ function MemberWithdrawal() {
             </svg>
             <span className="text-xs mt-1">지도</span>
           </button>
-          <button onClick={goToChat} className="flex flex-col items-center py-2 px-4 text-red-500">
+          <button onClick={goToProfile} className="flex flex-col items-center py-2 px-4 text-red-500">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
             </svg>
