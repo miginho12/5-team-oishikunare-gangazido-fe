@@ -13,7 +13,7 @@ function PetInfo() {
   };
 
   const goToProfile = () => {
-    navigate('/chat');
+    navigate('/profile');
   };
 
   return (
