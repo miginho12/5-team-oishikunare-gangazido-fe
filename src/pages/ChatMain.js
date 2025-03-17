@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function ChatMain() {
+function ProfileMain() {
   const navigate = useNavigate();
 
   const goToMap = () => {
@@ -9,7 +9,7 @@ function ChatMain() {
   };
 
   const goToChat = () => {
-    navigate('/chat-service');
+    navigate('/chat-main');
   };
 
   const goToPetInfo = () => {
@@ -211,4 +211,4 @@ function ChatMain() {
   );
 }
 
-export default ChatMain; 
+export default ProfileMain; 

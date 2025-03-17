@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function ChatService() {
+function ChatMain() {
   const navigate = useNavigate();
   const [message, setMessage] = useState('');
   const [chatMessages, setChatMessages] = useState([
@@ -191,4 +191,4 @@ function ChatService() {
   );
 }
 
-export default ChatService;
+export default ChatMain;

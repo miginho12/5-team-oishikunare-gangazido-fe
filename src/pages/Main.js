@@ -9,7 +9,7 @@ function Main() {
   };
 
   const goToChat = () => {
-    navigate('/chat-service');
+    navigate('/chat-main');
   };
 
   const goToProfile = () => {
