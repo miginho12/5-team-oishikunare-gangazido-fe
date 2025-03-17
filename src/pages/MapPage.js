@@ -10,12 +10,26 @@ function MapPage() {
     lat: 37.5665, // 서울 시청 위도
     lng: 126.9780 // 서울 시청 경도
   });
+  
+  // 디바운스 타이머 참조 저장
+  const debounceTimerRef = useRef(null);
+
+  // 디바운스된 위치 업데이트 함수
+  const updatePositionWithDebounce = useCallback((lat, lng) => {
+    // 이전 타이머가 있으면 취소
+    if (debounceTimerRef.current) {
+      clearTimeout(debounceTimerRef.current);
+    }
+    
+    // 새 타이머 설정 (100ms 지연)
+    debounceTimerRef.current = setTimeout(() => {
+      setCenterPosition({ lat, lng });
+    }, 100);
+  }, []);
 
   // 지도 초기화 함수를 useCallback으로 메모이제이션
   const initMap = useCallback(() => {
     try {
-      console.log("지도 초기화 함수 실행");
-      
       if (!mapContainer.current) {
         console.error("지도 컨테이너가 존재하지 않습니다.");
         return;
@@ -31,9 +45,7 @@ function MapPage() {
         level: 3
       };
 
-      console.log("지도 생성 시작");
       const kakaoMap = new window.kakao.maps.Map(mapContainer.current, options);
-      console.log("지도 생성 완료");
       setMap(kakaoMap);
 
       // 중앙에 마커 생성
@@ -46,55 +58,63 @@ function MapPage() {
       newMarker.setMap(kakaoMap);
       setMarker(newMarker);
 
-      // 지도 중심 위치가 변경될 때마다 마커 위치 업데이트
+      // 지도 중심 위치가 변경될 때마다 마커 위치 업데이트 (디바운싱 적용)
+      let isDragging = false;
+      
+      // 드래그 시작 이벤트
+      window.kakao.maps.event.addListener(kakaoMap, "dragstart", () => {
+        isDragging = true;
+      });
+      
+      // 드래그 종료 이벤트
+      window.kakao.maps.event.addListener(kakaoMap, "dragend", () => {
+        isDragging = false;
+        const center = kakaoMap.getCenter();
+        newMarker.setPosition(center);
+        updatePositionWithDebounce(center.getLat(), center.getLng());
+      });
+      
+      // 중심 변경 이벤트 (드래그 중에는 마커 위치만 업데이트하고 상태는 업데이트하지 않음)
       window.kakao.maps.event.addListener(kakaoMap, "center_changed", () => {
         const center = kakaoMap.getCenter();
         newMarker.setPosition(center);
-        setCenterPosition({
-          lat: center.getLat(),
-          lng: center.getLng()
-        });
+        
+        // 드래그 중이 아닐 때만 상태 업데이트
+        if (!isDragging) {
+          updatePositionWithDebounce(center.getLat(), center.getLng());
+        }
       });
 
       // 마커 드래그 이벤트 처리
       window.kakao.maps.event.addListener(newMarker, "dragend", () => {
         const position = newMarker.getPosition();
-        setCenterPosition({
-          lat: position.getLat(),
-          lng: position.getLng()
-        });
+        kakaoMap.setCenter(position); // 지도 중심을 마커 위치로 이동
+        updatePositionWithDebounce(position.getLat(), position.getLng());
       });
       
-      console.log("지도 초기화 완료");
     } catch (error) {
       console.error("지도 초기화 중 오류 발생:", error);
       alert("지도를 초기화하는 중 오류가 발생했습니다: " + error.message);
     }
-  }, [centerPosition.lat, centerPosition.lng]);
+  }, [centerPosition.lat, centerPosition.lng, updatePositionWithDebounce]);
 
   // 지도 초기화
   useEffect(() => {
-    console.log("지도 초기화 시작");
-    
     const loadKakaoMap = () => {
       window.kakao.maps.load(() => {
-        console.log("Kakao Maps API 초기화 완료");
         initMap();
       });
     };
     
     if (window.kakao && window.kakao.maps) {
-      console.log("Kakao Maps API가 이미 로드되어 있습니다.");
       loadKakaoMap();
     } else {
-      console.log("Kakao Maps API 스크립트를 로드합니다.");
       const script = document.createElement("script");
       script.id = "kakao-map-script";
       script.async = true;
       script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.REACT_APP_KAKAO_MAP_API_KEY}&autoload=false`;
       
       script.onload = () => {
-        console.log("Kakao Maps API 스크립트 로드 완료");
         loadKakaoMap();
       };
       
@@ -110,6 +130,11 @@ function MapPage() {
       // 컴포넌트 언마운트 시 정리 작업
       if (marker) {
         marker.setMap(null);
+      }
+      
+      // 디바운스 타이머 정리
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current);
       }
     };
   }, [initMap]);
