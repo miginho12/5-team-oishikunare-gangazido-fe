@@ -22,7 +22,7 @@ function ChatService() {
   };
 
   const goToProfile = () => {
-    navigate('/chat');
+    navigate('/profile');
   };
 
   const goToPetInfo = () => {

@@ -24,6 +24,10 @@ function ChatMain() {
     navigate('/password-change');
   };
 
+  const handleLogout = () => {
+    navigate('/login');
+  };
+
   return (
     <div className="flex flex-col h-full bg-gray-50">
       {/* 헤더 */}
@@ -41,9 +45,9 @@ function ChatMain() {
         {/* 프로필 카드 */}
         <div className="bg-white rounded-xl shadow-md p-6 mb-4">
           <div className="flex items-center mb-6">
-            <div className="w-20 h-20 bg-amber-100 rounded-full flex items-center justify-center mr-4">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-amber-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            <div className="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center mr-4 overflow-hidden">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-full h-full text-gray-400">
+                <path fillRule="evenodd" d="M18.685 19.097A9.723 9.723 0 0021.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 003.065 7.097A9.716 9.716 0 0012 21.75a9.716 9.716 0 006.685-2.653zm-12.54-1.285A7.486 7.486 0 0112 15a7.486 7.486 0 015.855 2.812A8.224 8.224 0 0112 20.25a8.224 8.224 0 01-5.855-2.438zM15.75 9a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" clipRule="evenodd" />
               </svg>
             </div>
             <div>
@@ -108,7 +112,10 @@ function ChatMain() {
                 </button>
               </li>
               <li>
-                <button className="w-full flex items-center justify-between p-3 rounded-md hover:bg-gray-50">
+                <button 
+                  onClick={handleLogout}
+                  className="w-full flex items-center justify-between p-3 rounded-md hover:bg-gray-50"
+                >
                   <div className="flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-500 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
