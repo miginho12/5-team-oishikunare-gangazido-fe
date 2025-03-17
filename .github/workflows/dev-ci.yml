@@ -1,24 +1,22 @@
-name: DEV CI
-
+name:
+  DEV CI
+  # develop 브랜치에 push가 될 때마다 이 action이 실행됩니다.
 on:
-	# develop 브랜치에 push가 될 때마다 이 action이 실행됩니다.
   push:
     branches:
       - develop
     tags:
-      - 'development-**'
+      - "development-**"
 
 jobs:
   Deploy:
     runs-on: ubuntu-latest
 
-    steps:
-			# 1 - 소스코드 복사
+    steps: # 1 - 소스코드 복사
       - name: Checkout source code
         uses: actions/checkout@v3
-			
-			# 2 - node_modules 캐싱
-      - name: Cache node modules
+
+      - name: Cache node modules # 2 - node_modules 캐싱
         uses: actions/cache@v3
         with:
           path: node_modules
@@ -27,29 +25,22 @@ jobs:
             ${{ runner.OS }}-build-
             ${{ runner.OS }}-
 
-      # 3 - 의존성 패키지 설치
-
-      - name: Install Dependencies
+      - name: Install Dependencies # 3 - 의존성 패키지 설치
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm install
-			
-			# 4 - 빌드
-      - name: Build
+
+      - name: Build # 4 - 빌드
         run: npm build
-			
-			# 5 - AWS 인증
-      - name: Configure AWS Credentials
+
+      - name: Configure AWS Credentials # 5 - AWS 인증
         uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-			# 6 - AWS S3에 빌드 결과물 배포
-      ## CRA로 생성한 React App은 build 폴더에 빌드 결과물이 들어있습니다. (dist 폴더가 아님!)
       - name: Deploy to S3
-        run: aws s3 sync ./build s3://${{ secrets.AWS_BUCKET_NAME }} --delete
+        run: aws s3 sync ./build s3://${{ secrets.AWS_BUCKET_NAME }} --delete # 6 - AWS S3에 빌드 결과물 배포        ## CRA로 생성한 React App은 build 폴더에 빌드 결과물이 들어있습니다. (dist 폴더가 아님!)
 
-			# 7 - CloudFront 캐시 무효화
-      - name: Invalidate CloudFront Cache
+      - name: Invalidate CloudFront Cache # 7 - CloudFront 캐시 무효화
         run: aws cloudfront create-invalidation --distribution-id ${{ secrets.AWS_DISTRIBUTION_ID }} --paths "/*"
