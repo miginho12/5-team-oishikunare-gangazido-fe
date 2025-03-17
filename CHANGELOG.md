@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.2.0](https://github.com/miginho12/5-team-oishikunare-gangazido-fe/compare/v1.1.1...v1.2.0) (2025-03-17)
+
+### 🚀 NEW FEATURES
+
+* add petEdit & petRegister ([557f2ab](https://github.com/miginho12/5-team-oishikunare-gangazido-fe/commit/557f2abec12e6c4ff09f75aeaae462935b6db94f))
+
 ## [1.1.1](https://github.com/miginho12/5-team-oishikunare-gangazido-fe/compare/v1.1.0...v1.1.1) (2025-03-14)
 
 ### 🐛 BUG FIXES
