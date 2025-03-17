@@ -14,7 +14,7 @@ function MemberWithdrawal() {
   };
 
   const goToChat = () => {
-    navigate('/chat-service');
+    navigate('/chat-main');
   };
 
   const goToPetInfo = () => {
