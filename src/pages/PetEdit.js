@@ -11,7 +11,7 @@ function PetEdit() {
   };
 
   const goToChat = () => {
-    navigate('/chat-service');
+    navigate('/chat-main');
   };
 
   const goToProfile = () => {
