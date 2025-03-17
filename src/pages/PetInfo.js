@@ -16,6 +16,10 @@ function PetInfo() {
     navigate('/profile');
   };
 
+  const goToPetEdit = () => {
+    navigate('/pet-edit');
+  };
+
   return (
     <div className="flex flex-col h-full bg-gray-50">
       {/* 헤더 */}
@@ -50,7 +54,10 @@ function PetInfo() {
                 </span>
               </div>
             </div>
-            <button className="ml-auto p-2 rounded-full bg-amber-100 text-amber-800 hover:bg-amber-200 transition-colors">
+            <button 
+              onClick={goToPetEdit}
+              className="ml-auto p-2 rounded-full bg-amber-100 text-amber-800 hover:bg-amber-200 transition-colors"
+            >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
               </svg>

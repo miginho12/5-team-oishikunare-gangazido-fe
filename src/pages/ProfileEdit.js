@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function ProfileEdit() {
   const navigate = useNavigate();
+  const [showToast, setShowToast] = useState(false);
+  const [showWithdrawalModal, setShowWithdrawalModal] = useState(false);
+  const [showProfileModal, setShowProfileModal] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
 
   const goToMap = () => {
     navigate('/map');
@@ -19,6 +23,44 @@ function ProfileEdit() {
   const goToPetInfo = () => {
     navigate('/pet-info');
   };
+
+  const handleWithdrawal = () => {
+    // 실제로는 API 호출 등으로 회원 탈퇴 처리
+    setShowWithdrawalModal(false);
+    setToastMessage("회원 탈퇴가 완료되었습니다.");
+    setShowToast(true);
+    
+    // 토스트 메시지 표시 후 2초 후에 로그인 페이지로 이동
+    setTimeout(() => {
+      navigate('/login');
+    }, 2000);
+  };
+
+  const handleUpdateProfile = () => {
+    // 실제로는 API 호출 등으로 회원 정보 수정 처리
+    setShowProfileModal(true);
+  };
+
+  const confirmProfileUpdate = () => {
+    setShowProfileModal(false);
+    setToastMessage("수정을 완료하였습니다.");
+    setShowToast(true);
+    
+    // 토스트 메시지 표시 후 2초 후에 profile 페이지로 이동
+    setTimeout(() => {
+      navigate('/profile');
+    }, 2000);
+  };
+
+  // 토스트 메시지가 표시되면 3초 후에 자동으로 사라지도록 설정
+  useEffect(() => {
+    if (showToast) {
+      const timer = setTimeout(() => {
+        setShowToast(false);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [showToast]);
 
   return (
     <div className="flex flex-col h-full bg-gray-50">
@@ -68,12 +110,84 @@ function ProfileEdit() {
               <p className="text-xs text-gray-500 mt-1">2~10자 이내로 입력해주세요</p>
             </div>
 
-            <button className="w-full bg-amber-800 text-white p-3 rounded-md text-center font-medium mt-4">
+            <button 
+              onClick={handleUpdateProfile}
+              className="w-full bg-amber-800 text-white p-3 rounded-md text-center font-medium mt-4"
+            >
               변경 완료
             </button>
           </div>
         </div>
       </div>
+
+      {/* 토스트 메시지 */}
+      {showToast && (
+        <div className="fixed bottom-24 left-0 right-0 mx-auto w-3/5 max-w-xs bg-white bg-opacity-80 border border-amber-800 text-amber-800 p-3 rounded-md shadow-lg text-center z-50 animate-fade-in-up">
+          {toastMessage}
+        </div>
+      )}
+
+      {/* 회원 탈퇴 버튼 */}
+      <div className="flex justify-center py-3">
+        <button 
+          onClick={() => setShowWithdrawalModal(true)}
+          className="text-sm text-gray-400 hover:text-gray-600 transition-colors"
+        >
+          회원 탈퇴
+        </button>
+      </div>
+
+      {/* 회원 탈퇴 모달 */}
+      {showWithdrawalModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-4/5 max-w-sm">
+            <h3 className="text-lg font-medium text-gray-900 mb-4">회원 탈퇴</h3>
+            <p className="text-sm text-gray-600 mb-6">
+              정말로 탈퇴하시겠습니까? 탈퇴 시 모든 데이터는 삭제되며 복구할 수 없습니다.
+            </p>
+            <div className="flex justify-end space-x-3">
+              <button 
+                onClick={() => setShowWithdrawalModal(false)}
+                className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200"
+              >
+                취소
+              </button>
+              <button 
+                onClick={handleWithdrawal}
+                className="px-4 py-2 text-sm font-medium text-white bg-red-500 rounded-md hover:bg-red-600"
+              >
+                탈퇴하기
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 프로필 수정 확인 모달 */}
+      {showProfileModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-4/5 max-w-sm">
+            <h3 className="text-lg font-medium text-gray-900 mb-4">프로필 수정</h3>
+            <p className="text-sm text-gray-600 mb-6">
+              입력하신 정보로 프로필을 수정하시겠습니까?
+            </p>
+            <div className="flex justify-end space-x-3">
+              <button 
+                onClick={() => setShowProfileModal(false)}
+                className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200"
+              >
+                취소
+              </button>
+              <button 
+                onClick={confirmProfileUpdate}
+                className="px-4 py-2 text-sm font-medium text-white bg-red-500 rounded-md hover:bg-red-600"
+              >
+                수정하기
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* 하단 네비게이션 */}
       <nav className="bg-white border-t border-gray-200 shadow-lg">
