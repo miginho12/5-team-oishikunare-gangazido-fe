@@ -22,12 +22,8 @@ jobs:
           path: node_modules
           key: ${{ runner.OS }}-build-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.OS }}-node-modules-
+            ${{ runner.OS }}-build-
             ${{ runner.OS }}-
-
-              key: ${{ runner.OS }}-node-modules-${{ hashFiles('package-lock.json') }}
-restore-keys: |
-  ${{ runner.OS }}-node-modules-
 
       - name: Install Dependencies # 3 - 의존성 패키지 설치
         if: steps.cache.outputs.cache-hit != 'true'
