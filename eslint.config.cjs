@@ -7,6 +7,20 @@ module.exports = [
     languageOptions: {
       ecmaVersion: "latest",
       sourceType: "module",
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true
+        }
+      },
+      globals: {
+        window: true,
+        document: true
+      }
+    },
+    settings: {
+      react: {
+        version: "detect"
+      }
     },
     rules: {
       "semi": ["error", "always"],
