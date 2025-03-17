@@ -9,7 +9,7 @@ function MapPage() {
   };
 
   const goToProfile = () => {
-    navigate('/chat');
+    navigate('/profile');
   };
 
   const goToPetInfo = () => {
