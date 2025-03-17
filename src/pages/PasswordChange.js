@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function PasswordChange() {
   const navigate = useNavigate();
+  const [showToast, setShowToast] = useState(false);
 
   const goToMap = () => {
     navigate('/map');
@@ -13,18 +14,38 @@ function PasswordChange() {
   };
 
   const goToProfile = () => {
-    navigate('/chat');
+    navigate('/profile');
   };
 
   const goToPetInfo = () => {
     navigate('/pet-info');
   };
 
+  const handleUpdatePassword = () => {
+    // 실제로는 API 호출 등으로 비밀번호 변경 처리
+    setShowToast(true);
+    
+    // 토스트 메시지 표시 후 2초 후에 profile 페이지로 이동
+    setTimeout(() => {
+      navigate('/profile');
+    }, 2000);
+  };
+
+  // 토스트 메시지가 표시되면 3초 후에 자동으로 사라지도록 설정
+  useEffect(() => {
+    if (showToast) {
+      const timer = setTimeout(() => {
+        setShowToast(false);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [showToast]);
+
   return (
     <div className="flex flex-col h-full bg-gray-50">
       {/* 헤더 */}
       <header className="bg-white p-4 shadow-md flex items-center">
-        <button onClick={() => navigate('/chat')} className="mr-2">
+        <button onClick={() => navigate('/profile')} className="mr-2">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
@@ -69,12 +90,22 @@ function PasswordChange() {
               <p className="text-xs text-gray-500 mt-1">새 비밀번호를 한번 더 입력해주세요</p>
             </div>
 
-            <button className="w-full bg-amber-800 text-white p-3 rounded-md text-center font-medium mt-4">
+            <button 
+              onClick={handleUpdatePassword}
+              className="w-full bg-amber-800 text-white p-3 rounded-md text-center font-medium mt-4"
+            >
               변경 완료
             </button>
           </div>
         </div>
       </div>
+
+      {/* 토스트 메시지 */}
+      {showToast && (
+        <div className="fixed bottom-24 left-0 right-0 mx-auto w-3/5 max-w-xs bg-white bg-opacity-80 border border-amber-800 text-amber-800 p-3 rounded-md shadow-lg text-center z-50 animate-fade-in-up">
+          비밀번호 변경을 완료하였습니다.
+        </div>
+      )}
 
       {/* 하단 네비게이션 */}
       <nav className="bg-white border-t border-gray-200 shadow-lg">

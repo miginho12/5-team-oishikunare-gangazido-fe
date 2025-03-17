@@ -12,6 +12,8 @@ import MemberWithdrawal from './pages/MemberWithdrawal';
 import MapPage from './pages/MapPage';
 import ChatService from './pages/ChatService';
 import PetInfo from './pages/PetInfo';
+import PetEdit from './pages/PetEdit';
+import PetRegister from './pages/PetRegister';
 
 function App() {
   return (
@@ -23,7 +25,7 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/main" element={<Main />} />
-              <Route path="/chat" element={<ChatMain />} />
+              <Route path="/profile" element={<ChatMain />} />
               <Route path="/chat/:id" element={<ChatDetail />} />
               <Route path="/profile-edit" element={<ProfileEdit />} />
               <Route path="/password-change" element={<PasswordChange />} />
@@ -31,6 +33,8 @@ function App() {
               <Route path="/map" element={<MapPage />} />
               <Route path="/chat-service" element={<ChatService />} />
               <Route path="/pet-info" element={<PetInfo />} />
+              <Route path="/pet-edit" element={<PetEdit />} />
+              <Route path="/pet-register" element={<PetRegister />} />
               <Route path="/" element={<Navigate to="/map" />} />
             </Routes>
           </div>
