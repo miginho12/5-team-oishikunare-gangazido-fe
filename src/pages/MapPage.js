@@ -9,7 +9,7 @@ function MapPage() {
   const markersRef = useRef([]);
   const [selectedMarker, setSelectedMarker] = useState(null);
   const [isMapLoaded, setIsMapLoaded] = useState(false);
-  const [isCenterMode, setIsCenterMode] = useState(false);
+  const [isCenterMode, setIsCenterMode] = useState(true);
   
   // 순환 참조를 막기 위한 removeMarker 함수 ref
   const removeMarkerRef = useRef(null);
@@ -44,20 +44,46 @@ function MapPage() {
 
   // 마커 이미지 설정 함수
   const initMarkerImages = useCallback(() => {
-    if (!window.kakao || !window.kakao.maps) return;
+    if (!window.kakao || !window.kakao.maps) {
+      // window.kakao.maps가 준비되지 않았으면 초기화하지 않음
+      console.log("Kakao Maps API가 아직 준비되지 않았습니다.");
+      return;
+    }
     
-    // 댕플 마커 이미지 - 기본 제공되는 이미지 대신 커스텀 이미지를 사용
-    // 실제 강아지 이모티콘 이미지로 대체 (URL로는 이모티콘을 직접 사용할 수 없어서 마커 이미지를 사용)
-    const dangpleMarkerImg = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
-    const dangpleMarkerSize = new window.kakao.maps.Size(35, 35);
-    const dangpleMarkerOption = { offset: new window.kakao.maps.Point(17, 35) };
-    markerImages.current[0].image = new window.kakao.maps.MarkerImage(dangpleMarkerImg, dangpleMarkerSize, dangpleMarkerOption);
-    
-    // 댕져러스 마커 이미지
-    const dangerousMarkerImg = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png";
-    const dangerousMarkerSize = new window.kakao.maps.Size(35, 35);
-    const dangerousMarkerOption = { offset: new window.kakao.maps.Point(17, 35) };
-    markerImages.current[1].image = new window.kakao.maps.MarkerImage(dangerousMarkerImg, dangerousMarkerSize, dangerousMarkerOption);
+    try {
+      // 댕플 마커 이미지 - 강아지 이모티콘 사용
+      const dangpleMarkerImg = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
+      const dangpleMarkerSize = new window.kakao.maps.Size(35, 35);
+      const dangpleMarkerOption = { offset: new window.kakao.maps.Point(17, 35) };
+      markerImages.current[0].image = new window.kakao.maps.MarkerImage(dangpleMarkerImg, dangpleMarkerSize, dangpleMarkerOption);
+      
+      // 댕져러스 마커 이미지 - 서브타입별 이모티콘 사용
+      const dangerousMarkerImages = {
+        '들개': "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png",
+        '빙판길': "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_blue.png",
+        '염화칼슘': "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_yellow.png",
+        '공사중': "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_orange.png"
+      };
+      
+      // markerImages.current[1]에 서브타입 이미지 객체 추가 확인
+      if (!markerImages.current[1]) {
+        markerImages.current[1] = {
+          type: '댕져러스',
+          subTypes: ['들개', '빙판길', '염화칼슘', '공사중']
+        };
+      }
+      
+      Object.keys(dangerousMarkerImages).forEach(subType => {
+        const img = dangerousMarkerImages[subType];
+        const size = new window.kakao.maps.Size(35, 35);
+        const option = { offset: new window.kakao.maps.Point(17, 35) };
+        markerImages.current[1][subType] = new window.kakao.maps.MarkerImage(img, size, option);
+      });
+      
+      console.log("마커 이미지 초기화 성공");
+    } catch (error) {
+      console.error("마커 이미지 초기화 중 오류 발생:", error);
+    }
   }, []);
 
   // 지도 초기화 함수
@@ -169,101 +195,86 @@ function MapPage() {
   // 마커 추가 함수
   const addMarker = useCallback((position, markerType = '댕플', subType = null) => {
     if (!map) return;
+    if (!window.kakao || !window.kakao.maps) {
+      console.error("Kakao Maps API가 아직 준비되지 않았습니다.");
+      return;
+    }
     
     // 마커 타입에 따른 이미지 선택
     let markerImage;
-    switch (markerType) {
-      case '댕져러스':
-        markerImage = markerImages.current[1].image;
-        break;
-      default:
+    try {
+      if (markerType === '댕져러스' && subType) {
+        markerImage = markerImages.current[1][subType];
+      } else {
         markerImage = markerImages.current[0].image;
+      }
+      
+      // 만약 markerImage가 없다면 초기화가 제대로 안되었으므로 다시 시도
+      if (!markerImage) {
+        console.log("마커 이미지가 초기화되지 않았습니다. 다시 초기화합니다.");
+        initMarkerImages();
+        
+        // 다시 이미지 선택 시도
+        if (markerType === '댕져러스' && subType) {
+          markerImage = markerImages.current[1][subType];
+        } else {
+          markerImage = markerImages.current[0].image;
+        }
+        
+        // 여전히 없으면 기본 마커 사용
+        if (!markerImage) {
+          console.log("기본 마커를 사용합니다.");
+          markerImage = null; // 기본 마커 사용
+        }
+      }
+    } catch (error) {
+      console.error("마커 이미지 선택 중 오류 발생:", error);
+      markerImage = null; // 오류 발생 시 기본 마커 사용
     }
     
     // 마커 생성
-    const marker = new window.kakao.maps.Marker({
-      position,
-      map,
-      image: markerImage
-    });
-    
-    // 마커 정보 객체
-    const markerInfo = {
-      id: Date.now().toString(),
-      marker,
-      position: {
-        lat: position.getLat(),
-        lng: position.getLng()
-      },
-      type: markerType,
-      subType: subType // 서브타입 저장
-    };
-    
-    // 클릭 이벤트 등록
-    window.kakao.maps.event.addListener(marker, 'click', () => {
-      const remove = removeMarkerRef.current;
-      if (!remove) return;
+    try {
+      const marker = new window.kakao.maps.Marker({
+        position,
+        map,
+        image: markerImage
+      });
       
-      if (markerType === '댕져러스' && subType) {
-        // 댕져러스 마커 클릭 시 선택 옵션 표시
-        setSelectedMarker(markerInfo);
+      // 마커 정보 객체
+      const markerInfo = {
+        id: Date.now().toString(),
+        marker,
+        position: {
+          lat: position.getLat(),
+          lng: position.getLng()
+        },
+        type: markerType,
+        subType: subType // 서브타입 저장
+      };
+      
+      // 클릭 이벤트 등록
+      window.kakao.maps.event.addListener(marker, 'click', () => {
+        const remove = removeMarkerRef.current;
+        if (!remove) return;
         
-        // 인포윈도우 생성
-        let emoji = '';
-        switch(subType) {
-          case '들개': emoji = '🐕'; break;
-          case '빙판길': emoji = '🧊'; break;
-          case '염화칼슘': emoji = '🧂'; break;
-          case '공사중': emoji = '🚧'; break;
-          default: emoji = '⚠️';
-        }
-        
-        const iwContent = `<div style="padding:5px;font-size:12px;">
-          <div style="margin-bottom:4px;">${emoji} ${subType}</div>
-          <button id="delete-marker" style="padding:2px 5px;background:#ff5555;color:white;border:none;border-radius:3px;">삭제</button>
-        </div>`;
-        const infowindow = new window.kakao.maps.InfoWindow({
-          content: iwContent,
-          removable: true
-        });
-        
-        // 기존 인포윈도우 모두 닫기
-        const currentMarkers = markersRef.current;
-        if (currentMarkers) {
-          currentMarkers.forEach(m => {
-            if (m.infowindow) {
-              m.infowindow.close();
-            }
-          });
-        }
-        
-        // 새 인포윈도우 열기
-        infowindow.open(map, marker);
-        
-        // 마커 정보에 인포윈도우 추가
-        markerInfo.infowindow = infowindow;
-        
-        // 인포윈도우 내부의 삭제 버튼에 이벤트 리스너 추가
-        setTimeout(() => {
-          const deleteBtn = document.getElementById('delete-marker');
-          if (deleteBtn) {
-            deleteBtn.onclick = () => {
-              remove(markerInfo.id);
-              infowindow.close();
-            };
-          }
-        }, 100);
-      } else {
-        // 일반 마커 클릭 시 삭제 옵션
-        if (selectedMarker && selectedMarker.id === markerInfo.id) {
-          if (window.confirm('이 마커를 삭제하시겠습니까?')) {
-            remove(markerInfo.id);
-          }
-        } else {
+        if (markerType === '댕져러스' && subType) {
+          // 댕져러스 마커 클릭 시 선택 옵션 표시
           setSelectedMarker(markerInfo);
           
           // 인포윈도우 생성
-          const iwContent = `<div style="padding:5px;font-size:12px;">${markerType}<br><button id="delete-marker" style="padding:2px 5px;margin-top:5px;background:#ff5555;color:white;border:none;border-radius:3px;">삭제</button></div>`;
+          let emoji = '';
+          switch(subType) {
+            case '들개': emoji = '🐕'; break;
+            case '빙판길': emoji = '🧊'; break;
+            case '염화칼슘': emoji = '🧂'; break;
+            case '공사중': emoji = '🚧'; break;
+            default: emoji = '⚠️';
+          }
+          
+          const iwContent = `<div style="padding:5px;font-size:12px;">
+            <div style="margin-bottom:4px;">${emoji} ${subType}</div>
+            <button id="delete-marker" style="padding:2px 5px;background:#ff5555;color:white;border:none;border-radius:3px;">삭제</button>
+          </div>`;
           const infowindow = new window.kakao.maps.InfoWindow({
             content: iwContent,
             removable: true
@@ -295,20 +306,66 @@ function MapPage() {
               };
             }
           }, 100);
+        } else {
+          // 일반 마커 클릭 시 삭제 옵션
+          if (selectedMarker && selectedMarker.id === markerInfo.id) {
+            if (window.confirm('이 마커를 삭제하시겠습니까?')) {
+              remove(markerInfo.id);
+            }
+          } else {
+            setSelectedMarker(markerInfo);
+            
+            // 인포윈도우 생성
+            const iwContent = `<div style="padding:5px;font-size:12px;">${markerType}<br><button id="delete-marker" style="padding:2px 5px;margin-top:5px;background:#ff5555;color:white;border:none;border-radius:3px;">삭제</button></div>`;
+            const infowindow = new window.kakao.maps.InfoWindow({
+              content: iwContent,
+              removable: true
+            });
+            
+            // 기존 인포윈도우 모두 닫기
+            const currentMarkers = markersRef.current;
+            if (currentMarkers) {
+              currentMarkers.forEach(m => {
+                if (m.infowindow) {
+                  m.infowindow.close();
+                }
+              });
+            }
+            
+            // 새 인포윈도우 열기
+            infowindow.open(map, marker);
+            
+            // 마커 정보에 인포윈도우 추가
+            markerInfo.infowindow = infowindow;
+            
+            // 인포윈도우 내부의 삭제 버튼에 이벤트 리스너 추가
+            setTimeout(() => {
+              const deleteBtn = document.getElementById('delete-marker');
+              if (deleteBtn) {
+                deleteBtn.onclick = () => {
+                  remove(markerInfo.id);
+                  infowindow.close();
+                };
+              }
+            }, 100);
+          }
         }
-      }
-    });
-    
-    // 마커 배열에 추가
-    setMarkers(prev => {
-      const updatedMarkers = [...prev, markerInfo];
-      // 로컬 스토리지에 저장
-      saveMarkersToLocalStorage(updatedMarkers);
-      return updatedMarkers;
-    });
-    
-    return markerInfo;
-  }, [map, selectedMarker, markerImages, saveMarkersToLocalStorage]);
+      });
+      
+      // 마커 배열에 추가
+      setMarkers(prev => {
+        const updatedMarkers = [...prev, markerInfo];
+        // 로컬 스토리지에 저장
+        saveMarkersToLocalStorage(updatedMarkers);
+        return updatedMarkers;
+      });
+      
+      return markerInfo;
+    } catch (error) {
+      console.error("마커 생성 중 오류 발생:", error);
+      return null;
+    }
+  }, [map, selectedMarker, markerImages, saveMarkersToLocalStorage, initMarkerImages]);
   
   // 특정 타입의 마커 추가하기
   const addMarkerByType = useCallback((type, subType = null) => {
@@ -341,6 +398,12 @@ function MapPage() {
 
   // 로컬 스토리지에서 마커 불러오기
   const loadMarkersFromLocalStorage = useCallback((kakaoMap) => {
+    // Kakao Maps API가 준비되지 않았으면 중단
+    if (!window.kakao || !window.kakao.maps) {
+      console.error("Kakao Maps API가 준비되지 않아 마커를 불러올 수 없습니다.");
+      return;
+    }
+    
     try {
       const savedMarkers = JSON.parse(localStorage.getItem('kakaoMapMarkers') || '[]');
       
@@ -356,7 +419,7 @@ function MapPage() {
           // 마커 이미지 선택
           let markerImage;
           if (markerInfo.type === '댕져러스') {
-            markerImage = markerImages.current[1].image;
+            markerImage = markerImages.current[1][markerInfo.subType];
           } else {
             markerImage = markerImages.current[0].image;
           }
@@ -590,6 +653,13 @@ function MapPage() {
   // 지도 초기화
   useEffect(() => {
     const loadKakaoMap = () => {
+      // 안전하게 실행하도록 window.kakao.maps 객체 확인 후 실행
+      if (!window.kakao || !window.kakao.maps) {
+        // 아직 로드되지 않았다면 지연 처리
+        setTimeout(loadKakaoMap, 100);
+        return;
+      }
+      
       window.kakao.maps.load(() => {
         initMap();
       });
@@ -602,10 +672,20 @@ function MapPage() {
       const script = document.createElement("script");
       script.id = "kakao-map-script";
       script.async = true;
-      script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.REACT_APP_KAKAO_MAP_API_KEY}&autoload=false`;
+      
+      // API 키 확인
+      const apiKey = process.env.REACT_APP_KAKAO_MAP_API_KEY;
+      if (!apiKey) {
+        console.error("카카오맵 API 키가 설정되지 않았습니다. .env 파일에 REACT_APP_KAKAO_MAP_API_KEY를 설정해주세요.");
+        alert("카카오맵 API 키가 설정되지 않았습니다. 관리자에게 문의하세요.");
+        return;
+      }
+      
+      script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${apiKey}&autoload=false`;
       
       script.onload = () => {
-        loadKakaoMap();
+        // 스크립트가 로드된 후 지연 시간을 두고 kakao 객체 초기화 대기
+        setTimeout(loadKakaoMap, 300);
       };
       
       script.onerror = (error) => {
@@ -653,6 +733,21 @@ function MapPage() {
     navigate("/pet-info");
   }, [navigate]);
 
+  // 마커 타입 필터링 함수
+  const filterMarkersByType = useCallback((type) => {
+    setMarkers(prev => prev.map(markerInfo => {
+      if (markerInfo.type === type || type === 'all') {
+        markerInfo.marker.setMap(map);
+      } else {
+        markerInfo.marker.setMap(null);
+      }
+      return markerInfo;
+    }));
+  }, [map]);
+
+  // 서브타입 버튼 클릭 방식으로 변경
+  const [showSubTypeButtons, setShowSubTypeButtons] = useState(false);
+
   return (
     <div className="flex flex-col h-full bg-gray-50">
       {/* 헤더 */}
@@ -697,7 +792,7 @@ function MapPage() {
         {!isMapLoaded && (
           <div className="absolute inset-0 flex items-center justify-center bg-gray-200 z-10">
             <div className="text-lg font-medium text-gray-600">지도를 불러오는 중...</div>
-        </div>
+          </div>
         )}
         
         <div 
@@ -713,7 +808,7 @@ function MapPage() {
               <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-amber-800" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg>
+              </svg>
               <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 whitespace-nowrap bg-black bg-opacity-70 px-2 py-1 rounded text-white text-xs">
                 지도를 움직여 위치 조정
               </div>
@@ -730,47 +825,50 @@ function MapPage() {
                 className="bg-amber-100 hover:bg-amber-200 py-2 px-4 rounded-md shadow text-sm font-medium text-amber-800 flex items-center"
               >
                 <span className="mr-1 text-xl">🐶</span>
-                <span>중앙에 댕플 추가</span>
+                <span>댕플 추가</span>
               </button>
-              <div className="relative group">
+              <div className="relative">
                 <button 
+                  onClick={() => setShowSubTypeButtons(!showSubTypeButtons)}
                   className="bg-blue-100 hover:bg-blue-200 py-2 px-4 rounded-md shadow text-sm font-medium text-blue-800 flex items-center"
                 >
                   <span className="mr-1 text-xl">⚠️</span>
-                  <span>중앙에 댕져러스 추가</span>
+                  <span>댕져러스 추가</span>
                 </button>
-                <div className="absolute left-0 -bottom-24 hidden group-hover:block bg-white rounded-lg shadow-lg p-2 z-30 w-full">
-                  <div className="flex flex-wrap gap-2 justify-center">
-                    <button 
-                      onClick={() => addDangerousMarkerWithSubType('들개')}
-                      className="bg-red-100 hover:bg-red-200 p-2 rounded-md text-sm font-medium"
-                      title="들개"
-                    >
-                      🐕
-                    </button>
-                    <button 
-                      onClick={() => addDangerousMarkerWithSubType('빙판길')}
-                      className="bg-blue-100 hover:bg-blue-200 p-2 rounded-md text-sm font-medium"
-                      title="빙판길"
-                    >
-                      🧊
-                    </button>
-                    <button 
-                      onClick={() => addDangerousMarkerWithSubType('염화칼슘')}
-                      className="bg-yellow-100 hover:bg-yellow-200 p-2 rounded-md text-sm font-medium"
-                      title="염화칼슘"
-                    >
-                      🧂
-                    </button>
-                    <button 
-                      onClick={() => addDangerousMarkerWithSubType('공사중')}
-                      className="bg-orange-100 hover:bg-orange-200 p-2 rounded-md text-sm font-medium"
-                      title="공사중"
-                    >
-                      🚧
-                    </button>
+                {showSubTypeButtons && (
+                  <div className="absolute left-0 -bottom-24 bg-white rounded-lg shadow-lg p-2 z-30 w-full">
+                    <div className="flex flex-wrap gap-2 justify-center">
+                      <button 
+                        onClick={() => addDangerousMarkerWithSubType('들개')}
+                        className="bg-red-100 hover:bg-red-200 p-2 rounded-md text-sm font-medium"
+                        title="들개"
+                      >
+                        🐕
+                      </button>
+                      <button 
+                        onClick={() => addDangerousMarkerWithSubType('빙판길')}
+                        className="bg-blue-100 hover:bg-blue-200 p-2 rounded-md text-sm font-medium"
+                        title="빙판길"
+                      >
+                        🧊
+                      </button>
+                      <button 
+                        onClick={() => addDangerousMarkerWithSubType('염화칼슘')}
+                        className="bg-yellow-100 hover:bg-yellow-200 p-2 rounded-md text-sm font-medium"
+                        title="염화칼슘"
+                      >
+                        🧂
+                      </button>
+                      <button 
+                        onClick={() => addDangerousMarkerWithSubType('공사중')}
+                        className="bg-orange-100 hover:bg-orange-200 p-2 rounded-md text-sm font-medium"
+                        title="공사중"
+                      >
+                        🚧
+                      </button>
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             </div>
           </div>
@@ -794,7 +892,7 @@ function MapPage() {
                   <span className="mr-1 text-xl">⚠️</span>
                   <span>댕져러스 추가</span>
                 </button>
-                <div className="absolute left-0 -bottom-24 hidden group-hover:block bg-white rounded-lg shadow-lg p-2 z-30 w-full">
+                <div className="absolute left-0 -bottom-24 group-hover:block bg-white rounded-lg shadow-lg p-2 z-30 w-full">
                   <div className="flex flex-wrap gap-2 justify-center">
                     <button 
                       onClick={() => addMarkerByType('댕져러스', '들개')}
@@ -831,17 +929,17 @@ function MapPage() {
           </div>
         )}
         
-        {/* 현재 위치 버튼 */}
-        <button 
-          onClick={moveToCurrentLocation}
-          className="absolute bottom-24 right-4 bg-white p-3 rounded-full shadow-lg flex items-center justify-center"
-          aria-label="현재 위치로 이동"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-amber-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
-          </svg>
-        </button>
-
+        {/* 지도 영역 오른쪽 아래에 '마커 찍기' 버튼 추가 */}
+        <div className="absolute bottom-24 right-4 bg-white p-3 rounded-full shadow-lg flex items-center justify-center">
+          <button 
+            onClick={() => addMarkerAtCenter('댕플')}
+            className="flex items-center justify-center w-12 h-12 bg-amber-100 hover:bg-amber-200 rounded-full shadow-lg"
+            aria-label="마커 찍기"
+          >
+            <span className="text-2xl">📍</span>
+          </button>
+        </div>
+        
         {/* 마커 사용법 안내 */}
         <div className="absolute top-4 left-4 right-4 bg-black bg-opacity-70 px-4 py-3 rounded-lg text-white text-sm shadow-lg">
           <p className="font-medium mb-1">📍 마커 사용 방법:</p>
@@ -866,6 +964,30 @@ function MapPage() {
         <div className="absolute bottom-36 left-0 right-0 flex justify-center">
           <div className="bg-white px-4 py-2 rounded-full shadow-md text-sm">
             <span className="font-medium">위도: {centerPosition.lat.toFixed(6)}, 경도: {centerPosition.lng.toFixed(6)}</span>
+          </div>
+        </div>
+
+        {/* 지도 상단에 마커 타입 필터링 버튼 추가 */}
+        <div className="absolute top-16 left-0 right-0 flex justify-center z-20">
+          <div className="bg-white rounded-lg shadow-lg p-2 flex gap-2">
+            <button 
+              onClick={() => filterMarkersByType('댕플')}
+              className="bg-amber-100 hover:bg-amber-200 py-2 px-4 rounded-md shadow text-sm font-medium text-amber-800"
+            >
+              댕플
+            </button>
+            <button 
+              onClick={() => filterMarkersByType('댕져러스')}
+              className="bg-blue-100 hover:bg-blue-200 py-2 px-4 rounded-md shadow text-sm font-medium text-blue-800"
+            >
+              댕져러스
+            </button>
+            <button 
+              onClick={() => filterMarkersByType('all')}
+              className="bg-gray-100 hover:bg-gray-200 py-2 px-4 rounded-md shadow text-sm font-medium text-gray-800"
+            >
+              전체
+            </button>
           </div>
         </div>
       </div>
