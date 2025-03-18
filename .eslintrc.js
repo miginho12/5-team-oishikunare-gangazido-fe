@@ -23,8 +23,25 @@ module.exports = {
     },
   },
   rules: {
-    "react/prop-types": "off",
+    // 사용되지 않는 변수에 대한 경고 대신 오류를 내지 않도록 설정
+    "no-unused-vars": [
+      "warn",
+      {
+        vars: "all",
+        args: "none",
+        ignoreRestSiblings: true,
+        varsIgnorePattern: "React",
+      },
+    ],
+
+    // console.log 허용 (빌드 실패 방지)
+    "no-console": "off",
+
+    // React JSX Import 경고 방지 (Next.js 및 최신 React 버전에서 필요 없음)
     "react/react-in-jsx-scope": "off",
+
+    // PropTypes 사용하지 않아도 경고하지 않음
+    "react/prop-types": "off",
   },
   globals: {
     window: true,
