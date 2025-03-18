@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.1.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.1.0...v1.1.1) (2025-03-18)
+
+### 🐛 BUG FIXES
+
+* remove .env from tracking ([c177472](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/c1774729d7db9396a45f9990d1d2aa2e55192611))
+
 ## [1.1.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.0.0...v1.1.0) (2025-03-18)
 
 ### 🚀 NEW FEATURES
