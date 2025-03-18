@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.1.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.0.0...v1.1.0) (2025-03-18)
+
+### 🚀 NEW FEATURES
+
+* sementic update ([d99d3a5](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/d99d3a532633e38436702fe82229ddcd76226cb1))
+
 ## 1.0.0 (2025-03-18)
 
 ### 🚀 NEW FEATURES
