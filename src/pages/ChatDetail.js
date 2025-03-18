@@ -5,7 +5,7 @@ function ChatDetail() {
   const navigate = useNavigate();
   const { id } = useParams();
   const [message, setMessage] = useState("");
-  console.log(id);
+  console.log("Chat ID:", id);
   const [messages, setMessages] = useState([
     {
       id: 1,
