@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 function ChatDetail() {
   const navigate = useNavigate();
   const { id } = useParams();
-  console.log("Chat ID:", id);
+  console.log(id);
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([
     {
