@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## [1.2.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.1.1...v1.2.0) (2025-03-18)
+
+### 🚀 NEW FEATURES
+
+* edit kakao map api marker ([9afcd4c](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/9afcd4c2fea818ed56f2ef91350a7c7db96b3797))
+
+### 🐛 BUG FIXES
+
+* remove .env from tracking ([df5adbc](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/df5adbc01c36e44328bdcd3d4cef4b8fdde53e9f))
+
 ## [1.1.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.1.0...v1.1.1) (2025-03-18)
 
 ### 🐛 BUG FIXES
