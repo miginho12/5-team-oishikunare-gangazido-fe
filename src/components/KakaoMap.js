@@ -100,7 +100,7 @@ const KakaoMap = () => {
         number: 7
       },
       {
-        title: '댕지러스',
+        title: '댕저러스',
         latlng: new kakao.maps.LatLng(33.450101, 126.571667),
         type: 'warning',
         number: '1-2'
