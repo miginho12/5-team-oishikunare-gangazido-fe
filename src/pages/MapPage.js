@@ -63,6 +63,13 @@ function MapPage() {
       빙판길: "https://cdn-icons-png.flaticon.com/512/5435/5435526.png",
       염화칼슘: "https://cdn-icons-png.flaticon.com/512/9430/9430308.png",
       공사중: "https://cdn-icons-png.flaticon.com/512/2913/2913371.png"
+    },
+    // 이모티콘 URL 추가
+    EMOJI: {
+      들개: "🐕",
+      빙판길: "🧊",
+      염화칼슘: "🧂",
+      공사중: "🚧"
     }
   };
   
@@ -127,29 +134,62 @@ function MapPage() {
         const option = { offset: new window.kakao.maps.Point(20, 40) };
         
         try {
-          const imgUrl = MARKER_IMAGES.댕져러스[subType];
-          if (!imgUrl) {
-            console.error(`서브타입 ${subType}의 이미지 URL이 없습니다.`);
-            return;
-          }
+          // 서브타입 이미지 URL 대신 이모티콘 이미지 사용
+          const emojiText = MARKER_IMAGES.EMOJI[subType] || '⚠️';
+          
+          // 캔버스를 사용하여 이모티콘 기반 이미지 생성
+          const canvas = document.createElement('canvas');
+          canvas.width = 40;
+          canvas.height = 40;
+          const ctx = canvas.getContext('2d');
+          
+          // 배경 원 그리기
+          ctx.beginPath();
+          ctx.arc(20, 20, 18, 0, 2 * Math.PI);
+          ctx.fillStyle = '#3b82f6'; // 파란색 배경
+          ctx.fill();
+          
+          // 이모티콘 텍스트 그리기
+          ctx.font = '20px Arial';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(emojiText, 20, 18);
+          
+          // 캔버스를 데이터 URL로 변환
+          const imgUrl = canvas.toDataURL();
           
           markerImages.current[1][subType] = new window.kakao.maps.MarkerImage(
             imgUrl, 
             size, 
             option
           );
-          
-          // 이미지 사전 로드를 위한 이미지 객체 생성
-          const img = new Image();
-          img.src = imgUrl;
         } catch (e) {
           console.error(`서브타입 ${subType} 마커 이미지 초기화 오류:`, e);
         }
       });
       
-      // 기본 댕져러스 마커 이미지 설정
+      // 기본 댕져러스 마커 이미지 설정도 이모티콘 스타일로 변경
+      const canvas = document.createElement('canvas');
+      canvas.width = 40;
+      canvas.height = 40;
+      const ctx = canvas.getContext('2d');
+      
+      // 배경 원 그리기
+      ctx.beginPath();
+      ctx.arc(20, 20, 18, 0, 2 * Math.PI);
+      ctx.fillStyle = '#3b82f6'; // 파란색 배경
+      ctx.fill();
+      
+      // 기본 경고 이모티콘
+      ctx.font = '20px Arial';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('⚠️', 20, 18);
+      
+      const defaultImgUrl = canvas.toDataURL();
+      
       markerImages.current[1].image = new window.kakao.maps.MarkerImage(
-        MARKER_IMAGES.댕져러스.DEFAULT,
+        defaultImgUrl,
         new window.kakao.maps.Size(40, 40),
         { offset: new window.kakao.maps.Point(20, 40) }
       );
@@ -273,6 +313,15 @@ function MapPage() {
           // 보이는 영역에 있는 마커만 필터링
           const currentMarkers = markersRef.current;
           if (currentMarkers && currentMarkers.length > 0) {
+            // 모든 마커는 지도에 계속 표시되도록 유지
+            currentMarkers.forEach(markerInfo => {
+              // 이미 지도에 표시되지 않은 마커만 다시 표시 (필터링된 마커는 제외)
+              if (markerInfo.marker && !markerInfo.marker.getMap()) {
+                markerInfo.marker.setMap(mapInstance);
+              }
+            });
+            
+            // 보이는 영역에 있는 마커만 필터링하여 visibleMarkers 상태와 클러스터러 업데이트
             const visibleMarkersFiltered = currentMarkers.filter(markerInfo => {
               if (!markerInfo.marker) return false;
               
@@ -517,7 +566,7 @@ function MapPage() {
       try {
         marker = new window.kakao.maps.Marker({
           position,
-          map,
+          map, // 항상 지도에 표시
           image: markerImage
         });
       } catch (markerError) {
@@ -653,7 +702,7 @@ function MapPage() {
             console.error("마커 저장 중 오류 발생:", saveError);
           }
           
-          // 새 마커가 현재 화면에 보이는지 확인하고 visibleMarkers 업데이트
+          // 새 마커가 현재 화면에 보이는지 확인하고 클러스터에만 추가
           try {
             if (mapBoundsRef.current && mapBoundsRef.current.contain(position)) {
               setVisibleMarkers(prev => [...prev, markerInfo]);
@@ -676,7 +725,7 @@ function MapPage() {
       } catch (setMarkersError) {
         console.error("마커 상태 업데이트 중 오류:", setMarkersError);
         // 상태 업데이트에 실패하면 맵에서 마커 제거
-        try { marker.setMap(null); } catch (e) {}
+        try { marker.setMap(null); } catch (e) { /* 마커 제거 실패는 무시 */ }
         return null;
       }
       
@@ -797,18 +846,16 @@ function MapPage() {
             markerImage = currentMarkerImages[0] && currentMarkerImages[0].image;
           }
           
-          // 마커 생성
+          // 마커 생성 - 여기를 수정: 모든 마커를 지도에 바로 추가
           const marker = new window.kakao.maps.Marker({
             position,
+            map: kakaoMap, // 모든 마커를 지도에 즉시 표시
             image: markerImage
           });
           
-          // 화면에 보이는 마커만 맵에 표시 (성능 최적화)
+          // 화면에 보이는 마커만 클러스터에 추가
           if (bounds.contain(position)) {
-            marker.setMap(kakaoMap);
             clusterMarkers.push(marker);
-          } else {
-            marker.setMap(null);
           }
           
           // 새 마커 정보 객체
@@ -1047,6 +1094,7 @@ function MapPage() {
 
   // 마커 타입 필터링 함수
   const filterMarkersByType = useCallback((type) => {
+    // 여기서는 맵에서 보이는 것만 제어하고 싶으므로 이 부분은 그대로 유지
     setMarkers(prev => prev.map(markerInfo => {
       if (markerInfo.type === type || type === 'all') {
         markerInfo.marker.setMap(map);
@@ -1055,6 +1103,26 @@ function MapPage() {
       }
       return markerInfo;
     }));
+
+    // 클러스터러도 업데이트
+    if (clusterRef.current) {
+      clusterRef.current.clear();
+      
+      // 필터링된 마커 중 보이는 영역에 있는 마커만 클러스터에 추가
+      const currentMarkers = markersRef.current;
+      const bounds = map ? map.getBounds() : null;
+      
+      if (bounds && currentMarkers) {
+        const visibleFilteredMarkers = currentMarkers.filter(markerInfo => 
+          (markerInfo.type === type || type === 'all') && 
+          bounds.contain(markerInfo.marker.getPosition())
+        );
+        
+        if (visibleFilteredMarkers.length > 0) {
+          clusterRef.current.addMarkers(visibleFilteredMarkers.map(m => m.marker));
+        }
+      }
+    }
   }, [map]);
 
   // 컴포넌트 언마운트 시 마커 정리
@@ -1112,6 +1180,28 @@ function MapPage() {
     getCurrentMapBounds, 
     fetchMarkersFromBackend
   ]);
+
+  // 지도 클릭 이벤트에 서브타입 옵션 닫기 추가
+  useEffect(() => {
+    // 지도 컨테이너 클릭 이벤트 리스너 등록
+    const handleMapClick = () => {
+      if (showSubTypeButtons) {
+        setShowSubTypeButtons(false);
+      }
+    };
+    
+    const mapDiv = mapContainer.current;
+    if (mapDiv) {
+      mapDiv.addEventListener('click', handleMapClick);
+    }
+    
+    // 컴포넌트 언마운트 시 이벤트 리스너 제거
+    return () => {
+      if (mapDiv) {
+        mapDiv.removeEventListener('click', handleMapClick);
+      }
+    };
+  }, [showSubTypeButtons]);
 
   return (
     <div className="flex flex-col h-full bg-gray-50">
@@ -1185,7 +1275,10 @@ function MapPage() {
         <div className="absolute bottom-24 right-4 flex flex-col gap-3 z-20">
           {/* 댕플 마커 추가 버튼 */}
           <button 
-            onClick={() => addMarkerAtCenter('댕플')}
+            onClick={() => {
+              addMarkerAtCenter('댕플');
+              setShowSubTypeButtons(false); // 서브타입 옵션 닫기
+            }}
             className="flex items-center justify-center w-12 h-12 bg-amber-500 hover:bg-amber-600 rounded-full shadow-lg text-white"
             aria-label="댕플 마커 추가"
           >
@@ -1202,33 +1295,45 @@ function MapPage() {
               <span role="img" aria-label="위험" className="text-xl">⚠️</span>
             </button>
             
-            {/* 댕져러스 서브타입 선택 버튼 */}
+            {/* 댕져러스 서브타입 선택 버튼 - 위치 수정 */}
             {showSubTypeButtons && (
-              <div className="absolute right-14 top-0 bg-white rounded-lg shadow-lg p-2 z-30">
+              <div className="absolute right-14 bottom-0 bg-white rounded-lg shadow-lg p-2 z-30">
                 <div className="flex flex-col gap-2">
                   <button 
-                    onClick={() => addDangerousMarkerWithSubType('들개')}
+                    onClick={() => {
+                      addDangerousMarkerWithSubType('들개');
+                      setShowSubTypeButtons(false); // 선택 후 닫기
+                    }}
                     className="flex items-center justify-center w-10 h-10 bg-red-100 hover:bg-red-200 rounded-full"
                     title="들개"
                   >
                     <span role="img" aria-label="들개">🐕</span>
                   </button>
                   <button 
-                    onClick={() => addDangerousMarkerWithSubType('빙판길')}
+                    onClick={() => {
+                      addDangerousMarkerWithSubType('빙판길');
+                      setShowSubTypeButtons(false); // 선택 후 닫기
+                    }}
                     className="flex items-center justify-center w-10 h-10 bg-blue-100 hover:bg-blue-200 rounded-full"
                     title="빙판길"
                   >
                     <span role="img" aria-label="빙판길">🧊</span>
                   </button>
                   <button 
-                    onClick={() => addDangerousMarkerWithSubType('염화칼슘')}
+                    onClick={() => {
+                      addDangerousMarkerWithSubType('염화칼슘');
+                      setShowSubTypeButtons(false); // 선택 후 닫기
+                    }}
                     className="flex items-center justify-center w-10 h-10 bg-yellow-100 hover:bg-yellow-200 rounded-full"
                     title="염화칼슘"
                   >
                     <span role="img" aria-label="염화칼슘">🧂</span>
                   </button>
                   <button 
-                    onClick={() => addDangerousMarkerWithSubType('공사중')}
+                    onClick={() => {
+                      addDangerousMarkerWithSubType('공사중');
+                      setShowSubTypeButtons(false); // 선택 후 닫기
+                    }}
                     className="flex items-center justify-center w-10 h-10 bg-orange-100 hover:bg-orange-200 rounded-full"
                     title="공사중"
                   >
