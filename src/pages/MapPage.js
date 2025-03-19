@@ -16,6 +16,9 @@ function MapPage() {
   const mapBoundsRef = useRef(null);
   const clusterRef = useRef(null);
   
+  // 마커 필터링 타입 저장 상태 추가
+  const [filterType, setFilterType] = useState('all');
+  
   // 순환 참조를 막기 위한 removeMarker 함수 ref
   const removeMarkerRef = useRef(null);
   
@@ -705,16 +708,22 @@ function MapPage() {
           // 새 마커가 현재 화면에 보이는지 확인하고 클러스터에만 추가
           try {
             if (mapBoundsRef.current && mapBoundsRef.current.contain(position)) {
-              setVisibleMarkers(prev => [...prev, markerInfo]);
+              // 보이는 마커 상태 업데이트 - 기존 방식
+              // setVisibleMarkers(prev => [...prev, markerInfo]);
               
-              // 클러스터에 마커 추가
-              if (clusterRef.current) {
-                try {
-                  clusterRef.current.addMarker(marker);
-                } catch (clusterError) {
-                  console.warn("클러스터에 마커 추가 중 오류:", clusterError);
+              // 수정: 개별 상태 업데이트 대신 일괄 업데이트 작업 스케줄링
+              setTimeout(() => {
+                setVisibleMarkers(current => [...current, markerInfo]);
+                
+                // 클러스터에 마커 추가
+                if (clusterRef.current) {
+                  try {
+                    clusterRef.current.addMarker(marker);
+                  } catch (clusterError) {
+                    console.warn("클러스터에 마커 추가 중 오류:", clusterError);
+                  }
                 }
-              }
+              }, 10);
             }
           } catch (visibleError) {
             console.warn("보이는 마커 업데이트 중 오류:", visibleError);
@@ -945,14 +954,22 @@ function MapPage() {
       
       // 클러스터에 마커 일괄 추가 (성능 최적화)
       if (clusterRef.current && clusterMarkers.length > 0) {
-        clusterRef.current.addMarkers(clusterMarkers);
+        setTimeout(() => {
+          try {
+            clusterRef.current.addMarkers(clusterMarkers);
+          } catch (err) {
+            console.warn("클러스터러에 마커 추가 중 오류:", err);
+          }
+        }, 10);
       }
       
-      // 보이는 마커 설정
-      const visibleMarkersFiltered = newMarkers.filter(markerInfo => 
-        bounds.contain(markerInfo.marker.getPosition())
-      );
-      setVisibleMarkers(visibleMarkersFiltered);
+      // 보이는 마커 설정 - 상태 업데이트를 일괄적으로 처리
+      setTimeout(() => {
+        const visibleMarkersFiltered = newMarkers.filter(markerInfo => 
+          bounds.contain(markerInfo.marker.getPosition())
+        );
+        setVisibleMarkers(visibleMarkersFiltered);
+      }, 10);
       
       // 모든 마커를 한번에 상태에 추가 (일괄 업데이트)
       setMarkers(newMarkers);
@@ -1094,35 +1111,63 @@ function MapPage() {
 
   // 마커 타입 필터링 함수
   const filterMarkersByType = useCallback((type) => {
-    // 여기서는 맵에서 보이는 것만 제어하고 싶으므로 이 부분은 그대로 유지
-    setMarkers(prev => prev.map(markerInfo => {
-      if (markerInfo.type === type || type === 'all') {
-        markerInfo.marker.setMap(map);
-      } else {
-        markerInfo.marker.setMap(null);
-      }
-      return markerInfo;
-    }));
+    // 선택된 필터 타입 저장용 상태 변수가 있다면 업데이트
+    if (typeof setFilterType === 'function') {
+      setFilterType(type);
+    }
 
-    // 클러스터러도 업데이트
-    if (clusterRef.current) {
-      clusterRef.current.clear();
-      
-      // 필터링된 마커 중 보이는 영역에 있는 마커만 클러스터에 추가
-      const currentMarkers = markersRef.current;
-      const bounds = map ? map.getBounds() : null;
-      
-      if (bounds && currentMarkers) {
-        const visibleFilteredMarkers = currentMarkers.filter(markerInfo => 
-          (markerInfo.type === type || type === 'all') && 
-          bounds.contain(markerInfo.marker.getPosition())
-        );
+    // 마커 맵 표시 상태 일괄 업데이트 (최적화)
+    const markersToShow = [];
+    setMarkers(prev => {
+      // 기존 마커 배열을 수정하되 표시 상태만 변경
+      return prev.map(markerInfo => {
+        const shouldShow = markerInfo.type === type || type === 'all';
         
-        if (visibleFilteredMarkers.length > 0) {
-          clusterRef.current.addMarkers(visibleFilteredMarkers.map(m => m.marker));
+        // 바로 상태를 변경하지 않고 변경할 마커만 컬렉션
+        if (shouldShow) {
+          markersToShow.push(markerInfo.marker);
+          if (!markerInfo.marker.getMap()) {
+            // 현재 표시되지 않은 경우만 표시 설정
+            markerInfo.marker.setMap(map);
+          }
+        } else {
+          if (markerInfo.marker.getMap()) {
+            // 현재 표시된 경우만 숨김 설정
+            markerInfo.marker.setMap(null);
+          }
+        }
+        
+        return markerInfo;
+      });
+    });
+
+    // 클러스터러 업데이트는 약간의 지연 시간을 두고 처리
+    setTimeout(() => {
+      if (clusterRef.current) {
+        // 클러스터 초기화
+        clusterRef.current.clear();
+        
+        // 필터링된 마커 중 보이는 영역에 있는 마커만 클러스터에 추가
+        const currentMarkers = markersRef.current;
+        const bounds = map ? map.getBounds() : null;
+        
+        if (bounds && currentMarkers) {
+          const visibleFilteredMarkers = currentMarkers.filter(markerInfo => 
+            (markerInfo.type === type || type === 'all') && 
+            bounds.contain(markerInfo.marker.getPosition())
+          );
+          
+          // 클러스터에 표시될 마커들을 일괄 추가
+          if (visibleFilteredMarkers.length > 0) {
+            const markersForCluster = visibleFilteredMarkers.map(m => m.marker);
+            clusterRef.current.addMarkers(markersForCluster);
+          }
+          
+          // 보이는 마커 상태 업데이트
+          setVisibleMarkers(visibleFilteredMarkers);
         }
       }
-    }
+    }, 10);
   }, [map]);
 
   // 컴포넌트 언마운트 시 마커 정리
