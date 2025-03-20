@@ -1460,8 +1460,12 @@ function MapPage() {
               </button>
             </div>
             <div className="text-center mb-4">
-              <h2 className="text-xl font-bold">댕플을 찍어멍!</h2>
-              <p className="text-sm text-gray-500 mt-1">지도를 이동해서 댕플을 찍을 수 있습니다!</p>
+              <h2 className="text-xl font-bold">
+                {tempMarkerType === '댕플' 
+                  ? '댕플을 찍어멍!' 
+                  : `${tempMarkerSubType || '위험 지역'}을 찍어멍!`}
+              </h2>
+              <p className="text-sm text-gray-500 mt-1">지도를 이동해서 {tempMarkerType === '댕플' ? '댕플' : tempMarkerSubType || '위험 지역'}을 찍을 수 있습니다!</p>
             </div>
             <div className="flex justify-center">
               <button
