@@ -9,7 +9,7 @@ function MapPage() {
   const markersRef = useRef([]);
   const [selectedMarker, setSelectedMarker] = useState(null);
   const [isMapLoaded, setIsMapLoaded] = useState(false);
-  const [isCenterMode, setIsCenterMode] = useState(true);
+  const [isCenterMode, setIsCenterMode] = useState(false);
   const [currentZoomLevel, setCurrentZoomLevel] = useState(3);
   // eslint-disable-next-line no-unused-vars
   const [visibleMarkers, setVisibleMarkers] = useState([]);
@@ -1253,7 +1253,7 @@ function MapPage() {
     <div className="flex flex-col h-full bg-gray-50">
       {/* 헤더 */}
       <header className="bg-white p-4 shadow-md flex items-center justify-between">
-        <h1 className="text-lg font-bold text-gray-800">강아지도</h1>
+        <h1 className="text-lg font-bold text-gray-800">강아지도 🐕</h1>
       </header>
 
       {/* 마커 생성 안내 */}
