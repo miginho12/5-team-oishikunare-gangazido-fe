@@ -16,6 +16,9 @@ function MapPage() {
   const mapBoundsRef = useRef(null);
   const clusterRef = useRef(null);
   
+  // 카카오맵 API 스크립트 로딩 상태
+  const [kakaoMapLoaded, setKakaoMapLoaded] = useState(false);
+  
   // 마커 필터링 타입 저장 상태 추가
   const [filterType, setFilterType] = useState('all');
   
@@ -27,6 +30,51 @@ function MapPage() {
     lat: 33.450701, // 제주도 구름스퀘어 위도
     lng: 126.570667 // 제주도 구름스퀘어 경도
   });
+  
+  // 카카오맵 API 스크립트 동적 로드 함수
+  const loadKakaoMapScript = useCallback(() => {
+    // 이미 로드된 경우 중복 로드 방지
+    if (window.kakao && window.kakao.maps) {
+      setKakaoMapLoaded(true);
+      return;
+    }
+    
+    // API 키 가져오기
+    const apiKey = process.env.REACT_APP_KAKAO_MAP_API_KEY;
+    if (!apiKey) {
+      console.error("카카오맵 API 키가 환경 변수에 설정되지 않았습니다.");
+      return;
+    }
+    
+    // 스크립트 태그 생성
+    const script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${apiKey}&libraries=services,clusterer&autoload=false`;
+    script.async = true;
+    
+    // 스크립트 로드 완료 시 처리
+    script.onload = () => {
+      // autoload=false 옵션을 사용했으므로 수동으로 로드 실행
+      window.kakao.maps.load(() => {
+        console.log('카카오맵 API 로드 완료');
+        setKakaoMapLoaded(true);
+      });
+    };
+    
+    // 스크립트 로드 실패 시 처리
+    script.onerror = () => {
+      console.error('카카오맵 API 로드 실패');
+      setKakaoMapLoaded(false);
+    };
+    
+    // 스크립트 추가
+    document.head.appendChild(script);
+  }, []);
+  
+  // 컴포넌트 마운트 시 카카오맵 API 스크립트 로드
+  useEffect(() => {
+    loadKakaoMapScript();
+  }, [loadKakaoMapScript]);
   
   // 마커 종류
   const markerImages = useRef([
@@ -208,6 +256,11 @@ function MapPage() {
 
   // 지도 초기화
   useEffect(() => {
+    // 카카오맵 API가 로드되지 않았으면 초기화하지 않음
+    if (!kakaoMapLoaded) {
+      return;
+    }
+    
     // 카카오맵 초기화 함수
     const initializeMap = () => {
       try {
@@ -379,7 +432,7 @@ function MapPage() {
     // 지도 초기화 함수 호출
     initializeMap();
     
-  }, [centerPosition.lat, centerPosition.lng, initMarkerImages, isCenterMode, currentZoomLevel, map]);
+  }, [centerPosition.lat, centerPosition.lng, initMarkerImages, isCenterMode, currentZoomLevel, map, kakaoMapLoaded]);
   
   // 로컬 스토리지에 마커 저장
   const saveMarkersToLocalStorage = useCallback((markersToSave) => {
