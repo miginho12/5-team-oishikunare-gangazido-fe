@@ -1498,7 +1498,7 @@ function MapPage() {
                       addDangerousMarkerWithSubType('들개');
                       setShowSubTypeButtons(false); // 선택 후 닫기
                     }}
-                    className="flex items-center justify-center w-12 h-12 bg-blue-500 hover:bg-blue-600 rounded-full shadow-lg"
+                    className="flex items-center justify-center w-12 h-12 bg-blue-500 hover:bg-blue-600/300 rounded-full shadow-lg"
                     title="들개"
                   >
                     <span role="img" aria-label="들개">🐕</span>
@@ -1508,7 +1508,7 @@ function MapPage() {
                       addDangerousMarkerWithSubType('빙판길');
                       setShowSubTypeButtons(false); // 선택 후 닫기
                     }}
-                    className="flex items-center justify-center w-12 h-12 bg-blue-500 hover:bg-blue-600 rounded-full shadow-lg"
+                    className="flex items-center justify-center w-12 h-12 bg-blue-500 hover:bg-blue-600/90 rounded-full shadow-lg"
                     title="빙판길"
                   >
                     <span role="img" aria-label="빙판길">🧊</span>
@@ -1518,7 +1518,7 @@ function MapPage() {
                       addDangerousMarkerWithSubType('염화칼슘');
                       setShowSubTypeButtons(false); // 선택 후 닫기
                     }}
-                    className="flex items-center justify-center w-12 h-12 bg-blue-500 hover:bg-blue-600 rounded-full shadow-lg"
+                    className="flex items-center justify-center w-12 h-12 bg-blue-500 hover:bg-blue-600/90 rounded-full shadow-lg"
                     title="염화칼슘"
                   >
                     <span role="img" aria-label="염화칼슘">🧂</span>
@@ -1528,7 +1528,7 @@ function MapPage() {
                       addDangerousMarkerWithSubType('공사중');
                       setShowSubTypeButtons(false); // 선택 후 닫기
                     }}
-                    className="flex items-center justify-center w-12 h-12 bg-blue-500 hover:bg-blue-600 rounded-full shadow-lg"
+                    className="flex items-center justify-center w-12 h-12 bg-blue-500 hover:bg-blue-600/90 rounded-full shadow-lg"
                     title="공사중"
                   >
                     <span role="img" aria-label="공사중">🚧</span>
