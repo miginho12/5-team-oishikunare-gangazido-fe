@@ -9,7 +9,7 @@ function ChatMain() {
     { id: 2, text: '우리 강아지가 밥을 잘 안 먹어요. 어떻게 해야 할까요?', isUser: true, time: '오전 10:31' },
     { id: 3, text: '강아지가 밥을 잘 안 먹는 이유는 여러 가지가 있을 수 있어요. 식사 환경이 불편하거나, 음식이 마음에 들지 않거나, 건강 문제가 있을 수 있습니다. 먼저 평소와 다른 행동이 있는지 관찰해보시고, 지속된다면 수의사와 상담하는 것이 좋습니다.', isUser: false, time: '오전 10:32' }
   ]);
-  
+
   const [suggestedQuestions] = useState([
     '강아지 산책 시간은 얼마나 되어야 할까요?',
     '강아지 목욕은 얼마나 자주 시켜야 하나요?',
@@ -31,7 +31,7 @@ function ChatMain() {
 
   const handleSendMessage = () => {
     if (message.trim() === '') return;
-    
+
     // 사용자 메시지 추가
     const newUserMessage = {
       id: chatMessages.length + 1,
@@ -39,10 +39,10 @@ function ChatMain() {
       isUser: true,
       time: new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' })
     };
-    
+
     setChatMessages([...chatMessages, newUserMessage]);
     setMessage('');
-    
+
     // AI 응답 시뮬레이션 (실제로는 API 호출 등이 필요)
     setTimeout(() => {
       const aiResponse = {
@@ -63,13 +63,13 @@ function ChatMain() {
       isUser: true,
       time: new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' })
     };
-    
+
     setChatMessages([...chatMessages, newUserMessage]);
-    
+
     // AI 응답 시뮬레이션
     setTimeout(() => {
       let response = '';
-      
+
       if (question.includes('산책 시간')) {
         response = '강아지의 품종, 나이, 건강 상태에 따라 다르지만, 일반적으로 성견은 하루 30분에서 2시간 정도의 산책이 권장됩니다. 작은 품종이나 노령견은 짧게, 활동량이 많은 품종은 더 길게 산책시키는 것이 좋습니다.';
       } else if (question.includes('목욕')) {
@@ -81,7 +81,7 @@ function ChatMain() {
       } else {
         response = '죄송합니다만, 현재 이 기능은 데모 버전이라 실제 응답을 제공하지 못합니다. 실제 서비스에서는 반려견 관련 질문에 대한 답변을 제공할 예정입니다.';
       }
-      
+
       const aiResponse = {
         id: chatMessages.length + 2,
         text: response,
@@ -179,9 +179,8 @@ function ChatMain() {
             <span className="text-xs mt-1 font-medium">내 정보</span>
           </button>
           <button onClick={goToPetInfo} className="flex flex-col items-center py-3 px-4 text-gray-500 hover:text-amber-800 transition-colors">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-6 w-6">
+              <path d="M12 21s-6-4.35-9-8c-3-3.35-3-7.35 0-10 3-3 7.5-2 9 2 1.5-4 6-5 9-2 3 3 3 7 0 10-3 3.65-9 8-9 8z"/>
             </svg>
             <span className="text-xs mt-1 font-medium">반려견 정보</span>
           </button>
