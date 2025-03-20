@@ -1489,16 +1489,16 @@ function MapPage() {
               <span role="img" aria-label="위험" className="text-xl">⚠️</span>
             </button>
             
-            {/* 댕져러스 서브타입 선택 버튼 - 위치 수정 */}
+            {/* 댕져러스 서브타입 선택 버튼 - 아래로 드롭다운 되도록 수정 */}
             {showSubTypeButtons && (
-              <div className="absolute right-14 bottom-0 bg-white rounded-lg shadow-lg p-2 z-30">
+              <div className="absolute top-full right-0 mt-2 z-30">
                 <div className="flex flex-col gap-2">
                   <button 
                     onClick={() => {
                       addDangerousMarkerWithSubType('들개');
                       setShowSubTypeButtons(false); // 선택 후 닫기
                     }}
-                    className="flex items-center justify-center w-10 h-10 bg-red-100 hover:bg-red-200 rounded-full"
+                    className="flex items-center justify-center w-12 h-12 bg-blue-500 hover:bg-blue-600 rounded-full shadow-lg"
                     title="들개"
                   >
                     <span role="img" aria-label="들개">🐕</span>
@@ -1508,7 +1508,7 @@ function MapPage() {
                       addDangerousMarkerWithSubType('빙판길');
                       setShowSubTypeButtons(false); // 선택 후 닫기
                     }}
-                    className="flex items-center justify-center w-10 h-10 bg-blue-100 hover:bg-blue-200 rounded-full"
+                    className="flex items-center justify-center w-12 h-12 bg-blue-500 hover:bg-blue-600 rounded-full shadow-lg"
                     title="빙판길"
                   >
                     <span role="img" aria-label="빙판길">🧊</span>
@@ -1518,7 +1518,7 @@ function MapPage() {
                       addDangerousMarkerWithSubType('염화칼슘');
                       setShowSubTypeButtons(false); // 선택 후 닫기
                     }}
-                    className="flex items-center justify-center w-10 h-10 bg-yellow-100 hover:bg-yellow-200 rounded-full"
+                    className="flex items-center justify-center w-12 h-12 bg-blue-500 hover:bg-blue-600 rounded-full shadow-lg"
                     title="염화칼슘"
                   >
                     <span role="img" aria-label="염화칼슘">🧂</span>
@@ -1528,7 +1528,7 @@ function MapPage() {
                       addDangerousMarkerWithSubType('공사중');
                       setShowSubTypeButtons(false); // 선택 후 닫기
                     }}
-                    className="flex items-center justify-center w-10 h-10 bg-orange-100 hover:bg-orange-200 rounded-full"
+                    className="flex items-center justify-center w-12 h-12 bg-blue-500 hover:bg-blue-600 rounded-full shadow-lg"
                     title="공사중"
                   >
                     <span role="img" aria-label="공사중">🚧</span>
