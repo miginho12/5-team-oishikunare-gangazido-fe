@@ -18,6 +18,7 @@ const KakaoMap = () => {
   const [selectedMarkerType, setSelectedMarkerType] = useState(null);
   const [activeTab, setActiveTab] = useState('map');
   const [showMarkerTypeModal, setShowMarkerTypeModal] = useState(false);
+  const [centerMode, setCenterMode] = useState(false);
 
   // 카카오맵 스크립트 로드
   useEffect(() => {
@@ -240,6 +241,8 @@ const KakaoMap = () => {
         setMarkerPosition(position);
       }
       setShowMarkerTypeModal(true);
+      // 중앙 모드 활성화
+      setCenterMode(true);
     }
   };
 
