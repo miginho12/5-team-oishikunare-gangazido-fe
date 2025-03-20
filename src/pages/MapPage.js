@@ -1004,30 +1004,63 @@ function MapPage() {
             markerInfo.position.lng
           );
           
-          // 타입 결정
+          // 타입 결정 - 수정: 타입코드에서 타입 정보 추출을 더 정확하게 처리
           let type, subType;
           
           if (markerInfo.typeCode !== undefined) {
             // 타입 코드가 있는 경우 (새 형식)
-            const typeInfo = getMarkerTypeString(markerInfo.typeCode).split(':');
-            type = typeInfo[0];
-            subType = typeInfo.length > 1 ? typeInfo[1] : null;
+            if (markerInfo.typeCode === MARKER_TYPES.댕플) {
+              type = '댕플';
+              subType = null;
+            } else {
+              // 댕져러스 타입인 경우 서브타입 찾기
+              type = '댕져러스';
+              
+              // 서브타입 결정
+              for (const [key, value] of Object.entries(MARKER_TYPES.댕져러스)) {
+                if (value === markerInfo.typeCode && key !== 'DEFAULT') {
+                  subType = key;
+                  break;
+                }
+              }
+              
+              // 서브타입을 찾지 못한 경우 기본값 사용
+              if (!subType) {
+                subType = null; // 기본 댕져러스
+              }
+            }
           } else {
             // 기존 형식 지원
-            type = markerInfo.originalType || markerInfo.type;
-            subType = markerInfo.originalSubType || markerInfo.subType;
+            type = markerInfo.originalType || markerInfo.type || '댕플';
+            subType = markerInfo.originalSubType || markerInfo.subType || null;
           }
           
-          // 마커 이미지 선택
+          // 마커 이미지 선택 로직 개선
           let markerImage;
           const currentMarkerImages = markerImages.current;
+          
           if (type === '댕져러스') {
-            markerImage = currentMarkerImages[1] && (currentMarkerImages[1][subType] || currentMarkerImages[1].image);
+            if (subType && currentMarkerImages[1] && currentMarkerImages[1][subType]) {
+              markerImage = currentMarkerImages[1][subType];
+            } else if (currentMarkerImages[1] && currentMarkerImages[1].image) {
+              markerImage = currentMarkerImages[1].image;
+            } else {
+              // 마커 이미지가 없는 경우 초기화 시도
+              initMarkerImages();
+              markerImage = currentMarkerImages[1] && currentMarkerImages[1].image;
+            }
           } else {
-            markerImage = currentMarkerImages[0] && currentMarkerImages[0].image;
+            // 댕플 마커 이미지
+            if (currentMarkerImages[0] && currentMarkerImages[0].image) {
+              markerImage = currentMarkerImages[0].image;
+            } else {
+              // 마커 이미지가 없는 경우 초기화 시도
+              initMarkerImages();
+              markerImage = currentMarkerImages[0] && currentMarkerImages[0].image;
+            }
           }
           
-          // 마커 생성 - 여기를 수정: 모든 마커를 지도에 바로 추가
+          // 마커 생성 - 모든 마커를 지도에 바로 추가
           const marker = new window.kakao.maps.Marker({
             position,
             map: kakaoMap, // 모든 마커를 지도에 즉시 표시
@@ -1065,15 +1098,19 @@ function MapPage() {
               // 인포윈도우 생성
               let infoContent = '';
               
-              if (type === '댕져러스' && subType) {
+              if (type === '댕져러스') {
                 // 댕져러스 마커 클릭 시
                 let emoji = '';
-                switch(subType) {
-                  case '들개': emoji = '🐕'; break;
-                  case '빙판길': emoji = '🧊'; break;
-                  case '염화칼슘': emoji = '🧂'; break;
-                  case '공사중': emoji = '🚧'; break;
-                  default: emoji = '⚠️';
+                if (subType) {
+                  switch(subType) {
+                    case '들개': emoji = '🐕'; break;
+                    case '빙판길': emoji = '🧊'; break;
+                    case '염화칼슘': emoji = '🧂'; break;
+                    case '공사중': emoji = '🚧'; break;
+                    default: emoji = '⚠️';
+                  }
+                } else {
+                  emoji = '⚠️';
                 }
                 
                 infoContent = `<div style="padding:5px;font-size:12px;">
@@ -1120,6 +1157,7 @@ function MapPage() {
           // 새 마커 배열에 추가
           newMarkers.push(newMarkerInfo);
         } catch (markerError) {
+          console.error("마커 생성 오류:", markerError);
           // 개별 마커 생성 오류는 무시하고 계속 진행
         }
       });
@@ -1145,11 +1183,14 @@ function MapPage() {
       
       // 모든 마커를 한번에 상태에 추가 (일괄 업데이트)
       setMarkers(newMarkers);
+      
+      console.log("로컬 스토리지에서 마커 로드 완료:", newMarkers.length);
     } catch (error) {
+      console.error("로컬 스토리지 로드 오류:", error);
       // 오류 발생 시 로컬 스토리지 초기화
       localStorage.removeItem('kakaoMapData');
     }
-  }, [getMarkerTypeString]);
+  }, [initMarkerImages, MARKER_TYPES]);
   
   // 현재 위치로 이동하기 (경고 제거를 위해 사용되는 함수로 표시)
   // eslint-disable-next-line no-unused-vars
