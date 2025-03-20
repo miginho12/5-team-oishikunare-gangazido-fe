@@ -735,10 +735,14 @@ function MapPage() {
         return null;
       }
       
+      // 마커 생성 완료 후 중앙 모드 비활성화
+      setIsCenterMode(false);
+      
       console.log("마커가 성공적으로 생성되었습니다.");
       return markerInfo;
     } catch (error) {
       console.error("마커 생성 중 예상치 못한 오류 발생:", error);
+      setIsCenterMode(false); // 오류 발생 시에도 중앙 모드 비활성화
       return null;
     }
   }, [map, tempMarkerType, tempMarkerSubType, saveMarkersToLocalStorage, initMarkerImages, markerImages, mapBoundsRef]);
@@ -1256,8 +1260,8 @@ function MapPage() {
       <div className="bg-amber-50 p-3 shadow-sm border-b border-amber-200">
         <p className="text-center text-amber-800 text-sm font-medium">
           {isCenterMode 
-            ? "지도를 움직여 중앙에 마커를 위치시키고 '추가' 버튼을 누르세요" 
-            : "지도에 직접 터치하여 마커를 추가하거나 아래 버튼을 사용하세요"}
+            ? "지도를 움직여 중앙에 마커를 위치시키고 '확정' 버튼을 누르세요" 
+            : "우측 버튼을 눌러 마커를 추가하세요"}
         </p>
       </div>
 
@@ -1364,27 +1368,6 @@ function MapPage() {
           </div>
         </div>
         
-        {/* 마커 사용법 안내 */}
-        {/*
-        <div className="absolute top-4 left-4 right-4 bg-black bg-opacity-70 px-4 py-3 rounded-lg text-white text-sm shadow-lg">
-          <p className="font-medium mb-1">📍 마커 사용 방법:</p>
-          <ul className="list-disc pl-5 space-y-1">
-            {isCenterMode ? (
-              <>
-                <li>지도를 <strong>움직여서</strong> 중앙에 마커를 위치시키기</li>
-                <li>화면 하단 버튼으로 중앙 위치에 마커 추가</li>
-              </>
-            ) : (
-              <>
-                <li>지도를 <strong>터치</strong>하여 기본 마커 추가</li>
-                <li>하단 버튼으로 특정 종류의 마커 추가</li>
-                <li>마커를 <strong>터치</strong>하여 삭제 옵션 표시</li>
-              </>
-            )}
-          </ul>
-        </div>
-        */}
-
         {/* 좌표 정보 표시 */}
         <div className="absolute bottom-36 left-0 right-0 flex justify-center">
           <div className="bg-white px-4 py-2 rounded-full shadow-md text-sm">
@@ -1453,7 +1436,10 @@ function MapPage() {
           <div className="relative p-4">
             <div className="absolute right-4 top-4">
               <button
-                onClick={() => setShowModal(false)}
+                onClick={() => {
+                  setShowModal(false);
+                  setIsCenterMode(false); // 모달을 닫을 때 중앙 모드도 비활성화
+                }}
                 className="text-gray-500 font-bold"
               >
                 X
