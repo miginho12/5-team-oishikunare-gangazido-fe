@@ -18,28 +18,10 @@ function Login() {
       {/* 헤더 */}
       <header className="bg-white p-4 shadow-md flex items-center justify-center">
         <h1 className="text-xl font-bold text-gray-800">강아지도</h1>
-        <div className="w-8 h-8 ml-2">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-full h-full text-amber-800">
-            <circle cx="12" cy="8" r="4" />
-            <path d="M10 16H14" />
-            <path d="M12 12V20" />
-            <path d="M18 12C18 12 19 15 19 16C19 17.6569 17.6569 19 16 19C14.3431 19 13 17.6569 13 16" />
-            <path d="M6 12C6 12 5 15 5 16C5 17.6569 6.34315 19 8 19C9.65685 19 11 17.6569 11 16" />
-          </svg>
-        </div>
       </header>
 
       <div className="flex-1 p-4 flex flex-col">
-        {/* 로고 */}
-        <div className="flex justify-center my-8">
-          <div className="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-full h-full text-gray-400">
-              <path fillRule="evenodd" d="M18.685 19.097A9.723 9.723 0 0021.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 003.065 7.097A9.716 9.716 0 0012 21.75a9.716 9.716 0 006.685-2.653zm-12.54-1.285A7.486 7.486 0 0112 15a7.486 7.486 0 015.855 2.812A8.224 8.224 0 0112 20.25a8.224 8.224 0 01-5.855-2.438zM15.75 9a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" clipRule="evenodd" />
-            </svg>
-          </div>
-        </div>
-
-        <h1 className="text-xl font-bold text-center mb-4 text-gray-800">로그인</h1>
+        <h1 className="text-xl font-bold text-center my-8 text-gray-800">로그인</h1>
 
         {/* 입력 폼 */}
         <div className="bg-white rounded-xl shadow-md p-4 mb-4">
