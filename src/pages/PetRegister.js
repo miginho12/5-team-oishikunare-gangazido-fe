@@ -10,7 +10,7 @@ function PetRegister() {
   };
 
   const goToChat = () => {
-    navigate('/chat-main');
+    navigate('/chat');
   };
 
   const goToProfile = () => {
@@ -18,7 +18,7 @@ function PetRegister() {
   };
 
   const goToPetInfo = () => {
-    navigate('/pet-info');
+    navigate('/pets');
   };
 
   const handleRegister = () => {
@@ -27,7 +27,7 @@ function PetRegister() {
     
     // 토스트 메시지 표시 후 2초 후에 pet-info 페이지로 이동
     setTimeout(() => {
-      navigate('/pet-info');
+      navigate('/pets');
     }, 2000);
   };
 

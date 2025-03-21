@@ -10,7 +10,7 @@ function PasswordChange() {
   };
 
   const goToChat = () => {
-    navigate('/chat-main');
+    navigate('/chat');
   };
 
   const goToProfile = () => {
@@ -18,7 +18,7 @@ function PasswordChange() {
   };
 
   const goToPetInfo = () => {
-    navigate('/pet-info');
+    navigate('/pets');
   };
 
   const handleUpdatePassword = () => {

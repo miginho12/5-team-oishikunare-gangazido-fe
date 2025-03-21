@@ -9,7 +9,7 @@ function Main() {
   };
 
   const goToChat = () => {
-    navigate('/chat-main');
+    navigate('/chat');
   };
 
   const goToProfile = () => {
@@ -18,7 +18,7 @@ function Main() {
 
   const goToPetInfo = () => {
     // 반려견 정보 페이지로 이동 (아직 구현되지 않음)
-    navigate('/pet-info');
+    navigate('/pets');
   };
 
   return (

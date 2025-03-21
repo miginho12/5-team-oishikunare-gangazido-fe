@@ -1400,15 +1400,15 @@ function MapPage() {
 
   // 네비게이션 함수
   const goToChat = useCallback(() => {
-    navigate("/chat-main");
+    navigate('/chat');
   }, [navigate]);
 
   const goToProfile = useCallback(() => {
-    navigate("/profile");
+    navigate('/profile');
   }, [navigate]);
 
   const goToPetInfo = useCallback(() => {
-    navigate("/pet-info");
+    navigate('/pets');
   }, [navigate]);
 
   // 서브타입 버튼 클릭 방식으로 변경

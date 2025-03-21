@@ -13,7 +13,7 @@ function ProfileEdit() {
   };
 
   const goToChat = () => {
-    navigate('/chat-main');
+    navigate('/chat');
   };
 
   const goToProfile = () => {
@@ -21,7 +21,7 @@ function ProfileEdit() {
   };
 
   const goToPetInfo = () => {
-    navigate('/pet-info');
+    navigate('/pets');
   };
 
   const handleWithdrawal = () => {
@@ -141,9 +141,20 @@ function ProfileEdit() {
       {showWithdrawalModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-4/5 max-w-sm">
-            <h3 className="text-lg font-medium text-gray-900 mb-4">회원 탈퇴</h3>
-            <p className="text-sm text-gray-600 mb-6">
-              정말로 탈퇴하시겠습니까? 탈퇴 시 모든 데이터는 삭제되며 복구할 수 없습니다.
+            <h3 className="text-lg font-medium text-gray-900 mb-3">회원 탈퇴</h3>
+            <div className="text-center mb-4">
+              <p className="text-md font-medium mb-2">정말로 탈퇴하시겠습니까?</p>
+            </div>
+            <p className="text-sm text-gray-600 mb-2">
+              회원 탈퇴시 아래 데이터가 모두 삭제됩니다:
+            </p>
+            <ul className="text-sm text-gray-600 mb-6 list-disc pl-5">
+              <li>회원 정보</li>
+              <li>반려견 정보</li>
+              <li>지도에 등록한 장소</li>
+            </ul>
+            <p className="text-sm text-red-500 mb-6 font-medium">
+              삭제된 데이터는 복구할 수 없습니다.
             </p>
             <div className="flex justify-end space-x-3">
               <button 

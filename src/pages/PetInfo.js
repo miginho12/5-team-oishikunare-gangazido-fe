@@ -9,7 +9,7 @@ function PetInfo() {
   };
 
   const goToChat = () => {
-    navigate('/chat-main');
+    navigate('/chat');
   };
 
   const goToProfile = () => {
@@ -17,7 +17,7 @@ function PetInfo() {
   };
 
   const goToPetEdit = () => {
-    navigate('/pet-edit');
+    navigate('/pets/edit');
   };
 
   return (

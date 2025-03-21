@@ -11,7 +11,7 @@ function PetEdit() {
   };
 
   const goToChat = () => {
-    navigate('/chat-main');
+    navigate('/chat');
   };
 
   const goToProfile = () => {
@@ -19,7 +19,7 @@ function PetEdit() {
   };
 
   const goToPetInfo = () => {
-    navigate('/pet-info');
+    navigate('/pets');
   };
 
   const handleDeletePet = () => {
@@ -28,7 +28,7 @@ function PetEdit() {
 
   const confirmDelete = () => {
     // 실제로는 API 호출 등으로 반려견 정보 삭제 처리
-    navigate('/pet-register');
+    navigate('/pets/register');
   };
 
   const cancelDelete = () => {
@@ -41,7 +41,7 @@ function PetEdit() {
     
     // 토스트 메시지 표시 후 2초 후에 pet-info 페이지로 이동
     setTimeout(() => {
-      navigate('/pet-info');
+      navigate('/pets');
     }, 2000);
   };
 

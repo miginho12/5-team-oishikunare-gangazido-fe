@@ -32,7 +32,7 @@ function ChatDetail() {
   };
 
   const goToChat = () => {
-    navigate("/chat-main");
+    navigate("/chat");
   };
 
   const goToProfile = () => {
@@ -40,7 +40,7 @@ function ChatDetail() {
   };
 
   const goToPetInfo = () => {
-    navigate("/pet-info");
+    navigate("/pets");
   };
 
   const handleSendMessage = (e) => {
