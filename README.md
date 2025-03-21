@@ -2,6 +2,12 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+
+## 📂 /deprecated 폴더
+이 폴더에는 현재 사용되지 않지만, 나중에 참조할 가능성이 있는 파일을 보관합니다.
+필요 없는 파일은 일정 기간 후 삭제할 수 있습니다.
+
+
 ## Available Scripts
 
 In the project directory, you can run:

@@ -8,9 +8,7 @@ import {
 import "./App.css";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import Main from "./pages/Main";
 import ProfilePage from "./pages/ProfilePage";
-import ChatDetail from "./pages/ChatDetail";
 import ProfileEdit from "./pages/ProfileEdit";
 import PasswordChange from "./pages/PasswordChange";
 import MapPage from "./pages/MapPage";
@@ -28,9 +26,7 @@ function App() {
             <Routes>
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
-              <Route path="/main" element={<Main />} />
               <Route path="/profile" element={<ProfilePage />} />
-              <Route path="/chat/:id" element={<ChatDetail />} />
               <Route path="/profile/edit" element={<ProfileEdit />} />
               <Route path="/profile/password" element={<PasswordChange />} />
               <Route path="/map" element={<MapPage />} />
