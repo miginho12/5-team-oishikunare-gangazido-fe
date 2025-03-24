@@ -25,6 +25,7 @@ function MapPage() {
   const [kakaoMapLoaded, setKakaoMapLoaded] = useState(false);
 
   // 마커 필터링 타입 저장 상태 추가
+  // eslint-disable-next-line no-unused-vars
   const [filterType, setFilterType] = useState('all');
 
   // 순환 참조를 막기 위한 removeMarker 함수 ref
@@ -1199,6 +1200,7 @@ function MapPage() {
   }, [map, markers, removeMarker]);
 
   // 모든 마커 지우기
+  // eslint-disable-next-line no-unused-vars
   const clearAllMarkers = useCallback(() => {
     if (window.confirm('모든 마커를 삭제하시겠습니까?')) {
       // 지도에서 모든 마커 제거
