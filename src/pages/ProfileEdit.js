@@ -1,12 +1,47 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { getUserInfo, updateUserInfo } from '../api/user';
 
 function ProfileEdit() {
   const navigate = useNavigate();
+  const [userInfo, setUserInfo] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [nickname, setNickname] = useState('');
+  const [profileImage, setProfileImage] = useState(null);
+  const [profileImagePreview, setProfileImagePreview] = useState(null);
   const [showToast, setShowToast] = useState(false);
   const [showWithdrawalModal, setShowWithdrawalModal] = useState(false);
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
+
+  // 컴포넌트 마운트 시 사용자 정보 로드
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        setLoading(true);
+        const response = await getUserInfo();
+        const userData = response.data.data;
+        setUserInfo(userData);
+        setNickname(userData.nickname || '');
+        if (userData.profileImage) {
+          setProfileImagePreview(userData.profileImage);
+        }
+      } catch (err) {
+        console.error('사용자 정보 로드 실패:', err);
+        if (err.response && err.response.status === 401) {
+          // 인증되지 않은 사용자는 로그인 페이지로 리다이렉트
+          navigate('/login');
+        } else {
+          setError('사용자 정보를 불러오는데 실패했습니다.');
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserInfo();
+  }, [navigate]);
 
   const goToMap = () => {
     navigate('/map');
@@ -24,6 +59,14 @@ function ProfileEdit() {
     navigate('/pets');
   };
 
+  const handleProfileImageChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setProfileImage(file);
+      setProfileImagePreview(URL.createObjectURL(file));
+    }
+  };
+
   const handleWithdrawal = () => {
     // 실제로는 API 호출 등으로 회원 탈퇴 처리
     setShowWithdrawalModal(false);
@@ -37,19 +80,46 @@ function ProfileEdit() {
   };
 
   const handleUpdateProfile = () => {
-    // 실제로는 API 호출 등으로 회원 정보 수정 처리
+    // 폼 유효성 검사
+    if (!nickname.trim()) {
+      setToastMessage("닉네임을 입력해주세요.");
+      setShowToast(true);
+      return;
+    }
+    
+    // 닉네임 길이 체크
+    if (nickname.length < 2 || nickname.length > 10) {
+      setToastMessage("닉네임은 2~10자 이내로 입력해주세요.");
+      setShowToast(true);
+      return;
+    }
+    
     setShowProfileModal(true);
   };
 
-  const confirmProfileUpdate = () => {
-    setShowProfileModal(false);
-    setToastMessage("수정을 완료하였습니다.");
-    setShowToast(true);
-    
-    // 토스트 메시지 표시 후 2초 후에 profile 페이지로 이동
-    setTimeout(() => {
-      navigate('/profile');
-    }, 2000);
+  const confirmProfileUpdate = async () => {
+    try {
+      const userData = {
+        user_nickname: nickname,
+        user_profile_image: profileImage
+      };
+      
+      await updateUserInfo(userData);
+      
+      setShowProfileModal(false);
+      setToastMessage("수정을 완료하였습니다.");
+      setShowToast(true);
+      
+      // 토스트 메시지 표시 후 2초 후에 profile 페이지로 이동
+      setTimeout(() => {
+        navigate('/profile');
+      }, 2000);
+    } catch (err) {
+      console.error('프로필 수정 실패:', err);
+      setShowProfileModal(false);
+      setToastMessage("프로필 수정에 실패했습니다.");
+      setShowToast(true);
+    }
   };
 
   // 토스트 메시지가 표시되면 3초 후에 자동으로 사라지도록 설정
@@ -61,6 +131,33 @@ function ProfileEdit() {
       return () => clearTimeout(timer);
     }
   }, [showToast]);
+
+  // 로딩 중이면 로딩 표시
+  if (loading) {
+    return (
+      <div className="flex flex-col h-full items-center justify-center bg-gray-50">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-800"></div>
+        <p className="mt-4 text-gray-600">사용자 정보를 불러오는 중...</p>
+      </div>
+    );
+  }
+
+  // 에러가 있으면 에러 메시지 표시
+  if (error) {
+    return (
+      <div className="flex flex-col h-full items-center justify-center bg-gray-50">
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative max-w-md">
+          <span className="block sm:inline">{error}</span>
+        </div>
+        <button 
+          onClick={() => navigate('/profile')}
+          className="mt-4 px-4 py-2 bg-amber-800 text-white rounded hover:bg-amber-700"
+        >
+          프로필 페이지로 이동
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col h-full bg-gray-50">
@@ -79,11 +176,28 @@ function ProfileEdit() {
         <div className="bg-white rounded-xl shadow-md p-4 mb-4">
           <div className="flex flex-col items-center mb-6">
             <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center mb-3 overflow-hidden">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-full h-full text-gray-400">
-                <path fillRule="evenodd" d="M18.685 19.097A9.723 9.723 0 0021.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 003.065 7.097A9.716 9.716 0 0012 21.75a9.716 9.716 0 006.685-2.653zm-12.54-1.285A7.486 7.486 0 0112 15a7.486 7.486 0 015.855 2.812A8.224 8.224 0 0112 20.25a8.224 8.224 0 01-5.855-2.438zM15.75 9a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" clipRule="evenodd" />
-              </svg>
+              {profileImagePreview ? (
+                <img 
+                  src={profileImagePreview} 
+                  alt="프로필 이미지"
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-full h-full text-gray-400">
+                  <path fillRule="evenodd" d="M18.685 19.097A9.723 9.723 0 0021.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 003.065 7.097A9.716 9.716 0 0012 21.75a9.716 9.716 0 006.685-2.653zm-12.54-1.285A7.486 7.486 0 0112 15a7.486 7.486 0 015.855 2.812A8.224 8.224 0 0112 20.25a8.224 8.224 0 01-5.855-2.438zM15.75 9a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" clipRule="evenodd" />
+                </svg>
+              )}
             </div>
-            <button className="text-sm text-amber-800 font-medium">프로필 사진 변경</button>
+            <label htmlFor="profile-upload" className="text-sm text-amber-800 font-medium cursor-pointer">
+              프로필 사진 변경
+              <input
+                id="profile-upload"
+                type="file"
+                accept="image/*"
+                onChange={handleProfileImageChange}
+                className="hidden"
+              />
+            </label>
           </div>
 
           <div className="space-y-4">
@@ -91,7 +205,7 @@ function ProfileEdit() {
               <label className="block text-sm font-medium text-gray-700 mb-1">이메일</label>
               <input
                 type="email"
-                value="hong@example.com"
+                value={userInfo?.email || ''}
                 className="w-full p-3 border border-gray-300 rounded-md bg-gray-100"
                 readOnly
               />
@@ -103,7 +217,8 @@ function ProfileEdit() {
               <input
                 type="text"
                 placeholder="닉네임을 입력하세요"
-                defaultValue="홍길동"
+                value={nickname}
+                onChange={(e) => setNickname(e.target.value)}
                 className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
                 required
               />
@@ -191,7 +306,7 @@ function ProfileEdit() {
               </button>
               <button 
                 onClick={confirmProfileUpdate}
-                className="px-4 py-2 text-sm font-medium text-white bg-red-500 rounded-md hover:bg-red-600"
+                className="px-4 py-2 text-sm font-medium text-white bg-amber-800 rounded-md hover:bg-amber-700"
               >
                 수정하기
               </button>

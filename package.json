@@ -2,6 +2,7 @@
   "name": "my-tailwind-app",
   "version": "0.0.0-development",
   "private": false,
+  "proxy": "http://localhost:8080",
   "dependencies": {
     "@commitlint/cli": "^19.8.0",
     "@commitlint/config-conventional": "^19.8.0",
@@ -23,7 +24,7 @@
     "yup": "^1.6.1"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "PORT=3000 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
