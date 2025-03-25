@@ -1,5 +1,6 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 // MarkerManager 컴포넌트는 사용하지 않으므로 import 제거
+import { getMapMarkers } from '../api/map'; // 마커 조회 API import 제리추가
 
 const KakaoMap = () => {
   const mapContainer = useRef(null);
@@ -45,6 +46,8 @@ const KakaoMap = () => {
       const mapInstance = new kakao.maps.Map(mapContainer.current, options);
       console.log("지도 인스턴스 생성 완료");
       setMap(mapInstance);
+      console.log("setMap 실행됨");
+      fetchMarkersFromBackend(mapInstance); // 👈 mapInstance 직접 넘겨주기!
 
       // 드래그 가능한 마커 생성
       const markerInstance = new kakao.maps.Marker({
@@ -82,8 +85,58 @@ const KakaoMap = () => {
     }
   };
 
-  // 샘플 마커 추가
-  const addSampleMarkers = (mapInstance) => {
+
+    const [markers, setMarkers] = useState([]);
+
+    // 마커 정보 조회 제리 추가
+    const fetchMarkersFromBackend = useCallback(async (mapToUse = map) => {
+      const targetMap = mapToUse || map;
+      if (!targetMap) return;
+    
+      const center = targetMap.getCenter();
+      const params = {
+        latitude: center.getLat(),
+        longitude: center.getLng(),
+        radius: 100000,
+      };
+    
+      try {
+        const res = await getMapMarkers(params);
+        const markersFromServer = res.data.data.markers;
+    
+        markers.forEach(m => m.marker.setMap(null));
+        setMarkers([]);
+    
+        const newMarkers = markersFromServer.map((mData) => {
+          const position = new window.kakao.maps.LatLng(mData.latitude, mData.longitude);
+          const marker = new window.kakao.maps.Marker({ position, map: targetMap });
+    
+          return {
+            id: mData.id,
+            marker,
+            position: { lat: mData.latitude, lng: mData.longitude },
+            type: mData.type,
+          };
+        });
+    
+        setMarkers(newMarkers);
+      } catch (err) {
+        console.error('마커 불러오기 실패:', err);
+      }
+    }, [map, markers]); // ✅ useCallback 꼭 해줘야 함!
+
+
+    // 제리 추가
+    useEffect(() => {
+      console.log("✅ map 상태가 변경됨", map); // 여기가 실행되는지 확인
+      if (map) {
+        console.log('🛰 마커 요청 시도');
+        fetchMarkersFromBackend();
+      }
+    }, [map]);
+    console.log("✅ map 상태가 변경됨", map); // 여기가 실행되는지 확인
+    // 샘플 마커 추가
+    const addSampleMarkers = (mapInstance) => {
     const kakao = window.kakao;
     
     // 샘플 위치 데이터

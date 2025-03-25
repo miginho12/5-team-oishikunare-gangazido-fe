@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
+import { getMapMarkers } from '../api/map'; // axios 인스턴스로 정의된 API 제리 추가
 
 function MapPage() {
   const navigate = useNavigate();
@@ -46,7 +47,11 @@ function MapPage() {
     }
 
     // API 키 가져오기
-    const apiKey = process.env.REACT_APP_KAKAO_MAP_API_KEY;
+    
+    // const apiKey = process.env.REACT_APP_KAKAO_MAP_API_KEY;
+    //const apiKey = window.env?.KAKAO_MAP_API_KEY;
+    const apiKey = "63797a1b821a03c14074f545b8e2da88";
+    
     if (!apiKey) {
       console.error("카카오맵 API 키가 환경 변수에 설정되지 않았습니다.");
       return;
@@ -139,19 +144,19 @@ function MapPage() {
     return 0; // 기본값
   };
 
-  // 마커 타입 문자열 가져오기
-  const getMarkerTypeString = (typeCode) => {
-    if (typeCode === MARKER_TYPES.댕플) return '댕플';
+  // 마커 타입 문자열 가져오기 안쓰는 건가 ? 제리가 주석처리
+  // const getMarkerTypeString = (typeCode) => {
+  //   if (typeCode === MARKER_TYPES.댕플) return '댕플';
 
-    // 댕져러스 서브타입 찾기
-    for (const [subType, code] of Object.entries(MARKER_TYPES.댕져러스)) {
-      if (code === typeCode) {
-        return subType === 'DEFAULT' ? '댕져러스' : `댕져러스:${subType}`;
-      }
-    }
+  //   // 댕져러스 서브타입 찾기
+  //   for (const [subType, code] of Object.entries(MARKER_TYPES.댕져러스)) {
+  //     if (code === typeCode) {
+  //       return subType === 'DEFAULT' ? '댕져러스' : `댕져러스:${subType}`;
+  //     }
+  //   }
 
-    return '댕플'; // 기본값
-  };
+  //   return '댕플'; // 기본값
+  // };
 
   // markers 상태가 변경될 때마다 ref 업데이트
   useEffect(() => {
@@ -1251,79 +1256,87 @@ function MapPage() {
     };
   }, [map]);
 
-  // 백엔드에서 마커 정보 가져오기
+  // useState 선언 추가 제리추가
+  const [mapMarkers, setMapMarkers] = useState([]);
+
+  // 제리 추가 마커 가져오기
   const fetchMarkersFromBackend = useCallback(async () => {
-    // 백엔드 서버가 준비되지 않아 임시로 비활성화
-    return;
-
-    /* 백엔드 서버 준비 후 아래 코드 활성화
     if (!map) return;
-    
+  
     try {
-      const mapInfo = getCurrentMapBounds();
-      if (!mapInfo) {
-        return;
-      }
-      
-      // 예시: 백엔드 API 엔드포인트
-      const apiUrl = 'https://your-backend-api.com/markers';
-      
-      try {
-        // 백엔드에 지도 정보 전송
-        const response = await fetch(apiUrl, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            bounds: mapInfo.bounds,
-            center: mapInfo.center,
-            zoomLevel: mapInfo.zoomLevel
-          })
-        });
-        
-        if (!response.ok) {
-          throw new Error(`마커 정보를 가져오는데 실패했습니다. 상태 코드: ${response.status}`);
-        }
-        
-        const data = await response.json();
-        
-        // 받아온 마커 정보로 마커 생성
-        if (data.markers && data.markers.length > 0 && addMarkerRef.current) {
-          // 기존 마커 제거
-          markers.forEach(markerInfo => {
-            markerInfo.marker.setMap(null);
-          });
-          
-          // 새 마커 생성
-          const newMarkers = data.markers.map(markerData => {
-            try {
-              const position = new window.kakao.maps.LatLng(
-                markerData.position.lat,
-                markerData.position.lng
-              );
-              
-              // 타입 코드를 문자열로 변환
-              const typeInfo = getMarkerTypeString(markerData.typeCode).split(':');
-              const type = typeInfo[0];
-              const subType = typeInfo.length > 1 ? typeInfo[1] : null;
-              
-              // 마커 추가 (ref를 통해 호출)
-              return addMarkerRef.current(position, type, subType);
-            } catch (markerError) {
-              return null;
-            }
-          }).filter(Boolean); // null 값 제거
-        }
-      } catch (networkError) {
-        // 네트워크 오류는 콘솔에만 출력
-      }
-    } catch (error) {
-      // 일반 오류는 무시
-    }
-    */
-  }, [map, markers, getCurrentMapBounds, getMarkerTypeString]);
+      const center = map.getCenter(); // 현재 지도 중심 좌표 가져오기
+      const params = {
+        latitude: center.getLat(),
+        longitude: center.getLng(),
+        radius: 10000 // 반경 10km
+      };
+  
+      const res = await getMapMarkers(params);
+      console.log('📡 마커 응답:', res.data);
+  
+      const markersData = res.data.data.markers;
+  
+      // 기존 마커 지우기
+      mapMarkers.forEach((m) => m.setMap(null));
+      setMapMarkers([]);
+  
+      // 새 마커 추가
+      const newMarkers = markersData.map((mData, index) => {
+      const position = new window.kakao.maps.LatLng(mData.latitude, mData.longitude);
 
+      // ✅ 1. type을 문자열로 변환
+      let type = '댕플';
+      let subType = null;
+      switch (mData.type) {
+        case 1: type = '댕져러스'; subType = '들개'; break;
+        case 2: type = '댕져러스'; subType = '빙판길'; break;
+        case 3: type = '댕져러스'; subType = '염화칼슘'; break;
+        case 4: type = '댕져러스'; subType = '공사중'; break;
+        case 0: default: type = '댕플'; break;
+      }
+
+      // ✅ 2. 이미지 선택
+      let markerImage = null;
+      if (type === '댕플') {
+        markerImage = markerImages.current[0].image;
+      } else if (type === '댕져러스') {
+        markerImage = markerImages.current[1][subType] || markerImages.current[1].image;
+      }
+
+      const marker = new window.kakao.maps.Marker({
+        position,
+        map,
+        title: `${type}${subType ? ` - ${subType}` : ''}`,
+        image: markerImage
+        });
+  
+        return marker;
+      });
+  
+      setMapMarkers(newMarkers);
+    } catch (error) {
+      console.error('📛 마커 불러오기 실패:', error);
+    }
+  }, [map, mapMarkers]);
+
+  // 호출 시점 (map 생성 완료 시)
+  // useEffect(() => {
+  //   if (map) {
+  //     console.log('🛰 마커 요청 보내기!');
+  //     fetchMarkersFromBackend();
+  //   }
+  // }, [map, fetchMarkersFromBackend]);
+
+
+  const hasFetchedMarkers = useRef(false); // 딱 한 번만 실행되게 플래그
+
+  useEffect(() => {
+    if (map && !hasFetchedMarkers.current) {
+      console.log("🛰 마커 요청 딱 한 번 보내기!");
+      fetchMarkersFromBackend();
+      hasFetchedMarkers.current = true;
+    }
+  }, [map]);
   // 마커 타입 필터링 함수
   const filterMarkersByType = useCallback((type) => {
     // 선택된 필터 타입 저장용 상태 변수가 있다면 업데이트
@@ -1438,7 +1451,7 @@ function MapPage() {
     loadMarkersFromLocalStorage,
     saveMarkersToLocalStorage,
     getCurrentMapBounds,
-    fetchMarkersFromBackend
+    // fetchMarkersFromBackend
   ]);
 
   // 지도 클릭 이벤트에 서브타입 옵션 닫기 추가
