@@ -622,7 +622,7 @@ function MapPage() {
 
       // 클릭 이벤트 등록
       try {
-        window.kakao.maps.event.addListener(marker, 'click', () => {
+        window.kakao.maps.event.addListener(mapMarkers, 'click', () => {
           try {
             // 기존 인포윈도우 모두 닫기 (성능 최적화)
             markersRef.current.forEach(m => {
@@ -1264,7 +1264,7 @@ function MapPage() {
     if (!map) return;
   
     try {
-      const center = map.getCenter(); // 현재 지도 중심 좌표 가져오기
+      const center = map.getCenter();
       const params = {
         latitude: center.getLat(),
         longitude: center.getLng(),
@@ -1276,56 +1276,94 @@ function MapPage() {
   
       const markersData = res.data.data.markers;
   
-      // 기존 마커 지우기
+      // 기존 마커 제거
       mapMarkers.forEach((m) => m.setMap(null));
       setMapMarkers([]);
   
-      // 새 마커 추가
-      const newMarkers = markersData.map((mData, index) => {
-      const position = new window.kakao.maps.LatLng(mData.latitude, mData.longitude);
-
-      // ✅ 1. type을 문자열로 변환
-      let type = '댕플';
-      let subType = null;
-      switch (mData.type) {
-        case 1: type = '댕져러스'; subType = '들개'; break;
-        case 2: type = '댕져러스'; subType = '빙판길'; break;
-        case 3: type = '댕져러스'; subType = '염화칼슘'; break;
-        case 4: type = '댕져러스'; subType = '공사중'; break;
-        case 0: default: type = '댕플'; break;
-      }
-
-      // ✅ 2. 이미지 선택
-      let markerImage = null;
-      if (type === '댕플') {
-        markerImage = markerImages.current[0].image;
-      } else if (type === '댕져러스') {
-        markerImage = markerImages.current[1][subType] || markerImages.current[1].image;
-      }
-
-      const marker = new window.kakao.maps.Marker({
-        position,
-        map,
-        title: `${type}${subType ? ` - ${subType}` : ''}`,
-        image: markerImage
+      const newMarkers = [];
+  
+      markersData.forEach((mData) => {
+        const position = new window.kakao.maps.LatLng(mData.latitude, mData.longitude);
+  
+        let type = '댕플';
+        let subType = null;
+        switch (mData.type) {
+          case 1: type = '댕져러스'; subType = '들개'; break;
+          case 2: type = '댕져러스'; subType = '빙판길'; break;
+          case 3: type = '댕져러스'; subType = '염화칼슘'; break;
+          case 4: type = '댕져러스'; subType = '공사중'; break;
+        }
+  
+        const markerImage = type === '댕플'
+          ? markerImages.current[0].image
+          : markerImages.current[1][subType] || markerImages.current[1].image;
+  
+        const marker = new window.kakao.maps.Marker({
+          position,
+          map,
+          image: markerImage
         });
   
-        return marker;
+        const markerInfo = {
+          id: mData.id ?? Date.now().toString() + Math.random().toString(36).substring(2, 10),
+          marker,
+          position: {
+            lat: mData.latitude,
+            lng: mData.longitude
+          },
+          type,
+          subType
+        };
+  
+        // 👉 클릭 이벤트 등록
+        window.kakao.maps.event.addListener(marker, 'click', () => {
+          // 기존 인포윈도우 닫기
+          markersRef.current.forEach(m => {
+            if (m.infowindow) m.infowindow.close();
+          });
+  
+          const emoji = subType ? MARKER_IMAGES.EMOJI[subType] || '⚠️' : '⚠️';
+  
+          const infoContent = `
+            <div style="padding:5px;font-size:12px;">
+              <div style="margin-bottom:4px;">${emoji} ${type}${subType ? ` - ${subType}` : ''}</div>
+              <button id="delete-marker" style="padding:2px 5px;background:#ff5555;color:white;border:none;border-radius:3px;">삭제</button>
+            </div>`;
+  
+          const infowindow = new window.kakao.maps.InfoWindow({
+            content: infoContent,
+            removable: true
+          });
+  
+          infowindow.open(map, marker);
+          markerInfo.infowindow = infowindow;
+  
+          setTimeout(() => {
+            const deleteBtn = document.getElementById('delete-marker');
+            if (deleteBtn) {
+              deleteBtn.onclick = () => {
+                marker.setMap(null);
+                infowindow.close();
+                if (removeMarkerRef.current) {
+                  removeMarkerRef.current(markerInfo.id);
+                }
+              };
+            }
+          }, 100);
+  
+          setSelectedMarker(markerInfo);
+        });
+  
+        newMarkers.push(markerInfo);
       });
   
-      setMapMarkers(newMarkers);
+      setMarkers(newMarkers);
+      setMapMarkers(newMarkers.map(m => m.marker));
+  
     } catch (error) {
       console.error('📛 마커 불러오기 실패:', error);
     }
-  }, [map, mapMarkers]);
-
-  // 호출 시점 (map 생성 완료 시)
-  // useEffect(() => {
-  //   if (map) {
-  //     console.log('🛰 마커 요청 보내기!');
-  //     fetchMarkersFromBackend();
-  //   }
-  // }, [map, fetchMarkersFromBackend]);
+  }, [map, markerImages, mapMarkers]);
 
 
   const hasFetchedMarkers = useRef(false); // 딱 한 번만 실행되게 플래그
