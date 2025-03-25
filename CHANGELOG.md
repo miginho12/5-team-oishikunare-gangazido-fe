@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.4.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.3.8...v1.4.0) (2025-03-25)
+
+### 🚀 NEW FEATURES
+
+* user api fe-be ([c8e78a7](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/c8e78a71ff7f3063ea7b3870a83f78da2843e68d))
+
 ## [1.3.8](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.3.7...v1.3.8) (2025-03-25)
 
 ### 🐛 BUG FIXES
