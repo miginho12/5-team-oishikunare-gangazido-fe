@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.4.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.4.0...v1.4.1) (2025-03-25)
+
+### 🐛 BUG FIXES
+
+* user api signout ([9d4a2f1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/9d4a2f17478eb6c8436f2aca6cc66b886ccb73e5))
+
 ## [1.4.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.3.8...v1.4.0) (2025-03-25)
 
 ### 🚀 NEW FEATURES
