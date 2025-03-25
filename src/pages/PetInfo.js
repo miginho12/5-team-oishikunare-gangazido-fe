@@ -5,6 +5,7 @@ import { getPetInfo } from '../api/pet';
 function PetInfo() {
   const navigate = useNavigate();
   const [pet, setPet] = useState(null);
+  const [loading, setLoading] = useState(true); // 로딩 상태 추가
 
   const goToMap = () => navigate('/map');
   const goToChat = () => navigate('/chat');
@@ -16,19 +17,28 @@ function PetInfo() {
     const fetchPetInfo = async () => {
       try {
         const response = await getPetInfo();
-        console.log('🐶 응답 데이터:', response.data); // 이거 추가
-        if (response?.data?.message === 'get_pet_success') {
-          setPet(response.data.data); // 백엔드 응답 구조에 따라 데이터 추출
-        }
+        setPet(response.data.data);
+        setLoading(false);
       } catch (error) {
         console.error('반려견 정보 가져오기 실패:', error);
+
+        const message = error?.response?.data?.message;
+        console.log('에러 메시지:', message);
+
+        if (message === 'not_found_pet') {
+          navigate('/pets/register');
+        } else {
+          // 다른 에러 처리: 예를 들어 에러 페이지로 보내거나, 토스트 보여주기
+          alert('반려견 정보를 불러오는 중 문제가 발생했습니다.');
+          setLoading(false);
+        }
       }
     };
   
     fetchPetInfo();
   }, []);
 
-  if (!pet) {
+  if (loading || !pet) {
     return (
       <div className="flex items-center justify-center h-full">
         <p className="text-gray-500 text-sm">반려견 정보를 불러오는 중입니다...</p>
