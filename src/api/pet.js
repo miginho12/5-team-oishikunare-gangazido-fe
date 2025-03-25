@@ -3,13 +3,13 @@ import api from './index';
 // 반려동물 등록
 export const registerPet = (petData) => {
   const formData = new FormData();
-  formData.append("pet_name", petData.pet_name);
-  formData.append("pet_age", petData.pet_age);
-  formData.append("pet_gender", petData.pet_gender);
-  formData.append("pet_breed", petData.pet_breed);
-  formData.append("pet_weight", petData.pet_weight);
-  if (petData.pet_profile_image) {
-    formData.append("pet_profile_image", petData.pet_profile_image);
+  formData.append("name", petData.name);
+  formData.append("age", petData.age);
+  formData.append("gender", petData.gender);
+  formData.append("breed", petData.breed);
+  formData.append("weight", petData.weight);
+  if (petData.profileImage) {
+    formData.append("profileImage", petData.profileImage);
   }
   return api.post("/v1/pets/me", formData, {
     headers: { "Content-Type": "multipart/form-data" },
@@ -24,13 +24,13 @@ export const getPetInfo = () => {
 // 반려동물 수정
 export const updatePetInfo = (petData) => {
   const formData = new FormData();
-  formData.append("pet_name", petData.pet_name);
-  formData.append("pet_age", petData.pet_age);
-  formData.append("pet_gender", petData.pet_gender);
-  formData.append("pet_breed", petData.pet_breed);
-  formData.append("pet_weight", petData.pet_weight);
-  if (petData.pet_profile_image) {
-    formData.append("pet_profile_image", petData.pet_profile_image);
+  formData.append("name", petData.name);
+  formData.append("age", petData.age);
+  formData.append("gender", petData.gender);
+  formData.append("breed", petData.breed);
+  formData.append("weight", petData.weight);
+  if (petData.profileImage) {
+    formData.append("profileImage", petData.profileImage);
   }
   return api.patch("/v1/pets/me", formData, {
     headers: { "Content-Type": "multipart/form-data" },

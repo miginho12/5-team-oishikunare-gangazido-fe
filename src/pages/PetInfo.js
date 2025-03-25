@@ -1,24 +1,50 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { getPetInfo } from '../api/pet';
 
 function PetInfo() {
   const navigate = useNavigate();
+  const [pet, setPet] = useState(null);
+  const [loading, setLoading] = useState(true); // 로딩 상태 추가
 
-  const goToMap = () => {
-    navigate('/map');
-  };
+  const goToMap = () => navigate('/map');
+  const goToChat = () => navigate('/chat');
+  const goToProfile = () => navigate('/profile');
+  const goToPetEdit = () => navigate('/pets/edit');
 
-  const goToChat = () => {
-    navigate('/chat');
-  };
 
-  const goToProfile = () => {
-    navigate('/profile');
-  };
+  useEffect(() => {
+    const fetchPetInfo = async () => {
+      try {
+        const response = await getPetInfo();
+        setPet(response.data.data);
+        setLoading(false);
+      } catch (error) {
+        console.error('반려견 정보 가져오기 실패:', error);
 
-  const goToPetEdit = () => {
-    navigate('/pets/edit');
-  };
+        const message = error?.response?.data?.message;
+        console.log('에러 메시지:', message);
+
+        if (message === 'not_found_pet') {
+          navigate('/pets/register');
+        } else {
+          // 다른 에러 처리: 예를 들어 에러 페이지로 보내거나, 토스트 보여주기
+          alert('반려견 정보를 불러오는 중 문제가 발생했습니다.');
+          setLoading(false);
+        }
+      }
+    };
+  
+    fetchPetInfo();
+  }, []);
+
+  if (loading || !pet) {
+    return (
+      <div className="flex items-center justify-center h-full">
+        <p className="text-gray-500 text-sm">반려견 정보를 불러오는 중입니다...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col h-full bg-gray-50">
@@ -43,8 +69,8 @@ function PetInfo() {
               </svg>
             </div>
             <div>
-              <h2 className="text-xl font-bold text-gray-800">초코</h2>
-              <p className="text-gray-600">말티즈 · 3세 · 수컷</p>
+              <h2 className="text-xl font-bold text-gray-800">{pet.name}</h2>
+              <p className="text-gray-600">{pet.breed} · {pet.age}세 · {pet.gender ? '수컷' : '암컷'}</p>
               <div className="flex mt-2">
                 <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 mr-2">
                   건강
@@ -67,7 +93,7 @@ function PetInfo() {
           <div className="grid grid-cols-3 gap-4 mb-4">
             <div className="text-center">
               <p className="text-gray-500 text-sm">몸무게</p>
-              <p className="font-bold text-gray-800">3.5kg</p>
+              <p className="font-bold text-gray-800">{pet?.weight}kg</p>
             </div>
             <div className="text-center">
               <p className="text-gray-500 text-sm">생일</p>
