@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## [1.5.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.4.1...v1.5.0) (2025-03-25)
+
+### 🚀 NEW FEATURES
+
+* 반려견 등록, 조회, 수정, 삭제 백 연동(프로필 제외, 확인 못함) ([df8abf9](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/df8abf9cfe64328663896b033bf1ebd3fe5ea647))
+* 반려견 프백 연동 완료 (프사 제외) & 정보 없을 시 등록 페이지 구현 ([a1120ce](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/a1120ce729706636c62614e611a1bac08c23381c))
+
+### 🐛 BUG FIXES
+
+* edit page routing ([4062e4d](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/4062e4ddaa25a17700d599ac5a89591720658991))
+
 ## [1.4.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.4.0...v1.4.1) (2025-03-25)
 
 ### 🐛 BUG FIXES
