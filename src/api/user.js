@@ -23,6 +23,28 @@ export const deleteUser = () => {
 };
 
 // 비밀번호 변경
-export const changePassword = (passwordData) => {
-  return api.patch("/v1/users/me/password", passwordData);
+export const changePassword = async (passwordData) => {
+  try {
+
+    console.log('비밀번호 변경 요청 데이터:', passwordData);
+
+    const data = {
+      current_password: passwordData.currentPassword,
+      new_password: passwordData.newPassword,
+      confirm_password: passwordData.newPasswordConfirm
+    };
+    
+    console.log('서버에 전송되는 데이터:', data);
+    
+    const response = await api.patch('/v1/users/me/password', data);
+    console.log('서버 응답:', response);
+    return response.data;
+  } catch (error) {
+    console.error('비밀번호 변경 API 오류:', error);
+    if (error.response) {
+      console.error('오류 상태:', error.response.status);
+      console.error('오류 데이터:', error.response.data);
+    }
+    throw error;
+  }
 };
