@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getUserInfo, updateUserInfo } from '../api/user';
+import { getUserInfo, updateUserInfo, deleteUser } from '../api/user';
 
 function ProfileEdit() {
   const navigate = useNavigate();
@@ -67,16 +67,30 @@ function ProfileEdit() {
     }
   };
 
-  const handleWithdrawal = () => {
-    // 실제로는 API 호출 등으로 회원 탈퇴 처리
-    setShowWithdrawalModal(false);
-    setToastMessage("회원 탈퇴가 완료되었습니다.");
-    setShowToast(true);
-    
-    // 토스트 메시지 표시 후 2초 후에 로그인 페이지로 이동
-    setTimeout(() => {
-      navigate('/login');
-    }, 2000);
+  const handleWithdrawal = async () => {
+    try {
+      console.log('회원탈퇴 API 호출 시작');
+      await deleteUser();
+      console.log('회원탈퇴 API 호출 성공');
+      
+      setShowWithdrawalModal(false);
+      setToastMessage("회원 탈퇴가 완료되었습니다.");
+      setShowToast(true);
+      
+      // 토스트 메시지 표시 후 2초 후에 로그인 페이지로 이동
+      setTimeout(() => {
+        navigate('/login');
+      }, 2000);
+    } catch (error) {
+      console.error('회원탈퇴 API 오류:', error);
+      if (error.response) {
+        console.error('오류 상태:', error.response.status);
+        console.error('오류 데이터:', error.response.data);
+      }
+      setShowWithdrawalModal(false);
+      setToastMessage("회원 탈퇴 처리 중 오류가 발생했습니다.");
+      setShowToast(true);
+    }
   };
 
   const handleUpdateProfile = () => {
