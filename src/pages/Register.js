@@ -1,4 +1,6 @@
+
 import React, { useState } from 'react';
+
 import { useNavigate } from 'react-router-dom';
 import { registerUser, checkEmailDuplicate, checkNicknameDuplicate } from '../api/auth';
 
