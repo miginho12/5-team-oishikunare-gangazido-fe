@@ -1,64 +1,4 @@
-/*import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
-function ChatPage() {
-  const navigate = useNavigate();
-  const [message, setMessage] = useState('');
-  const [chatMessages, setChatMessages] = useState([
-    { id: 1, text: '안녕하세요! 반려견에 관한 질문이 있으신가요?', isUser: false, time: '오전 10:30' },
-    { id: 2, text: '우리 강아지가 밥을 잘 안 먹어요. 어떻게 해야 할까요?', isUser: true, time: '오전 10:31' },
-    { id: 3, text: '강아지가 밥을 잘 안 먹는 이유는 여러 가지가 있을 수 있어요. 식사 환경이 불편하거나, 음식이 마음에 들지 않거나, 건강 문제가 있을 수 있습니다. 먼저 평소와 다른 행동이 있는지 관찰해보시고, 지속된다면 수의사와 상담하는 것이 좋습니다.', isUser: false, time: '오전 10:32' }
-  ]);
-
-  const [suggestedQuestions] = useState([
-    '강아지 산책 시간은 얼마나 되어야 할까요?',
-    '강아지 목욕은 얼마나 자주 시켜야 하나요?',
-    '강아지가 자꾸 짖어요. 어떻게 해야 할까요?',
-    '강아지 사료 선택 시 중요한 점은 무엇인가요?'
-  ]);
-
-  const goToMap = () => {
-    navigate('/map');
-  };
-
-  const goToProfile = () => {
-    navigate('/profile');
-  };
-
-  const goToPetInfo = () => {
-    navigate('/pets');
-  };
-
-  const handleSendMessage = () => {
-    if (message.trim() === '') return;
-
-    // 사용자 메시지 추가
-    const newUserMessage = {
-      id: chatMessages.length + 1,
-      text: message,
-      isUser: true,
-      time: new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' })
-    };
-
-    setChatMessages([...chatMessages, newUserMessage]);
-    setMessage('');
-
-    // AI 응답 시뮬레이션 (실제로는 API 호출 등이 필요)
-    setTimeout(() => {
-      const aiResponse = {
-        id: chatMessages.length + 2,
-        text: '죄송합니다만, 현재 이 기능은 데모 버전이라 실제 응답을 제공하지 못합니다. 실제 서비스에서는 반려견 관련 질문에 대한 답변을 제공할 예정입니다.',
-        isUser: false,
-        time: new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' })
-      };
-      setChatMessages(prevMessages => [...prevMessages, aiResponse]);
-    }, 1000);
-  };
-
-  const handleSuggestedQuestion = (question) => {
-    setMessage(question);
-  };*/
-  
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { sendLLMChat } from '../api/chat'; // ✅ 실제 API 호출 추가
@@ -76,10 +16,10 @@ function ChatPage() {
   ]);
 
   const [suggestedQuestions] = useState([
-    '강아지 산책 시간은 얼마나 되어야 할까요?',
-    '강아지 목욕은 얼마나 자주 시켜야 하나요?',
-    '강아지가 자꾸 짖어요. 어떻게 해야 할까요?',
-    '강아지 사료 선택 시 중요한 점은 무엇인가요?',
+    '오늘 산책하는거 어떨까?',
+    '오늘 옷은 어떻게 입히는 게 좋을까?',
+    '오늘 미세먼지 어때?',
+    //'강아지 사료 선택 시 중요한 점은 무엇인가요?',
   ]);
 
   const goToMap = () => navigate('/map');
@@ -100,8 +40,8 @@ function ChatPage() {
     setMessage('');
 
     try {
-      const latitude = 37.25;
-      const longitude = 126.45;
+      const latitude = 33.450701;
+      const longitude = 126.570667;
 
       const { data } = await sendLLMChat({
         latitude,
@@ -109,9 +49,21 @@ function ChatPage() {
         message: newUserMessage.text,
       });
 
-      // JSON 응답 파싱
-      const parsed = JSON.parse(data.data.response.replace(/```json\n|\n```/g, ''));
-      const aiText = `🐾 산책 추천: ${parsed.recommendation}\n📌 이유: ${parsed.reason}\n✅ 팁: ${parsed.safety_tips.join(', ')}`;
+      const cleanResponse = data.data.response.replace(/```json\n|\n```/g, '');
+
+      let parsed;
+      let aiText;
+
+      try {
+        // JSON 파싱 시도
+        parsed = JSON.parse(cleanResponse);
+
+        // 정상 응답이면 구성된 메시지로 출력
+        aiText = `🐾 산책 추천: ${parsed.recommendation}\n📌 이유: ${parsed.reason}\n✅ 팁: ${parsed.safety_tips.join(', ')}`;
+      } catch (parseError) {
+        // 파싱 안 되는 경우 = 그냥 일반 메시지인 경우
+        aiText = cleanResponse;
+      }
 
       const aiResponse = {
         id: newUserMessage.id + 1,
@@ -131,6 +83,33 @@ function ChatPage() {
       };
       setChatMessages((prev) => [...prev, errorResponse]);
     }
+
+      // JSON 응답 파싱
+      /*const cleanResponse = data.data.response.replace(/```json\n|\n```/g, '');
+   
+      const parsed = JSON.parse(data.data.response.replace(/```json\n|\n```/g, ''));
+      const aiText = `🐾 산책 추천: ${parsed.recommendation}\n📌 이유: ${parsed.reason}\n✅ 팁: ${parsed.safety_tips.join(', ')}`;
+
+      const aiResponse = {
+        id: newUserMessage.id + 1,
+        text: aiText,
+        isUser: false,
+        time: new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' }),
+      };
+
+      setChatMessages((prev) => [...prev, aiResponse]);
+    } catch (error) {
+      console.error('AI 응답 오류:', error);
+      const errorResponse = {
+        id: newUserMessage.id + 1,
+        text: '제가 대답할 수 없는 질문이에요. 다른 질문을 해보세요!',
+        isUser: false,
+        time: new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' }),
+      };
+      setChatMessages((prev) => [...prev, errorResponse]);
+    }*/
+
+      
   };
 
   const handleSuggestedQuestion = (question) => {
