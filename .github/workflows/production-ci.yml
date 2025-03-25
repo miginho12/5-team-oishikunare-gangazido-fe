@@ -29,10 +29,8 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
 
-        # 예: .github/workflows/deploy.yml
-      - name: Load .env.production from SSM
-        run: |
-          echo "REACT_APP_KAKAO_API_KEY=$(aws ssm get-parameter --name "/gangazido/prod/KAKAO_MAP" --with-decryption --query "Parameter.Value" --output text --region ap-northeast-2)" >> .env.production
+      - name: Set Kakao API Key
+        run: echo "REACT_APP_KAKAO_API_KEY=${{ secrets.KAKAO_MAP_API_KEY }}" > .env.production
 
       - name: Build # 4 - 빌드
         run: npm run build
