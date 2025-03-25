@@ -45,7 +45,7 @@ function MapPage() {
     }
 
     // API 키 가져오기
-    const apiKey = process.env.REACT_APP_KAKAO_MAP_API_KEY;
+    const apiKey = "63797a1b821a03c14074f545b8e2da88";
     if (!apiKey) {
       console.error("카카오맵 API 키가 환경 변수에 설정되지 않았습니다.");
       return;
