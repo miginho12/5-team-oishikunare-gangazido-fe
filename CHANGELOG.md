@@ -1,5 +1,99 @@
 # CHANGELOG
 
+## [1.3.8](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.3.7...v1.3.8) (2025-03-25)
+
+### 🐛 BUG FIXES
+
+* Kakao map api update ([b4a2814](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/b4a2814e231ecff5c626ecbe2d16fd5768981677))
+
+## [1.3.7](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.3.6...v1.3.7) (2025-03-25)
+
+### 🐛 BUG FIXES
+
+* Kakao map api update ([c73d5a9](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/c73d5a93d46e0e8f73c890504d27b6747a2a838c))
+
+## [1.3.6](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.3.5...v1.3.6) (2025-03-25)
+
+### 🐛 BUG FIXES
+
+* Kakao map api update ([79c4d55](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/79c4d5538b85483543cab38493bd91b7d1087d24))
+
+## [1.3.5](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.3.4...v1.3.5) (2025-03-25)
+
+### 🐛 BUG FIXES
+
+* Kakao map api update ([2333ba2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/2333ba2bcb0788f14b8e36d4a82dc0959239f597))
+
+## [1.3.4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.3.3...v1.3.4) (2025-03-25)
+
+### 🐛 BUG FIXES
+
+* Kakao map api update ([9a2be26](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/9a2be263f1d5c9400c62d6178b28c650c2f97553))
+
+## [1.3.3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.3.2...v1.3.3) (2025-03-25)
+
+### 🐛 BUG FIXES
+
+* Kakao map api update ([c9c6f8b](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/c9c6f8b8c534b8b443dfd7d50370b97587537b6d))
+
+## [1.3.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.3.1...v1.3.2) (2025-03-25)
+
+### 🐛 BUG FIXES
+
+* Kakao map api update ([0ae31c1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/0ae31c1392dc5d14b455de763663c66bb2dd9aff))
+
+## [1.3.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.3.0...v1.3.1) (2025-03-25)
+
+### 🐛 BUG FIXES
+
+* Kakao map api update ([d909de1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/d909de1487229fd2fb9850468343c752ce35b8b6))
+
+## [1.3.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.2.0...v1.3.0) (2025-03-24)
+
+### 🚀 NEW FEATURES
+
+* add kakao map api ([ecfee71](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/ecfee71022ee1e2101b483a0612bb89809ec71fe))
+* add layout ([39dfbd7](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/39dfbd72cf16f3cf9410a4a27420be1e3b3a1c37))
+* add petEdit & petRegister ([11b28ed](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/11b28ed725adcfaf7e12e14b85b2652995606b13))
+* edit kakao map api marker ([32a980a](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/32a980a7f00be749c2e42d4f65fe4632284faf34))
+* edit kakao map api marker ([d8e3689](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/d8e3689f3fddf775051f1c0710bef6d2172d291c))
+* S3 upload ([b37f0b0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/b37f0b0d49d9e87305509cdc1ab8ede25f0980ef))
+* S3 upload ([82ed714](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/82ed714087f379a164076a1b308bebf211baae81))
+* S3 upload ([bdff76b](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/bdff76be1d1ae80ab0fc118919639a0994d6e383))
+* S3 upload ([2738fbb](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/2738fbbdcf72203ac23698db78dcf876c70ebe72))
+* S3 upload ([2675363](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/26753636c469cb3be8ca2b66934383e3a63e490b))
+* sementic update ([c7b29ea](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/c7b29ea7594282248c793187c71e4a75a808e806))
+* sementic update ([b6e1612](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/b6e1612bec8f37423cca3b1ec1ccf99043071da5))
+* sementic update ([4e7849d](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/4e7849d52d18d3f1d672ebc8715f1cb43edc4de3))
+* set up API modules for backend integration ([233a76d](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/233a76d973486ceb526a0dc4c8e3ef7ae6036008))
+* 새로운 기능 추가 및 UI 개선 ([3de44f5](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/3de44f53561390597f1ab8cfac523f42844d312b))
+* 새로운 기능 추가 및 UI 개선 ([4ca56de](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/4ca56de5f04177ab30f036aa80898890c3d58c04))
+* 야호 ([bf4c6c2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/bf4c6c26bd2d8ec1972873d751074cc4e63bfbc8))
+
+### 🐛 BUG FIXES
+
+* edit .env ([90c4623](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/90c46234d5f13a54a5851c0d28dacaa9d38c7161))
+* edit & delete page routing ([6be7c80](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/6be7c80107ce3f6566ad767a9e0a1cd7a6cc9854))
+* edit & delete page routing ([92e5e90](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/92e5e900e6ba10f6d62c6eb2ba3ad8f784a41a2f))
+* edit login & register ([dc615e4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/dc615e4dc404c34807d11900486554090a54c02a))
+* edit marker ([70c492c](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/70c492ca2fb55c152bf450e0916dccf4d104d6ee))
+* edit marker ([42380a4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/42380a45ff7f9283ca41494bed4447b292dfb6e5))
+* edit marker ([05997f4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/05997f4302f4910203ad8ccb14b1823cebb8367d))
+* edit marker ([3d6925a](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/3d6925a5ce393e538b5471bcb5b4bbfe58e32b46))
+* edit marker ([53ac157](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/53ac1572ef3f9cc9c9378fd194b33e7bf29fc3fe))
+* edit marker ([9a4e44d](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/9a4e44dfe23945bdc57f02bdf18140a5cd644001))
+* edit marker ([92addab](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/92addabefaad03e73d1854ca80e202177323fcac))
+* edit marker ([3714181](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/3714181e12ff7c2bc9d83b8e73d9b086b7f5a446))
+* edit marker, navigation bar ([1e34155](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/1e34155484374d2d45d13173b127bb4401b94739))
+* edit navigation bar ([35e1643](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/35e1643ae76cb91fc29c49e71a1be87140b5d692))
+* edit navigation bar button width ([422a32d](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/422a32dc41bfd5155c99e98fc15379b53f32364b))
+* edit README.md ([346dac6](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/346dac6f8fe70c2d91e7c1beae59e4fc5dc2cb94))
+* MapPage ([baac238](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/baac23825f67311eaca56c87874bb73fb664d016))
+* merge conflict resolved between main and feat/map ([208c35c](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/208c35c8b81fbdc2cdaf37397f73940405cb9cb8))
+* remove .env from tracking ([32cea7b](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/32cea7bca1b7a15ef7b917c913b1148404b6719f))
+* 기존 기능 개선 및 UI 개선 ([cc8a8fe](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/cc8a8fef43a0929d8db082999bea9bf379e8dd90))
+* 야호 ([8ef32cf](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/8ef32cf5517a9b339837edf084c3ee987be7e936))
+
 ## [1.2.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.1.1...v1.2.0) (2025-03-18)
 
 ### 🚀 NEW FEATURES

@@ -1,8 +1,36 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { getUserInfo } from '../api/user';
+import { logoutUser } from '../api/auth';
 
 function ProfilePage() {
   const navigate = useNavigate();
+  const [userInfo, setUserInfo] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // 컴포넌트 마운트 시 사용자 정보 로드
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        setLoading(true);
+        const response = await getUserInfo();
+        setUserInfo(response.data.data);
+      } catch (err) {
+        console.error('사용자 정보 로드 실패:', err);
+        if (err.response && err.response.status === 401) {
+          // 인증되지 않은 사용자는 로그인 페이지로 리다이렉트
+          navigate('/login');
+        } else {
+          setError('사용자 정보를 불러오는데 실패했습니다.');
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserInfo();
+  }, [navigate]);
 
   const goToMap = () => {
     navigate('/map');
@@ -24,9 +52,43 @@ function ProfilePage() {
     navigate('/profile/password');
   };
 
-  const handleLogout = () => {
-    navigate('/login');
+  const handleLogout = async () => {
+    try {
+      await logoutUser();
+      // 로그아웃 후 로그인 페이지로 이동
+      navigate('/login');
+    } catch (err) {
+      console.error('로그아웃 실패:', err);
+      alert('로그아웃 중 오류가 발생했습니다.');
+    }
   };
+
+  // 로딩 중이면 로딩 표시
+  if (loading) {
+    return (
+      <div className="flex flex-col h-full items-center justify-center bg-gray-50">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-800"></div>
+        <p className="mt-4 text-gray-600">사용자 정보를 불러오는 중...</p>
+      </div>
+    );
+  }
+
+  // 에러가 있으면 에러 메시지 표시
+  if (error) {
+    return (
+      <div className="flex flex-col h-full items-center justify-center bg-gray-50">
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative max-w-md">
+          <span className="block sm:inline">{error}</span>
+        </div>
+        <button 
+          onClick={() => navigate('/login')}
+          className="mt-4 px-4 py-2 bg-amber-800 text-white rounded hover:bg-amber-700"
+        >
+          로그인 페이지로 이동
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col h-full bg-gray-50">
@@ -46,13 +108,21 @@ function ProfilePage() {
         <div className="bg-white rounded-xl shadow-md p-6 mb-4">
           <div className="flex items-center mb-6">
             <div className="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center mr-4 overflow-hidden">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-full h-full text-gray-400">
-                <path fillRule="evenodd" d="M18.685 19.097A9.723 9.723 0 0021.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 003.065 7.097A9.716 9.716 0 0012 21.75a9.716 9.716 0 006.685-2.653zm-12.54-1.285A7.486 7.486 0 0112 15a7.486 7.486 0 015.855 2.812A8.224 8.224 0 0112 20.25a8.224 8.224 0 01-5.855-2.438zM15.75 9a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" clipRule="evenodd" />
-              </svg>
+              {userInfo?.profileImage ? (
+                <img 
+                  src={userInfo.profileImage} 
+                  alt="프로필 이미지" 
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-full h-full text-gray-400">
+                  <path fillRule="evenodd" d="M18.685 19.097A9.723 9.723 0 0021.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 003.065 7.097A9.716 9.716 0 0012 21.75a9.716 9.716 0 006.685-2.653zm-12.54-1.285A7.486 7.486 0 0112 15a7.486 7.486 0 015.855 2.812A8.224 8.224 0 0112 20.25a8.224 8.224 0 01-5.855-2.438zM15.75 9a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" clipRule="evenodd" />
+                </svg>
+              )}
             </div>
             <div>
-              <h2 className="text-xl font-bold text-gray-800">홍길동</h2>
-              <p className="text-gray-600">hong@example.com</p>
+              <h2 className="text-xl font-bold text-gray-800">{userInfo?.nickname || '사용자'}</h2>
+              <p className="text-gray-600">{userInfo?.email || 'email@example.com'}</p>
               <button 
                 onClick={goToProfileEdit}
                 className="mt-2 text-sm text-amber-800 font-medium flex items-center"
