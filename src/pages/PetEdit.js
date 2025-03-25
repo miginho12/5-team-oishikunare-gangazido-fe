@@ -90,7 +90,7 @@ function PetEdit() {
     <div className="flex flex-col h-full bg-gray-50">
       {/* 헤더 */}
       <header className="bg-white p-4 shadow-md flex items-center">
-        <button onClick={() => navigate('/pet-info')} className="mr-2">
+        <button onClick={() => navigate('/pets')} className="mr-2">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
