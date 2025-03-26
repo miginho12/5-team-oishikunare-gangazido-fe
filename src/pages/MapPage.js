@@ -163,7 +163,7 @@ function MapPage() {
       // 댕플 마커 이미지 초기화
       const dangpleMarkerSize = new window.kakao.maps.Size(40, 40);
       const dangpleMarkerOption = {
-        offset: new window.kakao.maps.Point(20, 40),
+        offset: new window.kakao.maps.Point(20, 27),
       };
       markerImages.current[0].image = new window.kakao.maps.MarkerImage(
         MARKER_IMAGES.댕플,
@@ -183,7 +183,7 @@ function MapPage() {
       const subTypes = ["들개", "빙판길", "염화칼슘", "공사중"];
       subTypes.forEach((subType) => {
         const size = new window.kakao.maps.Size(40, 40);
-        const option = { offset: new window.kakao.maps.Point(20, 40) };
+        const option = { offset: new window.kakao.maps.Point(20, 27) };
 
         try {
           // 서브타입 이미지 URL 대신 이모티콘 이미지 사용
@@ -243,7 +243,7 @@ function MapPage() {
       markerImages.current[1].image = new window.kakao.maps.MarkerImage(
         defaultImgUrl,
         new window.kakao.maps.Size(40, 40),
-        { offset: new window.kakao.maps.Point(20, 40) }
+        { offset: new window.kakao.maps.Point(20, 27) }
       );
 
       console.log("마커 이미지 초기화 성공", markerImages.current);
