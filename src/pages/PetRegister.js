@@ -13,6 +13,7 @@ function PetRegister() {
   const [gender, setGender] = useState('');
   const [weight, setWeight] = useState('');
   const [profileImage, setProfileImage] = useState(null);
+  const [profileImagePreview, setProfileImagePreview] = useState(null);
 
   // 네비게이션 버튼들
   const goToMap = () => navigate('/map');
@@ -42,6 +43,14 @@ function PetRegister() {
     }
   };
 
+  const handleProfileImageChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setProfileImage(file); // 전송용 파일
+      setProfileImagePreview(URL.createObjectURL(file)); // 미리보기용 URL
+    }
+  };
+
   // 토스트 메시지가 표시되면 3초 후에 자동으로 사라지도록 설정
   useEffect(() => {
     if (showToast) {
@@ -67,15 +76,31 @@ function PetRegister() {
       {/* 메인 컨텐츠 */}
       <div className="flex-1 p-4 overflow-y-auto">
         <div className="bg-white rounded-xl shadow-md p-4 mb-4">
-          <div className="flex flex-col items-center mb-6">
-            <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center mb-3 overflow-hidden">
+        <div className="flex flex-col items-center mb-6">
+          <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center mb-3 overflow-hidden">
+            {profileImagePreview ? (
+              <img 
+                src={profileImagePreview}
+                alt="미리보기"
+                className="w-full h-full object-cover"
+              />
+            ) : (
               <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
               </svg>
-            </div>
-            <button className="text-sm text-amber-800 font-medium">프로필 사진 추가</button>
+            )}
           </div>
-
+          <label htmlFor="pet-profile-upload" className="text-sm text-amber-800 font-medium cursor-pointer">
+            프로필 사진 추가
+            <input
+              id="pet-profile-upload"
+              type="file"
+              accept="image/*"
+              onChange={handleProfileImageChange}
+              className="hidden"
+            />
+          </label>
+        </div>
           <div className="space-y-4">
             <div className="relative">
               <label className="block text-sm font-medium text-gray-700 mb-1">반려견 이름 <span className="text-red-500">*</span></label>

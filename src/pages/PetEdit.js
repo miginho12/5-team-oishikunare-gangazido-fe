@@ -14,6 +14,7 @@ function PetEdit() {
   const [gender, setGender] = useState('');
   const [weight, setWeight] = useState('');
   const [profileImage, setProfileImage] = useState(null);
+  const [profileImagePreview, setProfileImagePreview] = useState(null);
 
   // 최초 로딩 시 기존 반려견 정보 불러오기
   useEffect(() => {
@@ -22,11 +23,21 @@ function PetEdit() {
         const res = await getPetInfo();
         if (res?.data?.message === 'get_pet_success') {
           const data = res.data.data;
+          console.log("🐶 불러온 반려견 정보:", data); // 추가 로그
+          
           setName(data.name);
           setBreed(data.breed);
           setAge(data.age);
           setGender(data.gender ? 'male' : 'female');
           setWeight(data.weight);
+          if (data.profileImage && typeof data.profileImage === 'string') {
+            const baseUrl = 'http://localhost:8080'; 
+            const imageUrl = data.profileImage.startsWith('http')
+              ? data.profileImage
+              : `${baseUrl}${data.profileImage}`;
+            setProfileImagePreview(imageUrl); // img src용
+            setProfileImage(data.profileImage); // 전송용 유지
+          }
         }
       } catch (err) {
         console.error('반려견 정보 조회 실패:', err);
@@ -59,20 +70,33 @@ function PetEdit() {
 
   const handleUpdatePet = async () => {
     try {
-      const data = {
-        name,
-        age: parseInt(age),
-        gender: gender === 'male',
-        breed,
-        weight: parseFloat(weight),
-        profileImage,
-      };
+      const formData = new FormData();
+      formData.append('name', name);
+      formData.append('age', age);
+      formData.append('gender', gender === 'male');
+      formData.append('breed', breed);
+      formData.append('weight', weight);
 
-      await updatePetInfo(data);
+      // 새 파일이면 파일, 기존 이미지 경로면 문자열로 추가
+      if (profileImage instanceof File) {
+        formData.append('profileImage', profileImage);
+      } else if (typeof profileImage === 'string') {
+        formData.append('profileImage', profileImage); // 기존 이미지 경로 유지
+      }
+
+      await updatePetInfo(formData);
       setShowToast(true);
       setTimeout(() => navigate('/pets'), 2000);
     } catch (error) {
       console.error('반려견 수정 실패:', error);
+    }
+  };
+
+  const handleProfileImageChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setProfileImage(file);
+      setProfileImagePreview(URL.createObjectURL(file));
     }
   };
 
@@ -103,12 +127,41 @@ function PetEdit() {
         <div className="bg-white rounded-xl shadow-md p-4 mb-4">
           <div className="flex flex-col items-center mb-6">
             <div className="w-24 h-24 rounded-full bg-amber-100 flex items-center justify-center mb-3 overflow-hidden">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-amber-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-              </svg>
+              {profileImagePreview ? (
+                <img
+                  src={profileImagePreview}
+                  alt="프로필 미리보기"
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-12 w-12 text-amber-800"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                  />
+                </svg>
+              )}
             </div>
-            <button className="text-sm text-amber-800 font-medium">프로필 사진 변경</button>
-          </div>
+
+          <label htmlFor="pet-profile-upload" className="text-sm text-amber-800 font-medium cursor-pointer">
+            프로필 사진 변경
+            <input
+              id="pet-profile-upload"
+              type="file"
+              accept="image/*"
+              onChange={handleProfileImageChange}
+              className="hidden"
+            />
+          </label>
+        </div>
 
           <div className="space-y-4">
             <div className="relative">
