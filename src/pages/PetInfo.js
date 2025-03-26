@@ -12,19 +12,25 @@ function PetInfo() {
   const goToProfile = () => navigate('/profile');
   const goToPetEdit = () => navigate('/pets/edit');
 
-
   useEffect(() => {
     const fetchPetInfo = async () => {
       try {
         const response = await getPetInfo();
-        setPet(response.data.data);
+        const data = response.data.data;
+
+        // 이미지 경로 조정
+        if (data.profileImage && typeof data.profileImage === 'string') {
+          const baseUrl = 'http://localhost:8080'; // 배포 시 환경변수로 바꿔도 좋음
+          data.profileImage = data.profileImage.startsWith('http')
+            ? data.profileImage
+            : `${baseUrl}${data.profileImage}`;
+        }
+
+        setPet(data);
         setLoading(false);
       } catch (error) {
         console.error('반려견 정보 가져오기 실패:', error);
-
         const message = error?.response?.data?.message;
-        console.log('에러 메시지:', message);
-
         if (message === 'not_found_pet') {
           navigate('/pets/register');
         } else {
@@ -63,10 +69,18 @@ function PetInfo() {
         {/* 반려견 프로필 카드 */}
         <div className="bg-white rounded-xl shadow-md p-6 mb-4">
           <div className="flex items-center mb-6">
-            <div className="w-20 h-20 bg-amber-100 rounded-full flex items-center justify-center mr-4">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-amber-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-              </svg>
+          <div className="w-20 h-20 bg-amber-100 rounded-full overflow-hidden flex items-center justify-center mr-4">
+          {pet.profileImage ? (
+                <img
+                  src={pet.profileImage}
+                  alt="반려견 프로필"
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-amber-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+              )}
             </div>
             <div>
               <h2 className="text-xl font-bold text-gray-800">{pet.name}</h2>

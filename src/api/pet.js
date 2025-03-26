@@ -22,16 +22,7 @@ export const getPetInfo = () => {
 };
 
 // 반려동물 수정
-export const updatePetInfo = (petData) => {
-  const formData = new FormData();
-  formData.append("name", petData.name);
-  formData.append("age", petData.age);
-  formData.append("gender", petData.gender);
-  formData.append("breed", petData.breed);
-  formData.append("weight", petData.weight);
-  if (petData.profileImage) {
-    formData.append("profileImage", petData.profileImage);
-  }
+export const updatePetInfo = (formData) => {
   return api.patch("/v1/pets/me", formData, {
     headers: { "Content-Type": "multipart/form-data" },
   });
