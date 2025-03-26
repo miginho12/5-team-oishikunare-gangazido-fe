@@ -1,5 +1,53 @@
 # CHANGELOG
 
+## [1.3.8](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.3.7...v1.3.8) (2025-03-25)
+
+### 🐛 BUG FIXES
+
+* Kakao map api update ([b4a2814](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/b4a2814e231ecff5c626ecbe2d16fd5768981677))
+
+## [1.3.7](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.3.6...v1.3.7) (2025-03-25)
+
+### 🐛 BUG FIXES
+
+* Kakao map api update ([c73d5a9](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/c73d5a93d46e0e8f73c890504d27b6747a2a838c))
+
+## [1.3.6](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.3.5...v1.3.6) (2025-03-25)
+
+### 🐛 BUG FIXES
+
+* Kakao map api update ([79c4d55](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/79c4d5538b85483543cab38493bd91b7d1087d24))
+
+## [1.3.5](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.3.4...v1.3.5) (2025-03-25)
+
+### 🐛 BUG FIXES
+
+* Kakao map api update ([2333ba2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/2333ba2bcb0788f14b8e36d4a82dc0959239f597))
+
+## [1.3.4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.3.3...v1.3.4) (2025-03-25)
+
+### 🐛 BUG FIXES
+
+* Kakao map api update ([9a2be26](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/9a2be263f1d5c9400c62d6178b28c650c2f97553))
+
+## [1.3.3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.3.2...v1.3.3) (2025-03-25)
+
+### 🐛 BUG FIXES
+
+* Kakao map api update ([c9c6f8b](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/c9c6f8b8c534b8b443dfd7d50370b97587537b6d))
+
+## [1.3.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.3.1...v1.3.2) (2025-03-25)
+
+### 🐛 BUG FIXES
+
+* Kakao map api update ([0ae31c1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/0ae31c1392dc5d14b455de763663c66bb2dd9aff))
+
+## [1.3.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.3.0...v1.3.1) (2025-03-25)
+
+### 🐛 BUG FIXES
+
+* Kakao map api update ([d909de1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/d909de1487229fd2fb9850468343c752ce35b8b6))
+
 ## [1.3.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.2.0...v1.3.0) (2025-03-24)
 
 ### 🚀 NEW FEATURES

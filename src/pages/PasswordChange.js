@@ -1,9 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { changePassword } from '../api/user';
 
 function PasswordChange() {
   const navigate = useNavigate();
+  
+  // 상태 관리
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [passwordError, setPasswordError] = useState(null);
   const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('비밀번호 변경을 완료하였습니다.');
 
   const goToMap = () => {
     navigate('/map');
@@ -21,14 +31,120 @@ function PasswordChange() {
     navigate('/pets');
   };
 
-  const handleUpdatePassword = () => {
-    // 실제로는 API 호출 등으로 비밀번호 변경 처리
-    setShowToast(true);
+  // 새 비밀번호 유효성 검사
+  const validateNewPassword = (password) => {
+    // 영문, 숫자, 특수문자 조합 8~20자 검증
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$/;
     
-    // 토스트 메시지 표시 후 2초 후에 profile 페이지로 이동
-    setTimeout(() => {
-      navigate('/profile');
-    }, 2000);
+    if (!password) {
+      return '새 비밀번호를 입력해주세요.';
+    }
+    
+    if (password.length < 8 || password.length > 20) {
+      return '비밀번호는 8~20자 이내로 입력해주세요.';
+    }
+    
+    if (!passwordRegex.test(password)) {
+      return '비밀번호는 영문, 숫자, 특수문자를 모두 포함해야 합니다.';
+    }
+    
+    return null;
+  };
+
+  // 비밀번호 변경 핸들러
+  const handleNewPasswordChange = (e) => {
+    const value = e.target.value;
+    setNewPassword(value);
+    
+    const error = validateNewPassword(value);
+    if (error) {
+      setPasswordError(error);
+    } else {
+      setPasswordError(null);
+    }
+    
+    // 비밀번호 확인과 일치 여부 체크
+    if (confirmPassword && value !== confirmPassword) {
+      setPasswordError('새 비밀번호가 일치하지 않습니다.');
+    }
+  };
+
+  // 비밀번호 확인 변경 핸들러
+  const handleConfirmPasswordChange = (e) => {
+    const value = e.target.value;
+    setConfirmPassword(value);
+    
+    if (newPassword && value && newPassword !== value) {
+      setPasswordError('새 비밀번호가 일치하지 않습니다.');
+    } else {
+      setPasswordError(null);
+    }
+  };
+
+  const handleUpdatePassword = async () => {
+    // 입력값 확인
+    if (!currentPassword) {
+      setError('현재 비밀번호를 입력해주세요.');
+      return;
+    }
+    
+    if (!newPassword) {
+      setError('새 비밀번호를 입력해주세요.');
+      return;
+    }
+    
+    if (!confirmPassword) {
+      setError('새 비밀번호 확인을 입력해주세요.');
+      return;
+    }
+    
+    // 패스워드 일치 확인
+    if (newPassword !== confirmPassword) {
+      setPasswordError('새 비밀번호가 일치하지 않습니다.');
+      return;
+    }
+    
+    // 오류가 있는지 확인
+    if (passwordError) {
+      setError('입력 정보를 확인해주세요.');
+      return;
+    }
+    
+    setLoading(true);
+    setError(null);
+    
+    try {
+      await changePassword({
+        currentPassword,
+        newPassword,
+        newPasswordConfirm: confirmPassword
+      });
+      
+      setToastMessage('비밀번호 변경을 완료하였습니다.');
+      setShowToast(true);
+      
+      // 토스트 메시지 표시 후 2초 후에 profile 페이지로 이동
+      setTimeout(() => {
+        navigate('/profile');
+      }, 2000);
+    } catch (err) {
+      console.error('비밀번호 변경 실패:', err);
+      
+      // 오류 메시지 처리
+      if (err.response) {
+        if (err.response.status === 401) {
+          setError('현재 비밀번호가 일치하지 않습니다.');
+        } else if (err.response.data && err.response.data.message) {
+          setError(err.response.data.message);
+        } else {
+          setError('비밀번호 변경 중 오류가 발생했습니다.');
+        }
+      } else {
+        setError('서버에 연결할 수 없습니다. 나중에 다시 시도해주세요.');
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   // 토스트 메시지가 표시되면 3초 후에 자동으로 사라지도록 설정
@@ -55,6 +171,13 @@ function PasswordChange() {
 
       {/* 메인 컨텐츠 */}
       <div className="flex-1 p-4 overflow-y-auto">
+        {/* 오류 메시지 */}
+        {error && (
+          <div className="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
+            <span className="block sm:inline">{error}</span>
+          </div>
+        )}
+        
         <div className="bg-white rounded-xl shadow-md p-4 mb-4">
           <div className="space-y-4">
             <div className="relative">
@@ -64,6 +187,8 @@ function PasswordChange() {
                 placeholder="현재 비밀번호를 입력하세요"
                 className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
                 required
+                value={currentPassword}
+                onChange={(e) => setCurrentPassword(e.target.value)}
               />
               <p className="text-xs text-gray-500 mt-1">현재 사용 중인 비밀번호를 입력해주세요</p>
             </div>
@@ -73,8 +198,10 @@ function PasswordChange() {
               <input
                 type="password"
                 placeholder="새 비밀번호를 입력하세요"
-                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
+                className={`w-full p-3 border ${passwordError ? 'border-red-300' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent`}
                 required
+                value={newPassword}
+                onChange={handleNewPasswordChange}
               />
               <p className="text-xs text-gray-500 mt-1">영문, 숫자, 특수문자 조합 8~20자</p>
             </div>
@@ -84,17 +211,21 @@ function PasswordChange() {
               <input
                 type="password"
                 placeholder="새 비밀번호를 다시 입력하세요"
-                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
+                className={`w-full p-3 border ${passwordError ? 'border-red-300' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent`}
                 required
+                value={confirmPassword}
+                onChange={handleConfirmPasswordChange}
               />
               <p className="text-xs text-gray-500 mt-1">새 비밀번호를 한번 더 입력해주세요</p>
+              {passwordError && <p className="text-xs text-red-500 mt-1">{passwordError}</p>}
             </div>
 
             <button 
               onClick={handleUpdatePassword}
               className="w-full bg-amber-800 text-white p-3 rounded-md text-center font-medium mt-4"
+              disabled={loading}
             >
-              변경 완료
+              {loading ? '처리 중...' : '변경 완료'}
             </button>
           </div>
         </div>
@@ -103,7 +234,7 @@ function PasswordChange() {
       {/* 토스트 메시지 */}
       {showToast && (
         <div className="fixed bottom-24 left-0 right-0 mx-auto w-3/5 max-w-xs bg-white bg-opacity-80 border border-amber-800 text-amber-800 p-3 rounded-md shadow-lg text-center z-50 animate-fade-in-up">
-          비밀번호 변경을 완료하였습니다.
+          {toastMessage}
         </div>
       )}
 
