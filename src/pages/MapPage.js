@@ -34,8 +34,8 @@ function MapPage() {
 
   // 구름스퀘어 좌표
   const [centerPosition, setCenterPosition] = useState({
-    lat: 33.450701, // 제주도 구름스퀘어 위도
-    lng: 126.570667, // 제주도 구름스퀘어 경도
+    lat: 33.48717138746649, // 제주도 구름스퀘어 위도
+    lng: 126.53171329989748, // 제주도 구름스퀘어 경도
   });
 
   // 카카오맵 API 스크립트 동적 로드 함수
