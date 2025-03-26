@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { getMapMarkers } from '../api/map'; // axios 인스턴스로 정의된 API 제리 추가
+import { getMapMarkers, registerMarker, getMarkerDetail, deleteMarker } from '../api/map'; // axios 인스턴스로 정의된 API 제리 추가
 
 function MapPage() {
   const navigate = useNavigate();
@@ -1268,7 +1268,7 @@ function MapPage() {
       const params = {
         latitude: center.getLat(),
         longitude: center.getLng(),
-        radius: 10000 // 반경 10km
+        radius: 10000
       };
   
       const res = await getMapMarkers(params);
@@ -1305,7 +1305,7 @@ function MapPage() {
         });
   
         const markerInfo = {
-          id: mData.id ?? Date.now().toString() + Math.random().toString(36).substring(2, 10),
+          id: mData.id, // ✅ 서버에서 내려준 진짜 마커 ID 사용
           marker,
           position: {
             lat: mData.latitude,
@@ -1315,15 +1315,13 @@ function MapPage() {
           subType
         };
   
-        // 👉 클릭 이벤트 등록
+        // ✅ 클릭 이벤트 + 삭제 API 연동
         window.kakao.maps.event.addListener(marker, 'click', () => {
-          // 기존 인포윈도우 닫기
           markersRef.current.forEach(m => {
             if (m.infowindow) m.infowindow.close();
           });
   
           const emoji = subType ? MARKER_IMAGES.EMOJI[subType] || '⚠️' : '⚠️';
-  
           const infoContent = `
             <div style="padding:5px;font-size:12px;">
               <div style="margin-bottom:4px;">${emoji} ${type}${subType ? ` - ${subType}` : ''}</div>
@@ -1341,11 +1339,20 @@ function MapPage() {
           setTimeout(() => {
             const deleteBtn = document.getElementById('delete-marker');
             if (deleteBtn) {
-              deleteBtn.onclick = () => {
-                marker.setMap(null);
-                infowindow.close();
-                if (removeMarkerRef.current) {
-                  removeMarkerRef.current(markerInfo.id);
+              deleteBtn.onclick = async () => {
+                try {
+                  await deleteMarker(markerInfo.id); // ✅ 서버에 삭제 요청
+                  marker.setMap(null);
+                  infowindow.close();
+  
+                  if (removeMarkerRef.current) {
+                    removeMarkerRef.current(markerInfo.id); // 프론트에서도 제거
+                  }
+  
+                  console.log('🗑 마커 삭제 완료:', markerInfo.id);
+                } catch (err) {
+                  console.error('❌ 마커 삭제 실패:', err);
+                  alert("마커 삭제 중 오류가 발생했습니다.");
                 }
               };
             }
@@ -1359,7 +1366,6 @@ function MapPage() {
   
       setMarkers(newMarkers);
       setMapMarkers(newMarkers.map(m => m.marker));
-  
     } catch (error) {
       console.error('📛 마커 불러오기 실패:', error);
     }
