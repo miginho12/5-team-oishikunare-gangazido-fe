@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 
 import { useNavigate } from 'react-router-dom';
@@ -230,15 +229,24 @@ function Register() {
     navigate('/login');
   };
 
+  const goToMap = () => {
+    navigate('/map');
+  };
+
   return (
     <div className="flex flex-col h-full bg-gray-50">
-      {/* 헤더 */}
-      <header className="bg-white p-4 shadow-md flex items-center justify-center">
+      {/* 헤더 - 뒤로가기 버튼 추가 */}
+      <header className="bg-white p-4 shadow-md flex items-center">
+        <button onClick={goToMap} className="mr-2">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
         <h1 className="text-xl font-bold text-gray-800">강아지도</h1>
       </header>
 
       <div className="flex-1 p-4 flex flex-col overflow-auto">
-        <h1 className="text-xl font-bold text-center mb-4 text-gray-800">회원가입</h1>
+        <h1 className="text-xl font-bold text-center my-8 text-gray-800">회원가입</h1>
         
         {/* 오류 메시지 */}
         {error && (
