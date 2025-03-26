@@ -1,10 +1,11 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { sendLLMChat } from '../api/chat'; // ✅ 실제 API 호출 추가
+import { useAuth } from '../contexts/AuthContext'; // AuthContext 불러오기
 
 function ChatPage() {
   const navigate = useNavigate();
+  const { isAuthenticated, loading } = useAuth(); // AuthContext에서 인증 상태 가져오기
   const [message, setMessage] = useState('');
   const [chatMessages, setChatMessages] = useState([
     {
@@ -14,6 +15,14 @@ function ChatPage() {
       time: '오전 10:30',
     },
   ]);
+
+  // 페이지 로드 시 인증 상태 확인
+  useEffect(() => {
+    // 로딩이 완료되고 인증되지 않은 사용자는 로그인 페이지로 리다이렉션
+    if (!loading && !isAuthenticated) {
+      navigate('/login');
+    }
+  }, [loading, isAuthenticated, navigate]);
 
   const [suggestedQuestions] = useState([
     '오늘 산책하는거 어떨까?',

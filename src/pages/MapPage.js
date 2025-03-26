@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { getMapMarkers, registerMarker, deleteMarker } from '../api/map'; // axios 인스턴스로 정의된 API 제리 추가
-import { getUserInfo } from '../api/user'; // getUserInfo API 추가
+import { useAuth } from '../contexts/AuthContext'; // 기존 getUserInfo 대신 useAuth 훅 사용
 
 function MapPage() {
   const navigate = useNavigate();
@@ -17,25 +17,9 @@ function MapPage() {
   const [visibleMarkers, setVisibleMarkers] = useState([]);
   const mapBoundsRef = useRef(null);
   const clusterRef = useRef(null);
-  // 로그인 상태 확인
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  // 컴포넌트 마운트 시 로그인 상태 확인
-  useEffect(() => {
-    const checkLoginStatus = async () => {
-      try {
-        // 사용자 정보 가져오기 (인증된 사용자만 성공)
-        await getUserInfo();
-        setIsLoggedIn(true);
-      } catch (err) {
-        // 401 오류 등이 발생하면 로그인되지 않은 상태
-        setIsLoggedIn(false);
-        console.log('사용자가 로그인되어 있지 않습니다.');
-      }
-    };
-    
-    checkLoginStatus();
-  }, []);
+  
+  // AuthContext에서 인증 상태 가져오기
+  const { isAuthenticated } = useAuth();
 
   // 모달 관련 상태 수정
   const [showModal, setShowModal] = useState(false);
@@ -862,6 +846,14 @@ function MapPage() {
     if (!map) return;
   
     try {
+      // 인증 상태 확인
+      if (!isAuthenticated) {
+        alert("로그인 후 이용해주세요");
+        setShowModal(false);
+        setIsCenterMode(false);
+        return;
+      }
+      
       const center = map.getCenter();
   
       // 서버에 등록 요청
@@ -969,7 +961,7 @@ function MapPage() {
       const status = error.response?.status;
       const message = error.response?.data?.message;
 
-      if (status === 401 || message == "required_authorization"){
+      if (status === 401 || message === "required_authorization"){
         alert("로그인 후 이용해주세요");
       }
       else {
@@ -978,7 +970,7 @@ function MapPage() {
         return null;
       }
     } 
-  }, [map, tempMarkerType, tempMarkerSubType, markerImages, getMarkerTypeCode]);
+  }, [map, tempMarkerType, tempMarkerSubType, markerImages, getMarkerTypeCode, isAuthenticated]);
 
   // 특정 타입의 마커 추가하기
   // eslint-disable-next-line no-unused-vars
@@ -1567,36 +1559,36 @@ function MapPage() {
     };
   }, [markers]);
 
-  // 네비게이션 함수
+  // 네비게이션 함수 - AuthContext 사용하도록 수정
   const goToChat = useCallback(() => {
     // 로그인하지 않은 사용자는 로그인 페이지로 리다이렉트
-    if (!isLoggedIn) {
+    if (!isAuthenticated) {
       navigate("/login");
       return;
     }
     // 로그인한 사용자는 채팅 페이지로 이동
     navigate("/chat");
-  }, [navigate, isLoggedIn]);
+  }, [navigate, isAuthenticated]);
 
   const goToProfile = useCallback(() => {
     // 로그인하지 않은 사용자는 로그인 페이지로 리다이렉트
-    if (!isLoggedIn) {
+    if (!isAuthenticated) {
       navigate("/login");
       return;
     }
     // 로그인한 사용자는 프로필 페이지로 이동
     navigate("/profile");
-  }, [navigate, isLoggedIn]);
+  }, [navigate, isAuthenticated]);
 
   const goToPetInfo = useCallback(() => {
     // 로그인하지 않은 사용자는 로그인 페이지로 리다이렉트
-    if (!isLoggedIn) {
+    if (!isAuthenticated) {
       navigate("/login");
       return;
     }
     // 로그인한 사용자는 반려견 정보 페이지로 이동
     navigate("/pets");
-  }, [navigate, isLoggedIn]);
+  }, [navigate, isAuthenticated]);
 
   // 서브타입 버튼 클릭 방식으로 변경
   const [showSubTypeButtons, setShowSubTypeButtons] = useState(false);
