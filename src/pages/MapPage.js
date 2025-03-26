@@ -443,13 +443,13 @@ function MapPage() {
         // 초기 지도 영역 설정
         mapBoundsRef.current = kakaoMapInstance.getBounds();
 
-        // 로컬 스토리지에서 저장된 마커 불러오기
-        if (loadMarkersFromLocalStorageRef.current) {
-          // 약간의 지연을 두어 초기화 문제 방지
-          setTimeout(() => {
-            loadMarkersFromLocalStorageRef.current(kakaoMapInstance);
-          }, 200);
-        }
+        // 로컬 스토리지에서 저장된 마커 불러오기 제리 주석  처리
+        // if (loadMarkersFromLocalStorageRef.current) {
+        //   // 약간의 지연을 두어 초기화 문제 방지
+        //   setTimeout(() => {
+        //     loadMarkersFromLocalStorageRef.current(kakaoMapInstance);
+        //   }, 200);
+        // }
 
         // 컴포넌트 언마운트 시 이벤트 리스너 제거를 위한 리턴 함수
         return () => {
@@ -841,203 +841,120 @@ function MapPage() {
     ]
   );
 
-  // 모달에서 확정 버튼 클릭 시 실제 마커 생성 함수
-  const createMarkerFromModal = useCallback(() => {
+  // 모달에서 확정 버튼 클릭 시 실제 마커 생성 함수 제리 수정
+  const createMarkerFromModal = useCallback(async () => {
     if (!map) return;
-
+  
     try {
-      // 현재 지도 중앙 위치 가져오기
       const center = map.getCenter();
-
-      // 마커 이미지 결정
-      let markerImage;
-      if (tempMarkerType === "댕져러스") {
-        markerImage =
-          markerImages.current[1] &&
-          (tempMarkerSubType
-            ? markerImages.current[1][tempMarkerSubType]
-            : markerImages.current[1].image);
-      } else {
-        markerImage = markerImages.current[0] && markerImages.current[0].image;
+  
+      // 서버에 등록 요청
+      const markerData = {
+        type: getMarkerTypeCode(tempMarkerType, tempMarkerSubType),
+        latitude: center.getLat(),
+        longitude: center.getLng(),
+      };
+  
+      const res = await registerMarker(markerData);
+      const serverMarker = res.data.data;
+  
+      if (res.data.message !== "marker_registered_success") {
+        alert("마커 등록에 실패했습니다.");
+        return;
       }
-
-      if (!markerImage) {
-        // 마커 이미지가 초기화되지 않은 경우 초기화 시도
-        initMarkerImages();
-        // 다시 이미지 가져오기 시도
-        if (tempMarkerType === "댕져러스") {
-          markerImage =
-            markerImages.current[1] &&
-            (tempMarkerSubType
-              ? markerImages.current[1][tempMarkerSubType]
-              : markerImages.current[1].image);
-        } else {
-          markerImage =
-            markerImages.current[0] && markerImages.current[0].image;
-        }
-      }
-
-      let marker;
-      try {
-        marker = new window.kakao.maps.Marker({
-          position: center,
-          map, // 항상 지도에 표시
-          image: markerImage,
-        });
-      } catch (markerError) {
-        console.error("카카오맵 마커 객체 생성 중 오류 발생:", markerError);
-        return null;
-      }
-
-      // 마커 정보 객체
+  
+      // 이미지 처리
+      const markerImage =
+        tempMarkerType === "댕플"
+          ? markerImages.current[0].image
+          : markerImages.current[1][tempMarkerSubType] || markerImages.current[1].image;
+  
+      const marker = new window.kakao.maps.Marker({
+        position: center,
+        map,
+        image: markerImage,
+      });
+  
       const markerInfo = {
-        id: Date.now().toString() + Math.random().toString(36).substring(2, 10),
+        id: serverMarker.id, // 서버에서 받은 ID
         marker,
         position: {
-          lat: center.getLat(),
-          lng: center.getLng(),
+          lat: serverMarker.latitude,
+          lng: serverMarker.longitude,
         },
         type: tempMarkerType,
         subType: tempMarkerSubType,
       };
-
-      // 클릭 이벤트 등록
-      try {
-        window.kakao.maps.event.addListener(marker, "click", () => {
-          try {
-            // 기존 인포윈도우 모두 닫기 (성능 최적화)
-            markersRef.current.forEach((m) => {
-              if (m.infowindow) {
-                m.infowindow.close();
-                m.infowindow = null; // 메모리 정리
-              }
-            });
-
-            // 인포윈도우 생성
-            let infoContent = "";
-
-            if (tempMarkerType === "댕져러스") {
-              const subtypeText = tempMarkerSubType
-                ? ` - ${tempMarkerSubType}`
-                : "";
-              const emoji = tempMarkerSubType
-                ? MARKER_IMAGES.EMOJI[tempMarkerSubType] || "⚠️"
-                : "⚠️";
-
-              infoContent = `<div style="padding:5px;font-size:12px;">
-                <div style="margin-bottom:4px;">${emoji} ${tempMarkerType}${subtypeText}</div>
-                <button id="delete-marker" style="padding:2px 5px;background:#ff5555;color:white;border:none;border-radius:3px;">삭제</button>
-              </div>`;
-            } else {
-              infoContent = `<div style="padding:5px;font-size:12px;">${tempMarkerType}<br><button id="delete-marker" style="padding:2px 5px;margin-top:5px;background:#ff5555;color:white;border:none;border-radius:3px;">삭제</button></div>`;
-            }
-
-            const infowindow = new window.kakao.maps.InfoWindow({
-              content: infoContent,
-              removable: true,
-            });
-
-            // 인포윈도우 열기
-            infowindow.open(map, marker);
-
-            // 마커 정보에 인포윈도우 추가
-            markerInfo.infowindow = infowindow;
-
-            // 인포윈도우 내부의 삭제 버튼에 이벤트 리스너 추가
-            setTimeout(() => {
-              const deleteBtn = document.getElementById("delete-marker");
-              if (deleteBtn) {
-                deleteBtn.onclick = () => {
-                  // removeMarker 함수 ref 사용
-                  if (removeMarkerRef.current) {
-                    removeMarkerRef.current(markerInfo.id);
-                  }
-                  infowindow.close();
-                };
-              }
-            }, 100);
-
-            // 선택된 마커 업데이트
-            setSelectedMarker(markerInfo);
-          } catch (clickError) {
-            console.error("마커 클릭 처리 중 오류 발생:", clickError);
-          }
+  
+      // 클릭 이벤트 (인포윈도우 + 삭제)
+      window.kakao.maps.event.addListener(marker, "click", () => {
+        markersRef.current.forEach((m) => {
+          if (m.infowindow) m.infowindow.close();
         });
-      } catch (eventError) {
-        console.error("마커 이벤트 등록 중 오류 발생:", eventError);
-      }
-
-      // 마커 배열에 추가
-      try {
-        setMarkers((prev) => {
-          const updatedMarkers = [...prev, markerInfo];
-
-          // 로컬 스토리지에 저장
-          try {
-            if (saveMarkersToLocalStorageRef.current) {
-              saveMarkersToLocalStorageRef.current(updatedMarkers);
-            } else if (typeof saveMarkersToLocalStorage === "function") {
-              saveMarkersToLocalStorage(updatedMarkers);
-            } else {
-              console.warn("마커 저장 함수가 초기화되지 않았습니다.");
-            }
-          } catch (saveError) {
-            console.error("마커 저장 중 오류 발생:", saveError);
-          }
-
-          // 새 마커가 현재 화면에 보이는지 확인하고 클러스터에만 추가
-          try {
-            if (mapBoundsRef.current && mapBoundsRef.current.contain(center)) {
-              // 수정: 개별 상태 업데이트 대신 일괄 업데이트 작업 스케줄링
-              setTimeout(() => {
-                setVisibleMarkers((current) => [...current, markerInfo]);
-
-                // 클러스터에 마커 추가
-                if (clusterRef.current) {
-                  try {
-                    clusterRef.current.addMarker(marker);
-                  } catch (clusterError) {
-                    console.warn("클러스터에 마커 추가 중 오류:", clusterError);
-                  }
-                }
-              }, 10);
-            }
-          } catch (visibleError) {
-            console.warn("보이는 마커 업데이트 중 오류:", visibleError);
-          }
-
-          return updatedMarkers;
+  
+        const emoji = tempMarkerSubType ? MARKER_IMAGES.EMOJI[tempMarkerSubType] || "⚠️" : "⚠️";
+        const infoContent = `
+          <div style="padding:5px;font-size:12px;">
+            <div style="margin-bottom:4px;">${emoji} ${tempMarkerType}${tempMarkerSubType ? ` - ${tempMarkerSubType}` : ""}</div>
+            <button id="delete-marker" style="padding:2px 5px;background:#ff5555;color:white;border:none;border-radius:3px;">삭제</button>
+          </div>`;
+  
+        const infowindow = new window.kakao.maps.InfoWindow({
+          content: infoContent,
+          removable: true,
         });
-      } catch (setMarkersError) {
-        console.error("마커 상태 업데이트 중 오류:", setMarkersError);
-        // 상태 업데이트에 실패하면 맵에서 마커 제거
-        try {
-          marker.setMap(null);
-        } catch (e) {
-          /* 마커 제거 실패는 무시 */
-        }
-        return null;
+  
+        infowindow.open(map, marker);
+        markerInfo.infowindow = infowindow;
+  
+        setTimeout(() => {
+          const deleteBtn = document.getElementById("delete-marker");
+          if (deleteBtn) {
+            deleteBtn.onclick = async () => {
+              try {
+                await deleteMarker(markerInfo.id);
+                infowindow.close();
+                fetchMarkersFromBackend(); // 🔁 최신 데이터로 다시 로드
+              } catch (err) {
+                console.error("삭제 실패:", err);
+                alert("삭제 권한이 없거나 로그인되지 않았습니다.");
+              }
+            };
+          }
+        }, 100);
+  
+        setSelectedMarker(markerInfo);
+      });
+  
+      // 상태 업데이트
+      setMarkers((prev) => [...prev, markerInfo]);
+      setMapMarkers((prev) => [...prev, marker]);
+  
+      // 클러스터에 추가
+      if (
+        mapBoundsRef.current &&
+        mapBoundsRef.current.contain(center) &&
+        clusterRef.current
+      ) {
+        setTimeout(() => {
+          setVisibleMarkers((prev) => [...prev, markerInfo]);
+          try {
+            clusterRef.current.addMarker(marker);
+          } catch (e) {
+            console.warn("클러스터 추가 실패:", e);
+          }
+        }, 10);
       }
-
-      // 마커 생성 완료 후 중앙 모드 비활성화
+  
       setIsCenterMode(false);
-
-      console.log("마커가 성공적으로 생성되었습니다.");
+      console.log("✅ 마커 등록 완료:", serverMarker.id);
       return markerInfo;
     } catch (error) {
-      console.error("마커 생성 중 예상치 못한 오류 발생:", error);
-      setIsCenterMode(false); // 오류 발생 시에도 중앙 모드 비활성화
+      console.error("❌ 마커 등록 중 오류:", error);
+      setIsCenterMode(false);
       return null;
     }
-  }, [
-    map,
-    tempMarkerType,
-    tempMarkerSubType,
-    saveMarkersToLocalStorage,
-    initMarkerImages,
-    markerImages,
-    mapBoundsRef,
-  ]);
+  }, [map, tempMarkerType, tempMarkerSubType, markerImages, getMarkerTypeCode]);
 
   // 특정 타입의 마커 추가하기
   // eslint-disable-next-line no-unused-vars
@@ -1287,19 +1204,19 @@ function MapPage() {
                 // 마커 정보에 인포윈도우 추가
                 newMarkerInfo.infowindow = infowindow;
 
-                // 인포윈도우 내부의 삭제 버튼에 이벤트 리스너 추가
-                setTimeout(() => {
-                  const deleteBtn = document.getElementById("delete-marker");
-                  if (deleteBtn) {
-                    deleteBtn.onclick = () => {
-                      // removeMarker 함수 ref 사용
-                      if (removeMarkerRef.current) {
-                        removeMarkerRef.current(newMarkerInfo.id);
-                      }
-                      infowindow.close();
-                    };
-                  }
-                }, 100);
+                // 인포윈도우 내부의 삭제 버튼에 이벤트 리스너 추가 제리 주석 처리
+                // setTimeout(() => {
+                //   const deleteBtn = document.getElementById("delete-marker");
+                //   if (deleteBtn) {
+                //     deleteBtn.onclick = () => {
+                //       // removeMarker 함수 ref 사용
+                //       if (removeMarkerRef.current) {
+                //         removeMarkerRef.current(newMarkerInfo.id);
+                //       }
+                //       infowindow.close();
+                //     };
+                //   }
+                // }, 100);
 
                 // 선택된 마커 업데이트
                 setSelectedMarker(newMarkerInfo);
@@ -1465,7 +1382,7 @@ function MapPage() {
           subType
         };
   
-        // ✅ 클릭 이벤트 + 삭제 API 연동
+        // ✅ 클릭 이벤트 + 삭제 API 연동 제리추가
         window.kakao.maps.event.addListener(marker, 'click', () => {
           markersRef.current.forEach(m => {
             if (m.infowindow) m.infowindow.close();
@@ -1492,12 +1409,10 @@ function MapPage() {
               deleteBtn.onclick = async () => {
                 try {
                   await deleteMarker(markerInfo.id); // ✅ 서버에 삭제 요청
-                  marker.setMap(null);
                   infowindow.close();
-  
-                  if (removeMarkerRef.current) {
-                    removeMarkerRef.current(markerInfo.id); // 프론트에서도 제거
-                  }
+
+                  // 🔥 삭제 후 전체 마커 다시 불러오기!
+                  fetchMarkersFromBackend();
   
                   console.log('🗑 마커 삭제 완료:', markerInfo.id);
                 } catch (err) {
