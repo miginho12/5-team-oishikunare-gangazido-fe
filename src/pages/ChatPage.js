@@ -59,7 +59,9 @@ function ChatPage() {
         parsed = JSON.parse(cleanResponse);
 
         // 정상 응답이면 구성된 메시지로 출력
-        aiText = `🐾 산책 추천: ${parsed.recommendation}\n📌 이유: ${parsed.reason}\n✅ 팁: ${parsed.safety_tips.join(', ')}`;
+        aiText = `🐾 오늘은 ${parsed.recommendation}!\n
+        📌 이유: ${parsed.reason}\n
+        ✅ 팁: ${parsed.safety_tips.join(', ')}`;
       } catch (parseError) {
         // 파싱 안 되는 경우 = 그냥 일반 메시지인 경우
         aiText = cleanResponse;
@@ -83,32 +85,6 @@ function ChatPage() {
       };
       setChatMessages((prev) => [...prev, errorResponse]);
     }
-
-      // JSON 응답 파싱
-      /*const cleanResponse = data.data.response.replace(/```json\n|\n```/g, '');
-   
-      const parsed = JSON.parse(data.data.response.replace(/```json\n|\n```/g, ''));
-      const aiText = `🐾 산책 추천: ${parsed.recommendation}\n📌 이유: ${parsed.reason}\n✅ 팁: ${parsed.safety_tips.join(', ')}`;
-
-      const aiResponse = {
-        id: newUserMessage.id + 1,
-        text: aiText,
-        isUser: false,
-        time: new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' }),
-      };
-
-      setChatMessages((prev) => [...prev, aiResponse]);
-    } catch (error) {
-      console.error('AI 응답 오류:', error);
-      const errorResponse = {
-        id: newUserMessage.id + 1,
-        text: '제가 대답할 수 없는 질문이에요. 다른 질문을 해보세요!',
-        isUser: false,
-        time: new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' }),
-      };
-      setChatMessages((prev) => [...prev, errorResponse]);
-    }*/
-
       
   };
 
@@ -136,7 +112,7 @@ function ChatPage() {
           {chatMessages.map((msg) => (
             <div key={msg.id} className={`flex ${msg.isUser ? 'justify-end' : 'justify-start'}`}>
               <div className={`max-w-3/4 rounded-lg p-3 ${msg.isUser ? 'bg-amber-800 text-white' : 'bg-white shadow-md'}`}>
-                <p className="text-sm">{msg.text}</p>
+                <p className="text-sm whitespace-pre-line">{msg.text}</p>
                 <p className={`text-xs mt-1 text-right ${msg.isUser ? 'text-amber-100' : 'text-gray-500'}`}>{msg.time}</p>
               </div>
             </div>
