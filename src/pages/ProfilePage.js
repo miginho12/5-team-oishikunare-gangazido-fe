@@ -2,12 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getUserInfo } from '../api/user';
 import { logoutUser } from '../api/auth';
+import { useAuth } from '../contexts/AuthContext';
 
 function ProfilePage() {
   const navigate = useNavigate();
+  const { logout } = useAuth();
   const [userInfo, setUserInfo] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showToast, setShowToast] = useState(false);
+  const [logoutError, setLogoutError] = useState(null);
 
   // 컴포넌트 마운트 시 사용자 정보 로드
   useEffect(() => {
@@ -53,13 +57,28 @@ function ProfilePage() {
   };
 
   const handleLogout = async () => {
+    console.log('로그아웃 버튼 클릭');
+    
     try {
-      await logoutUser();
-      // 로그아웃 후 로그인 페이지로 이동
+      console.log('로그아웃 API 호출 시작');
+      const response = await logoutUser();
+      console.log('로그아웃 API 응답:', response);
+      
+      // AuthContext의 로그아웃 함수 호출
+      console.log('AuthContext logout 함수 호출');
+      logout();
+      
+      // 토스트 메시지 표시
+      console.log('로그아웃 토스트 메시지 표시');
+      setShowToast(true);
+      
+      // 리디렉션
+      console.log('로그아웃 후 /login 페이지로 리디렉션');
       navigate('/login');
-    } catch (err) {
-      console.error('로그아웃 실패:', err);
-      alert('로그아웃 중 오류가 발생했습니다.');
+    } catch (error) {
+      console.error('로그아웃 처리 중 오류 발생:', error);
+      console.error('오류 응답 데이터:', error.response?.data);
+      setLogoutError('로그아웃 처리 중 오류가 발생했습니다.');
     }
   };
 

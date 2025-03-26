@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getPetInfo } from '../api/pet';
+import { useAuth } from '../contexts/AuthContext'; // AuthContext 불러오기
 
 function PetInfo() {
   const navigate = useNavigate();
+  const { isAuthenticated, loading: authLoading } = useAuth(); // 인증 상태 가져오기
   const [pet, setPet] = useState(null);
   const [loading, setLoading] = useState(true); // 로딩 상태 추가
 
@@ -12,37 +14,47 @@ function PetInfo() {
   const goToProfile = () => navigate('/profile');
   const goToPetEdit = () => navigate('/pets/edit');
 
+  // 인증 상태 확인 및 리다이렉션
   useEffect(() => {
-    const fetchPetInfo = async () => {
-      try {
-        const response = await getPetInfo();
-        const data = response.data.data;
+    if (!authLoading && !isAuthenticated) {
+      navigate('/login');
+    }
+  }, [authLoading, isAuthenticated, navigate]);
 
-        // 이미지 경로 조정
-        if (data.profileImage && typeof data.profileImage === 'string') {
-          const baseUrl = 'http://localhost:8080'; // 배포 시 환경변수로 바꿔도 좋음
-          data.profileImage = data.profileImage.startsWith('http')
-            ? data.profileImage
-            : `${baseUrl}${data.profileImage}`;
-        }
+  useEffect(() => {
+    // 인증 상태를 먼저 확인하고 진행
+    if (!authLoading && isAuthenticated) {
+      const fetchPetInfo = async () => {
+        try {
+          const response = await getPetInfo();
+          const data = response.data.data;
 
-        setPet(data);
-        setLoading(false);
-      } catch (error) {
-        console.error('반려견 정보 가져오기 실패:', error);
-        const message = error?.response?.data?.message;
-        if (message === 'not_found_pet') {
-          navigate('/pets/register');
-        } else {
-          // 다른 에러 처리: 예를 들어 에러 페이지로 보내거나, 토스트 보여주기
-          alert('반려견 정보를 불러오는 중 문제가 발생했습니다.');
+          // 이미지 경로 조정
+          if (data.profileImage && typeof data.profileImage === 'string') {
+            const baseUrl = 'http://localhost:8080'; // 배포 시 환경변수로 바꿔도 좋음
+            data.profileImage = data.profileImage.startsWith('http')
+              ? data.profileImage
+              : `${baseUrl}${data.profileImage}`;
+          }
+
+          setPet(data);
           setLoading(false);
+        } catch (error) {
+          console.error('반려견 정보 가져오기 실패:', error);
+          const message = error?.response?.data?.message;
+          if (message === 'not_found_pet') {
+            navigate('/pets/register');
+          } else {
+            // 다른 에러 처리: 예를 들어 에러 페이지로 보내거나, 토스트 보여주기
+            alert('반려견 정보를 불러오는 중 문제가 발생했습니다.');
+            setLoading(false);
+          }
         }
-      }
-    };
-  
-    fetchPetInfo();
-  }, []);
+      };
+    
+      fetchPetInfo();
+    }
+  }, [authLoading, isAuthenticated, navigate]);
 
   if (loading || !pet) {
     return (
