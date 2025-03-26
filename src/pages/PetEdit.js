@@ -1,48 +1,79 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { updatePetInfo, deletePet, getPetInfo } from '../api/pet';
 
 function PetEdit() {
   const navigate = useNavigate();
   const [showConfirm, setShowConfirm] = useState(false);
   const [showToast, setShowToast] = useState(false);
 
-  const goToMap = () => {
-    navigate('/map');
-  };
+  // 상태 관리
+  const [name, setName] = useState('');
+  const [breed, setBreed] = useState('');
+  const [age, setAge] = useState('');
+  const [gender, setGender] = useState('');
+  const [weight, setWeight] = useState('');
+  const [profileImage, setProfileImage] = useState(null);
 
-  const goToChat = () => {
-    navigate('/chat');
-  };
+  // 최초 로딩 시 기존 반려견 정보 불러오기
+  useEffect(() => {
+    const fetchPet = async () => {
+      try {
+        const res = await getPetInfo();
+        if (res?.data?.message === 'get_pet_success') {
+          const data = res.data.data;
+          setName(data.name);
+          setBreed(data.breed);
+          setAge(data.age);
+          setGender(data.gender ? 'male' : 'female');
+          setWeight(data.weight);
+        }
+      } catch (err) {
+        console.error('반려견 정보 조회 실패:', err);
+      }
+    };
+    fetchPet();
+  }, []);
 
-  const goToProfile = () => {
-    navigate('/profile');
-  };
-
-  const goToPetInfo = () => {
-    navigate('/pets');
-  };
+  const goToMap = () => navigate('/map');
+  const goToChat = () => navigate('/chat');
+  const goToProfile = () => navigate('/profile');
+  const goToPetInfo = () => navigate('/pets');
 
   const handleDeletePet = () => {
     setShowConfirm(true);
   };
 
-  const confirmDelete = () => {
-    // 실제로는 API 호출 등으로 반려견 정보 삭제 처리
-    navigate('/pets/register');
+  const confirmDelete = async () => {
+    try {
+      await deletePet();
+      navigate('/pets/register');
+    } catch (error) {
+      console.error('반려견 삭제 실패:', error);
+    }
   };
 
   const cancelDelete = () => {
     setShowConfirm(false);
   };
 
-  const handleUpdatePet = () => {
-    // 실제로는 API 호출 등으로 반려견 정보 수정 처리
-    setShowToast(true);
-    
-    // 토스트 메시지 표시 후 2초 후에 pet-info 페이지로 이동
-    setTimeout(() => {
-      navigate('/pets');
-    }, 2000);
+  const handleUpdatePet = async () => {
+    try {
+      const data = {
+        name,
+        age: parseInt(age),
+        gender: gender === 'male',
+        breed,
+        weight: parseFloat(weight),
+        profileImage,
+      };
+
+      await updatePetInfo(data);
+      setShowToast(true);
+      setTimeout(() => navigate('/pets'), 2000);
+    } catch (error) {
+      console.error('반려견 수정 실패:', error);
+    }
   };
 
   // 토스트 메시지가 표시되면 3초 후에 자동으로 사라지도록 설정
@@ -59,7 +90,7 @@ function PetEdit() {
     <div className="flex flex-col h-full bg-gray-50">
       {/* 헤더 */}
       <header className="bg-white p-4 shadow-md flex items-center">
-        <button onClick={() => navigate('/pet-info')} className="mr-2">
+        <button onClick={() => navigate('/pets')} className="mr-2">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
@@ -84,7 +115,9 @@ function PetEdit() {
               <label className="block text-sm font-medium text-gray-700 mb-1">반려견 이름</label>
               <input
                 type="text"
-                defaultValue="초코"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="이름"
                 className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
                 required
               />
@@ -94,7 +127,9 @@ function PetEdit() {
               <label className="block text-sm font-medium text-gray-700 mb-1">품종</label>
               <input
                 type="text"
-                defaultValue="말티즈"
+                value={breed}
+                onChange={(e) => setBreed(e.target.value)}
+                placeholder="품종"
                 className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
                 required
               />
@@ -105,7 +140,9 @@ function PetEdit() {
                 <label className="block text-sm font-medium text-gray-700 mb-1">나이</label>
                 <input
                   type="number"
-                  defaultValue="3"
+                  value={age}
+                  onChange={(e) => setAge(e.target.value)}
+                  placeholder="나이"
                   className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
                   required
                 />
@@ -113,7 +150,8 @@ function PetEdit() {
               <div className="relative">
                 <label className="block text-sm font-medium text-gray-700 mb-1">성별</label>
                 <select
-                  defaultValue="male"
+                  value={gender}
+                  onChange={(e) => setGender(e.target.value)}
                   className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
                   required
                 >
@@ -128,8 +166,9 @@ function PetEdit() {
                 <label className="block text-sm font-medium text-gray-700 mb-1">몸무게 (kg)</label>
                 <input
                   type="number"
-                  step="0.1"
-                  defaultValue="3.5"
+                  value={weight}
+                  onChange={(e) => setWeight(e.target.value)}
+                  placeholder="몸무게 (kg)"
                   className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
                   required
                 />

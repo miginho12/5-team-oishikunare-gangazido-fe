@@ -1,34 +1,45 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { registerPet } from '../api/pet';
 
 function PetRegister() {
   const navigate = useNavigate();
   const [showToast, setShowToast] = useState(false);
 
-  const goToMap = () => {
-    navigate('/map');
-  };
+  // 상태 관리
+  const [name, setName] = useState('');
+  const [breed, setBreed] = useState('');
+  const [age, setAge] = useState('');
+  const [gender, setGender] = useState('');
+  const [weight, setWeight] = useState('');
+  const [profileImage, setProfileImage] = useState(null);
 
-  const goToChat = () => {
-    navigate('/chat');
-  };
+  // 네비게이션 버튼들
+  const goToMap = () => navigate('/map');
+  const goToChat = () => navigate('/chat');
+  const goToProfile = () => navigate('/profile');
+  const goToPetInfo = () => navigate('/pets');
 
-  const goToProfile = () => {
-    navigate('/profile');
-  };
+  const handleRegister = async () => {
+    try {
+      const petData = {
+        name,
+        age: parseInt(age),
+        gender: gender === 'true',
+        breed,
+        weight: parseFloat(weight),
+        profileImage,
+      };
 
-  const goToPetInfo = () => {
-    navigate('/pets');
-  };
+      await registerPet(petData); // API 호출
+      setShowToast(true);
 
-  const handleRegister = () => {
-    // 실제로는 API 호출 등으로 반려견 정보 등록 처리
-    setShowToast(true);
-    
-    // 토스트 메시지 표시 후 2초 후에 pet-info 페이지로 이동
-    setTimeout(() => {
-      navigate('/pets');
-    }, 2000);
+      setTimeout(() => {
+        navigate('/pets');
+      }, 2000);
+    } catch (error) {
+      console.error('반려견 등록 실패:', error);
+    }
   };
 
   // 토스트 메시지가 표시되면 3초 후에 자동으로 사라지도록 설정
@@ -70,6 +81,8 @@ function PetRegister() {
               <label className="block text-sm font-medium text-gray-700 mb-1">반려견 이름 <span className="text-red-500">*</span></label>
               <input
                 type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
                 placeholder="반려견 이름을 입력하세요"
                 className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
                 required
@@ -80,6 +93,8 @@ function PetRegister() {
               <label className="block text-sm font-medium text-gray-700 mb-1">품종 <span className="text-red-500">*</span></label>
               <input
                 type="text"
+                value={breed}
+                onChange={(e) => setBreed(e.target.value)}
                 placeholder="품종을 입력하세요"
                 className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
                 required
@@ -91,6 +106,8 @@ function PetRegister() {
                 <label className="block text-sm font-medium text-gray-700 mb-1">나이 <span className="text-red-500">*</span></label>
                 <input
                   type="number"
+                  value={age}
+                  onChange={(e) => setAge(e.target.value)}
                   placeholder="나이"
                   className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
                   required
@@ -99,6 +116,8 @@ function PetRegister() {
               <div className="relative">
                 <label className="block text-sm font-medium text-gray-700 mb-1">성별 <span className="text-red-500">*</span></label>
                 <select
+                  value={gender}
+                  onChange={(e) => setGender(e.target.value)}
                   className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
                   required
                 >
@@ -115,6 +134,8 @@ function PetRegister() {
                 <input
                   type="number"
                   step="0.1"
+                  value={weight}
+                  onChange={(e) => setWeight(e.target.value)}
                   placeholder="몸무게"
                   className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
                 />
