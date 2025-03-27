@@ -39,7 +39,10 @@ function ChatPage() {
   const handleSendMessage = async (overrideMessage = null) => {
     const userInput = overrideMessage ?? message;
 
-    if (userInput.trim() === '') return;
+    if (typeof userInput !== 'string' || userInput.trim() === '') {
+      alert('메시지를 입력해주세요!');
+      return;
+    }
 
     const newUserMessage = {
       id: chatMessages.length + 1,
