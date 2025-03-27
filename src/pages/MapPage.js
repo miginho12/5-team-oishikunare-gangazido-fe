@@ -118,13 +118,13 @@ function MapPage() {
 
   // 마커 이미지 URL 상수
   const MARKER_IMAGES = {
-    댕플: "https://cdn-icons-png.flaticon.com/512/1596/1596810.png",
+    댕플: "/images/dangple_square.png",
     댕져러스: {
       DEFAULT: "https://cdn-icons-png.flaticon.com/512/4636/4636076.png",
-      들개: "https://cdn-icons-png.flaticon.com/512/2171/2171990.png",
-      빙판길: "https://cdn-icons-png.flaticon.com/512/5435/5435526.png",
-      염화칼슘: "https://cdn-icons-png.flaticon.com/512/9430/9430308.png",
-      공사중: "https://cdn-icons-png.flaticon.com/512/2913/2913371.png",
+      들개: "/images/beware_dog_square.png",
+      빙판길: "/images/icy_road_square.png",
+      염화칼슘: "/images/beware_foot_square.png",
+      공사중: "/images/construction_square.png",
     },
     // 이모티콘 URL 추가
     EMOJI: {
@@ -154,103 +154,55 @@ function MapPage() {
   // 마커 이미지 설정 함수
   const initMarkerImages = useCallback(() => {
     if (!window.kakao || !window.kakao.maps) {
-      // window.kakao.maps가 준비되지 않았으면 초기화하지 않음
       console.log("Kakao Maps API가 아직 준비되지 않았습니다.");
       return;
     }
-
+  
     try {
-      // 댕플 마커 이미지 초기화
-      const dangpleMarkerSize = new window.kakao.maps.Size(40, 40);
-      const dangpleMarkerOption = {
-        offset: new window.kakao.maps.Point(20, 40),
-      };
+      const size = new window.kakao.maps.Size(40, 40);
+      const option = { offset: new window.kakao.maps.Point(20, 20) };
+  
+      // 1. 댕플 마커
       markerImages.current[0].image = new window.kakao.maps.MarkerImage(
         MARKER_IMAGES.댕플,
-        dangpleMarkerSize,
-        dangpleMarkerOption
+        size,
+        option
       );
-
-      // markerImages.current[1]에 서브타입 이미지 객체 추가 확인
+  
+      // 2. 댕져러스 마커 객체 준비
       if (!markerImages.current[1]) {
         markerImages.current[1] = {
           type: "댕져러스",
           subTypes: ["들개", "빙판길", "염화칼슘", "공사중"],
         };
       }
-
-      // 댕져러스 서브타입별 마커 이미지 설정
+  
       const subTypes = ["들개", "빙판길", "염화칼슘", "공사중"];
+  
+      // 3. 각 서브타입별 PNG 이미지로 마커 생성
       subTypes.forEach((subType) => {
-        const size = new window.kakao.maps.Size(40, 40);
-        const option = { offset: new window.kakao.maps.Point(20, 40) };
-
-        try {
-          // 서브타입 이미지 URL 대신 이모티콘 이미지 사용
-          const emojiText = MARKER_IMAGES.EMOJI[subType] || "⚠️";
-
-          // 캔버스를 사용하여 이모티콘 기반 이미지 생성
-          const canvas = document.createElement("canvas");
-          canvas.width = 40;
-          canvas.height = 40;
-          const ctx = canvas.getContext("2d");
-
-          // 배경 원 그리기
-          ctx.beginPath();
-          ctx.arc(20, 20, 18, 0, 2 * Math.PI);
-          ctx.fillStyle = "#3b82f6"; // 파란색 배경
-          ctx.fill();
-
-          // 이모티콘 텍스트 그리기
-          ctx.font = "20px Arial";
-          ctx.textAlign = "center";
-          ctx.textBaseline = "middle";
-          ctx.fillText(emojiText, 20, 18);
-
-          // 캔버스를 데이터 URL로 변환
-          const imgUrl = canvas.toDataURL();
-
-          markerImages.current[1][subType] = new window.kakao.maps.MarkerImage(
-            imgUrl,
-            size,
-            option
-          );
-        } catch (e) {
-          console.error(`서브타입 ${subType} 마커 이미지 초기화 오류:`, e);
-        }
+        const imageSrc = MARKER_IMAGES.댕져러스[subType] || MARKER_IMAGES.댕져러스.DEFAULT;
+  
+        markerImages.current[1][subType] = new window.kakao.maps.MarkerImage(
+          imageSrc,
+          size,
+          option
+        );
       });
-
-      // 기본 댕져러스 마커 이미지 설정도 이모티콘 스타일로 변경
-      const canvas = document.createElement("canvas");
-      canvas.width = 40;
-      canvas.height = 40;
-      const ctx = canvas.getContext("2d");
-
-      // 배경 원 그리기
-      ctx.beginPath();
-      ctx.arc(20, 20, 18, 0, 2 * Math.PI);
-      ctx.fillStyle = "#3b82f6"; // 파란색 배경
-      ctx.fill();
-
-      // 기본 경고 이모티콘
-      ctx.font = "20px Arial";
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-      ctx.fillText("⚠️", 20, 18);
-
-      const defaultImgUrl = canvas.toDataURL();
-
+  
+      // 4. 댕져러스 DEFAULT 마커도 생성
+      const defaultImageSrc = MARKER_IMAGES.댕져러스.DEFAULT;
       markerImages.current[1].image = new window.kakao.maps.MarkerImage(
-        defaultImgUrl,
-        new window.kakao.maps.Size(40, 40),
-        { offset: new window.kakao.maps.Point(20, 40) }
+        defaultImageSrc,
+        size,
+        option
       );
-
-      console.log("마커 이미지 초기화 성공", markerImages.current);
+  
+      console.log("✅ 마커 이미지 모두 PNG로 초기화 완료", markerImages.current);
     } catch (error) {
       console.error("마커 이미지 초기화 중 오류 발생:", error);
     }
-  }, [MARKER_IMAGES]);
+  }, []);
 
   // addMarker 함수의 ref 추가
   const addMarkerRef = useRef(null);
