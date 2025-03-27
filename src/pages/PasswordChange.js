@@ -135,7 +135,11 @@ function PasswordChange() {
         if (err.response.status === 401) {
           setError('현재 비밀번호가 일치하지 않습니다.');
         } else if (err.response.data && err.response.data.message) {
-          setError(err.response.data.message);
+          if (err.response.data.message === "invalid_current_password") {
+            setError('현재 비밀번호가 일치하지 않습니다.');
+          } else if(err.response.data.message === "invalid_password_format") {
+            setError('새 비밀번호는 대문자, 소문자, 숫자, 특수문자를 모두 포함한 8~20자여야 합니다.');
+          }
         } else {
           setError('비밀번호 변경 중 오류가 발생했습니다.');
         }

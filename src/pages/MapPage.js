@@ -4,6 +4,7 @@ import { getMapMarkers, registerMarker, deleteMarker } from '../api/map'; // axi
 import { useAuth } from '../contexts/AuthContext'; // 기존 getUserInfo 대신 useAuth 훅 사용
 
 function MapPage() {
+  const currentFilterTypeRef = useRef("all"); // 필터 유지 위해
   const navigate = useNavigate();
   const mapContainer = useRef(null);
   const [map, setMap] = useState(null);
@@ -118,13 +119,13 @@ function MapPage() {
 
   // 마커 이미지 URL 상수
   const MARKER_IMAGES = {
-    댕플: "https://cdn-icons-png.flaticon.com/512/1596/1596810.png",
+    댕플: "/images/dangple_square.png",
     댕져러스: {
       DEFAULT: "https://cdn-icons-png.flaticon.com/512/4636/4636076.png",
-      들개: "https://cdn-icons-png.flaticon.com/512/2171/2171990.png",
-      빙판길: "https://cdn-icons-png.flaticon.com/512/5435/5435526.png",
-      염화칼슘: "https://cdn-icons-png.flaticon.com/512/9430/9430308.png",
-      공사중: "https://cdn-icons-png.flaticon.com/512/2913/2913371.png",
+      들개: "/images/beware_dog_square.png",
+      빙판길: "/images/icy_road_square.png",
+      염화칼슘: "/images/beware_foot_square.png",
+      공사중: "/images/construction_square.png",
     },
     // 이모티콘 URL 추가
     EMOJI: {
@@ -154,103 +155,56 @@ function MapPage() {
   // 마커 이미지 설정 함수
   const initMarkerImages = useCallback(() => {
     if (!window.kakao || !window.kakao.maps) {
-      // window.kakao.maps가 준비되지 않았으면 초기화하지 않음
       console.log("Kakao Maps API가 아직 준비되지 않았습니다.");
       return;
     }
-
+  
     try {
-      // 댕플 마커 이미지 초기화
-      const dangpleMarkerSize = new window.kakao.maps.Size(40, 40);
-      const dangpleMarkerOption = {
-        offset: new window.kakao.maps.Point(20, 27),
-      };
+      const size = new window.kakao.maps.Size(40, 40);
+      const option = { offset: new window.kakao.maps.Point(20, 20) };
+  
+      // 1. 댕플 마커
       markerImages.current[0].image = new window.kakao.maps.MarkerImage(
         MARKER_IMAGES.댕플,
-        dangpleMarkerSize,
-        dangpleMarkerOption
+        size,
+        option
       );
-
-      // markerImages.current[1]에 서브타입 이미지 객체 추가 확인
+  
+      // 2. 댕져러스 마커 객체 준비
       if (!markerImages.current[1]) {
         markerImages.current[1] = {
           type: "댕져러스",
           subTypes: ["들개", "빙판길", "염화칼슘", "공사중"],
         };
       }
-
-      // 댕져러스 서브타입별 마커 이미지 설정
+  
       const subTypes = ["들개", "빙판길", "염화칼슘", "공사중"];
+  
+      // 3. 각 서브타입별 PNG 이미지로 마커 생성
       subTypes.forEach((subType) => {
-        const size = new window.kakao.maps.Size(40, 40);
-        const option = { offset: new window.kakao.maps.Point(20, 27) };
 
-        try {
-          // 서브타입 이미지 URL 대신 이모티콘 이미지 사용
-          const emojiText = MARKER_IMAGES.EMOJI[subType] || "⚠️";
-
-          // 캔버스를 사용하여 이모티콘 기반 이미지 생성
-          const canvas = document.createElement("canvas");
-          canvas.width = 40;
-          canvas.height = 40;
-          const ctx = canvas.getContext("2d");
-
-          // 배경 원 그리기
-          ctx.beginPath();
-          ctx.arc(20, 20, 18, 0, 2 * Math.PI);
-          ctx.fillStyle = "#3b82f6"; // 파란색 배경
-          ctx.fill();
-
-          // 이모티콘 텍스트 그리기
-          ctx.font = "20px Arial";
-          ctx.textAlign = "center";
-          ctx.textBaseline = "middle";
-          ctx.fillText(emojiText, 20, 18);
-
-          // 캔버스를 데이터 URL로 변환
-          const imgUrl = canvas.toDataURL();
-
-          markerImages.current[1][subType] = new window.kakao.maps.MarkerImage(
-            imgUrl,
-            size,
-            option
-          );
-        } catch (e) {
-          console.error(`서브타입 ${subType} 마커 이미지 초기화 오류:`, e);
-        }
+        const imageSrc = MARKER_IMAGES.댕져러스[subType] || MARKER_IMAGES.댕져러스.DEFAULT;
+  
+        markerImages.current[1][subType] = new window.kakao.maps.MarkerImage(
+          imageSrc,
+          size,
+          option
+        );
       });
-
-      // 기본 댕져러스 마커 이미지 설정도 이모티콘 스타일로 변경
-      const canvas = document.createElement("canvas");
-      canvas.width = 40;
-      canvas.height = 40;
-      const ctx = canvas.getContext("2d");
-
-      // 배경 원 그리기
-      ctx.beginPath();
-      ctx.arc(20, 20, 18, 0, 2 * Math.PI);
-      ctx.fillStyle = "#3b82f6"; // 파란색 배경
-      ctx.fill();
-
-      // 기본 경고 이모티콘
-      ctx.font = "20px Arial";
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-      ctx.fillText("⚠️", 20, 18);
-
-      const defaultImgUrl = canvas.toDataURL();
-
+  
+      // 4. 댕져러스 DEFAULT 마커도 생성
+      const defaultImageSrc = MARKER_IMAGES.댕져러스.DEFAULT;
       markerImages.current[1].image = new window.kakao.maps.MarkerImage(
-        defaultImgUrl,
-        new window.kakao.maps.Size(40, 40),
-        { offset: new window.kakao.maps.Point(20, 27) }
+        defaultImageSrc,
+        size,
+        option
       );
-
-      console.log("마커 이미지 초기화 성공", markerImages.current);
+  
+      console.log("✅ 마커 이미지 모두 PNG로 초기화 완료", markerImages.current);
     } catch (error) {
       console.error("마커 이미지 초기화 중 오류 발생:", error);
     }
-  }, [MARKER_IMAGES]);
+  }, []);
 
   // addMarker 함수의 ref 추가
   const addMarkerRef = useRef(null);
@@ -382,36 +336,35 @@ function MapPage() {
           }
         );
 
-        // 보이는 마커 업데이트 함수
+        // 보이는 마커 업데이트 함수 (필터 적용 버전)
         const updateVisibleMarkers = (mapInstance) => {
           if (!mapInstance) return;
 
-          // 현재 맵 경계 가져오기
           const bounds = mapInstance.getBounds();
           mapBoundsRef.current = bounds;
 
-          // 보이는 영역에 있는 마커만 필터링
           const currentMarkers = markersRef.current;
+          const filterType = currentFilterTypeRef.current;
+
           if (currentMarkers && currentMarkers.length > 0) {
-            // 모든 마커는 지도에 계속 표시되도록 유지
-            currentMarkers.forEach((markerInfo) => {
-              // 이미 지도에 표시되지 않은 마커만 다시 표시 (필터링된 마커는 제외)
-              if (markerInfo.marker && !markerInfo.marker.getMap()) {
+            const visibleMarkersFiltered = currentMarkers.filter((markerInfo) => {
+              if (!markerInfo.marker) return false;
+
+              const inBounds = bounds.contain(markerInfo.marker.getPosition());
+              const matchesFilter =
+                filterType === "all" || markerInfo.type === filterType;
+
+              // 👉 필터와 영역 조건 모두 만족하는 경우만 지도에 표시
+              if (inBounds && matchesFilter) {
                 markerInfo.marker.setMap(mapInstance);
+                return true;
+              } else {
+                markerInfo.marker.setMap(null); // 조건 안 맞으면 숨기기
+                return false;
               }
             });
 
-            // 보이는 영역에 있는 마커만 필터링하여 visibleMarkers 상태와 클러스터러 업데이트
-            const visibleMarkersFiltered = currentMarkers.filter(
-              (markerInfo) => {
-                if (!markerInfo.marker) return false;
-
-                const markerPosition = markerInfo.marker.getPosition();
-                return bounds.contain(markerPosition);
-              }
-            );
-
-            // 보이는 마커 업데이트 (배치 업데이트)
+            // 상태 업데이트
             setVisibleMarkers(visibleMarkersFiltered);
 
             // 클러스터러 업데이트
@@ -1078,6 +1031,9 @@ function MapPage() {
   
       setMarkers(newMarkers);
       setMapMarkers(newMarkers.map(m => m.marker));
+
+      // ⭐️ 현재 필터 다시 적용
+      filterMarkersByType(currentFilterTypeRef.current);
     } catch (error) {
       const message = error.response?.data?.message;  // 응답 메시지
       const status = error.response?.status;  // 응답 코드
@@ -1101,12 +1057,9 @@ function MapPage() {
     }
   }, [map]);
   // 마커 타입 필터링 함수
-  const filterMarkersByType = useCallback(
-    (type) => {
-      // 선택된 필터 타입 저장용 상태 변수가 있다면 업데이트
-      if (typeof setFilterType === "function") {
-        setFilterType(type);
-      }
+  const filterMarkersByType = useCallback((type) => {
+      currentFilterTypeRef.current = type; // ⭐️ 현재 필터 타입 기억
+      setFilterType(type);
 
       // 마커 맵 표시 상태 일괄 업데이트 (최적화)
       const markersToShow = [];
@@ -1299,25 +1252,11 @@ function MapPage() {
         {isCenterMode && (
           <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-[60%] z-10 pointer-events-none">
             <div className="relative">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-10 w-10 text-amber-800"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                />
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                />
-              </svg>
+              <img
+                src="/images/cross-mark.png"
+                alt="중앙 마커"
+                className="w-4 h-4" // tailwind 기준 크기 변경 10 : 40px?
+              />
               <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 whitespace-nowrap bg-black bg-opacity-70 px-2 py-1 rounded text-white text-xs">
                 지도를 움직여 위치 조정
               </div>
@@ -1333,22 +1272,20 @@ function MapPage() {
               addMarkerAtCenter("댕플");
               setShowSubTypeButtons(false); // 서브타입 옵션 닫기
             }}
-            className="flex items-center justify-center w-12 h-12 bg-amber-500 hover:bg-amber-600 rounded-full shadow-lg text-white"
+            className="flex items-center justify-center w-12 h-12 bg-amber-300 hover:bg-amber-500 rounded-full shadow-lg"
             aria-label="댕플 마커 추가"
           >
-            <span role="img" aria-label="강아지" className="text-xl">
-              🐶
-            </span>
+            <img src = "/images/dangple_square.png" alt = "댕플" className="w-9 h-9 object-contain"/>
           </button>
 
           {/* 댕져러스 마커 추가 버튼 */}
           <div className="relative">
             <button
               onClick={() => setShowSubTypeButtons(!showSubTypeButtons)}
-              className="flex items-center justify-center w-12 h-12 bg-blue-500 hover:bg-blue-600 rounded-full shadow-lg text-white"
+              className="flex items-center justify-center w-12 h-12 bg-red-600 hover:bg-red-800 rounded-full shadow-lg text-white"
               aria-label="댕져러스 마커 추가"
             >
-              <span role="img" aria-label="위험" className="text-xl">
+              <span role="img" aria-label="위험" className="text-2xl">
                 ⚠️
               </span>
             </button>
@@ -1362,48 +1299,40 @@ function MapPage() {
                       addDangerousMarkerWithSubType("들개");
                       setShowSubTypeButtons(false); // 선택 후 닫기
                     }}
-                    className="flex items-center justify-center w-12 h-12 bg-blue-500 hover:bg-blue-600/300 rounded-full shadow-lg"
+                    className="relative flex items-center justify-center w-12 h-12 bg-red-600 hover:bg-red-800 rounded-full shadow-lg"
                     title="들개"
                   >
-                    <span role="img" aria-label="들개">
-                      🐕
-                    </span>
+                    <img src="/images/beware_dog_square.png" alt="들개" className="w-9 h-9 object-contain absolute right-[5px] "/>
                   </button>
                   <button
                     onClick={() => {
                       addDangerousMarkerWithSubType("빙판길");
                       setShowSubTypeButtons(false); // 선택 후 닫기
                     }}
-                    className="flex items-center justify-center w-12 h-12 bg-blue-500 hover:bg-blue-600/90 rounded-full shadow-lg"
+                    className="relative flex items-center justify-center w-12 h-12 bg-red-600 hover:bg-red-800 rounded-full shadow-lg"
                     title="빙판길"
                   >
-                    <span role="img" aria-label="빙판길">
-                      🧊
-                    </span>
+                    <img src="/images/icy_road_square.png" alt="빙판길" className="w-9 h-9 object-contain absolute top-1"/>
                   </button>
                   <button
                     onClick={() => {
                       addDangerousMarkerWithSubType("염화칼슘");
                       setShowSubTypeButtons(false); // 선택 후 닫기
                     }}
-                    className="flex items-center justify-center w-12 h-12 bg-blue-500 hover:bg-blue-600/90 rounded-full shadow-lg"
+                    className="flex items-center justify-center w-12 h-12 bg-red-600 hover:bg-red-800 rounded-full shadow-lg"
                     title="염화칼슘"
                   >
-                    <span role="img" aria-label="염화칼슘">
-                      🧂
-                    </span>
+                    <img src="/images/beware_foot_square.png" alt="염화칼슘" className="w-9 h-9 object-contain"/>
                   </button>
                   <button
                     onClick={() => {
                       addDangerousMarkerWithSubType("공사중");
                       setShowSubTypeButtons(false); // 선택 후 닫기
                     }}
-                    className="flex items-center justify-center w-12 h-12 bg-blue-500 hover:bg-blue-600/90 rounded-full shadow-lg"
+                    className="relative flex items-center justify-center w-12 h-12 bg-red-600 hover:bg-red-800 rounded-full shadow-lg"
                     title="공사중"
                   >
-                    <span role="img" aria-label="공사중">
-                      🚧
-                    </span>
+                    <img src="/images/construction_square.png" alt="공사중" className="w-9 h-9 object-contain absolute top-1"/>
                   </button>
                 </div>
               </div>
@@ -1411,15 +1340,15 @@ function MapPage() {
           </div>
         </div>
 
-        {/* 좌표 정보 표시 */}
-        <div className="absolute bottom-36 left-0 right-0 flex justify-center">
+        {/* 좌표 정보 표시 제리 주석 처리*/}
+        {/* <div className="absolute bottom-36 left-0 right-0 flex justify-center">
           <div className="bg-white px-4 py-2 rounded-full shadow-md text-sm">
             <span className="font-medium">
               위도: {centerPosition.lat.toFixed(6)}, 경도:{" "}
               {centerPosition.lng.toFixed(6)}
             </span>
           </div>
-        </div>
+        </div> */}
 
         {/* 지도 상단에 마커 타입 필터링 버튼 추가 - 배경 없이 왼쪽 정렬 */}
         <div className="absolute top-4 left-4 z-20 flex gap-2">

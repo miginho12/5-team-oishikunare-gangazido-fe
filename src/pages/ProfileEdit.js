@@ -102,8 +102,8 @@ function ProfileEdit() {
     }
     
     // 닉네임 길이 체크
-    if (nickname.length < 2 || nickname.length > 10) {
-      setToastMessage("닉네임은 2~10자 이내로 입력해주세요.");
+    if (nickname.length < 2 || nickname.length > 20) {
+      setToastMessage("닉네임은 2~20자 이내로 입력해주세요.");
       setShowToast(true);
       return;
     }
@@ -236,7 +236,7 @@ function ProfileEdit() {
                 className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
                 required
               />
-              <p className="text-xs text-gray-500 mt-1">2~10자 이내로 입력해주세요</p>
+              <p className="text-xs text-gray-500 mt-1">2~20자 이내로 입력해주세요</p>
             </div>
 
             <button 

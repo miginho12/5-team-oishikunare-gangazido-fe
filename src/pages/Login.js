@@ -72,8 +72,15 @@ function Login() {
     } catch (err) {
       console.error('로그인 오류:', err);
       console.error('오류 응답:', err.response?.data);
-      
-      setError(err.response?.data?.message || '로그인 중 오류가 발생했습니다.');
+      err.response?.data?.message
+      // 특정 에러 코드에 대한 맞춤 메시지 설정
+      if (err.response?.data?.message === 'invalid_email') {
+        setError('이메일을 다시 입력해주세요');
+      } else if (err.response?.data?.message === 'invalid_password') {
+        setError('비밀번호를 다시 입력해주세요');
+      } else {
+        setError(err.response?.data?.message || '로그인 중 오류가 발생했습니다');
+      }
     } finally {
       setLoading(false);
     }

@@ -6,7 +6,6 @@ function PetRegister() {
   const navigate = useNavigate();
   const [showToast, setShowToast] = useState(false);
 
-  // 상태 관리
   const [name, setName] = useState('');
   const [breed, setBreed] = useState('');
   const [age, setAge] = useState('');
@@ -15,18 +14,33 @@ function PetRegister() {
   const [profileImage, setProfileImage] = useState(null);
   const [profileImagePreview, setProfileImagePreview] = useState(null);
 
-  // 네비게이션 버튼들
+  const [nameError, setNameError] = useState('');
+  const [ageError, setAgeError] = useState('');
+  const [weightError, setWeightError] = useState('');
+  const [genderError, setGenderError] = useState('');
+  const [breedError, setBreedError] = useState('');
+  const [touched, setTouched] = useState({
+    name: false,
+    breed: false,
+    age: false,
+    gender: false,
+    weight: false,
+  });
+
   const goToMap = () => navigate('/map');
   const goToChat = () => navigate('/chat');
   const goToProfile = () => navigate('/profile');
   const goToPetInfo = () => navigate('/pets');
 
   const handleRegister = async () => {
+    const isValid = validateFields(); // 1. 프론트 유효성 검사 먼저
+    if (!isValid) return;
+
     try {
       const petData = {
         name,
         age: parseInt(age),
-        gender: gender === 'true',
+        gender: gender === 'male',
         breed,
         weight: parseFloat(weight),
         profileImage,
@@ -39,7 +53,8 @@ function PetRegister() {
         navigate('/pets');
       }, 2000);
     } catch (error) {
-      console.error('반려견 등록 실패:', error);
+      const errorMsg = error.response?.data?.message;
+      handleRegisterError(errorMsg); // 3. 백엔드 에러 메시지 처리
     }
   };
 
@@ -48,6 +63,159 @@ function PetRegister() {
       const file = e.target.files[0];
       setProfileImage(file); // 전송용 파일
       setProfileImagePreview(URL.createObjectURL(file)); // 미리보기용 URL
+    }
+  };
+
+  // 프론트 자체 유효성 검사
+  const validateFields = () => {
+    let isValid = true;
+  
+    setNameError('');
+    setAgeError('');
+    setWeightError('');
+    setGenderError('');
+    setBreedError('');
+  
+    // 이름
+    const nameRegex = /^[가-힣a-zA-Z]+$/;
+    if (!name) {
+      setNameError('반려견의 이름을 입력해주세요.');
+      isValid = false;
+    } else if (!nameRegex.test(name)) {
+      setNameError('반려견의 이름은 한글 또는 영문만 입력 가능합니다.');
+      isValid = false;
+    } else if (name.length > 10) {
+      setNameError('반려견의 이름은 최대 10자까지 입력 가능합니다.');
+      isValid = false;
+    }
+  
+    // 나이
+    const ageNum = parseInt(age);
+    if (!age) {
+      setAgeError('반려견의 나이를 입력해주세요.');
+      isValid = false;
+    } else if (isNaN(ageNum)) {
+      setAgeError('반려견의 나이는 숫자로 입력해주세요.');
+      isValid = false;
+    } else if (ageNum <= 0) {
+      setAgeError('반려견의 나이는 0살 이상이어야 해요.');
+      isValid = false;
+    } else if (ageNum >= 200) {
+      setAgeError('입력값이 너무 큽니다. 올바른 나이를 입력해주세요.');
+      isValid = false;
+    }
+  
+    // 몸무게
+    const trimmed = String(weight).trim();
+    const weightNum = parseFloat(trimmed);
+
+    if (trimmed === '') {
+      setWeightError('반려견의 몸무게를 입력해주세요.');
+      isValid = false;
+    } else if (isNaN(weightNum)) {
+      setWeightError('올바른 몸무게 형식을 입력해주세요. (예: 5 또는 5.2)');
+      isValid = false;
+    } else if (weightNum <= 0) {
+      setWeightError('반려견의 몸무게는 0kg 이상이어야 해요.');
+      isValid = false;
+    } else if (weightNum >= 200) {
+      setWeightError('입력값이 너무 큽니다. 올바른 몸무게를 입력해주세요.');
+      isValid = false;
+    } else {
+      setWeightError('');
+    }
+  
+    // 성별
+    if (!gender) {
+      setGenderError('반려견의 성별을 선택해주세요.');
+      isValid = false;
+    }
+  
+    // 품종
+    if (!breed) {
+      setBreedError('반려견의 품종을 입력해주세요.');
+      isValid = false;
+    }
+  
+    return isValid;
+  };
+
+  const handleBlur = (field) => {
+    setTouched((prev) => ({ ...prev, [field]: true }));
+    validateFields(field); // 💡 이렇게 분리해서 바로 호출
+  };
+
+  // 백엔드 응답 처리
+  const handleRegisterError = (message) => {
+    setNameError('');
+    setAgeError('');
+    setWeightError('');
+    setGenderError('');
+    setBreedError('');
+  
+    switch (message) {
+      case 'required_pet_name':
+        setNameError('반려견의 이름을 입력해주세요.');
+        break;
+      case 'invalid_pet_name_format':
+        setNameError('반려견의 이름은 한글 또는 영문만 입력 가능합니다.');
+        break;
+      case 'invalid_pet_name_length':
+        setNameError('반려견의 이름은 최대 10자까지 입력 가능합니다.');
+        break;
+  
+      case 'required_pet_age':
+        setAgeError('반려견의 나이를 입력해주세요.');
+        break;
+      case 'invalid_pet_age_format':
+        setAgeError('반려견의 나이는 숫자로 입력해주세요.');
+        break;
+      case 'invalid_pet_age_value':
+        setAgeError('반려견의 나이는 0살 이상이어야 해요.');
+        break;
+  
+      case 'required_pet_weight':
+        setWeightError('반려견의 몸무게를 입력해주세요.');
+        break;
+      case 'invalid_pet_weight':
+        setWeightError('올바른 몸무게 형식을 입력해주세요. (예: 5 또는 5.2)');
+        break;
+  
+      case 'required_pet_gender':
+        setGenderError('반려견의 성별을 선택해주세요.');
+        break;
+  
+      case 'required_pet_breed':
+        setBreedError('반려견의 품종을 입력해주세요.');
+        break;
+  
+      case 'already_exits_pet':
+        setNameError('이미 등록된 반려견이 있어요.');
+        break;
+  
+      case 'required_authorization':
+        alert('로그인이 필요합니다.');
+        navigate('/login');
+        break;
+
+      case 'required_permission': 
+        alert('해당 반려견에 대한 수정 권한이 없습니다.');
+        break;
+  
+      case 'not_found_user':
+        alert('사용자를 찾을 수 없습니다.');
+        break;
+
+      case 'not_found_pet': 
+        alert('반려견 정보를 찾을 수 없습니다.');
+        break;
+
+      case 'internal_server_error':
+        alert('서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+        break;
+  
+      default:
+        alert('알 수 없는 오류가 발생했습니다.');
     }
   };
 
@@ -104,45 +272,60 @@ function PetRegister() {
           <div className="space-y-4">
             <div className="relative">
               <label className="block text-sm font-medium text-gray-700 mb-1">반려견 이름 <span className="text-red-500">*</span></label>
+              {/* 이름 */}
               <input
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                onBlur={() => handleBlur('name')}
                 placeholder="반려견 이름을 입력하세요"
                 className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
                 required
               />
+              {touched.name && nameError && (
+                <p className="text-sm text-red-500 mt-1">{nameError}</p>
+              )}
             </div>
-
             <div className="relative">
               <label className="block text-sm font-medium text-gray-700 mb-1">품종 <span className="text-red-500">*</span></label>
+              {/* 품종 */}
               <input
                 type="text"
                 value={breed}
                 onChange={(e) => setBreed(e.target.value)}
+                onBlur={() => handleBlur('breed')}
                 placeholder="품종을 입력하세요"
                 className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
                 required
               />
+              {touched.breed && breedError && (
+                <p className="text-sm text-red-500 mt-1">{breedError}</p>
+              )}
             </div>
-
             <div className="grid grid-cols-2 gap-4">
               <div className="relative">
                 <label className="block text-sm font-medium text-gray-700 mb-1">나이 <span className="text-red-500">*</span></label>
+                {/* 나이 */}
                 <input
                   type="number"
                   value={age}
                   onChange={(e) => setAge(e.target.value)}
+                  onBlur={() => handleBlur('age')}
                   placeholder="나이"
                   className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
                   required
                 />
+                {touched.age && ageError && (
+                  <p className="text-sm text-red-500 mt-1">{ageError}</p>
+                )}
               </div>
               <div className="relative">
                 <label className="block text-sm font-medium text-gray-700 mb-1">성별 <span className="text-red-500">*</span></label>
+                {/* 성별 */}
                 <select
                   value={gender}
                   onChange={(e) => setGender(e.target.value)}
+                  onBlur={() => handleBlur('gender')}
                   className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
                   required
                 >
@@ -150,20 +333,28 @@ function PetRegister() {
                   <option value="male">수컷</option>
                   <option value="female">암컷</option>
                 </select>
+                {touched.gender && genderError && (
+                  <p className="text-sm text-red-500 mt-1">{genderError}</p>
+                )}
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div className="relative">
                 <label className="block text-sm font-medium text-gray-700 mb-1">몸무게 (kg)</label>
+                {/* 몸무게 */}
                 <input
                   type="number"
                   step="0.1"
                   value={weight}
                   onChange={(e) => setWeight(e.target.value)}
+                  onBlur={() => handleBlur('weight')}
                   placeholder="몸무게"
                   className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
                 />
+                {touched.weight && weightError && (
+                  <p className="text-sm text-red-500 mt-1">{weightError}</p>
+                )}
               </div>
               <div className="relative">
                 <label className="block text-sm font-medium text-gray-700 mb-1">중성화 여부</label>
