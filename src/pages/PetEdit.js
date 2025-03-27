@@ -163,7 +163,7 @@ function PetEdit() {
       setAgeError('반려견의 나이는 숫자로 입력해주세요.');
       isValid = false;
     } else if (ageNum <= 0) {
-      setAgeError('반려견의 나이는 0살 이상이어야 해요.');
+      setAgeError('반려견의 나이는 1살 이상이어야 해요.');
       isValid = false;
     } else if (ageNum >= 200) {
       setAgeError('입력값이 너무 큽니다. 올바른 나이를 입력해주세요.');
@@ -234,7 +234,7 @@ function PetEdit() {
         setAgeError('반려견의 나이는 숫자로 입력해주세요.');
         break;
       case 'invalid_pet_age_value':
-        setAgeError('반려견의 나이는 0살 이상이어야 해요.');
+        setAgeError('반려견의 나이는 1살 이상이어야 해요.');
         break;
   
       case 'required_pet_weight':
@@ -263,6 +263,10 @@ function PetEdit() {
   
       case 'not_found_user':
         alert('사용자를 찾을 수 없습니다.');
+        break;
+
+      case 'not_found_pet': 
+        alert('반려견 정보를 찾을 수 없습니다.');
         break;
   
       case 'internal_server_error':
