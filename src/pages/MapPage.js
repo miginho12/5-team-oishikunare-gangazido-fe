@@ -4,6 +4,7 @@ import { getMapMarkers, registerMarker, deleteMarker } from '../api/map'; // axi
 import { useAuth } from '../contexts/AuthContext'; // 기존 getUserInfo 대신 useAuth 훅 사용
 
 function MapPage() {
+  const currentFilterTypeRef = useRef("all"); // 필터 유지 위해
   const navigate = useNavigate();
   const mapContainer = useRef(null);
   const [map, setMap] = useState(null);
@@ -334,36 +335,35 @@ function MapPage() {
           }
         );
 
-        // 보이는 마커 업데이트 함수
+        // 보이는 마커 업데이트 함수 (필터 적용 버전)
         const updateVisibleMarkers = (mapInstance) => {
           if (!mapInstance) return;
 
-          // 현재 맵 경계 가져오기
           const bounds = mapInstance.getBounds();
           mapBoundsRef.current = bounds;
 
-          // 보이는 영역에 있는 마커만 필터링
           const currentMarkers = markersRef.current;
+          const filterType = currentFilterTypeRef.current;
+
           if (currentMarkers && currentMarkers.length > 0) {
-            // 모든 마커는 지도에 계속 표시되도록 유지
-            currentMarkers.forEach((markerInfo) => {
-              // 이미 지도에 표시되지 않은 마커만 다시 표시 (필터링된 마커는 제외)
-              if (markerInfo.marker && !markerInfo.marker.getMap()) {
+            const visibleMarkersFiltered = currentMarkers.filter((markerInfo) => {
+              if (!markerInfo.marker) return false;
+
+              const inBounds = bounds.contain(markerInfo.marker.getPosition());
+              const matchesFilter =
+                filterType === "all" || markerInfo.type === filterType;
+
+              // 👉 필터와 영역 조건 모두 만족하는 경우만 지도에 표시
+              if (inBounds && matchesFilter) {
                 markerInfo.marker.setMap(mapInstance);
+                return true;
+              } else {
+                markerInfo.marker.setMap(null); // 조건 안 맞으면 숨기기
+                return false;
               }
             });
 
-            // 보이는 영역에 있는 마커만 필터링하여 visibleMarkers 상태와 클러스터러 업데이트
-            const visibleMarkersFiltered = currentMarkers.filter(
-              (markerInfo) => {
-                if (!markerInfo.marker) return false;
-
-                const markerPosition = markerInfo.marker.getPosition();
-                return bounds.contain(markerPosition);
-              }
-            );
-
-            // 보이는 마커 업데이트 (배치 업데이트)
+            // 상태 업데이트
             setVisibleMarkers(visibleMarkersFiltered);
 
             // 클러스터러 업데이트
@@ -1030,6 +1030,9 @@ function MapPage() {
   
       setMarkers(newMarkers);
       setMapMarkers(newMarkers.map(m => m.marker));
+
+      // ⭐️ 현재 필터 다시 적용
+      filterMarkersByType(currentFilterTypeRef.current);
     } catch (error) {
       const message = error.response?.data?.message;  // 응답 메시지
       const status = error.response?.status;  // 응답 코드
@@ -1053,12 +1056,9 @@ function MapPage() {
     }
   }, [map]);
   // 마커 타입 필터링 함수
-  const filterMarkersByType = useCallback(
-    (type) => {
-      // 선택된 필터 타입 저장용 상태 변수가 있다면 업데이트
-      if (typeof setFilterType === "function") {
-        setFilterType(type);
-      }
+  const filterMarkersByType = useCallback((type) => {
+      currentFilterTypeRef.current = type; // ⭐️ 현재 필터 타입 기억
+      setFilterType(type);
 
       // 마커 맵 표시 상태 일괄 업데이트 (최적화)
       const markersToShow = [];
