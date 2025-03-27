@@ -1,11 +1,15 @@
-import React, { useState, useEffect } from 'react';
+/*import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { sendLLMChat } from '../api/chat'; // ✅ 실제 API 호출 추가
-import { useAuth } from '../contexts/AuthContext'; // AuthContext 불러오기
+import axios from 'axios';*/
+
+import React, { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { sendLLMChat } from '../api/chat';
+import axios from 'axios';
 
 function ChatPage() {
   const navigate = useNavigate();
-  const { isAuthenticated, loading } = useAuth(); // AuthContext에서 인증 상태 가져오기
   const [message, setMessage] = useState('');
   const [chatMessages, setChatMessages] = useState([
     {
@@ -16,13 +20,114 @@ function ChatPage() {
     },
   ]);
 
-  // 페이지 로드 시 인증 상태 확인
+  const chatEndRef = useRef(null);
+
   useEffect(() => {
-    // 로딩이 완료되고 인증되지 않은 사용자는 로그인 페이지로 리다이렉션
-    if (!loading && !isAuthenticated) {
-      navigate('/login');
+    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [chatMessages]);
+
+  const suggestedQuestions = [
+    '오늘 산책하는거 어떨까?',
+    '오늘 옷은 어떻게 입히는 게 좋을까?',
+    '오늘 미세먼지 어때?',
+  ];
+
+  const goToMap = () => navigate('/map');
+  const goToProfile = () => navigate('/profile');
+  const goToPetInfo = () => navigate('/pets');
+
+  const handleSendMessage = async (overrideMessage = null) => {
+    const userInput = overrideMessage ?? message;
+
+    if (userInput.trim() === '') return;
+
+    const newUserMessage = {
+      id: chatMessages.length + 1,
+      text: userInput,
+      isUser: true,
+      time: new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' }),
+    };
+
+    const loadingMessage = {
+      id: newUserMessage.id + 1,
+      text: '답변을 생성 중입니다...',
+      isUser: false,
+      time: '',
+    };
+
+    setChatMessages((prev) => [...prev, newUserMessage, loadingMessage]);
+    setMessage('');
+
+    try {
+      const latitude = 33.450701;
+      const longitude = 126.570667;
+
+      const { data } = await sendLLMChat({
+        latitude,
+        longitude,
+        message: userInput,
+      });
+
+      const cleanResponse = data.data.response.replace(/```json\n|\n```/g, '');
+
+      let parsed, aiText;
+
+      try {
+        parsed = JSON.parse(cleanResponse);
+        aiText = `🐾 오늘은 ${parsed.recommendation}!\n📌 이유: ${parsed.reason}\n✅ 팁: ${parsed.safety_tips.join(', ')}`;
+      } catch {
+        aiText = cleanResponse;
+      }
+
+      const aiResponse = {
+        id: loadingMessage.id,
+        text: aiText,
+        isUser: false,
+        time: new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' }),
+      };
+
+      setChatMessages((prev) => prev.slice(0, -1).concat(aiResponse));
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        const status = error.response.status;
+        switch (status) {
+          case 401: alert('로그인 해주세요'); break;
+          case 404: alert('반려견 정보를 찾을 수 없습니다.'); break;
+          case 400: alert('요청 형식이 잘못되었거나 날씨 정보가 유효하지 않습니다.'); break;
+          case 500: alert('서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.'); break;
+          default: alert(`알 수 없는 오류가 발생했습니다. (${status})`);
+        }
+      } else {
+        alert('예상치 못한 네트워크 오류가 발생했습니다.');
+      }
+
+      const errorResponse = {
+        id: loadingMessage.id,
+        text: 'AI 응답에 실패했어요. 다시 시도해주세요!',
+        isUser: false,
+        time: new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' }),
+      };
+
+      setChatMessages((prev) => prev.slice(0, -1).concat(errorResponse));
     }
-  }, [loading, isAuthenticated, navigate]);
+  };
+
+  const handleSuggestedQuestion = (question) => {
+    handleSendMessage(question); // 바로 전송
+  };
+
+/*
+function ChatPage() {
+  const navigate = useNavigate();
+  const [message, setMessage] = useState('');
+  const [chatMessages, setChatMessages] = useState([
+    {
+      id: 1,
+      text: '안녕하세요! 반려견에 관한 질문이 있으신가요?',
+      isUser: false,
+      time: '오전 10:30',
+    },
+  ]);
 
   const [suggestedQuestions] = useState([
     '오늘 산책하는거 어떨까?',
@@ -85,7 +190,30 @@ function ChatPage() {
 
       setChatMessages((prev) => [...prev, aiResponse]);
     } catch (error) {
-      console.error('AI 응답 오류:', error);
+      if (axios.isAxiosError(error) && error.response) {
+        const status = error.response.status;
+
+      // ✅ 상태 코드별 한글 메시지
+      switch (status) {
+        case 401:
+          alert('로그인 해주세요');
+          break;
+        case 404:
+          alert('반려견 정보를 찾을 수 없습니다.');
+          break;
+        case 400:
+          alert('요청 형식이 잘못되었거나 날씨 정보가 유효하지 않습니다.');
+          break;
+        case 500:
+          alert('서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+          break;
+        default:
+          alert(`알 수 없는 오류가 발생했습니다. (${status})`);
+      } 
+    }else {
+        alert('예상치 못한 네트워크 오류가 발생했습니다.');
+      }
+
       const errorResponse = {
         id: newUserMessage.id + 1,
         text: 'AI 응답에 실패했어요. 다시 시도해주세요!',
@@ -99,9 +227,30 @@ function ChatPage() {
 
   const handleSuggestedQuestion = (question) => {
     setMessage(question);
+    setTimeout(() => handleSendMessage(), 0); // message 업데이트 이후 전송
   };
 
+  const loadingMessage = {
+    id: newUserMessage.id + 1,
+    text: '답변을 생성 중입니다...',
+    isUser: false,
+    time: '',
+  };
+  
+  setChatMessages((prev) => [...prev, loadingMessage]);
+  
 
+
+  const chatEndRef = useRef(null);
+
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [chatMessages]);
+  
+  setChatMessages((prev) =>
+    prev.slice(0, -1).concat(aiResponse) // 마지막 메시지를 GPT 응답으로 교체
+  );
+*/
 
   return (
     <div className="flex flex-col h-full bg-gray-50">
@@ -126,6 +275,7 @@ function ChatPage() {
               </div>
             </div>
           ))}
+          <div ref={chatEndRef} />
         </div>
       </div>
 
