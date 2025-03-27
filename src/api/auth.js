@@ -11,7 +11,7 @@ export const registerUser = (userData) => {
   formData.append("user_password_confirm", userData.user_password_confirm); // 다시 원래 필드명으로 변경
   formData.append("user_nickname", userData.user_nickname);
   if (userData.user_profileImage) {
-    formData.append("user_profile_image", userData.user_profileImage);
+    formData.append("user_profileImage", userData.user_profileImage);
   }
   
   // 디버그를 위해 formData 내용 확인
@@ -27,6 +27,9 @@ export const registerUser = (userData) => {
     withCredentials: true
   });
 };
+
+
+
 
 // 로그인
 export const loginUser = (credentials) => {

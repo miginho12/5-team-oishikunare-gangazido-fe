@@ -18,6 +18,7 @@ body {
   align-items: center;
   width: 100%;
   height: 100vh;
+  min-width: 402px;
 }
 
 .App {
@@ -26,6 +27,7 @@ body {
   align-items: center;
   width: 100%;
   height: 100%;
+  min-width: 402px;
 }
 
 .mobile-container {
@@ -37,13 +39,14 @@ body {
   position: relative;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
   display: flex;
+  flex-shrink: 0;
   flex-direction: column;
 }
 
 /* 모바일 화면에서는 전체 화면으로 표시 */
 @media (max-width: 767px) {
   .mobile-container {
-    width: 100%;
+    width: 402px;
     height: 100vh;
     border-radius: 0;
   }
