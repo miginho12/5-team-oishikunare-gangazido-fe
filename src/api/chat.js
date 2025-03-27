@@ -1,6 +1,6 @@
 //chat.js
 import api from './index';
-const apiURL = window.env?.API_BASE_URL;
+const apiURL = window._env_?.API_BASE_URL;
 
 
 // LLM 채팅 전송

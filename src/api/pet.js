@@ -1,5 +1,5 @@
 import api from './index';
-const apiURL = window.env?.API_BASE_URL;
+const apiURL = window._env_?.API_BASE_URL;
 
 // 반려동물 등록
 export const registerPet = (petData) => {
