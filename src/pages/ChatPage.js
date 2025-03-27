@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { sendLLMChat } from '../api/chat'; // ✅ 실제 API 호출 추가
+import axios from 'axios';
 
 function ChatPage() {
   const navigate = useNavigate();
@@ -76,7 +77,30 @@ function ChatPage() {
 
       setChatMessages((prev) => [...prev, aiResponse]);
     } catch (error) {
-      console.error('AI 응답 오류:', error);
+      if (axios.isAxiosError(error) && error.response) {
+        const status = error.response.status;
+
+      // ✅ 상태 코드별 한글 메시지
+      switch (status) {
+        case 401:
+          alert('로그인 해주세요');
+          break;
+        case 404:
+          alert('반려견 정보를 찾을 수 없습니다.');
+          break;
+        case 400:
+          alert('요청 형식이 잘못되었거나 날씨 정보가 유효하지 않습니다.');
+          break;
+        case 500:
+          alert('서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+          break;
+        default:
+          alert(`알 수 없는 오류가 발생했습니다. (${status})`);
+      } 
+    }else {
+        alert('예상치 못한 네트워크 오류가 발생했습니다.');
+      }
+
       const errorResponse = {
         id: newUserMessage.id + 1,
         text: 'AI 응답에 실패했어요. 다시 시도해주세요!',
