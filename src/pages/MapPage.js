@@ -1271,7 +1271,7 @@ function MapPage() {
               addMarkerAtCenter("댕플");
               setShowSubTypeButtons(false); // 서브타입 옵션 닫기
             }}
-            className="flex items-center justify-center w-12 h-12 bg-amber-500 hover:bg-amber-600 rounded-full shadow-lg text-white"
+            className="flex items-center justify-center w-12 h-12 bg-amber-300 hover:bg-amber-500 rounded-full shadow-lg"
             aria-label="댕플 마커 추가"
           >
             <img src = "/images/dangple_square.png" alt = "댕플" className="w-9 h-9 object-contain"/>
@@ -1281,7 +1281,7 @@ function MapPage() {
           <div className="relative">
             <button
               onClick={() => setShowSubTypeButtons(!showSubTypeButtons)}
-              className="flex items-center justify-center w-12 h-12 bg-blue-500 hover:bg-blue-600 rounded-full shadow-lg text-white"
+              className="flex items-center justify-center w-12 h-12 bg-red-600 hover:bg-red-800 rounded-full shadow-lg text-white"
               aria-label="댕져러스 마커 추가"
             >
               <span role="img" aria-label="위험" className="text-2xl">
@@ -1298,7 +1298,7 @@ function MapPage() {
                       addDangerousMarkerWithSubType("들개");
                       setShowSubTypeButtons(false); // 선택 후 닫기
                     }}
-                    className="relative flex items-center justify-center w-12 h-12 bg-blue-500 hover:bg-blue-600/300 rounded-full shadow-lg"
+                    className="relative flex items-center justify-center w-12 h-12 bg-red-600 hover:bg-red-800 rounded-full shadow-lg"
                     title="들개"
                   >
                     <img src="/images/beware_dog_square.png" alt="들개" className="w-9 h-9 object-contain absolute right-[5px] "/>
@@ -1308,7 +1308,7 @@ function MapPage() {
                       addDangerousMarkerWithSubType("빙판길");
                       setShowSubTypeButtons(false); // 선택 후 닫기
                     }}
-                    className="relative flex items-center justify-center w-12 h-12 bg-blue-500 hover:bg-blue-600/90 rounded-full shadow-lg"
+                    className="relative flex items-center justify-center w-12 h-12 bg-red-600 hover:bg-red-800 rounded-full shadow-lg"
                     title="빙판길"
                   >
                     <img src="/images/icy_road_square.png" alt="빙판길" className="w-9 h-9 object-contain absolute top-1"/>
@@ -1318,7 +1318,7 @@ function MapPage() {
                       addDangerousMarkerWithSubType("염화칼슘");
                       setShowSubTypeButtons(false); // 선택 후 닫기
                     }}
-                    className="flex items-center justify-center w-12 h-12 bg-blue-500 hover:bg-blue-600/90 rounded-full shadow-lg"
+                    className="flex items-center justify-center w-12 h-12 bg-red-600 hover:bg-red-800 rounded-full shadow-lg"
                     title="염화칼슘"
                   >
                     <img src="/images/beware_foot_square.png" alt="염화칼슘" className="w-9 h-9 object-contain"/>
@@ -1328,7 +1328,7 @@ function MapPage() {
                       addDangerousMarkerWithSubType("공사중");
                       setShowSubTypeButtons(false); // 선택 후 닫기
                     }}
-                    className="relative flex items-center justify-center w-12 h-12 bg-blue-500 hover:bg-blue-600/90 rounded-full shadow-lg"
+                    className="relative flex items-center justify-center w-12 h-12 bg-red-600 hover:bg-red-800 rounded-full shadow-lg"
                     title="공사중"
                   >
                     <img src="/images/construction_square.png" alt="공사중" className="w-9 h-9 object-contain absolute top-1"/>
