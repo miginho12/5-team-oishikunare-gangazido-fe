@@ -27,6 +27,21 @@ function PetRegister() {
     weight: false,
   });
 
+  const breedOptions = [
+    '푸들',
+    '비숑 프리제',
+    '포메라니안',
+    '말티즈',
+    '웰시코기',
+    '골든 리트리버',
+    '래브라도 리트리버',
+    '보더 콜리',
+    '시베리안 허스키',
+    '진돗개',
+    '믹스견',
+    '기타',
+  ];
+
   const goToMap = () => navigate('/map');
   const goToChat = () => navigate('/chat');
   const goToProfile = () => navigate('/profile');
@@ -289,15 +304,20 @@ function PetRegister() {
             <div className="relative">
               <label className="block text-sm font-medium text-gray-700 mb-1">품종 <span className="text-red-500">*</span></label>
               {/* 품종 */}
-              <input
-                type="text"
+              <select
                 value={breed}
                 onChange={(e) => setBreed(e.target.value)}
                 onBlur={() => handleBlur('breed')}
-                placeholder="품종을 입력하세요"
                 className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
                 required
-              />
+              >
+                <option value="">선택하세요</option>
+                {breedOptions.map((option, index) => (
+                  <option key={index} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
               {touched.breed && breedError && (
                 <p className="text-sm text-red-500 mt-1">{breedError}</p>
               )}
