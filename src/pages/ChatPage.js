@@ -37,12 +37,24 @@ function ChatPage() {
   const goToPetInfo = () => navigate('/pets');
 
   const handleSendMessage = async (overrideMessage = null) => {
-    const userInput = overrideMessage ?? message;
+    const userInput = typeof (overrideMessage ?? message) === 'string' 
+  
+  
+      
+      ? (overrideMessage ?? message) 
+      : String(message);
 
-    if (typeof userInput !== 'string' || userInput.trim() === '') {
-      alert('메시지를 입력해주세요!');
-      return;
-    }
+      if (userInput.trim().length === 0) {
+        alert('메시지를 입력해주세요!');
+        return;
+      }
+    
+
+      if (typeof userInput !== 'string') {
+        console.warn('userInput is not a string:', userInput);
+        alert('메시지를 입력해주세요!');
+        return;
+      }
 
     const newUserMessage = {
       id: chatMessages.length + 1,
@@ -307,7 +319,10 @@ function ChatPage() {
             onChange={(e) => setMessage(e.target.value)}
             placeholder="메시지를 입력하세요"
             className="flex-1 p-3 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
-            onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+            onKeyPress={(e) => {
+              if (e.key === 'Enter') 
+                handleSendMessage();
+            }}
           />
           <button
             onClick={handleSendMessage}
