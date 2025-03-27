@@ -1340,15 +1340,15 @@ function MapPage() {
           </div>
         </div>
 
-        {/* 좌표 정보 표시 */}
-        <div className="absolute bottom-36 left-0 right-0 flex justify-center">
+        {/* 좌표 정보 표시 제리 주석 처리*/}
+        {/* <div className="absolute bottom-36 left-0 right-0 flex justify-center">
           <div className="bg-white px-4 py-2 rounded-full shadow-md text-sm">
             <span className="font-medium">
               위도: {centerPosition.lat.toFixed(6)}, 경도:{" "}
               {centerPosition.lng.toFixed(6)}
             </span>
           </div>
-        </div>
+        </div> */}
 
         {/* 지도 상단에 마커 타입 필터링 버튼 추가 - 배경 없이 왼쪽 정렬 */}
         <div className="absolute top-4 left-4 z-20 flex gap-2">
