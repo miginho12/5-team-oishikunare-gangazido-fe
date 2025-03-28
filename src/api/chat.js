@@ -1,6 +1,11 @@
 //chat.js
 import api from './index';
-const apiURL = window.env?.API_BASE_URL;
+
+// 배포환경
+// const apiURL = window._env_?.API_BASE_URL;
+
+// 개발환경
+const apiURL = process.env.REACT_APP_API_BASE_URL;
 
 
 // LLM 채팅 전송
