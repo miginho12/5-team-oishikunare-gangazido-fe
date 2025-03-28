@@ -58,7 +58,7 @@ function PetEdit() {
           setGender(data.gender ? 'male' : 'female');
           setWeight(data.weight);
           if (data.profileImage && typeof data.profileImage === 'string') {
-            const baseUrl = 'http://localhost:8080'; 
+            const baseUrl = 'https://www.gangazido.com';  // 우리 서버 주소 (로컬 8080)
             const imageUrl = data.profileImage.startsWith('http')
               ? data.profileImage
               : `${baseUrl}${data.profileImage}`;
@@ -234,7 +234,7 @@ function PetEdit() {
         setAgeError('반려견의 나이는 숫자로 입력해주세요.');
         break;
       case 'invalid_pet_age_value':
-        setAgeError('반려견의 나이는 1살 이상이어야 해요.');
+        setAgeError('반려견의 나이는 0살 이상이어야 해요.');
         break;
   
       case 'required_pet_weight':

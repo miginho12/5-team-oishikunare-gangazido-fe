@@ -31,7 +31,7 @@ function PetInfo() {
 
           // 이미지 경로 조정
           if (data.profileImage && typeof data.profileImage === 'string') {
-            const baseUrl = 'http://localhost:8080'; // 배포 시 환경변수로 바꿔도 좋음
+            const baseUrl = 'https://www.gangazido.com';  // 우리 서버 주소 (로컬 8080)
             data.profileImage = data.profileImage.startsWith('http')
               ? data.profileImage
               : `${baseUrl}${data.profileImage}`;
