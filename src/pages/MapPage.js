@@ -479,26 +479,14 @@ function MapPage() {
     [selectedMarker]
   );
 
-  // removeMarker 함수를 ref에 저장
-  useEffect(() => {
-    removeMarkerRef.current = removeMarker;
-  }, [removeMarker]);
 
   // 마커 추가 함수 - 버튼 클릭 시 사용되는 함수(모달 표시)
-  const addMarker = useCallback(
-    (position, markerType = "댕플", subType = null) => {
-      // 모달 표시와 함께 중앙 모드 활성화
-      setTempMarkerType(markerType);
-      setTempMarkerSubType(subType);
-      setShowModal(true);
-
-      // 중앙 모드 강제 활성화
-      setIsCenterMode(true);
-
-      return null; // 실제 마커는 모달에서 확인 버튼 클릭 시 생성됨
-    },
-    []
-  );
+  const addMarker = (position, markerType = "댕플", subType = null) => {
+    setTempMarkerType(markerType);
+    setTempMarkerSubType(subType);
+    setShowModal(true);
+    setIsCenterMode(true);
+  };
 
   // 지도 클릭 시 직접 마커를 생성하는 함수 추가
   const createMarkerFromPosition = useCallback(
@@ -1104,7 +1092,8 @@ function MapPage() {
             position: marker.getPosition(),
             xAnchor: 0.5,
             yAnchor: 1.3, // 창뜨는 위치
-            removable: true
+            removable: true,
+            zIndex: 9999 // ✅ 마커보다 높은 z-index 설정
           });
           overlay.setMap(map);  // 오버레이 열기
           
@@ -1614,8 +1603,8 @@ function MapPage() {
       </nav>
 
       {/* 마커 생성 모달 */}
-      {showModal && ReactDOM.createPortal(
-        <div className="fixed bottom-32 left-1/2 transform -translate-x-1/2 z-50 bg-white rounded-lg shadow-xl w-[50%] max-w-xs relative z-[9999]">
+      {showModal && (
+        <div className="fixed bottom-32 left-1/2 transform -translate-x-1/2 z-50 bg-white rounded-lg shadow-xl w-[50%] max-w-xs">
           {/* 닫기 버튼 */}
           <div className="absolute right-2 top-2 z-50">
               <button
@@ -1632,8 +1621,18 @@ function MapPage() {
         <div className="relative p-4">
           {/* 모달 내용 */}
           <div className="text-center mb-4">
-            <h2 className="text-xl font-bold">댕플을 찍어멍!</h2>
-            <p className="text-sm text-gray-500 mt-1">지도를 이동해서 댕플을 찍을 수 있습니다!</p>
+          <h2 className="text-xl font-bold flex items-center justify-center gap-2">
+            <span>
+              {tempMarkerType === "댕플"
+                ? "댕플을 찍어멍!"
+                : tempMarkerSubType
+                  ? `${tempMarkerSubType}을 찍어멍!`
+                  : "댕져러스를 찍어멍!"}
+            </span>
+          </h2>
+  <p className="text-sm text-gray-500 mt-1">
+    지도를 이동해서 {tempMarkerType} 마커를 찍을 수 있습니다!
+  </p>
           </div>
           <div className="flex justify-center">
             <button
