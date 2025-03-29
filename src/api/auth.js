@@ -26,7 +26,7 @@ export const registerUser = (userData) => {
     console.log(pair[0] + ': ' + (pair[0] === 'user_password' || pair[0] === 'user_password_confirm' ? '(보안상 로그 생략)' : pair[1]));
   }
   
-  return api.post(`${apiURL}/v1/users/signup`, formData, {
+  return api.post(`${apiURL}v1/users/signup`, formData, {
     headers: { 
       "Content-Type": "multipart/form-data",
     },
@@ -52,7 +52,7 @@ export const loginUser = (credentials) => {
     user_password: '(보안상 로그 생략)'
   });
   
-  return api.post(`${apiURL}/v1/users/login`, requestData)
+  return api.post(`${apiURL}v1/users/login`, requestData)
     .then(response => {
       console.log('로그인 API 응답 성공 상태코드:', response.status);
       
