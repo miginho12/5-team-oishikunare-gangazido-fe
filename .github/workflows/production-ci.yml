@@ -32,7 +32,8 @@ jobs:
       - name: Set Kakao API Key in env.js
         run: |
           echo "🛠️ 카카오맵 API 키를 env.js에 주입 중..."
-          sed -i 's|REPLACE_KAKAO_MAP_API_KEY|${{ secrets.KAKAO_MAP_API_KEY }}|' ./public/env.js
+          sed -i "s|REPLACE_KAKAO_MAP_API_KEY|${{ secrets.KAKAO_MAP_API_KEY }}|" ./public/env.js
+          sed -i "s|REPLACE_API_BASE_URL|${{ secrets.API_BASE_URL }}|" ./public/env.js
 
       - name: Build # 4 - 빌드
         run: npm run build

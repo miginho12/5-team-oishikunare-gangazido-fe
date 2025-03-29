@@ -1,5 +1,11 @@
 import api from './index';
 
+// 배포환경
+// const apiURL = window._env_?.API_BASE_URL;
+
+// 개발환경
+const apiURL = process.env.REACT_APP_API_BASE_URL;
+
 // 회원가입
 export const registerUser = (userData) => {
   console.log('회원가입 요청 데이터:', userData); // 데이터 확인용 로그
@@ -20,7 +26,7 @@ export const registerUser = (userData) => {
     console.log(pair[0] + ': ' + (pair[0] === 'user_password' || pair[0] === 'user_password_confirm' ? '(보안상 로그 생략)' : pair[1]));
   }
   
-  return api.post("/v1/users/signup", formData, {
+  return api.post(`${apiURL}/v1/users/signup`, formData, {
     headers: { 
       "Content-Type": "multipart/form-data",
     },
@@ -46,7 +52,7 @@ export const loginUser = (credentials) => {
     user_password: '(보안상 로그 생략)'
   });
   
-  return api.post("/v1/users/login", requestData)
+  return api.post(`${apiURL}/v1/users/login`, requestData)
     .then(response => {
       console.log('로그인 API 응답 성공 상태코드:', response.status);
       
@@ -89,7 +95,7 @@ export const loginUser = (credentials) => {
 // 로그아웃
 export const logoutUser = () => {
   console.log('로그아웃 API 호출 시작');
-  return api.post("/v1/users/logout")
+  return api.post(`${apiURL}/v1/users/logout`)
     .then(response => {
       console.log('로그아웃 API 응답 성공:', response.data);
       return response;
@@ -103,11 +109,11 @@ export const logoutUser = () => {
 // 이메일 중복 확인
 export const checkEmailDuplicate = (email) => {
   console.log('이메일 중복 확인 요청:', email);
-  return api.get(`/v1/users/check-email?email=${encodeURIComponent(email)}`);
+  return api.get(`${apiURL}/v1/users/check-email?email=${encodeURIComponent(email)}`);
 };
 
 // 닉네임 중복 확인
 export const checkNicknameDuplicate = (nickname) => {
   console.log('닉네임 중복 확인 요청:', nickname);
-  return api.get(`/v1/users/check-nickname?nickname=${encodeURIComponent(nickname)}`);
+  return api.get(`${apiURL}/v1/users/check-nickname?nickname=${encodeURIComponent(nickname)}`);
 };
