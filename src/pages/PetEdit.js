@@ -58,7 +58,7 @@ function PetEdit() {
           setGender(data.gender ? 'male' : 'female');
           setWeight(data.weight);
           if (data.profileImage && typeof data.profileImage === 'string') {
-            const baseUrl = 'https://www.gangazido.com';  // 우리 서버 주소 (로컬 8080)
+            const baseUrl = 'https://api.gangazido.com';  // 우리 서버 주소 (로컬 8080)
             const imageUrl = data.profileImage.startsWith('http')
               ? data.profileImage
               : `${baseUrl}${data.profileImage}`;
