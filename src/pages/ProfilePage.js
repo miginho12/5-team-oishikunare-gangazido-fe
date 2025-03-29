@@ -11,7 +11,9 @@ function ProfilePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showToast, setShowToast] = useState(false);
+  console.log(showToast);
   const [logoutError, setLogoutError] = useState(null);
+  console.log(logoutError);
 
   // 컴포넌트 마운트 시 사용자 정보 로드
   useEffect(() => {

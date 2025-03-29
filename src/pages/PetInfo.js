@@ -14,7 +14,6 @@ function PetInfo() {
   const goToProfile = () => navigate('/profile');
   const goToPetEdit = () => navigate('/pets/edit');
 
-  // 인증 상태 확인 및 리다이렉션
   useEffect(() => {
     if (!authLoading && !isAuthenticated) {
       navigate('/login');
@@ -22,7 +21,6 @@ function PetInfo() {
   }, [authLoading, isAuthenticated, navigate]);
 
   useEffect(() => {
-    // 인증 상태를 먼저 확인하고 진행
     if (!authLoading && isAuthenticated) {
       const fetchPetInfo = async () => {
         try {
@@ -31,7 +29,7 @@ function PetInfo() {
 
           // 이미지 경로 조정
           if (data.profileImage && typeof data.profileImage === 'string') {
-            const baseUrl = 'http://localhost:8080'; // 배포 시 환경변수로 바꿔도 좋음
+            const baseUrl = 'https://api.gangazido.com';  // 우리 서버 주소 (로컬 8080)
             data.profileImage = data.profileImage.startsWith('http')
               ? data.profileImage
               : `${baseUrl}${data.profileImage}`;
