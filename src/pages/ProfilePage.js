@@ -143,12 +143,17 @@ function ProfilePage() {
               {userInfo?.profileImage ? (
                 <img
                   src={
-                    userInfo?.profileImage
-                      ? userInfo.profileImage
-                      : process.env.PUBLIC_URL + "/images/default.png"
+                    userInfo?.profileImage ||
+                    process.env.PUBLIC_URL + "/images/default.jpg"
                   }
                   alt="프로필 이미지"
                   className="w-full h-full object-cover"
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src =
+                      process.env.PUBLIC_URL + "/images/default.jpg";
+                  }}
+                  //src={userInfo.profileImage}
                 />
               ) : (
                 <svg

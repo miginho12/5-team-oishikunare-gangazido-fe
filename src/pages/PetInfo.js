@@ -96,12 +96,16 @@ function PetInfo() {
               {pet.profileImage ? (
                 <img
                   src={
-                    pet?.profileImage
-                      ? pet.profileImage
-                      : process.env.PUBLIC_URL + "/images/banzi.jpeg"
+                    pet.profileImage ||
+                    process.env.PUBLIC_URL + "/images/banzi.jpeg"
                   }
                   alt="반려견 프로필"
                   className="w-full h-full object-cover"
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src =
+                      process.env.PUBLIC_URL + "/images/banzi.jpeg";
+                  }}
                 />
               ) : (
                 <svg
