@@ -54,10 +54,10 @@ function MapPage() {
     // API 키 가져오기 
     
     // 배포
-    const apiKey = window._env_?.KAKAO_MAP_API_KEY;
+    // const apiKey = window._env_?.KAKAO_MAP_API_KEY;
 
     // 개발
-    // const apiKey = process.env.REACT_APP_KAKAO_MAP_API_KEY; 
+    const apiKey = process.env.REACT_APP_KAKAO_MAP_API_KEY; 
 
     if (!apiKey) {
       console.error("카카오맵 API 키가 환경 변수에 설정되지 않았습니다.");

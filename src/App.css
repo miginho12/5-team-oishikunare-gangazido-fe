@@ -186,8 +186,8 @@ body {
   }
 }
 
-/* 모바일 화면에서는 전체 화면으로 표시 */
-@media (max-width: 767px) {
+/* 모바일 화면에서는 전체 화면으로 표시(고정) */
+/* @media (max-width: 767px) {
   .App > div {
     width: 402px;
     height: 874px;
@@ -197,6 +197,25 @@ body {
 @media (max-height: 900px) {
   .mobile-container {
     height: 874px;
+    border-radius: 0;
+  }
+} */
+
+
+/* 모바일 화면에서는 전체 화면으로 표시(유동) */
+@media (max-width: 767px) {
+  .App > div {
+    width: 100%;
+    /* height: 100vh; */
+    height: calc(var(--vh, 1vh) * 100);
+    border-radius: 0;
+  }
+}
+
+@media (max-height: 900px) {
+  .mobile-container {
+    /* height: 100vh; */
+    height: calc(var(--vh, 1vh) * 100);
     border-radius: 0;
   }
 }
