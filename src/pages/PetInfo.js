@@ -34,6 +34,9 @@ function PetInfo() {
             data.profileImage = data.profileImage.startsWith("http")
               ? data.profileImage
               : `${s3Prefix}${data.profileImage}`;
+
+            // 💡 캐시 우회를 위해 타임스탬프 쿼리 추가
+            data.profileImage = `${data.profileImage}?t=${Date.now()}`;
           }
 
           setPet(data);
