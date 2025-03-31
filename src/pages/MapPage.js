@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { getMapMarkers, registerMarker, deleteMarker } from '../api/map'; // axios 인스턴스로 정의된 API 제리 추가
 import { useAuth } from '../contexts/AuthContext'; // 기존 getUserInfo 대신 useAuth 훅 사용
-import ReactDOM from "react-dom";
 
 function MapPage() {
   const currentFilterTypeRef = useRef("all"); // 필터 유지 위해
@@ -52,8 +51,14 @@ function MapPage() {
       return;
     }
 
-    // API 키 가져오기
+    // API 키 가져오기 
+    
+    // 배포
     const apiKey = window._env_?.KAKAO_MAP_API_KEY;
+
+    // 개발
+    // const apiKey = process.env.REACT_APP_KAKAO_MAP_API_KEY; 
+
     if (!apiKey) {
       console.error("카카오맵 API 키가 환경 변수에 설정되지 않았습니다.");
       return;
@@ -596,13 +601,18 @@ function MapPage() {
                 infoContent = `<div style="padding:5px;font-size:12px;">${markerType}<br><button id="delete-marker" style="padding:2px 5px;margin-top:5px;background:#ff5555;color:white;border:none;border-radius:3px;">삭제</button></div>`;
               }
 
-              const overlay = new window.kakao.maps.overlay({
-                content: infoContent,
+              const overlay = new window.kakao.maps.CustomOverlay({
+                content: infoContent, // 너가 만든 HTML
+                position: marker.getPosition(),
+                xAnchor: 0.5,
+                yAnchor: 1.3, // 창뜨는 위치
                 removable: true,
+                zIndex: 9999 // ✅ 마커보다 높은 z-index 설정
               });
 
               // 인포윈도우 열기
-              overlay.open(map, marker);
+              // overlay.open(map, marker);
+              overlay.setMap(map);
 
               // 마커 정보에 인포윈도우 추가
               markerInfo.overlay = overlay;
@@ -756,23 +766,74 @@ function MapPage() {
           if (m.overlay) m.overlay.setMap(null);
         });
 
-        const emoji = tempMarkerSubType
-          ? MARKER_IMAGES.EMOJI[tempMarkerSubType] || "⚠️"
-          : "⚠️";
+        const emoji = 
+          tempMarkerType === "댕플"
+            ? "🐶"
+            : tempMarkerSubType
+              ? MARKER_IMAGES.EMOJI[tempMarkerSubType] || "⚠️"
+              : "⚠️";
+
         const infoContent = `
-          <div style="padding:5px;font-size:12px;">
-            <div style="margin-bottom:4px;">${emoji} ${tempMarkerType}${
-          tempMarkerSubType ? ` - ${tempMarkerSubType}` : ""
-        }</div>
-            <button id="delete-marker" style="padding:2px 5px;background:#ff5555;color:white;border:none;border-radius:3px;">삭제</button>
-          </div>`;
+          <div style="
+            position: relative;
+            padding: 16px 12px 12px;
+            font-size: 14px;
+            text-align: center;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            width: 200px;
+            border: 1px solid #eee;
+          ">
+            <div style="
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              gap: 6px;
+              position: relative;
+              font-weight: bold;
+              font-size: 15px;
+              margin-bottom: 12px;
+            ">
+              <span style="font-size: 18px;">${emoji}</span>
+              <span>${tempMarkerType}${tempMarkerSubType ? ` - ${tempMarkerSubType}` : ""}</span>
+              <button id="close-overlay-${markerInfo.id}" style="
+                position: absolute;
+                top: -23px;
+                right: -7px;
+                background: transparent;
+                border: none;
+                font-size: 25px;
+                color: #888;
+                cursor: pointer;
+              ">&times;</button>
+            </div>
+            <button id="delete-marker" style="
+              padding: 8px 12px;
+              width: 70px;
+              background: #ef4444;
+              color: white;
+              border: none;
+              border-radius: 6px;
+              cursor: pointer;
+              font-size: 14px;
+              font-weight: bold;
+              box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+            ">삭제</button>
+          </div>
+        `;
   
         const overlay = new window.kakao.maps.CustomOverlay({
-          content: infoContent,
+          content: infoContent, // 너가 만든 HTML
+          position: marker.getPosition(),
+          xAnchor: 0.5,
+          yAnchor: 1.3, // 창뜨는 위치
           removable: true,
+          zIndex: 9999 // ✅ 마커보다 높은 z-index 설정
         });
   
-        overlay.open(map, marker);
+        // overlay.open(map, marker);
+        overlay.setMap(map); // ✅ 올바른 방식
         markerInfo.overlay = overlay;
   
         setTimeout(() => {
