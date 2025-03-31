@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.6.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.6.1...v1.6.2) (2025-03-31)
+
+### 🐛 BUG FIXES
+
+* axios 전역 Content-Type 제거로 FormData 호환성 개선 ([610a2d2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/610a2d29afe2ff48df8b0a0921cc4615005204c0))
+
 ## [1.6.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.6.0...v1.6.1) (2025-03-31)
 
 ### 🐛 BUG FIXES
