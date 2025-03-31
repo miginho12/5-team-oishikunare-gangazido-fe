@@ -32,7 +32,7 @@ export const registerUser = (userData) => {
     );
   }
 
-  return api.post(`${apiURL}v1/users/signup`, formData, {
+  return api.post(`${apiURL}/v1/users/signup`, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
