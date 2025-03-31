@@ -75,7 +75,7 @@ function PetRegister() {
   
       setShowToast(true);
       setTimeout(() => {
-        navigate('/pets');
+        window.location.href = "/pets"; // 👉 강제 새로고침 포함
       }, 2000);
     } catch (error) {
       const errorMsg = error.response?.data?.message;
@@ -480,4 +480,3 @@ function PetRegister() {
 }
 
 export default PetRegister; 
-
