@@ -16,7 +16,7 @@ function ChatPage() {
       id: 1,
       text: "안녕하세요! 반려견에 관한 질문이 있으신가요?",
       isUser: false,
-      time: "오전 10:30",
+      //time: "오전 10:30",
     },
   ]);
 
