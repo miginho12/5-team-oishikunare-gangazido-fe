@@ -1618,100 +1618,61 @@ function MapPage() {
         </div>
 
         {/* 지도 영역 오른쪽 아래에 마커 유형별 추가 버튼 - 세로 정렬 */}
-        <div className="absolute top-24 right-4 flex flex-col gap-3 z-20">
-          {/* 댕플 마커 추가 버튼 */}
+        {/* 댕플 & 댕져러스 버튼 */}
+        <div className="absolute top-24 right-4 flex flex-col gap-4 z-20">
+        <button
+          onClick={() => {
+            addMarkerAtCenter("댕플");
+            setShowSubTypeButtons(false);
+          }}
+          className="flex flex-col items-center justify-center w-16 h-16 bg-yellow-100 border border-yellow-300 rounded-full shadow hover:scale-105 transition"
+          aria-label="댕플 마커 추가"
+        >
+          <img
+            src="/images/dangple_square.png"
+            alt="댕플"
+            className="w-7 h-7 object-contain"
+          />
+          <span className="text-[12px] font-semibold text-yellow-700 mt-1">댕플</span>
+        </button>
+
+        {/* 댕져러스 드롭다운 트리거 버튼 */}
+        <div className="relative">
           <button
-            onClick={() => {
-              addMarkerAtCenter("댕플");
-              setShowSubTypeButtons(false); // 서브타입 옵션 닫기
-            }}
-            className="flex items-center justify-center w-12 h-12 bg-amber-300 hover:bg-amber-500 rounded-full shadow-lg"
-            aria-label="댕플 마커 추가"
+            onClick={() => setShowSubTypeButtons(!showSubTypeButtons)}
+            className="flex flex-col items-center justify-center w-16 h-16 bg-red-100 border border-red-300 rounded-full shadow hover:scale-105 transition"
+            aria-label="댕져러스 마커 추가"
           >
-            <img
-              src="/images/dangple_square.png"
-              alt="댕플"
-              className="w-9 h-9 object-contain"
-            />
+            <span className="text-xl">⚠️</span>
+            <span className="text-[12px] font-bold text-red-700 mt-1">댕져러스</span>
           </button>
 
-          {/* 댕져러스 마커 추가 버튼 */}
-          <div className="relative">
-            <button
-              onClick={() => setShowSubTypeButtons(!showSubTypeButtons)}
-              className="flex items-center justify-center w-12 h-12 bg-red-600 hover:bg-red-800 rounded-full shadow-lg text-white"
-              aria-label="댕져러스 마커 추가"
-            >
-              <span role="img" aria-label="위험" className="text-2xl">
-                ⚠️
-              </span>
-            </button>
-
-            {/* 댕져러스 서브타입 선택 버튼 - 아래로 드롭다운 되도록 수정 */}
-            {showSubTypeButtons && (
-              <div className="absolute top-full right-0 mt-2 z-30">
-                <div className="flex flex-col gap-2">
-                  <button
-                    onClick={() => {
-                      addDangerousMarkerWithSubType("들개");
-                      setShowSubTypeButtons(false); // 선택 후 닫기
-                    }}
-                    className="relative flex items-center justify-center w-12 h-12 bg-red-600 hover:bg-red-800 rounded-full shadow-lg"
-                    title="들개"
-                  >
-                    <img
-                      src="/images/beware_dog_square.png"
-                      alt="들개"
-                      className="w-9 h-9 object-contain absolute right-[5px] "
-                    />
-                  </button>
-                  <button
-                    onClick={() => {
-                      addDangerousMarkerWithSubType("빙판길");
-                      setShowSubTypeButtons(false); // 선택 후 닫기
-                    }}
-                    className="relative flex items-center justify-center w-12 h-12 bg-red-600 hover:bg-red-800 rounded-full shadow-lg"
-                    title="빙판길"
-                  >
-                    <img
-                      src="/images/icy_road_square.png"
-                      alt="빙판길"
-                      className="w-9 h-9 object-contain absolute top-1"
-                    />
-                  </button>
-                  <button
-                    onClick={() => {
-                      addDangerousMarkerWithSubType("염화칼슘");
-                      setShowSubTypeButtons(false); // 선택 후 닫기
-                    }}
-                    className="flex items-center justify-center w-12 h-12 bg-red-600 hover:bg-red-800 rounded-full shadow-lg"
-                    title="염화칼슘"
-                  >
-                    <img
-                      src="/images/beware_foot_square.png"
-                      alt="염화칼슘"
-                      className="w-9 h-9 object-contain"
-                    />
-                  </button>
-                  <button
-                    onClick={() => {
-                      addDangerousMarkerWithSubType("공사중");
-                      setShowSubTypeButtons(false); // 선택 후 닫기
-                    }}
-                    className="relative flex items-center justify-center w-12 h-12 bg-red-600 hover:bg-red-800 rounded-full shadow-lg"
-                    title="공사중"
-                  >
-                    <img
-                      src="/images/construction_square.png"
-                      alt="공사중"
-                      className="w-9 h-9 object-contain absolute top-1"
-                    />
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
+          {/* 드롭다운 메뉴 */}
+          {showSubTypeButtons && (
+            <div className="absolute top-full right-0 mt-2 flex flex-col gap-3 animate-fade-slide-down">
+              {[
+                { label: "들개", icon: "/images/beware_dog_square.png", bg: "bg-rose-100", text: "text-rose-700", border: "border-rose-300" },
+                { label: "빙판", icon: "/images/icy_road_square.png", bg: "bg-blue-100", text: "text-blue-700", border: "border-blue-300" },
+                { label: "염화칼슘", icon: "/images/beware_foot_square.png", bg: "bg-green-100", text: "text-green-700", border: "border-green-300" },
+                { label: "공사", icon: "/images/construction_square.png", bg: "bg-gray-100", text: "text-gray-700", border: "border-gray-300" },
+              ].map(({ label, icon, bg, text, border }) => (
+                <button
+                  key={label}
+                  onClick={() => {
+                    addDangerousMarkerWithSubType(label);
+                    setShowSubTypeButtons(false);
+                  }}
+                  className={`flex flex-col items-center justify-center w-16 h-16 ${bg} ${border} ${text} border rounded-full shadow hover:scale-105 transition`}
+                  title={label}
+                >
+                  <img src={icon} alt={label} className="w-7 h-7 object-contain" />
+                  <span className="text-[12px] font-semibold mt-1">{label}</span>
+                </button>
+              ))}
+            </div>
+          )}
         </div>
+      </div>
 
         {/* 좌표 정보 표시 제리 주석 처리*/}
         {/* <div className="absolute bottom-36 left-0 right-0 flex justify-center">

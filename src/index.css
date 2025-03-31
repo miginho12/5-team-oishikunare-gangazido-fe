@@ -25,6 +25,22 @@
   }
 }
 
+
+@keyframes fade-slide-down {
+  0% {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-slide-down {
+  animation: fade-slide-down 0.25s ease-out;
+}
+
 .animate-fade-in-up {
   animation: fadeInUp 0.3s ease-out forwards, fadeOutDown 0.3s ease-in forwards 2.5s;
 }
