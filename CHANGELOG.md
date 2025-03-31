@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.10.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.9.0...v1.10.0) (2025-03-31)
+
+### 🚀 NEW FEATURES
+
+* 이미지 URL을 S3에서 CloudFront로 변경 ([246c803](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/246c8035199c8aea39c2dd673379b79daf56423d))
+
 ## [1.9.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.8.1...v1.9.0) (2025-03-31)
 
 ### 🚀 NEW FEATURES
