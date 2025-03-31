@@ -6,7 +6,7 @@ export const registerPet = async (petData) => {
 
   // 이미지가 새로 업로드된 파일이면 S3에 업로드
   if (petData.profileImage instanceof File) {
-    const extension = petData.profileImage.name.split('.').pop();
+    const extension = petData.profileImage?.name?.split('.')?.pop() || 'png';
     const res = await api.post("/v1/pets/me/presigned", {
       fileExtension: `.${extension}`,
       contentType: petData.profileImage.type,
@@ -46,7 +46,7 @@ export const updatePetInfo = async(petData) => {
   let profileImageKey = null;
 
   if (petData.profileImage instanceof File) {
-    const extension = petData.profileImage.name.split('.').pop();
+    const extension = petData.profileImage?.name?.split('.')?.pop() || 'png';
     const res = await api.post("/v1/pets/me/presigned", {
       fileExtension: `.${extension}`,
       contentType: petData.profileImage.type,
