@@ -1610,7 +1610,7 @@ function MapPage() {
         )}
 
         {/* 현재 위치 이동 버튼 일단 두기 (HTTPS 전까지..) */}
-        <div className="absolute bottom-10 right-4 z-30">
+        <div className="absolute bottom-3 right-3 z-30">
           <button
             onClick={moveToCurrentLocation}
             className="w-11 h-11 bg-white rounded-lg shadow-lg flex items-center justify-center hover:scale-105 transition-transform"
