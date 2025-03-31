@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.10.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.10.0...v1.10.1) (2025-03-31)
+
+### 🐛 BUG FIXES
+
+* s3 저장 경로 수정 ([3e30097](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/3e30097fc41348e202a48365ad5b403712a73e5b))
+
 ## [1.10.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.9.0...v1.10.0) (2025-03-31)
 
 ### 🚀 NEW FEATURES
