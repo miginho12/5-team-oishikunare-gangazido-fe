@@ -20,6 +20,7 @@ function ProfilePage() {
         setLoading(true);
         const response = await getUserInfo();
         setUserInfo(response.data.data);
+        console.log(userInfo);
       } catch (err) {
         console.error('사용자 정보 로드 실패:', err);
         if (err.response && err.response.status === 401) {
