@@ -16,29 +16,35 @@ import ChatPage from "./pages/ChatPage";
 import PetInfo from "./pages/PetInfo";
 import PetEdit from "./pages/PetEdit";
 import PetRegister from "./pages/PetRegister";
+import { AuthProvider } from "./contexts/AuthContext";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
     <div className="app-container">
-      <Router>
-        <div className="App">
-          <div className="mobile-container">
-            <Routes>
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/profile" element={<ProfilePage />} />
-              <Route path="/profile/edit" element={<ProfileEdit />} />
-              <Route path="/profile/password" element={<PasswordChange />} />
-              <Route path="/map" element={<MapPage />} />
-              <Route path="/chat" element={<ChatPage />} />
-              <Route path="/pets" element={<PetInfo />} />
-              <Route path="/pets/edit" element={<PetEdit />} />
-              <Route path="/pets/register" element={<PetRegister />} />
-              <Route path="/" element={<Navigate to="/map" />} />
-            </Routes>
+      <AuthProvider>
+        <Router>
+          <div className="App">
+            <div className="mobile-container">
+              <Routes>
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/map" element={<MapPage />} />
+                <Route element={<ProtectedRoute />}>
+                  <Route path="/profile" element={<ProfilePage />} />
+                  <Route path="/profile/edit" element={<ProfileEdit />} />
+                  <Route path="/profile/password" element={<PasswordChange />} />
+                  <Route path="/chat" element={<ChatPage />} />
+                  <Route path="/pets" element={<PetInfo />} />
+                  <Route path="/pets/edit" element={<PetEdit />} />
+                  <Route path="/pets/register" element={<PetRegister />} />
+                </Route>
+                <Route path="/" element={<Navigate to="/map" />} />
+              </Routes>
+            </div>
           </div>
-        </div>
-      </Router>
+        </Router>
+      </AuthProvider>
     </div>
   );
 }

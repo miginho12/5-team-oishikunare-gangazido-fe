@@ -1,58 +1,87 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { loginUser } from '../api/auth';
+import { useAuth } from '../contexts/AuthContext';
 
 function Login() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { login, isAuthenticated } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [message, setMessage] = useState(location.state?.message || null);
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    
-    if (!email || !password) {
-      setError('이메일과 비밀번호를 모두 입력해주세요.');
-      return;
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/map');
     }
-    
+  }, [isAuthenticated, navigate]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     setLoading(true);
-    setError(null);
+    setError('');
+
+    console.log('로그인 시도 - 이메일:', email);
     
     try {
-      // 기존 auth API 모듈 사용
-      const response = await loginUser({
-        user_email: email,
-        user_password: password
-      });
+      const response = await loginUser({ email, password });
+      console.log('로그인 API 응답:', JSON.stringify(response.data, null, 2));
       
-      console.log('로그인 성공:', response.data);
+      // 응답 구조 확인
+      let userData = null;
       
-      // 성공 시 지도 페이지로 이동
+      // response.data 구조 확인
+      if (response.data) {
+        // data 필드가 있으면 사용
+        if (response.data.data) {
+          userData = response.data.data;
+          console.log('API 응답에서 user 데이터 추출:', userData);
+        } 
+        // user 필드가 있으면 사용
+        else if (response.data.user) {
+          userData = response.data.user;
+          console.log('API 응답에서 user 필드 추출:', userData);
+        }
+        // 응답 자체를 사용
+        else {
+          userData = {
+            email: email,
+            id: 'user-' + Date.now()
+          };
+          console.log('API 응답에서 사용자 데이터를 찾을 수 없어 기본값 사용:', userData);
+        }
+      } else {
+        userData = {
+          email: email,
+          id: 'user-' + Date.now()
+        };
+        console.log('API 응답에 data가 없어 기본값 사용:', userData);
+      }
+      
+      console.log('로그인 처리 - 사용자 데이터 준비됨:', userData);
+      
+      login(userData);
+      console.log('AuthContext login 함수 호출 완료');
+      
+      // 로그인 성공 후 리디렉션
+      console.log('로그인 성공 - 리디렉션 시작');
       navigate('/map');
-      
     } catch (err) {
       console.error('로그인 오류:', err);
-      
-      // 오류 메시지 처리
-      if (err.response) {
-        // 서버에서 응답이 왔지만 에러 상태 코드인 경우
-        if (err.response.data && err.response.data.message) {
-          setError(err.response.data.message);
-        } else if (err.response.status === 401) {
-          setError('이메일 또는 비밀번호가 올바르지 않습니다.');
-        } else {
-          setError('로그인 중 오류가 발생했습니다.');
-        }
-      } else if (err.request) {
-        // 요청은 보냈으나 응답을 받지 못한 경우
-        setError('서버에 연결할 수 없습니다. 네트워크 연결을 확인해주세요.');
+      console.error('오류 응답:', err.response?.data);
+
+      const errorCode = err.response?.data?.message;
+  
+      if (errorCode === 'invalid_email' || errorCode === 'invalid_password') {
+        setError('이메일과 비밀번호를 정확히 입력해 주세요.');
+      } else if (errorCode === 'invalid_email_format') {
+        setError('이메일 형식이 잘못되었습니다.');
       } else {
-        // 요청을 보내는 과정에서 오류가 발생한 경우
-        setError('로그인 요청 중 오류가 발생했습니다.');
+        // 기타 오류
+        setError(err.response?.data?.message || '로그인 중 오류가 발생했습니다');
       }
     } finally {
       setLoading(false);
@@ -63,10 +92,19 @@ function Login() {
     navigate('/register');
   };
 
+  const goToMap = () => {
+    navigate('/map');
+  };
+
   return (
     <div className="flex flex-col h-full bg-gray-50">
-      {/* 헤더 */}
-      <header className="bg-white p-4 shadow-md flex items-center justify-center">
+      {/* 헤더 - 뒤로가기 버튼 추가 */}
+      <header className="bg-white p-4 shadow-md flex items-center">
+        <button onClick={goToMap} className="mr-2">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
         <h1 className="text-xl font-bold text-gray-800">강아지도</h1>
       </header>
 
@@ -98,7 +136,7 @@ function Login() {
 
         {/* 입력 폼 */}
         <div className="bg-white rounded-xl shadow-md p-4 mb-4">
-          <form onSubmit={handleLogin} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div className="relative">
               <label className="block text-sm font-medium text-gray-700 mb-1">이메일</label>
               <input
