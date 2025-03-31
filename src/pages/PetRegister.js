@@ -61,26 +61,26 @@ function PetRegister() {
         profileImage,
       };
 
-      await registerPet(petData); // API 호출
+      // ✅ key를 받아옴
+      const savedKey = await registerPet(petData);
 
-      // 👉 등록 직후 profileImage가 S3 key면 CloudFront prefix 붙여서 preview 설정
-      if (typeof profileImage === 'string') {
+      if (savedKey) {
         const s3Prefix = "https://d3jeniacjnodv5.cloudfront.net/";
-        const imagePreview = profileImage.startsWith("http")
-          ? profileImage
-          : `${s3Prefix}${profileImage}?t=${Date.now()}`; // ✅ 캐시 무력화
+        const imagePreview = savedKey.startsWith("http")
+          ? savedKey
+          : `${s3Prefix}${savedKey}?t=${Date.now()}`;
+  
         setProfileImagePreview(imagePreview);
-        setProfileImage(profileImage); // 🛠️ 이 부분이 중요! 수정 페이지에서 인식하도록
+        setProfileImage(savedKey); // ✅ string으로 저장
       }
-
+  
       setShowToast(true);
-
       setTimeout(() => {
         navigate('/pets');
       }, 2000);
     } catch (error) {
       const errorMsg = error.response?.data?.message;
-      handleRegisterError(errorMsg); // 3. 백엔드 에러 메시지 처리
+      handleRegisterError(errorMsg);
     }
   };
 
@@ -481,3 +481,4 @@ function PetRegister() {
 }
 
 export default PetRegister; 
+
