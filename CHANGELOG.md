@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.14.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.13.0...v1.14.0) (2025-03-31)
+
+### 🚀 NEW FEATURES
+
+* 내 위치 조회 버튼 위치 수정 ([e239a4f](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/e239a4f1cf75ff3a2b8e54f5657939511defcaa1))
+
 ## [1.13.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.12.0...v1.13.0) (2025-03-31)
 
 ### 🚀 NEW FEATURES
