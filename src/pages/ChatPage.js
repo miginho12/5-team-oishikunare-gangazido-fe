@@ -1,8 +1,3 @@
-/*import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { sendLLMChat } from '../api/chat'; // ✅ 실제 API 호출 추가
-import axios from 'axios';*/
-
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { sendLLMChat } from "../api/chat";
@@ -148,9 +143,9 @@ function ChatPage() {
   };
 
   return (
-    <div className="flex flex-col h-full bg-gray-50">
+    <div className="flex flex-col h-full bg-gray-50 max-w-full overflow-hidden">
       {/* 헤더 */}
-      <header className="bg-white pt-2 pb-0 px-4 shadow-md flex items-center justify-center">
+      <header className="bg-white pt-2 pb-0 px-4 shadow-md flex items-center justify-center w-full">
         <div className="flex items-center h-full gap-2">
           <img
             src="/gangazido-logo-header.png"
@@ -161,7 +156,7 @@ function ChatPage() {
       </header>
 
       {/* 채팅 영역 */}
-      <div className="flex-1 p-4 overflow-y-auto">
+      <div className="flex-1 p-4 overflow-y-auto overflow-x-hidden">
         <div className="space-y-4">
           {chatMessages.map((msg) => (
             <div
@@ -169,7 +164,7 @@ function ChatPage() {
               className={`flex ${msg.isUser ? "justify-end" : "justify-start"}`}
             >
               <div
-                className={`max-w-3/4 rounded-lg p-3 ${
+                className={`max-w-[75%] rounded-lg p-3 ${
                   msg.isUser ? "bg-amber-800 text-white" : "bg-white shadow-md"
                 }`}
               >
@@ -189,7 +184,7 @@ function ChatPage() {
       </div>
 
       {/* 추천 질문 */}
-      <div className="bg-white p-3 border-t border-gray-200">
+      <div className="bg-white p-3 border-t border-gray-200 w-full">
         <p className="text-xs text-gray-500 mb-2">추천 질문</p>
         <div className="flex overflow-x-auto space-x-2 pb-2">
           {suggestedQuestions.map((question, index) => (
@@ -205,7 +200,7 @@ function ChatPage() {
       </div>
 
       {/* 메시지 입력 */}
-      <div className="bg-white p-4 border-t border-gray-200">
+      <div className="bg-white p-4 border-t border-gray-200 w-full">
         <div className="flex items-center">
           <input
             type="text"
@@ -218,7 +213,7 @@ function ChatPage() {
             }}
           />
           <button
-            onClick={handleSendMessage}
+            onClick={() => handleSendMessage()}
             className="p-3 bg-amber-800 text-white rounded-r-md hover:bg-amber-900 transition-colors"
           >
             <svg
@@ -240,7 +235,7 @@ function ChatPage() {
       </div>
 
       {/* 하단 네비게이션 */}
-      <nav className="bg-white border-t border-gray-200 shadow-lg">
+      <nav className="bg-white border-t border-gray-200 shadow-lg w-full">
         <div className="flex justify-between px-2">
           <button
             onClick={goToMap}
