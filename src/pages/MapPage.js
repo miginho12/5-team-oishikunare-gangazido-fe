@@ -554,25 +554,25 @@ function MapPage() {
           subType: markerSubType,
         };
 
-      // 클릭 이벤트 등록
-      try {
-        window.kakao.maps.event.addListener(mapMarkers, 'click', () => {
-          try {
-            // 기존 인포윈도우 모두 닫기 (성능 최적화)
-            markersRef.current.forEach(m => {
-              if (m.overlay) {
-                try {
-                  if (typeof m.overlay.setMap(null) === "function") {
-                    m.overlay.close(); // InfoWindow일 경우
-                  } else if (typeof m.overlay.setMap === "function") {
-                    m.overlay.setMap(null); // CustomOverlay일 경우
+        // 클릭 이벤트 등록
+        try {
+          window.kakao.maps.event.addListener(mapMarkers, 'click', () => {
+            try {
+              // 기존 인포윈도우 모두 닫기 (성능 최적화)
+              markersRef.current.forEach(m => {
+                if (m.overlay) {
+                  try {
+                    if (typeof m.overlay.setMap(null) === "function") {
+                      m.overlay.close(); // InfoWindow일 경우
+                    } else if (typeof m.overlay.setMap === "function") {
+                      m.overlay.setMap(null); // CustomOverlay일 경우
+                    }
+                    m.overlay = null;
+                  } catch (err) {
+                    console.warn("🔍 overlay 닫기 실패:", err);
                   }
-                  m.overlay = null;
-                } catch (err) {
-                  console.warn("🔍 overlay 닫기 실패:", err);
                 }
-              }
-            });
+              });
 
               // 인포윈도우 생성
               let infoContent = "";
@@ -598,9 +598,8 @@ function MapPage() {
                 }
 
                 infoContent = `<div style="padding:5px;font-size:12px;">
-                <div style="margin-bottom:4px;">${emoji} ${markerType}${
-                  markerSubType ? ` - ${markerSubType}` : ""
-                }</div>
+                <div style="margin-bottom:4px;">${emoji} ${markerType}${markerSubType ? ` - ${markerSubType}` : ""
+                  }</div>
                 <button id="delete-marker" style="padding:2px 5px;background:#ff5555;color:white;border:none;border-radius:3px;">삭제</button>
               </div>`;
               } else {
@@ -770,7 +769,7 @@ function MapPage() {
         tempMarkerType === "댕플"
           ? markerImages.current[0].image
           : markerImages.current[1][tempMarkerSubType] ||
-            markerImages.current[1].image;
+          markerImages.current[1].image;
 
       const marker = new window.kakao.maps.Marker({
         position: center,
@@ -795,7 +794,7 @@ function MapPage() {
           if (m.overlay) m.overlay.setMap(null);
         });
 
-        const emoji = 
+        const emoji =
           tempMarkerType === "댕플"
             ? "🐶"
             : tempMarkerSubType
@@ -851,7 +850,7 @@ function MapPage() {
             ">삭제</button>
           </div>
         `;
-  
+
         const overlay = new window.kakao.maps.CustomOverlay({
           content: infoContent, // 너가 만든 HTML
           position: marker.getPosition(),
@@ -860,11 +859,11 @@ function MapPage() {
           removable: true,
           zIndex: 9999 // ✅ 마커보다 높은 z-index 설정
         });
-  
+
         // overlay.open(map, marker);
         overlay.setMap(map); // ✅ 올바른 방식
         markerInfo.overlay = overlay;
-  
+
         setTimeout(() => {
           const deleteBtn = document.getElementById("delete-marker");
           if (deleteBtn) {
@@ -1543,8 +1542,14 @@ function MapPage() {
   return (
     <div className="flex flex-col h-full bg-gray-50">
       {/* 헤더 */}
-      <header className="bg-white p-4 shadow-md flex items-center justify-between">
-        <h1 className="text-lg font-bold text-gray-800">강아지도 🐕</h1>
+      <header className="bg-white pt-2 pb-0 px-4 shadow-md flex items-center justify-center">
+        <div className="flex items-center h-full gap-2">
+          <img
+            src="/gangazido-logo-header.png"
+            alt="Gangazido Logo Header"
+            className="h-14 w-28 object-cover self-center"
+          />
+        </div>
       </header>
 
       {/* 마커 생성 안내 */}
@@ -1799,8 +1804,8 @@ function MapPage() {
 
       {/* 마커 생성 버튼 클릭 시 모달 (찍어멍) */}
       {showModal && (
-  <div className="fixed bottom-24 inset-x-0 z-50 w-[90%] max-w-sm mx-auto animate-fade-up transition">
-    <div className="bg-white/90 rounded-2xl shadow-xl border border-gray-200 px-5 py-4 text-center relative backdrop-blur-sm">
+      <div className="fixed bottom-24 inset-x-0 z-50 w-[90%] max-w-sm mx-auto animate-fade-up transition">
+        <div className="bg-white/90 rounded-2xl shadow-xl border border-gray-200 px-5 py-4 text-center relative">
       {/* 닫기 버튼 */}
       <button
         onClick={() => {

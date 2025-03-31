@@ -1,4 +1,5 @@
 import React from "react";
+import { useEffect } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -20,6 +21,22 @@ import { AuthProvider } from "./contexts/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
+
+  useEffect(() => {
+    function setRealViewport() {
+      const vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty("--vh", `${vh}px`);
+    }
+
+    setRealViewport();
+    window.addEventListener("resize", setRealViewport);
+
+    return () => {
+      window.removeEventListener("resize", setRealViewport);
+    };
+  }, []);
+
+
   return (
     <div className="app-container">
       <AuthProvider>

@@ -1,5 +1,21 @@
 # CHANGELOG
 
+## [1.9.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.8.1...v1.9.0) (2025-03-31)
+
+### 🚀 NEW FEATURES
+
+* 마커 생성 모달 창 디자인 변경 ([027c780](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/027c7807fb759b58c4704eca748bdf9474ae675d))
+
+## [1.8.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.8.0...v1.8.1) (2025-03-31)
+
+### 🐛 BUG FIXES
+
+* Add favicon and App icon assets for branding ([2b01492](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/2b0149250396f8db482c0320284e3b029bca7e3b))
+* Add header LOGO in MapPage ([1e3c880](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/1e3c88050a23345e9d84f9cfd626461049ca7cad))
+* Add header LOGO in the other pages ([d84689b](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/d84689b9ba86f846a5721488f9effc9154f8d405))
+* apply real viewport height for mobile devices ([c630378](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/c63037887b3c2004642e691674de91d05eaf0679))
+* resolve merge conflict ([6d6d025](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/6d6d02520541286147e4035dabe8289112ee079a))
+
 ## [1.8.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.7.1...v1.8.0) (2025-03-31)
 
 ### 🚀 NEW FEATURES
