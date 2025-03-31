@@ -1626,7 +1626,7 @@ function MapPage() {
 
         {/* 지도 영역 오른쪽 아래에 마커 유형별 추가 버튼 - 세로 정렬 */}
         {/* 댕플 & 댕져러스 버튼 */}
-        <div className="absolute top-24 right-4 flex flex-col gap-4 z-20">
+        <div className="absolute top-3 right-2 flex flex-col gap-4 z-20">
         <button
           onClick={() => {
             addMarkerAtCenter("댕플");
