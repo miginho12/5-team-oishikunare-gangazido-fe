@@ -1,5 +1,22 @@
 import api from './index';
 
+// S3 URL을 CloudFront URL로 변환하는 함수
+const convertToCloudFrontUrl = (url) => {
+  if (!url) return url;
+  
+  // S3 URL 패턴 확인 (https://bucket-name.s3.region.amazonaws.com/path)
+  const s3Pattern = /https:\/\/(.+?)\.s3\.(.+?)\.amazonaws\.com\/(.+)/;
+  
+  if (s3Pattern.test(url)) {
+    // S3 URL에서 키(경로) 부분만 추출
+    const key = url.match(s3Pattern)[3];
+    // CloudFront 도메인으로 URL 생성
+    return `https://dxxxxxxxx.cloudfront.net/${key}`;
+  }
+  
+  return url; // S3 URL이 아닌 경우 원래 URL 반환
+};
+
 // 추가할 함수: 프로필 이미지 업로드 URL 획득
 export const getProfileImageUploadUrl = (fileInfo) => {
   return api.post("/v1/users/profile-image-upload-url", fileInfo);
@@ -31,7 +48,14 @@ export const uploadImageToS3 = async (presignedUrl, file, contentType) => {
 
 // 내 정보 조회
 export const getUserInfo = () => {
-  return api.get(`/v1/users/me`);
+  return api.get(`/v1/users/me`)
+    .then(response => {
+      // 응답에 프로필 이미지 URL이 있으면 CloudFront URL로 변환
+      if (response.data && response.data.data && response.data.data.profileImage) {
+        response.data.data.profileImage = convertToCloudFrontUrl(response.data.data.profileImage);
+      }
+      return response;
+    });
 };
 
 // updateUserInfo 함수 수정
@@ -70,7 +94,14 @@ export const updateUserInfo = async (userData) => {
     }
     
     // Content-Type이 application/json으로 변경됨
-    return api.patch("/v1/users/me", updateData);
+    const response = await api.patch("/v1/users/me", updateData);
+    
+    // 응답에 프로필 이미지 URL이 있으면 CloudFront URL로 변환
+    if (response.data && response.data.data && response.data.data.profileImage) {
+      response.data.data.profileImage = convertToCloudFrontUrl(response.data.data.profileImage);
+    }
+    
+    return response;
   } catch (error) {
     console.error('사용자 정보 업데이트 실패:', error);
     throw error;

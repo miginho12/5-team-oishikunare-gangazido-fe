@@ -1,5 +1,22 @@
 import api from "./index";
 
+// S3 URL을 CloudFront URL로 변환하는 함수
+export const convertToCloudFrontUrl = (url) => {
+  if (!url) return url;
+  
+  // S3 URL 패턴 확인 (https://bucket-name.s3.region.amazonaws.com/path)
+  const s3Pattern = /https:\/\/(.+?)\.s3\.(.+?)\.amazonaws\.com\/(.+)/;
+  
+  if (s3Pattern.test(url)) {
+    // S3 URL에서 키(경로) 부분만 추출
+    const key = url.match(s3Pattern)[3];
+    // CloudFront 도메인으로 URL 생성
+    return `https://dxxxxxxxx.cloudfront.net/${key}`;
+  }
+  
+  return url; // S3 URL이 아닌 경우 원래 URL 반환
+};
+
 // 추가할 함수: 회원가입용 presigned URL 획득
 export const getSignupProfileImageUploadUrl = (fileInfo) => {
   return api.post("/v1/users/signup/profile-image-upload-url", fileInfo);
@@ -78,7 +95,14 @@ export const registerUser = async (userData) => {
     });
     
     // 회원가입 API 호출 - Content-Type이 application/json으로 변경됨
-    return api.post("/v1/users/signup", signupData);
+    const response = await api.post("/v1/users/signup", signupData);
+    
+    // 응답에 프로필 이미지 URL이 있으면 CloudFront URL로 변환
+    if (response.data && response.data.data && response.data.data.profileImage) {
+      response.data.data.profileImage = convertToCloudFrontUrl(response.data.data.profileImage);
+    }
+    
+    return response;
   } catch (error) {
     console.error('회원가입 처리 중 오류:', error);
     throw error;
