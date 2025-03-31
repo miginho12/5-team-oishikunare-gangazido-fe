@@ -959,7 +959,7 @@ function MapPage() {
         const { latitude, longitude } = position.coords;
         const moveLatLng = new window.kakao.maps.LatLng(latitude, longitude);
 
-        map.setCenter(moveLatLng);
+        map.panTo(moveLatLng);
         if (map.getLevel() > 5) {
           map.setLevel(4);
         }
