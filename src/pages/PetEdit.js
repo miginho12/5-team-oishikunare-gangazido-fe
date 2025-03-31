@@ -62,9 +62,7 @@ function PetEdit() {
           if (data.profileImage && typeof data.profileImage === "string") {
             // S3 key일 경우엔 S3 prefix 붙이기
             const s3Prefix = "https://d3jeniacjnodv5.cloudfront.net/";
-            data.profileImage = data.profileImage.startsWith("http")
-              ? data.profileImage
-              : `${s3Prefix}${data.profileImage}`;
+            data.profileImage = `${s3Prefix}${data.profileImage}?t=${Date.now()}`;
 
             // 👉 캐시 우회를 위한 쿼리 스트링 추가
             data.profileImage += `?t=${Date.now()}`;

@@ -66,9 +66,7 @@ function PetRegister() {
 
       if (savedKey) {
         const s3Prefix = "https://d3jeniacjnodv5.cloudfront.net/";
-        const imagePreview = savedKey.startsWith("http")
-          ? savedKey
-          : `${s3Prefix}${savedKey}?t=${Date.now()}`;
+        const imagePreview = `${s3Prefix}${savedKey}?t=${Date.now()}`;
   
         setProfileImagePreview(imagePreview);
       }
