@@ -97,7 +97,7 @@ export const loginUser = (credentials) => {
 export const logoutUser = () => {
   console.log("로그아웃 API 호출 시작");
   return api
-    .post(`${apiURL}/v1/users/logout`)
+    .post(`/v1/users/logout`)
     .then((response) => {
       console.log("로그아웃 API 응답 성공:", response.data);
       return response;
