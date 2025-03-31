@@ -9,7 +9,8 @@ const apiClient = axios.create({
   baseURL, // ✅ 공통 baseURL 사용
   withCredentials: true,
   headers: {
-    "Content-Type": "application/json",
+        // "Content-Type": "application/json", // 레첼 formdata 때매 주석처리 자동 설정 된다함
+
   },
 });
 
