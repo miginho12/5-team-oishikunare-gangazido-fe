@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.9.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.8.1...v1.9.0) (2025-03-31)
+
+### 🚀 NEW FEATURES
+
+* 마커 생성 모달 창 디자인 변경 ([027c780](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/027c7807fb759b58c4704eca748bdf9474ae675d))
+
 ## [1.8.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.8.0...v1.8.1) (2025-03-31)
 
 ### 🐛 BUG FIXES
