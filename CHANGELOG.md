@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.18.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.17.0...v1.18.0) (2025-03-31)
+
+### 🚀 NEW FEATURES
+
+* 반려견 등록 미리보기 수정 ([69fc825](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/69fc825a559d17a2c86cf73283f26ac182639ad1))
+
 ## [1.17.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.16.0...v1.17.0) (2025-03-31)
 
 ### 🚀 NEW FEATURES
