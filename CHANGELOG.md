@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.19.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.18.0...v1.19.0) (2025-03-31)
+
+### 🚀 NEW FEATURES
+
+* 등록 후 미리보기 오류 코드 추가 ([2e5a012](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/2e5a012e62e7894c119e818b771df8fe9ad9fa95))
+
 ## [1.18.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.17.0...v1.18.0) (2025-03-31)
 
 ### 🚀 NEW FEATURES
