@@ -1258,15 +1258,15 @@ function MapPage() {
     }
   }, [map, markerImages, mapMarkers]);
 
-  // const hasFetchedMarkers = useRef(false); // 딱 한 번만 실행되게 플래그
+  const hasFetchedMarkers = useRef(false); // 딱 한 번만 실행되게 플래그
 
-  // useEffect(() => {
-  //   if (map && !hasFetchedMarkers.current) {
-  //     console.log("🛰 마커 요청 딱 한 번 보내기!");
-  //     fetchMarkersFromBackend();
-  //     hasFetchedMarkers.current = true;
-  //   }
-  // }, [map]);
+  useEffect(() => {
+    if (map && !hasFetchedMarkers.current) {
+      console.log("🛰 마커 요청 딱 한 번 보내기!");
+      fetchMarkersFromBackend();
+      hasFetchedMarkers.current = true;
+    }
+  }, [map]);
   // 마커 타입 필터링 함수
   const filterMarkersByType = useCallback(
     (type) => {
