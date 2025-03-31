@@ -62,6 +62,16 @@ function PetRegister() {
       };
 
       await registerPet(petData); // API 호출
+
+      // 👉 등록 직후 profileImage가 S3 key면 CloudFront prefix 붙여서 preview 설정
+      if (typeof profileImage === 'string') {
+        const s3Prefix = "https://d3jeniacjnodv5.cloudfront.net/";
+        const imagePreview = profileImage.startsWith("http")
+          ? profileImage
+          : `${s3Prefix}${profileImage}`;
+        setProfileImagePreview(imagePreview);
+      }
+
       setShowToast(true);
 
       setTimeout(() => {
