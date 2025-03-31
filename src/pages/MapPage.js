@@ -2,6 +2,8 @@ import React, { useEffect, useState, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { getMapMarkers, registerMarker, deleteMarker } from '../api/map'; // axios 인스턴스로 정의된 API 제리 추가
 import { useAuth } from '../contexts/AuthContext'; // 기존 getUserInfo 대신 useAuth 훅 사용
+import { ToastContainer, toast } from 'react-toastify'; // 토스트 메시지 
+import 'react-toastify/dist/ReactToastify.css';
 
 function MapPage() {
   const currentFilterTypeRef = useRef("all"); // 필터 유지 위해
@@ -43,6 +45,13 @@ function MapPage() {
     lng: 126.53171329989748, // 제주도 구름스퀘어 경도
   });
 
+  // 페이지 진입 시 지도 초기화 후 내 위치로 이동
+  useEffect(() => {
+    if (map) {
+      moveToCurrentLocation();
+    }
+  }, [map]);
+
   // 카카오맵 API 스크립트 동적 로드 함수
   const loadKakaoMapScript = useCallback(() => {
     // 이미 로드된 경우 중복 로드 방지
@@ -52,16 +61,10 @@ function MapPage() {
     }
 
     // API 키 가져오기 
-    
     const apiKey =
       process.env.NODE_ENV === "development"
         ? process.env.REACT_APP_KAKAO_MAP_API_KEY
         : window._env_?.KAKAO_MAP_API_KEY;
-    // 배포
-    // const apiKey = window._env_?.KAKAO_MAP_API_KEY;
-
-    // 개발
-    // const apiKey = process.env.REACT_APP_KAKAO_MAP_API_KEY; 
 
     if (!apiKey) {
       console.error("카카오맵 API 키가 환경 변수에 설정되지 않았습니다.");
@@ -717,7 +720,18 @@ function MapPage() {
     try {
       // 인증 상태 확인
       if (!isAuthenticated) {
-        alert("로그인 후 이용해주세요");
+        toast.error("로그인 후 이용해주세요!", {
+          position: "bottom-center",
+          autoClose: 2000,
+          style: {
+            background: "#fff5f5",
+            color: "#a94442",
+            border: "1px solid #f5c6cb",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+            fontWeight: "bold",
+          },
+          icon: "🔐",
+        });
         setShowModal(false);
         setIsCenterMode(false);
         return;
@@ -736,7 +750,18 @@ function MapPage() {
       const serverMarker = res.data.data;
 
       if (res.data.message !== "marker_registered_success") {
-        alert("마커 등록에 실패했습니다.");
+        toast.error("마커 등록 중 오류가 발생했습니다!", {
+          position: "bottom-center",
+          autoClose: 2000,
+          style: {
+            background: "#fff5f5",
+            color: "#a94442",
+            border: "1px solid #f5c6cb",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+            fontWeight: "bold",
+          },
+          icon: "❌",
+        });
         return;
       }
 
@@ -848,6 +873,19 @@ function MapPage() {
                 await deleteMarker(markerInfo.id);
                 overlay.setMap(null); // ✅ 커스텀 오버레이 닫기
                 fetchMarkersFromBackend(); // 🔁 최신 데이터로 다시 로드
+                // ✅ 토스트 메시지 추가
+                toast.success("마커가 삭제되었습니다!", {
+                  position: "bottom-center",
+                  autoClose: 2000,
+                  style: {
+                    background: "#fffaf0",         // 밝은 베이지
+                    color: "#4b2f1c",              // 부드러운 갈색 텍스트
+                    border: "1px solid #f3e5ab",   // 연한 베이지 테두리
+                    boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+                    fontWeight: "bold",
+                  },
+                  icon: "🗑", // 커스텀 이모지 가능
+                });
               } catch (err) {
                 console.error("삭제 실패:", err);
                 alert("삭제 권한이 없거나 로그인되지 않았습니다.");
@@ -881,6 +919,18 @@ function MapPage() {
 
       setIsCenterMode(false);
       console.log("✅ 마커 등록 완료:", serverMarker.id);
+      toast.success("마커가 등록되었습니다!", {
+        position: "bottom-center",
+        autoClose: 2000,
+        style: {
+          background: "#e8f5e9", // 연한 초록
+          color: "#2e7d32",      // 진한 초록 텍스트
+          border: "1px solid #c8e6c9",
+          boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+          fontWeight: "bold",
+        },
+        icon: "📍",
+      });
       return markerInfo;
     } catch (error) {
       const status = error.response?.status;
@@ -937,6 +987,8 @@ function MapPage() {
     [map]
   );
 
+  const triedLocationRef = useRef(false); // ✅ 한 번만 알림 띄우기 위한 ref
+
   // 현재 위치로 이동하기 (경고 제거를 위해 사용되는 함수로 표시)
   // eslint-disable-next-line no-unused-vars
   // 일단 주석처리 제리.. HTTPS 이후 ..?
@@ -945,46 +997,41 @@ function MapPage() {
       alert("지도가 아직 초기화되지 않았습니다.");
       return;
     }
-  
+
     if (!navigator.geolocation) {
       alert("이 브라우저는 위치 정보를 지원하지 않아요.");
       return;
     }
-  
+
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const { latitude, longitude } = position.coords;
-  
         const moveLatLng = new window.kakao.maps.LatLng(latitude, longitude);
-  
-        // 지도 중심 이동
-        map.setCenter(moveLatLng);
-        // 지도 줌 레벨이 너무 멀다면 적당히 당겨주기
+
+        map.panTo(moveLatLng);
         if (map.getLevel() > 5) {
           map.setLevel(4);
         }
-  
-        // 상태 업데이트 (필요할 경우만)
         setCenterPosition({ lat: latitude, lng: longitude });
-  
+
         console.log("📍 현재 위치로 이동 완료:", latitude, longitude);
       },
       (error) => {
-        switch (error.code) {
-          case error.PERMISSION_DENIED:
-            alert("⛔ 위치 접근이 차단되었습니다.\n브라우저 설정에서 위치 권한을 허용해주세요.");
-            break;
-          case error.POSITION_UNAVAILABLE:
-            alert("현재 위치 정보를 사용할 수 없습니다.");
-            break;
-          case error.TIMEOUT:
-            alert("위치 정보를 가져오는 데 시간이 초과되었습니다.");
-            break;
-          default:
-            alert("알 수 없는 오류로 인해 위치 정보를 가져올 수 없습니다.");
-            break;
+        if (!triedLocationRef.current) {
+          triedLocationRef.current = true;
+
+          switch (error.code) {
+            case error.PERMISSION_DENIED:
+              alert("⛔ 위치 접근이 차단되었습니다.\n브라우저 설정에서 위치 권한을 허용해주세요.");
+              break;
+            case error.POSITION_UNAVAILABLE:
+              alert("현재 위치 정보를 사용할 수 없습니다.");
+              break;
+            case error.TIMEOUT:
+              alert("위치 정보를 가져오는 데 시간이 초과되었습니다.");
+              break;
+          }
         }
-        console.error("❌ 위치 접근 오류:", error);
       },
       {
         enableHighAccuracy: true,
@@ -1123,28 +1170,27 @@ function MapPage() {
 
         // ✅ 클릭 이벤트 + 삭제 API 연동 제리추가
         window.kakao.maps.event.addListener(marker, 'click', () => {
-          markersRef.current.forEach(m => {
+          markersRef.current.forEach((m) => {
             if (m.overlay) m.overlay.setMap(null);
           });
-  
+        
           const emoji =
             type === "댕플"
-              ? "🐶" // ← 여기 원하는 이모지 넣으면 됨!
+              ? "🐶"
               : MARKER_IMAGES.EMOJI[subType] || "⚠️";
-
-          const infoContent =`
-                <div style="
-                  position: relative;
-                  padding: 16px 12px 12px;
-                  font-size: 14px;
-                  text-align: center;
-                  background: #ffffff;
-                  border-radius: 12px;
-                  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-                  width: 200px;
-                  border: 1px solid #eee;
-                ">
-
+        
+          const infoContent = `
+            <div style="
+              position: relative;
+              padding: 16px 12px 12px;
+              font-size: 14px;
+              text-align: center;
+              background: #ffffff;
+              border-radius: 12px;
+              box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+              width: 200px;
+              border: 1px solid #eee;
+            ">
               <div style="
                 display: flex;
                 align-items: center;
@@ -1157,8 +1203,6 @@ function MapPage() {
               ">
                 <span style="font-size: 18px;">${emoji}</span>
                 <span>${type}${subType ? ` - ${subType}` : ''}</span>
-
-                <!-- 닫기 버튼을 오른쪽 상단에 -->
                 <button id="close-overlay-${markerInfo.id}" style="
                   position: absolute;
                   top: -23px;
@@ -1170,8 +1214,6 @@ function MapPage() {
                   cursor: pointer;
                 ">&times;</button>
               </div>
-
-              <!-- 삭제 버튼 -->
               <button id="delete-marker" style="
                 padding: 8px 12px;
                 width: 70px;
@@ -1186,55 +1228,109 @@ function MapPage() {
               ">삭제</button>
             </div>
           `;
-
+        
           const overlay = new window.kakao.maps.CustomOverlay({
-            content: infoContent, // 너가 만든 HTML
+            content: infoContent,
             position: marker.getPosition(),
             xAnchor: 0.5,
-            yAnchor: 1.3, // 창뜨는 위치
+            yAnchor: 1.3,
             removable: true,
-            zIndex: 9999 // ✅ 마커보다 높은 z-index 설정
+            zIndex: 9999,
           });
-          overlay.setMap(map);  // 오버레이 열기
-          
-          // overlay.open(map, marker);
+        
+          overlay.setMap(map);
           markerInfo.overlay = overlay;
-  
-          setTimeout(() => {
+        
+          // ✅ delete 버튼이 나타날 때까지 기다려서 이벤트 등록
+          const tryAttachDeleteHandler = () => {
             const deleteBtn = document.getElementById("delete-marker");
             if (deleteBtn) {
               deleteBtn.onclick = async () => {
                 try {
-                  await deleteMarker(markerInfo.id); // ✅ 서버에 삭제 요청
-                  overlay.setMap(null); // ✅ 커스텀 오버레이 닫기
-
-                  // 🔥 삭제 후 전체 마커 다시 불러오기!
+                  await deleteMarker(markerInfo.id);
+                  overlay.setMap(null);
                   fetchMarkersFromBackend();
-
-                  console.log("🗑 마커 삭제 완료:", markerInfo.id);
+        
+                  toast.success("마커가 삭제되었습니다!", {
+                    position: "bottom-center",
+                    autoClose: 2000,
+                    style: {
+                      background: "#fffaf0",
+                      color: "#4b2f1c",
+                      border: "1px solid #f3e5ab",
+                      boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+                      fontWeight: "bold",
+                    },
+                    icon: "🐾",
+                  });
                 } catch (err) {
                   const message = err.response?.data?.message || "";
-
+        
                   if (message === "required_authorization") {
-                    alert("로그인 후 이용해주세요!");
+                    toast.error("로그인 후 이용해주세요!", {
+                      position: "bottom-center",
+                      autoClose: 2000,
+                      style: {
+                        background: "#fff5f5",
+                        color: "#a94442",
+                        border: "1px solid #f5c6cb",
+                        boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+                        fontWeight: "bold",
+                      },
+                      icon: "🔐",
+                    });
                   } else if (message === "required_permission") {
-                    alert("마커 삭제 권한이 없습니다.");
+                    toast.error("마커 삭제 권한이 없습니다!", {
+                      position: "bottom-center",
+                      autoClose: 2000,
+                      style: {
+                        background: "#fff5f5",
+                        color: "#a94442",
+                        border: "1px solid #f5c6cb",
+                        boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+                        fontWeight: "bold",
+                      },
+                      icon: "⛔",
+                    });
                   } else {
                     console.error("❌ 마커 삭제 실패:", err);
-                    alert("마커 삭제 중 오류가 발생했습니다.");
+                    toast.error("마커 삭제 중 오류가 발생했습니다!", {
+                      position: "bottom-center",
+                      autoClose: 2000,
+                      style: {
+                        background: "#fff5f5",
+                        color: "#a94442",
+                        border: "1px solid #f5c6cb",
+                        boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+                        fontWeight: "bold",
+                      },
+                      icon: "❌",
+                    });
                   }
                 }
               };
+            } else {
+              // 아직 버튼이 렌더링되지 않았다면 재시도
+              setTimeout(tryAttachDeleteHandler, 50);
             }
-
+          };
+        
+          tryAttachDeleteHandler();
+        
+          // 닫기 버튼도 추가
+          const tryAttachCloseHandler = () => {
             const closeBtn = document.getElementById(`close-overlay-${markerInfo.id}`);
             if (closeBtn) {
               closeBtn.onclick = () => {
-                overlay.setMap(null); // ✅ 닫기 버튼으로 오버레이 제거
+                overlay.setMap(null);
               };
+            } else {
+              setTimeout(tryAttachCloseHandler, 50);
             }
-          }, 100);
-
+          };
+        
+          tryAttachCloseHandler();
+        
           setSelectedMarker(markerInfo);
         });
 
@@ -1459,6 +1555,20 @@ function MapPage() {
             : "우측 버튼을 눌러 마커를 추가하세요"}
         </p>
       </div>
+      
+      <ToastContainer
+          position="bottom-center"
+          autoClose={2000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="colored"
+          style={{ marginBottom: "65px" }} // 👈 여기
+        />
 
       {/* 지도 영역 */}
       <div className="flex-1 bg-gray-200 relative">
@@ -1493,12 +1603,17 @@ function MapPage() {
         )}
 
         {/* 현재 위치 이동 버튼 일단 두기 (HTTPS 전까지..) */}
-        <div className="absolute top-4 right-4 z-30">
+        <div className="absolute bottom-10 right-4 z-30">
           <button
             onClick={moveToCurrentLocation}
-            className="bg-blue-600 hover:bg-blue-700 text-white text-sm px-4 py-2 rounded shadow-md"
+            className="w-11 h-11 bg-white rounded-lg shadow-lg flex items-center justify-center hover:scale-105 transition-transform"
+            aria-label="내 위치로 이동"
           >
-            📍 내 위치로
+            <img
+              src="/images/my-location.png" // 또는 퍼블릭 폴더 위치로 조정
+              alt="내 위치 아이콘"
+              className="w-6 h-6"
+            />
           </button>
         </div>
 
