@@ -71,7 +71,6 @@ function PetRegister() {
           : `${s3Prefix}${savedKey}?t=${Date.now()}`;
   
         setProfileImagePreview(imagePreview);
-        setProfileImage(savedKey); // ✅ string으로 저장
       }
   
       setShowToast(true);
