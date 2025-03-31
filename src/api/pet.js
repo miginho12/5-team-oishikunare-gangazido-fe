@@ -13,13 +13,24 @@ export const registerPet = async (petData) => {
     });
     const { presignedUrl, fileKey } = res.data;
 
-    await fetch(presignedUrl, {
-      method: "PUT",
-      headers: { "Content-Type": petData.profileImage.type },
-      body: petData.profileImage,
-    });
+    console.log("🚀 S3 업로드 URL:", presignedUrl);
+    
+    try {
+      const uploadRes = await fetch(presignedUrl, {
+        method: "PUT",
+        headers: { "Content-Type": petData.profileImage.type },
+        body: petData.profileImage,
+      });
 
-    profileImageKey = fileKey;
+      if (!uploadRes.ok) {
+        throw new Error(`S3 업로드 실패: ${uploadRes.statusText}`);
+      }
+
+      profileImageKey = fileKey;
+    } catch (err) {
+      console.error("❌ S3 이미지 업로드 실패:", err);
+      throw new Error("이미지 업로드에 실패했습니다.");
+    }
   } else if (typeof petData.profileImage === "string") {
     profileImageKey = petData.profileImage;
   }
