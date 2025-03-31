@@ -57,13 +57,14 @@ function PetEdit() {
           setAge(data.age);
           setGender(data.gender ? 'male' : 'female');
           setWeight(data.weight);
-          if (data.profileImage && typeof data.profileImage === 'string') {
-            const baseUrl = 'https://api.gangazido.com';  // 우리 서버 주소 (로컬 8080)
-            const imageUrl = data.profileImage.startsWith('http')
+
+          // 이미지 경로 조정
+          if (data.profileImage && typeof data.profileImage === "string") {
+            // S3 key일 경우엔 S3 prefix 붙이기
+            const s3Prefix = "https://gangazido-fe.s3.ap-northeast-2.amazonaws.com/";
+            data.profileImage = data.profileImage.startsWith("http")
               ? data.profileImage
-              : `${baseUrl}${data.profileImage}`;
-            setProfileImagePreview(imageUrl); // img src용
-            setProfileImage(data.profileImage); // 전송용 유지
+              : `${s3Prefix}${data.profileImage}`;
           }
         }
       } catch (err) {
@@ -114,7 +115,15 @@ function PetEdit() {
         formData.append('profileImage', profileImage); // 기존 이미지 경로 유지
       }
 
-      await updatePetInfo(formData);
+      await updatePetInfo({
+        name,
+        age,
+        gender: gender === 'male',
+        breed,
+        weight,
+        profileImage,
+      });
+
       setShowToast(true);
       setTimeout(() => navigate('/pets'), 2000);
     } catch (error) {
