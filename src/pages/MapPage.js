@@ -720,7 +720,18 @@ function MapPage() {
     try {
       // 인증 상태 확인
       if (!isAuthenticated) {
-        alert("로그인 후 이용해주세요");
+        toast.error("로그인 후 이용해주세요!", {
+          position: "bottom-center",
+          autoClose: 2000,
+          style: {
+            background: "#fff5f5",
+            color: "#a94442",
+            border: "1px solid #f5c6cb",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+            fontWeight: "bold",
+          },
+          icon: "🔐",
+        });
         setShowModal(false);
         setIsCenterMode(false);
         return;
@@ -739,7 +750,18 @@ function MapPage() {
       const serverMarker = res.data.data;
 
       if (res.data.message !== "marker_registered_success") {
-        alert("마커 등록에 실패했습니다.");
+        toast.error("마커 등록 중 오류가 발생했습니다!", {
+          position: "bottom-center",
+          autoClose: 2000,
+          style: {
+            background: "#fff5f5",
+            color: "#a94442",
+            border: "1px solid #f5c6cb",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+            fontWeight: "bold",
+          },
+          icon: "❌",
+        });
         return;
       }
 
@@ -897,6 +919,18 @@ function MapPage() {
 
       setIsCenterMode(false);
       console.log("✅ 마커 등록 완료:", serverMarker.id);
+      toast.success("마커가 등록되었습니다!", {
+        position: "bottom-center",
+        autoClose: 2000,
+        style: {
+          background: "#e8f5e9", // 연한 초록
+          color: "#2e7d32",      // 진한 초록 텍스트
+          border: "1px solid #c8e6c9",
+          boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+          fontWeight: "bold",
+        },
+        icon: "📍",
+      });
       return markerInfo;
     } catch (error) {
       const status = error.response?.status;
