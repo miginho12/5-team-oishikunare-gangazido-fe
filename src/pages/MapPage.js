@@ -598,13 +598,13 @@ function MapPage() {
                 }
 
                 infoContent = `<div style="padding:5px;font-size:12px;">
-                <div style="margin-bottom:4px;">${emoji} ${markerType}${markerSubType ? ` - ${markerSubType}` : ""
+                <div class="custom-overlay-animate" style="margin-bottom:4px;">${emoji} ${markerType}${markerSubType ? ` - ${markerSubType}` : ""
                   }</div>
                 <button id="delete-marker" style="padding:2px 5px;background:#ff5555;color:white;border:none;border-radius:3px;">삭제</button>
               </div>`;
               } else {
                 // 일반 마커 클릭 시
-                infoContent = `<div style="padding:5px;font-size:12px;">${markerType}<br><button id="delete-marker" style="padding:2px 5px;margin-top:5px;background:#ff5555;color:white;border:none;border-radius:3px;">삭제</button></div>`;
+                infoContent = `<div class="custom-overlay-animate" style="padding:5px;font-size:12px;">${markerType}<br><button id="delete-marker" style="padding:2px 5px;margin-top:5px;background:#ff5555;color:white;border:none;border-radius:3px;">삭제</button></div>`;
               }
 
               const overlay = new window.kakao.maps.CustomOverlay({
@@ -802,7 +802,8 @@ function MapPage() {
               : "⚠️";
 
         const infoContent = `
-          <div style="
+          <div class="custom-overlay-animate"
+            class="custom-overlay-animate" style="
             position: relative;
             padding: 16px 12px 12px;
             font-size: 14px;
@@ -1179,7 +1180,8 @@ function MapPage() {
               : MARKER_IMAGES.EMOJI[subType] || "⚠️";
         
           const infoContent = `
-            <div style="
+            <div class="custom-overlay-animate"
+              style="
               position: relative;
               padding: 16px 12px 12px;
               font-size: 14px;
