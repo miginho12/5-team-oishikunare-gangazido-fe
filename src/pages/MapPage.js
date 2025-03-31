@@ -1733,7 +1733,7 @@ function MapPage() {
             <button
               key={value}
               onClick={() => filterMarkersByType(value)}
-              className={`text-xs font-semibold py-1 px-3 rounded-full shadow transition ${
+              className={`text-xs font-semibold py-3 px-5 rounded-full shadow transition ${
                 filterType === value
                   ? `${color} text-white`
                   : "bg-white text-gray-600 border border-gray-300"
