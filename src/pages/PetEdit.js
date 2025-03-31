@@ -65,6 +65,9 @@ function PetEdit() {
             data.profileImage = data.profileImage.startsWith("http")
               ? data.profileImage
               : `${s3Prefix}${data.profileImage}`;
+
+            setProfileImage(data.profileImage);            // 백엔드에 보낼 용도
+            setProfileImagePreview(data.profileImage);     // ✅ 미리보기로도 보여주기
           }
         }
       } catch (err) {
