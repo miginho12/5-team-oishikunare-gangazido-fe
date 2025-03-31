@@ -1804,8 +1804,8 @@ function MapPage() {
 
       {/* 마커 생성 버튼 클릭 시 모달 (찍어멍) */}
       {showModal && (
-  <div className="fixed bottom-24 inset-x-0 z-50 w-[90%] max-w-sm mx-auto animate-fade-up transition">
-    <div className="bg-white/90 rounded-2xl shadow-xl border border-gray-200 px-5 py-4 text-center relative backdrop-blur-sm">
+      <div className="fixed bottom-24 inset-x-0 z-50 w-[90%] max-w-sm mx-auto animate-fade-up transition">
+        <div className="bg-white/90 rounded-2xl shadow-xl border border-gray-200 px-5 py-4 text-center relative">
       {/* 닫기 버튼 */}
       <button
         onClick={() => {
