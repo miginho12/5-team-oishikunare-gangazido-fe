@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.12.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.11.1...v1.12.0) (2025-03-31)
+
+### 🚀 NEW FEATURES
+
+* 마커 등록 버튼 위치 변경 ([fb250e1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/fb250e12dc61a116db071035cb8da3e57829cf4a))
+
 ## [1.11.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.11.0...v1.11.1) (2025-03-31)
 
 ### 🐛 BUG FIXES
