@@ -29,10 +29,11 @@ function PetInfo() {
 
           // 이미지 경로 조정
           if (data.profileImage && typeof data.profileImage === "string") {
-            const baseUrl = "https://api.gangazido.com"; // 우리 서버 주소 (로컬 8080)
+            // S3 key일 경우엔 S3 prefix 붙이기
+            const s3Prefix = "https://gangazido-fe.s3.ap-northeast-2.amazonaws.com/";
             data.profileImage = data.profileImage.startsWith("http")
               ? data.profileImage
-              : `${baseUrl}${data.profileImage}`;
+              : `${s3Prefix}${data.profileImage}`;
           }
 
           setPet(data);
