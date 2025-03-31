@@ -32,7 +32,7 @@ export const registerUser = (userData) => {
     );
   }
 
-  return api.post(`${apiURL}/v1/users/signup`, formData, {
+  return api.post(`/v1/users/signup`, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -56,7 +56,7 @@ export const loginUser = (credentials) => {
   });
 
   return api
-    .post(`${apiURL}/v1/users/login`, requestData)
+    .post(`/v1/users/login`, requestData)
     .then((response) => {
       console.log("로그인 API 응답 성공 상태코드:", response.status);
 
@@ -118,7 +118,7 @@ export const logoutUser = () => {
 export const checkEmailDuplicate = (email) => {
   console.log("이메일 중복 확인 요청:", email);
   return api.get(
-    `${apiURL}/v1/users/check-email?email=${encodeURIComponent(email)}`
+    `/v1/users/check-email?email=${encodeURIComponent(email)}`
   );
 };
 
@@ -126,6 +126,6 @@ export const checkEmailDuplicate = (email) => {
 export const checkNicknameDuplicate = (nickname) => {
   console.log("닉네임 중복 확인 요청:", nickname);
   return api.get(
-    `${apiURL}/v1/users/check-nickname?nickname=${encodeURIComponent(nickname)}`
+    `/v1/users/check-nickname?nickname=${encodeURIComponent(nickname)}`
   );
 };
