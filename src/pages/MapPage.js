@@ -1725,24 +1725,23 @@ function MapPage() {
 
         {/* 지도 상단에 마커 타입 필터링 버튼 추가 - 배경 없이 왼쪽 정렬 */}
         <div className="absolute top-4 left-4 z-20 flex gap-2">
-          <button
-            onClick={() => filterMarkersByType("댕플")}
-            className="bg-amber-500 hover:bg-amber-600 py-1 px-3 rounded-full shadow text-xs font-medium text-white"
-          >
-            댕플
-          </button>
-          <button
-            onClick={() => filterMarkersByType("댕져러스")}
-            className="bg-blue-500 hover:bg-blue-600 py-1 px-3 rounded-full shadow text-xs font-medium text-white"
-          >
-            댕져러스
-          </button>
-          <button
-            onClick={() => filterMarkersByType("all")}
-            className="bg-gray-500 hover:bg-gray-600 py-1 px-3 rounded-full shadow text-xs font-medium text-white"
-          >
-            전체
-          </button>
+          {[
+            { label: "댕플", value: "댕플", color: "bg-amber-300" },
+            { label: "댕져러스", value: "댕져러스", color: "bg-red-400" },
+            { label: "전체", value: "all", color: "bg-gray-400" },
+          ].map(({ label, value, color }) => (
+            <button
+              key={value}
+              onClick={() => filterMarkersByType(value)}
+              className={`text-xs font-semibold py-3 px-5 rounded-full shadow transition ${
+                filterType === value
+                  ? `${color} text-white`
+                  : "bg-white text-gray-600 border border-gray-300"
+              }`}
+            >
+              {label}
+            </button>
+          ))}
         </div>
       </div>
 
