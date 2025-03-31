@@ -30,7 +30,7 @@ function PetInfo() {
           // 이미지 경로 조정
           if (data.profileImage && typeof data.profileImage === "string") {
             // S3 key일 경우엔 S3 prefix 붙이기
-            const s3Prefix = "https://gangazido-fe.s3.ap-northeast-2.amazonaws.com/";
+            const s3Prefix = "https://d3jeniacjnodv5.cloudfront.net/";
             data.profileImage = data.profileImage.startsWith("http")
               ? data.profileImage
               : `${s3Prefix}${data.profileImage}`;
