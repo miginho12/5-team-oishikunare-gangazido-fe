@@ -52,12 +52,12 @@ function MapPage() {
     }
 
     // API 키 가져오기 
-    
+
     // 배포
     // const apiKey = window._env_?.KAKAO_MAP_API_KEY;
 
     // 개발
-    const apiKey = process.env.REACT_APP_KAKAO_MAP_API_KEY; 
+    const apiKey = process.env.REACT_APP_KAKAO_MAP_API_KEY;
 
     if (!apiKey) {
       console.error("카카오맵 API 키가 환경 변수에 설정되지 않았습니다.");
@@ -547,25 +547,25 @@ function MapPage() {
           subType: markerSubType,
         };
 
-      // 클릭 이벤트 등록
-      try {
-        window.kakao.maps.event.addListener(mapMarkers, 'click', () => {
-          try {
-            // 기존 인포윈도우 모두 닫기 (성능 최적화)
-            markersRef.current.forEach(m => {
-              if (m.overlay) {
-                try {
-                  if (typeof m.overlay.setMap(null) === "function") {
-                    m.overlay.close(); // InfoWindow일 경우
-                  } else if (typeof m.overlay.setMap === "function") {
-                    m.overlay.setMap(null); // CustomOverlay일 경우
+        // 클릭 이벤트 등록
+        try {
+          window.kakao.maps.event.addListener(mapMarkers, 'click', () => {
+            try {
+              // 기존 인포윈도우 모두 닫기 (성능 최적화)
+              markersRef.current.forEach(m => {
+                if (m.overlay) {
+                  try {
+                    if (typeof m.overlay.setMap(null) === "function") {
+                      m.overlay.close(); // InfoWindow일 경우
+                    } else if (typeof m.overlay.setMap === "function") {
+                      m.overlay.setMap(null); // CustomOverlay일 경우
+                    }
+                    m.overlay = null;
+                  } catch (err) {
+                    console.warn("🔍 overlay 닫기 실패:", err);
                   }
-                  m.overlay = null;
-                } catch (err) {
-                  console.warn("🔍 overlay 닫기 실패:", err);
                 }
-              }
-            });
+              });
 
               // 인포윈도우 생성
               let infoContent = "";
@@ -591,9 +591,8 @@ function MapPage() {
                 }
 
                 infoContent = `<div style="padding:5px;font-size:12px;">
-                <div style="margin-bottom:4px;">${emoji} ${markerType}${
-                  markerSubType ? ` - ${markerSubType}` : ""
-                }</div>
+                <div style="margin-bottom:4px;">${emoji} ${markerType}${markerSubType ? ` - ${markerSubType}` : ""
+                  }</div>
                 <button id="delete-marker" style="padding:2px 5px;background:#ff5555;color:white;border:none;border-radius:3px;">삭제</button>
               </div>`;
               } else {
@@ -741,7 +740,7 @@ function MapPage() {
         tempMarkerType === "댕플"
           ? markerImages.current[0].image
           : markerImages.current[1][tempMarkerSubType] ||
-            markerImages.current[1].image;
+          markerImages.current[1].image;
 
       const marker = new window.kakao.maps.Marker({
         position: center,
@@ -766,7 +765,7 @@ function MapPage() {
           if (m.overlay) m.overlay.setMap(null);
         });
 
-        const emoji = 
+        const emoji =
           tempMarkerType === "댕플"
             ? "🐶"
             : tempMarkerSubType
@@ -822,7 +821,7 @@ function MapPage() {
             ">삭제</button>
           </div>
         `;
-  
+
         const overlay = new window.kakao.maps.CustomOverlay({
           content: infoContent, // 너가 만든 HTML
           position: marker.getPosition(),
@@ -831,11 +830,11 @@ function MapPage() {
           removable: true,
           zIndex: 9999 // ✅ 마커보다 높은 z-index 설정
         });
-  
+
         // overlay.open(map, marker);
         overlay.setMap(map); // ✅ 올바른 방식
         markerInfo.overlay = overlay;
-  
+
         setTimeout(() => {
           const deleteBtn = document.getElementById("delete-marker");
           if (deleteBtn) {
@@ -940,28 +939,28 @@ function MapPage() {
   //     alert("지도가 아직 초기화되지 않았습니다.");
   //     return;
   //   }
-  
+
   //   if (!navigator.geolocation) {
   //     alert("이 브라우저는 위치 정보를 지원하지 않아요.");
   //     return;
   //   }
-  
+
   //   navigator.geolocation.getCurrentPosition(
   //     (position) => {
   //       const { latitude, longitude } = position.coords;
-  
+
   //       const moveLatLng = new window.kakao.maps.LatLng(latitude, longitude);
-  
+
   //       // 지도 중심 이동
   //       map.setCenter(moveLatLng);
   //       // 지도 줌 레벨이 너무 멀다면 적당히 당겨주기
   //       if (map.getLevel() > 5) {
   //         map.setLevel(4);
   //       }
-  
+
   //       // 상태 업데이트 (필요할 경우만)
   //       setCenterPosition({ lat: latitude, lng: longitude });
-  
+
   //       console.log("📍 현재 위치로 이동 완료:", latitude, longitude);
   //     },
   //     (error) => {
@@ -1121,13 +1120,13 @@ function MapPage() {
           markersRef.current.forEach(m => {
             if (m.overlay) m.overlay.setMap(null);
           });
-  
+
           const emoji =
             type === "댕플"
               ? "🐶" // ← 여기 원하는 이모지 넣으면 됨!
               : MARKER_IMAGES.EMOJI[subType] || "⚠️";
 
-          const infoContent =`
+          const infoContent = `
                 <div style="
                   position: relative;
                   padding: 16px 12px 12px;
@@ -1191,10 +1190,10 @@ function MapPage() {
             zIndex: 9999 // ✅ 마커보다 높은 z-index 설정
           });
           overlay.setMap(map);  // 오버레이 열기
-          
+
           // overlay.open(map, marker);
           markerInfo.overlay = overlay;
-  
+
           setTimeout(() => {
             const deleteBtn = document.getElementById("delete-marker");
             if (deleteBtn) {
@@ -1442,8 +1441,14 @@ function MapPage() {
   return (
     <div className="flex flex-col h-full bg-gray-50">
       {/* 헤더 */}
-      <header className="bg-white p-4 shadow-md flex items-center justify-between">
-        <h1 className="text-lg font-bold text-gray-800">강아지도 🐕</h1>
+      <header className="bg-white pt-2 pb-0 px-4 shadow-md flex items-center justify-center">
+        <div className="flex items-center h-full gap-2">
+          <img
+            src="/gangazido-logo-header.png"
+            alt="Gangazido Logo Header"
+            className="h-14 w-28 object-cover self-center"
+          />
+        </div>
       </header>
 
       {/* 마커 생성 안내 */}
@@ -1722,46 +1727,46 @@ function MapPage() {
         <div className="fixed bottom-32 left-1/2 transform -translate-x-1/2 z-50 bg-white rounded-lg shadow-xl w-[50%] max-w-xs">
           {/* 닫기 버튼 */}
           <div className="absolute right-2 top-2 z-50">
-              <button
-                onClick={() => {
-                  setShowModal(false);
-                  setIsCenterMode(false);
-                }}
-                className="text-gray-700 hover:text-red-500 transition-colors duration-200 text-2xl leading-none"
-                aria-label="모달 닫기"
-              >
-                ×
-              </button>
-          </div>
-        <div className="relative p-4">
-          {/* 모달 내용 */}
-          <div className="text-center mb-4">
-          <h2 className="text-xl font-bold flex items-center justify-center gap-2">
-            <span>
-              {tempMarkerType === "댕플"
-                ? "댕플을 찍어멍!"
-                : tempMarkerSubType
-                  ? `${tempMarkerSubType}을 찍어멍!`
-                  : "댕져러스를 찍어멍!"}
-            </span>
-          </h2>
-  <p className="text-sm text-gray-500 mt-1">
-    지도를 이동해서 {tempMarkerType} 마커를 찍을 수 있습니다!
-  </p>
-          </div>
-          <div className="flex justify-center">
             <button
               onClick={() => {
-                createMarkerFromModal();
                 setShowModal(false);
+                setIsCenterMode(false);
               }}
-              className="bg-black text-white font-bold py-2 px-12 rounded-full"
+              className="text-gray-700 hover:text-red-500 transition-colors duration-200 text-2xl leading-none"
+              aria-label="모달 닫기"
             >
-              확정
+              ×
             </button>
           </div>
+          <div className="relative p-4">
+            {/* 모달 내용 */}
+            <div className="text-center mb-4">
+              <h2 className="text-xl font-bold flex items-center justify-center gap-2">
+                <span>
+                  {tempMarkerType === "댕플"
+                    ? "댕플을 찍어멍!"
+                    : tempMarkerSubType
+                      ? `${tempMarkerSubType}을 찍어멍!`
+                      : "댕져러스를 찍어멍!"}
+                </span>
+              </h2>
+              <p className="text-sm text-gray-500 mt-1">
+                지도를 이동해서 {tempMarkerType} 마커를 찍을 수 있습니다!
+              </p>
+            </div>
+            <div className="flex justify-center">
+              <button
+                onClick={() => {
+                  createMarkerFromModal();
+                  setShowModal(false);
+                }}
+                className="bg-black text-white font-bold py-2 px-12 rounded-full"
+              >
+                확정
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
       )}
     </div>
   );
