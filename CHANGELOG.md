@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.11.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.10.1...v1.11.0) (2025-03-31)
+
+### 🚀 NEW FEATURES
+
+* 마커 클릭 시 애니메이션 추가 ([c59b72f](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/c59b72fb6cbe68fd848878f5bd50fa74db197069))
+
 ## [1.10.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.10.0...v1.10.1) (2025-03-31)
 
 ### 🐛 BUG FIXES
