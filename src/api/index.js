@@ -1,12 +1,12 @@
 import axios from "axios";
 
+const baseURL =
+  process.env.NODE_ENV === "development"
+    ? process.env.REACT_APP_API_BASE_URL
+    : window._env_?.API_BASE_URL;
+
 const apiClient = axios.create({
-  // 배포환경
-  baseURL: window._env_?.API_BASE_URL || "http://localhost:8080" ,
-
-  //개발환경
-  // baseURL: process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080',
-
+  baseURL, // ✅ 공통 baseURL 사용
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",

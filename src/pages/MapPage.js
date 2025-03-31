@@ -53,8 +53,12 @@ function MapPage() {
 
     // API 키 가져오기 
     
+    const apiKey =
+      process.env.NODE_ENV === "development"
+        ? process.env.REACT_APP_KAKAO_MAP_API_KEY
+        : window._env_?.KAKAO_MAP_API_KEY;
     // 배포
-    const apiKey = window._env_?.KAKAO_MAP_API_KEY;
+    // const apiKey = window._env_?.KAKAO_MAP_API_KEY;
 
     // 개발
     // const apiKey = process.env.REACT_APP_KAKAO_MAP_API_KEY; 
