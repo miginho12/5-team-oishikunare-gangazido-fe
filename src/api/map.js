@@ -15,15 +15,15 @@ export const getMapMarkers = ({ latitude, longitude, radius }) => {
 
 // 마커 등록
 export const registerMarker = (markerData) => {
-  return api.post(`${apiURL}v1/markers`, markerData);
+  return api.post(`${apiURL}/v1/markers`, markerData);
 };
 
 // 마커 상세 조회
 export const getMarkerDetail = (markerId) => {
-  return api.get(`${apiURL}v1/markers/${markerId}`);
+  return api.get(`${apiURL}/v1/markers/${markerId}`);
 };
 
 // 마커 삭제
 export const deleteMarker = (markerId) => {
-  return api.delete(`${apiURL}v1/markers/${markerId}`);
+  return api.delete(`${apiURL}/v1/markers/${markerId}`);
 };
