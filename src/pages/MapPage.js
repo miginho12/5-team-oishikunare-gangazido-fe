@@ -857,7 +857,6 @@ function MapPage() {
   // 현재 위치로 이동하기 (경고 제거를 위해 사용되는 함수로 표시)
   // eslint-disable-next-line no-unused-vars
   // const moveToCurrentLocation = useCallback(() => { 일단 주석처리 제리.. HTTPS 이후 ..?
-  //   if (!map) {
   //     alert("지도가 아직 초기화되지 않았습니다.");
   //     return;
   //   }
