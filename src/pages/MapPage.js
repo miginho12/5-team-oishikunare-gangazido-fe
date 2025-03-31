@@ -1652,9 +1652,9 @@ function MapPage() {
             <div className="absolute top-full right-0 mt-2 flex flex-col gap-3 animate-fade-slide-down">
               {[
                 { label: "들개", icon: "/images/beware_dog_square.png", bg: "bg-rose-100", text: "text-rose-700", border: "border-rose-300" },
-                { label: "빙판", icon: "/images/icy_road_square.png", bg: "bg-blue-100", text: "text-blue-700", border: "border-blue-300" },
+                { label: "빙판길", icon: "/images/icy_road_square.png", bg: "bg-blue-100", text: "text-blue-700", border: "border-blue-300" },
                 { label: "염화칼슘", icon: "/images/beware_foot_square.png", bg: "bg-green-100", text: "text-green-700", border: "border-green-300" },
-                { label: "공사", icon: "/images/construction_square.png", bg: "bg-gray-100", text: "text-gray-700", border: "border-gray-300" },
+                { label: "공사중", icon: "/images/construction_square.png", bg: "bg-gray-100", text: "text-gray-700", border: "border-gray-300" },
               ].map(({ label, icon, bg, text, border }) => (
                 <button
                   key={label}
@@ -1797,52 +1797,58 @@ function MapPage() {
         </div>
       </nav>
 
-      {/* 마커 생성 모달 */}
+      {/* 마커 생성 버튼 클릭 시 모달 (찍어멍) */}
       {showModal && (
-        <div className="fixed bottom-32 left-1/2 transform -translate-x-1/2 z-50 bg-white rounded-lg shadow-xl w-[50%] max-w-xs">
-          {/* 닫기 버튼 */}
-          <div className="absolute right-2 top-2 z-50">
-              <button
-                onClick={() => {
-                  setShowModal(false);
-                  setIsCenterMode(false);
-                }}
-                className="text-gray-700 hover:text-red-500 transition-colors duration-200 text-2xl leading-none"
-                aria-label="모달 닫기"
-              >
-                ×
-              </button>
-          </div>
-        <div className="relative p-4">
-          {/* 모달 내용 */}
-          <div className="text-center mb-4">
-          <h2 className="text-xl font-bold flex items-center justify-center gap-2">
-            <span>
-              {tempMarkerType === "댕플"
-                ? "댕플을 찍어멍!"
-                : tempMarkerSubType
-                  ? `${tempMarkerSubType}을 찍어멍!`
-                  : "댕져러스를 찍어멍!"}
-            </span>
-          </h2>
-  <p className="text-sm text-gray-500 mt-1">
-    지도를 이동해서 {tempMarkerType} 마커를 찍을 수 있습니다!
-  </p>
-          </div>
-          <div className="flex justify-center">
-            <button
-              onClick={() => {
-                createMarkerFromModal();
-                setShowModal(false);
-              }}
-              className="bg-black text-white font-bold py-2 px-12 rounded-full"
-            >
-              확정
-            </button>
-          </div>
-        </div>
+  <div className="fixed bottom-24 inset-x-0 z-50 w-[90%] max-w-sm mx-auto animate-fade-up transition">
+    <div className="bg-white/90 rounded-2xl shadow-xl border border-gray-200 px-5 py-4 text-center relative backdrop-blur-sm">
+      {/* 닫기 버튼 */}
+      <button
+        onClick={() => {
+          setShowModal(false);
+          setIsCenterMode(false);
+        }}
+        className="absolute top-2.5 right-3 text-gray-500 hover:text-red-500 text-2xl font-bold"
+        aria-label="모달 닫기"
+      >
+        ×
+      </button>
+
+      {/* 이모지 + 타이틀 */}
+      <div className="mb-2 flex items-center justify-center gap-2">
+        <span className="text-2xl">
+          {tempMarkerType === "댕플"
+            ? "🐶"
+            : tempMarkerSubType
+              ? MARKER_IMAGES.EMOJI[tempMarkerSubType] || "⚠️"
+              : "⚠️"}
+        </span>
+        <h2 className="text-lg font-bold text-gray-800">
+          {tempMarkerType === "댕플"
+            ? "댕플을 찍어멍!"
+            : tempMarkerSubType
+              ? `${tempMarkerSubType}을 찍어멍!`
+              : "댕져러스를 찍어멍!"}
+        </h2>
       </div>
-      )}
+
+      {/* 설명 텍스트 */}
+      <p className="text-sm text-gray-600 mb-4 leading-tight whitespace-nowrap overflow-hidden text-ellipsis">
+        지도를 움직여 위치를 정하고 아래 버튼을 눌러주세요
+      </p>
+
+      {/* 확정 버튼 */}
+      <button
+        onClick={() => {
+          createMarkerFromModal();
+          setShowModal(false);
+        }}
+        className="w-32 bg-black text-white py-2 rounded-full hover:bg-gray-900 font-semibold text-sm shadow-md transition"
+      >
+        확정
+      </button>
+    </div>
+  </div>
+)}
     </div>
   );
 }
