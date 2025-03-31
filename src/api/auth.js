@@ -4,7 +4,7 @@ import api from "./index";
 const apiURL = window._env_?.API_BASE_URL;
 
 // 개발환경
-//const apiURL = process.env.REACT_APP_API_BASE_URL;
+// const apiURL = process.env.REACT_APP_API_BASE_URL;
 
 // 회원가입
 export const registerUser = (userData) => {
@@ -32,7 +32,7 @@ export const registerUser = (userData) => {
     );
   }
 
-  return api.post(`${apiURL}/v1/users/signup`, formData, {
+  return api.post(`${apiURL}v1/users/signup`, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -56,7 +56,7 @@ export const loginUser = (credentials) => {
   });
 
   return api
-    .post(`${apiURL}/v1/users/login`, requestData)
+    .post(`${apiURL}v1/users/login`, requestData)
     .then((response) => {
       console.log("로그인 API 응답 성공 상태코드:", response.status);
 
@@ -103,7 +103,7 @@ export const loginUser = (credentials) => {
 export const logoutUser = () => {
   console.log("로그아웃 API 호출 시작");
   return api
-    .post(`${apiURL}/v1/users/logout`)
+    .post(`${apiURL}v1/users/logout`)
     .then((response) => {
       console.log("로그아웃 API 응답 성공:", response.data);
       return response;
@@ -118,7 +118,7 @@ export const logoutUser = () => {
 export const checkEmailDuplicate = (email) => {
   console.log("이메일 중복 확인 요청:", email);
   return api.get(
-    `${apiURL}/v1/users/check-email?email=${encodeURIComponent(email)}`
+    `${apiURL}v1/users/check-email?email=${encodeURIComponent(email)}`
   );
 };
 
@@ -126,6 +126,6 @@ export const checkEmailDuplicate = (email) => {
 export const checkNicknameDuplicate = (nickname) => {
   console.log("닉네임 중복 확인 요청:", nickname);
   return api.get(
-    `${apiURL}/v1/users/check-nickname?nickname=${encodeURIComponent(nickname)}`
+    `${apiURL}v1/users/check-nickname?nickname=${encodeURIComponent(nickname)}`
   );
 };
