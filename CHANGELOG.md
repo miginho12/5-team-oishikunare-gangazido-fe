@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.16.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.15.0...v1.16.0) (2025-03-31)
+
+### 🚀 NEW FEATURES
+
+* add responsive design support for mobile and tablet ([35b533a](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/35b533aad37649abb4ead7d50ad3d9981bed3ac4))
+
 ## [1.15.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.14.0...v1.15.0) (2025-03-31)
 
 ### 🚀 NEW FEATURES
