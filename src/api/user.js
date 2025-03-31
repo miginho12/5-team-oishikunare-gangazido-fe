@@ -8,7 +8,7 @@ const apiURL = window._env_?.API_BASE_URL;
 
 // 내 정보 조회
 export const getUserInfo = () => {
-  return api.get(`${apiURL}/v1/users/me`);
+  return api.get(`${apiURL}v1/users/me`);
 };
 
 // 내 정보 수정
@@ -18,7 +18,7 @@ export const updateUserInfo = (userData) => {
   if (userData.user_profile_image) {
     formData.append("user_profile_image", userData.user_profile_image);
   }
-  return api.patch(`${apiURL}/v1/users/me`, formData, {
+  return api.patch(`${apiURL}v1/users/me`, formData, {
     headers: { "Content-Type": "multipart/form-data" },
   });
 };
