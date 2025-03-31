@@ -68,7 +68,7 @@ function PetRegister() {
         const s3Prefix = "https://d3jeniacjnodv5.cloudfront.net/";
         const imagePreview = profileImage.startsWith("http")
           ? profileImage
-          : `${s3Prefix}${profileImage}`;
+          : `${s3Prefix}${profileImage}?t=${Date.now()}`; // ✅ 캐시 무력화
         setProfileImagePreview(imagePreview);
       }
 
