@@ -44,7 +44,10 @@ export const registerPet = async (petData) => {
   if (profileImageKey) {
     formData.append("profileImage", profileImageKey); // 문자열로 key 전달
   }
-  return api.post("/v1/pets/me", formData);
+  await api.post("/v1/pets/me", formData);
+
+  // ✅ key를 리턴해줌
+  return profileImageKey;
 };
 
 // 반려동물 조회
@@ -92,3 +95,4 @@ export const updatePetInfo = async(petData) => {
 export const deletePet = () => {
   return api.delete(`/v1/pets/me`);
 };
+
