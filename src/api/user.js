@@ -11,7 +11,7 @@ const convertToCloudFrontUrl = (url) => {
     // S3 URL에서 키(경로) 부분만 추출
     const key = url.match(s3Pattern)[3];
     // CloudFront 도메인으로 URL 생성
-    return `https://dxxxxxxxx.cloudfront.net/${key}`;
+    return `https://d3jeniacjnodv5.cloudfront.net/${key}`;
   }
   
   return url; // S3 URL이 아닌 경우 원래 URL 반환
