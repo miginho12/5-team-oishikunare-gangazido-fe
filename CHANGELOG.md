@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## [1.7.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.6.2...v1.7.0) (2025-03-31)
+
+### 🚀 NEW FEATURES
+
+* 마커 등록 버튼 디자인 변경 ([c54256f](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/c54256fb206a54aed29df272e48d1bb499952686))
+* 필터링 버튼 디자인 변경 ([09ba042](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/09ba0423c54dc335c8af159dd1fb38e3d381623a))
+* 필터링 버튼 디자인 변경 ([4d8345a](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/4d8345a64c36b81ef12e9e1282e05ffaa02c956f))
+
 ## [1.6.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.6.1...v1.6.2) (2025-03-31)
 
 ### 🐛 BUG FIXES
