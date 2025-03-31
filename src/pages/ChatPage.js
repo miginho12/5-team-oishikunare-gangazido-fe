@@ -1,8 +1,3 @@
-/*import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { sendLLMChat } from '../api/chat'; // ✅ 실제 API 호출 추가
-import axios from 'axios';*/
-
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { sendLLMChat } from "../api/chat";
@@ -148,146 +143,10 @@ function ChatPage() {
     handleSendMessage(question); // 바로 전송
   };
 
-  /*
-function ChatPage() {
-  const navigate = useNavigate();
-  const [message, setMessage] = useState('');
-  const [chatMessages, setChatMessages] = useState([
-    {
-      id: 1,
-      text: '안녕하세요! 반려견에 관한 질문이 있으신가요?',
-      isUser: false,
-      time: '오전 10:30',
-    },
-  ]);
-
-  const [suggestedQuestions] = useState([
-    '오늘 산책하는거 어떨까?',
-    '오늘 옷은 어떻게 입히는 게 좋을까?',
-    '오늘 미세먼지 어때?',
-    //'강아지 사료 선택 시 중요한 점은 무엇인가요?',
-  ]);
-
-  const goToMap = () => navigate('/map');
-  const goToProfile = () => navigate('/profile');
-  const goToPetInfo = () => navigate('/pets');
-
-  const handleSendMessage = async () => {
-    if (message.trim() === '') return;
-
-    const newUserMessage = {
-      id: chatMessages.length + 1,
-      text: message,
-      isUser: true,
-      time: new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' }),
-    };
-
-    setChatMessages((prev) => [...prev, newUserMessage]);
-    setMessage('');
-
-    try {
-      const latitude = 33.450701;
-      const longitude = 126.570667;
-
-      const { data } = await sendLLMChat({
-        latitude,
-        longitude,
-        message: newUserMessage.text,
-      });
-
-      const cleanResponse = data.data.response.replace(/```json\n|\n```/g, '');
-
-      let parsed;
-      let aiText;
-
-      try {
-        // JSON 파싱 시도
-        parsed = JSON.parse(cleanResponse);
-
-        // 정상 응답이면 구성된 메시지로 출력
-        aiText = `🐾 오늘은 ${parsed.recommendation}!\n
-        📌 이유: ${parsed.reason}\n
-        ✅ 팁: ${parsed.safety_tips.join(', ')}`;
-      } catch (parseError) {
-        // 파싱 안 되는 경우 = 그냥 일반 메시지인 경우
-        aiText = cleanResponse;
-      }
-
-      const aiResponse = {
-        id: newUserMessage.id + 1,
-        text: aiText,
-        isUser: false,
-        time: new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' }),
-      };
-
-      setChatMessages((prev) => [...prev, aiResponse]);
-    } catch (error) {
-      if (axios.isAxiosError(error) && error.response) {
-        const status = error.response.status;
-
-      // ✅ 상태 코드별 한글 메시지
-      switch (status) {
-        case 401:
-          alert('로그인 해주세요');
-          break;
-        case 404:
-          alert('반려견 정보를 찾을 수 없습니다.');
-          break;
-        case 400:
-          alert('요청 형식이 잘못되었거나 날씨 정보가 유효하지 않습니다.');
-          break;
-        case 500:
-          alert('서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
-          break;
-        default:
-          alert(`알 수 없는 오류가 발생했습니다. (${status})`);
-      } 
-    }else {
-        alert('예상치 못한 네트워크 오류가 발생했습니다.');
-      }
-
-      const errorResponse = {
-        id: newUserMessage.id + 1,
-        text: 'AI 응답에 실패했어요. 다시 시도해주세요!',
-        isUser: false,
-        time: new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' }),
-      };
-      setChatMessages((prev) => [...prev, errorResponse]);
-    }
-      
-  };
-
-  const handleSuggestedQuestion = (question) => {
-    setMessage(question);
-    setTimeout(() => handleSendMessage(), 0); // message 업데이트 이후 전송
-  };
-
-  const loadingMessage = {
-    id: newUserMessage.id + 1,
-    text: '답변을 생성 중입니다...',
-    isUser: false,
-    time: '',
-  };
-  
-  setChatMessages((prev) => [...prev, loadingMessage]);
-  
-
-
-  const chatEndRef = useRef(null);
-
-  useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [chatMessages]);
-  
-  setChatMessages((prev) =>
-    prev.slice(0, -1).concat(aiResponse) // 마지막 메시지를 GPT 응답으로 교체
-  );
-*/
-
   return (
-    <div className="flex flex-col h-full bg-gray-50">
+    <div className="flex flex-col h-full bg-gray-50 max-w-full overflow-hidden">
       {/* 헤더 */}
-      <header className="bg-white pt-2 pb-0 px-4 shadow-md flex items-center justify-center">
+      <header className="bg-white pt-2 pb-0 px-4 shadow-md flex items-center justify-center w-full">
         <div className="flex items-center h-full gap-2">
           <img
             src="/gangazido-logo-header.png"
@@ -298,7 +157,7 @@ function ChatPage() {
       </header>
 
       {/* 채팅 영역 */}
-      <div className="flex-1 p-4 overflow-y-auto">
+      <div className="flex-1 p-4 overflow-y-auto overflow-x-hidden">
         <div className="space-y-4">
           {chatMessages.map((msg) => (
             <div
@@ -306,7 +165,7 @@ function ChatPage() {
               className={`flex ${msg.isUser ? "justify-end" : "justify-start"}`}
             >
               <div
-                className={`max-w-3/4 rounded-lg p-3 ${
+                className={`max-w-[75%] rounded-lg p-3 ${
                   msg.isUser ? "bg-amber-800 text-white" : "bg-white shadow-md"
                 }`}
               >
@@ -326,7 +185,7 @@ function ChatPage() {
       </div>
 
       {/* 추천 질문 */}
-      <div className="bg-white p-3 border-t border-gray-200">
+      <div className="bg-white p-3 border-t border-gray-200 w-full">
         <p className="text-xs text-gray-500 mb-2">추천 질문</p>
         <div className="flex overflow-x-auto space-x-2 pb-2">
           {suggestedQuestions.map((question, index) => (
@@ -342,7 +201,7 @@ function ChatPage() {
       </div>
 
       {/* 메시지 입력 */}
-      <div className="bg-white p-4 border-t border-gray-200">
+      <div className="bg-white p-4 border-t border-gray-200 w-full">
         <div className="flex items-center">
           <input
             type="text"
@@ -355,7 +214,7 @@ function ChatPage() {
             }}
           />
           <button
-            onClick={handleSendMessage}
+            onClick={() => handleSendMessage()}
             className="p-3 bg-amber-800 text-white rounded-r-md hover:bg-amber-900 transition-colors"
           >
             <svg
@@ -377,7 +236,7 @@ function ChatPage() {
       </div>
 
       {/* 하단 네비게이션 */}
-      <nav className="bg-white border-t border-gray-200 shadow-lg">
+      <nav className="bg-white border-t border-gray-200 shadow-lg w-full">
         <div className="flex justify-between px-2">
           <button
             onClick={goToMap}
