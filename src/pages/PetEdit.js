@@ -66,6 +66,9 @@ function PetEdit() {
               ? data.profileImage
               : `${s3Prefix}${data.profileImage}`;
 
+            // 👉 캐시 우회를 위한 쿼리 스트링 추가
+            data.profileImage += `?t=${Date.now()}`;
+
             setProfileImage(data.profileImage);            // 백엔드에 보낼 용도
             setProfileImagePreview(data.profileImage);     // ✅ 미리보기로도 보여주기
           }
