@@ -57,13 +57,14 @@ function PetEdit() {
           setAge(data.age);
           setGender(data.gender ? 'male' : 'female');
           setWeight(data.weight);
-          if (data.profileImage && typeof data.profileImage === 'string') {
-            const baseUrl = 'https://api.gangazido.com';  // 우리 서버 주소 (로컬 8080)
-            const imageUrl = data.profileImage.startsWith('http')
+
+          // 이미지 경로 조정
+          if (data.profileImage && typeof data.profileImage === "string") {
+            // S3 key일 경우엔 S3 prefix 붙이기
+            const s3Prefix = "https://d3jeniacjnodv5.cloudfront.net/";
+            data.profileImage = data.profileImage.startsWith("http")
               ? data.profileImage
-              : `${baseUrl}${data.profileImage}`;
-            setProfileImagePreview(imageUrl); // img src용
-            setProfileImage(data.profileImage); // 전송용 유지
+              : `${s3Prefix}${data.profileImage}`;
           }
         }
       } catch (err) {
@@ -114,7 +115,15 @@ function PetEdit() {
         formData.append('profileImage', profileImage); // 기존 이미지 경로 유지
       }
 
-      await updatePetInfo(formData);
+      await updatePetInfo({
+        name,
+        age,
+        gender: gender === 'male',
+        breed,
+        weight,
+        profileImage,
+      });
+
       setShowToast(true);
       setTimeout(() => navigate('/pets'), 2000);
     } catch (error) {
@@ -291,13 +300,19 @@ function PetEdit() {
   return (
     <div className="flex flex-col h-full bg-gray-50">
       {/* 헤더 */}
-      <header className="bg-white p-4 shadow-md flex items-center">
-        <button onClick={() => navigate('/pets')} className="mr-2">
+      <header className="bg-white pt-2 pb-0 px-4 shadow-md flex items-center relative">
+        <button onClick={() => navigate('/pets')} className="absolute left-4">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
         </button>
-        <h1 className="text-lg font-bold text-gray-800">반려견 정보 수정</h1>
+        <div className="flex-grow flex justify-center">
+          <img
+            src="/gangazido-logo-header.png"
+            alt="Gangazido Logo Header"
+            className="h-14 w-28 object-cover"
+          />
+        </div>
       </header>
 
       {/* 메인 컨텐츠 */}

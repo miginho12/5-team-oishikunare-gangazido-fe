@@ -554,25 +554,25 @@ function MapPage() {
           subType: markerSubType,
         };
 
-      // 클릭 이벤트 등록
-      try {
-        window.kakao.maps.event.addListener(mapMarkers, 'click', () => {
-          try {
-            // 기존 인포윈도우 모두 닫기 (성능 최적화)
-            markersRef.current.forEach(m => {
-              if (m.overlay) {
-                try {
-                  if (typeof m.overlay.setMap(null) === "function") {
-                    m.overlay.close(); // InfoWindow일 경우
-                  } else if (typeof m.overlay.setMap === "function") {
-                    m.overlay.setMap(null); // CustomOverlay일 경우
+        // 클릭 이벤트 등록
+        try {
+          window.kakao.maps.event.addListener(mapMarkers, 'click', () => {
+            try {
+              // 기존 인포윈도우 모두 닫기 (성능 최적화)
+              markersRef.current.forEach(m => {
+                if (m.overlay) {
+                  try {
+                    if (typeof m.overlay.setMap(null) === "function") {
+                      m.overlay.close(); // InfoWindow일 경우
+                    } else if (typeof m.overlay.setMap === "function") {
+                      m.overlay.setMap(null); // CustomOverlay일 경우
+                    }
+                    m.overlay = null;
+                  } catch (err) {
+                    console.warn("🔍 overlay 닫기 실패:", err);
                   }
-                  m.overlay = null;
-                } catch (err) {
-                  console.warn("🔍 overlay 닫기 실패:", err);
                 }
-              }
-            });
+              });
 
               // 인포윈도우 생성
               let infoContent = "";
@@ -598,9 +598,8 @@ function MapPage() {
                 }
 
                 infoContent = `<div style="padding:5px;font-size:12px;">
-                <div style="margin-bottom:4px;">${emoji} ${markerType}${
-                  markerSubType ? ` - ${markerSubType}` : ""
-                }</div>
+                <div style="margin-bottom:4px;">${emoji} ${markerType}${markerSubType ? ` - ${markerSubType}` : ""
+                  }</div>
                 <button id="delete-marker" style="padding:2px 5px;background:#ff5555;color:white;border:none;border-radius:3px;">삭제</button>
               </div>`;
               } else {
@@ -770,7 +769,7 @@ function MapPage() {
         tempMarkerType === "댕플"
           ? markerImages.current[0].image
           : markerImages.current[1][tempMarkerSubType] ||
-            markerImages.current[1].image;
+          markerImages.current[1].image;
 
       const marker = new window.kakao.maps.Marker({
         position: center,
@@ -795,7 +794,7 @@ function MapPage() {
           if (m.overlay) m.overlay.setMap(null);
         });
 
-        const emoji = 
+        const emoji =
           tempMarkerType === "댕플"
             ? "🐶"
             : tempMarkerSubType
@@ -851,7 +850,7 @@ function MapPage() {
             ">삭제</button>
           </div>
         `;
-  
+
         const overlay = new window.kakao.maps.CustomOverlay({
           content: infoContent, // 너가 만든 HTML
           position: marker.getPosition(),
@@ -860,11 +859,11 @@ function MapPage() {
           removable: true,
           zIndex: 9999 // ✅ 마커보다 높은 z-index 설정
         });
-  
+
         // overlay.open(map, marker);
         overlay.setMap(map); // ✅ 올바른 방식
         markerInfo.overlay = overlay;
-  
+
         setTimeout(() => {
           const deleteBtn = document.getElementById("delete-marker");
           if (deleteBtn) {
@@ -1543,8 +1542,14 @@ function MapPage() {
   return (
     <div className="flex flex-col h-full bg-gray-50">
       {/* 헤더 */}
-      <header className="bg-white p-4 shadow-md flex items-center justify-between">
-        <h1 className="text-lg font-bold text-gray-800">강아지도 🐕</h1>
+      <header className="bg-white pt-2 pb-0 px-4 shadow-md flex items-center justify-center">
+        <div className="flex items-center h-full gap-2">
+          <img
+            src="/gangazido-logo-header.png"
+            alt="Gangazido Logo Header"
+            className="h-14 w-28 object-cover self-center"
+          />
+        </div>
       </header>
 
       {/* 마커 생성 안내 */}
@@ -1618,100 +1623,61 @@ function MapPage() {
         </div>
 
         {/* 지도 영역 오른쪽 아래에 마커 유형별 추가 버튼 - 세로 정렬 */}
-        <div className="absolute top-24 right-4 flex flex-col gap-3 z-20">
-          {/* 댕플 마커 추가 버튼 */}
+        {/* 댕플 & 댕져러스 버튼 */}
+        <div className="absolute top-24 right-4 flex flex-col gap-4 z-20">
+        <button
+          onClick={() => {
+            addMarkerAtCenter("댕플");
+            setShowSubTypeButtons(false);
+          }}
+          className="flex flex-col items-center justify-center w-16 h-16 bg-yellow-100 border border-yellow-300 rounded-full shadow hover:scale-105 transition"
+          aria-label="댕플 마커 추가"
+        >
+          <img
+            src="/images/dangple_square.png"
+            alt="댕플"
+            className="w-7 h-7 object-contain"
+          />
+          <span className="text-[12px] font-semibold text-yellow-700 mt-1">댕플</span>
+        </button>
+
+        {/* 댕져러스 드롭다운 트리거 버튼 */}
+        <div className="relative">
           <button
-            onClick={() => {
-              addMarkerAtCenter("댕플");
-              setShowSubTypeButtons(false); // 서브타입 옵션 닫기
-            }}
-            className="flex items-center justify-center w-12 h-12 bg-amber-300 hover:bg-amber-500 rounded-full shadow-lg"
-            aria-label="댕플 마커 추가"
+            onClick={() => setShowSubTypeButtons(!showSubTypeButtons)}
+            className="flex flex-col items-center justify-center w-16 h-16 bg-red-100 border border-red-300 rounded-full shadow hover:scale-105 transition"
+            aria-label="댕져러스 마커 추가"
           >
-            <img
-              src="/images/dangple_square.png"
-              alt="댕플"
-              className="w-9 h-9 object-contain"
-            />
+            <span className="text-xl">⚠️</span>
+            <span className="text-[12px] font-bold text-red-700 mt-1">댕져러스</span>
           </button>
 
-          {/* 댕져러스 마커 추가 버튼 */}
-          <div className="relative">
-            <button
-              onClick={() => setShowSubTypeButtons(!showSubTypeButtons)}
-              className="flex items-center justify-center w-12 h-12 bg-red-600 hover:bg-red-800 rounded-full shadow-lg text-white"
-              aria-label="댕져러스 마커 추가"
-            >
-              <span role="img" aria-label="위험" className="text-2xl">
-                ⚠️
-              </span>
-            </button>
-
-            {/* 댕져러스 서브타입 선택 버튼 - 아래로 드롭다운 되도록 수정 */}
-            {showSubTypeButtons && (
-              <div className="absolute top-full right-0 mt-2 z-30">
-                <div className="flex flex-col gap-2">
-                  <button
-                    onClick={() => {
-                      addDangerousMarkerWithSubType("들개");
-                      setShowSubTypeButtons(false); // 선택 후 닫기
-                    }}
-                    className="relative flex items-center justify-center w-12 h-12 bg-red-600 hover:bg-red-800 rounded-full shadow-lg"
-                    title="들개"
-                  >
-                    <img
-                      src="/images/beware_dog_square.png"
-                      alt="들개"
-                      className="w-9 h-9 object-contain absolute right-[5px] "
-                    />
-                  </button>
-                  <button
-                    onClick={() => {
-                      addDangerousMarkerWithSubType("빙판길");
-                      setShowSubTypeButtons(false); // 선택 후 닫기
-                    }}
-                    className="relative flex items-center justify-center w-12 h-12 bg-red-600 hover:bg-red-800 rounded-full shadow-lg"
-                    title="빙판길"
-                  >
-                    <img
-                      src="/images/icy_road_square.png"
-                      alt="빙판길"
-                      className="w-9 h-9 object-contain absolute top-1"
-                    />
-                  </button>
-                  <button
-                    onClick={() => {
-                      addDangerousMarkerWithSubType("염화칼슘");
-                      setShowSubTypeButtons(false); // 선택 후 닫기
-                    }}
-                    className="flex items-center justify-center w-12 h-12 bg-red-600 hover:bg-red-800 rounded-full shadow-lg"
-                    title="염화칼슘"
-                  >
-                    <img
-                      src="/images/beware_foot_square.png"
-                      alt="염화칼슘"
-                      className="w-9 h-9 object-contain"
-                    />
-                  </button>
-                  <button
-                    onClick={() => {
-                      addDangerousMarkerWithSubType("공사중");
-                      setShowSubTypeButtons(false); // 선택 후 닫기
-                    }}
-                    className="relative flex items-center justify-center w-12 h-12 bg-red-600 hover:bg-red-800 rounded-full shadow-lg"
-                    title="공사중"
-                  >
-                    <img
-                      src="/images/construction_square.png"
-                      alt="공사중"
-                      className="w-9 h-9 object-contain absolute top-1"
-                    />
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
+          {/* 드롭다운 메뉴 */}
+          {showSubTypeButtons && (
+            <div className="absolute top-full right-0 mt-2 flex flex-col gap-3 animate-fade-slide-down">
+              {[
+                { label: "들개", icon: "/images/beware_dog_square.png", bg: "bg-rose-100", text: "text-rose-700", border: "border-rose-300" },
+                { label: "빙판길", icon: "/images/icy_road_square.png", bg: "bg-blue-100", text: "text-blue-700", border: "border-blue-300" },
+                { label: "염화칼슘", icon: "/images/beware_foot_square.png", bg: "bg-green-100", text: "text-green-700", border: "border-green-300" },
+                { label: "공사중", icon: "/images/construction_square.png", bg: "bg-gray-100", text: "text-gray-700", border: "border-gray-300" },
+              ].map(({ label, icon, bg, text, border }) => (
+                <button
+                  key={label}
+                  onClick={() => {
+                    addDangerousMarkerWithSubType(label);
+                    setShowSubTypeButtons(false);
+                  }}
+                  className={`flex flex-col items-center justify-center w-16 h-16 ${bg} ${border} ${text} border rounded-full shadow hover:scale-105 transition`}
+                  title={label}
+                >
+                  <img src={icon} alt={label} className="w-7 h-7 object-contain" />
+                  <span className="text-[12px] font-semibold mt-1">{label}</span>
+                </button>
+              ))}
+            </div>
+          )}
         </div>
+      </div>
 
         {/* 좌표 정보 표시 제리 주석 처리*/}
         {/* <div className="absolute bottom-36 left-0 right-0 flex justify-center">
@@ -1725,24 +1691,23 @@ function MapPage() {
 
         {/* 지도 상단에 마커 타입 필터링 버튼 추가 - 배경 없이 왼쪽 정렬 */}
         <div className="absolute top-4 left-4 z-20 flex gap-2">
-          <button
-            onClick={() => filterMarkersByType("댕플")}
-            className="bg-amber-500 hover:bg-amber-600 py-1 px-3 rounded-full shadow text-xs font-medium text-white"
-          >
-            댕플
-          </button>
-          <button
-            onClick={() => filterMarkersByType("댕져러스")}
-            className="bg-blue-500 hover:bg-blue-600 py-1 px-3 rounded-full shadow text-xs font-medium text-white"
-          >
-            댕져러스
-          </button>
-          <button
-            onClick={() => filterMarkersByType("all")}
-            className="bg-gray-500 hover:bg-gray-600 py-1 px-3 rounded-full shadow text-xs font-medium text-white"
-          >
-            전체
-          </button>
+          {[
+            { label: "댕플", value: "댕플", color: "bg-amber-300" },
+            { label: "댕져러스", value: "댕져러스", color: "bg-red-400" },
+            { label: "전체", value: "all", color: "bg-gray-400" },
+          ].map(({ label, value, color }) => (
+            <button
+              key={value}
+              onClick={() => filterMarkersByType(value)}
+              className={`text-xs font-semibold py-3 px-5 rounded-full shadow transition ${
+                filterType === value
+                  ? `${color} text-white`
+                  : "bg-white text-gray-600 border border-gray-300"
+              }`}
+            >
+              {label}
+            </button>
+          ))}
         </div>
       </div>
 
@@ -1837,52 +1802,58 @@ function MapPage() {
         </div>
       </nav>
 
-      {/* 마커 생성 모달 */}
+      {/* 마커 생성 버튼 클릭 시 모달 (찍어멍) */}
       {showModal && (
-        <div className="fixed bottom-32 left-1/2 transform -translate-x-1/2 z-50 bg-white rounded-lg shadow-xl w-[50%] max-w-xs">
-          {/* 닫기 버튼 */}
-          <div className="absolute right-2 top-2 z-50">
-              <button
-                onClick={() => {
-                  setShowModal(false);
-                  setIsCenterMode(false);
-                }}
-                className="text-gray-700 hover:text-red-500 transition-colors duration-200 text-2xl leading-none"
-                aria-label="모달 닫기"
-              >
-                ×
-              </button>
-          </div>
-        <div className="relative p-4">
-          {/* 모달 내용 */}
-          <div className="text-center mb-4">
-          <h2 className="text-xl font-bold flex items-center justify-center gap-2">
-            <span>
-              {tempMarkerType === "댕플"
-                ? "댕플을 찍어멍!"
-                : tempMarkerSubType
-                  ? `${tempMarkerSubType}을 찍어멍!`
-                  : "댕져러스를 찍어멍!"}
-            </span>
-          </h2>
-  <p className="text-sm text-gray-500 mt-1">
-    지도를 이동해서 {tempMarkerType} 마커를 찍을 수 있습니다!
-  </p>
-          </div>
-          <div className="flex justify-center">
-            <button
-              onClick={() => {
-                createMarkerFromModal();
-                setShowModal(false);
-              }}
-              className="bg-black text-white font-bold py-2 px-12 rounded-full"
-            >
-              확정
-            </button>
-          </div>
-        </div>
+      <div className="fixed bottom-24 inset-x-0 z-50 w-[90%] max-w-sm mx-auto animate-fade-up transition">
+        <div className="bg-white/90 rounded-2xl shadow-xl border border-gray-200 px-5 py-4 text-center relative">
+      {/* 닫기 버튼 */}
+      <button
+        onClick={() => {
+          setShowModal(false);
+          setIsCenterMode(false);
+        }}
+        className="absolute top-2.5 right-3 text-gray-500 hover:text-red-500 text-2xl font-bold"
+        aria-label="모달 닫기"
+      >
+        ×
+      </button>
+
+      {/* 이모지 + 타이틀 */}
+      <div className="mb-2 flex items-center justify-center gap-2">
+        <span className="text-2xl">
+          {tempMarkerType === "댕플"
+            ? "🐶"
+            : tempMarkerSubType
+              ? MARKER_IMAGES.EMOJI[tempMarkerSubType] || "⚠️"
+              : "⚠️"}
+        </span>
+        <h2 className="text-lg font-bold text-gray-800">
+          {tempMarkerType === "댕플"
+            ? "댕플을 찍어멍!"
+            : tempMarkerSubType
+              ? `${tempMarkerSubType}을 찍어멍!`
+              : "댕져러스를 찍어멍!"}
+        </h2>
       </div>
-      )}
+
+      {/* 설명 텍스트 */}
+      <p className="text-sm text-gray-600 mb-4 leading-tight whitespace-nowrap overflow-hidden text-ellipsis">
+        지도를 움직여 위치를 정하고 아래 버튼을 눌러주세요
+      </p>
+
+      {/* 확정 버튼 */}
+      <button
+        onClick={() => {
+          createMarkerFromModal();
+          setShowModal(false);
+        }}
+        className="w-32 bg-black text-white py-2 rounded-full hover:bg-gray-900 font-semibold text-sm shadow-md transition"
+      >
+        확정
+      </button>
+    </div>
+  </div>
+)}
     </div>
   );
 }
