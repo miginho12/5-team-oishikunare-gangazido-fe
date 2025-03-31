@@ -939,59 +939,60 @@ function MapPage() {
 
   // 현재 위치로 이동하기 (경고 제거를 위해 사용되는 함수로 표시)
   // eslint-disable-next-line no-unused-vars
-  // const moveToCurrentLocation = useCallback(() => { 일단 주석처리 제리.. HTTPS 이후 ..?
-  //   if (!map) {
-  //     alert("지도가 아직 초기화되지 않았습니다.");
-  //     return;
-  //   }
+  // 일단 주석처리 제리.. HTTPS 이후 ..?
+  const moveToCurrentLocation = useCallback(() => { 
+    if (!map) {
+      alert("지도가 아직 초기화되지 않았습니다.");
+      return;
+    }
   
-  //   if (!navigator.geolocation) {
-  //     alert("이 브라우저는 위치 정보를 지원하지 않아요.");
-  //     return;
-  //   }
+    if (!navigator.geolocation) {
+      alert("이 브라우저는 위치 정보를 지원하지 않아요.");
+      return;
+    }
   
-  //   navigator.geolocation.getCurrentPosition(
-  //     (position) => {
-  //       const { latitude, longitude } = position.coords;
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
   
-  //       const moveLatLng = new window.kakao.maps.LatLng(latitude, longitude);
+        const moveLatLng = new window.kakao.maps.LatLng(latitude, longitude);
   
-  //       // 지도 중심 이동
-  //       map.setCenter(moveLatLng);
-  //       // 지도 줌 레벨이 너무 멀다면 적당히 당겨주기
-  //       if (map.getLevel() > 5) {
-  //         map.setLevel(4);
-  //       }
+        // 지도 중심 이동
+        map.setCenter(moveLatLng);
+        // 지도 줌 레벨이 너무 멀다면 적당히 당겨주기
+        if (map.getLevel() > 5) {
+          map.setLevel(4);
+        }
   
-  //       // 상태 업데이트 (필요할 경우만)
-  //       setCenterPosition({ lat: latitude, lng: longitude });
+        // 상태 업데이트 (필요할 경우만)
+        setCenterPosition({ lat: latitude, lng: longitude });
   
-  //       console.log("📍 현재 위치로 이동 완료:", latitude, longitude);
-  //     },
-  //     (error) => {
-  //       switch (error.code) {
-  //         case error.PERMISSION_DENIED:
-  //           alert("⛔ 위치 접근이 차단되었습니다.\n브라우저 설정에서 위치 권한을 허용해주세요.");
-  //           break;
-  //         case error.POSITION_UNAVAILABLE:
-  //           alert("현재 위치 정보를 사용할 수 없습니다.");
-  //           break;
-  //         case error.TIMEOUT:
-  //           alert("위치 정보를 가져오는 데 시간이 초과되었습니다.");
-  //           break;
-  //         default:
-  //           alert("알 수 없는 오류로 인해 위치 정보를 가져올 수 없습니다.");
-  //           break;
-  //       }
-  //       console.error("❌ 위치 접근 오류:", error);
-  //     },
-  //     {
-  //       enableHighAccuracy: true,
-  //       timeout: 10000,
-  //       maximumAge: 0,
-  //     }
-  //   );
-  // }, [map]);
+        console.log("📍 현재 위치로 이동 완료:", latitude, longitude);
+      },
+      (error) => {
+        switch (error.code) {
+          case error.PERMISSION_DENIED:
+            alert("⛔ 위치 접근이 차단되었습니다.\n브라우저 설정에서 위치 권한을 허용해주세요.");
+            break;
+          case error.POSITION_UNAVAILABLE:
+            alert("현재 위치 정보를 사용할 수 없습니다.");
+            break;
+          case error.TIMEOUT:
+            alert("위치 정보를 가져오는 데 시간이 초과되었습니다.");
+            break;
+          default:
+            alert("알 수 없는 오류로 인해 위치 정보를 가져올 수 없습니다.");
+            break;
+        }
+        console.error("❌ 위치 접근 오류:", error);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0,
+      }
+    );
+  }, [map]);
 
   // 모든 마커 지우기
   // eslint-disable-next-line no-unused-vars
@@ -1491,7 +1492,7 @@ function MapPage() {
           </div>
         )}
 
-        {/* 현재 위치 이동 버튼 일단 두기 (HTTPS 전까지..)
+        {/* 현재 위치 이동 버튼 일단 두기 (HTTPS 전까지..) */}
         <div className="absolute top-4 right-4 z-30">
           <button
             onClick={moveToCurrentLocation}
@@ -1499,7 +1500,7 @@ function MapPage() {
           >
             📍 내 위치로
           </button>
-        </div> */}
+        </div>
 
         {/* 지도 영역 오른쪽 아래에 마커 유형별 추가 버튼 - 세로 정렬 */}
         <div className="absolute top-24 right-4 flex flex-col gap-3 z-20">
