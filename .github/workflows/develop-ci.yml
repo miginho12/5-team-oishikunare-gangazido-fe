@@ -18,12 +18,17 @@ jobs:
       - name: Build React App
         run: npm run build
 
+      - name: Decode PEM Key from base64
+        run: |
+          echo "${{ secrets.EC2_SSH_KEY_BASE64 }}" | base64 -d > key.pem
+          chmod 600 key.pem
+
       - name: Upload to EC2
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.DEV_FE_HOST }}
           username: ubuntu
-          key: ${{ secrets.EC2_SSH_KEY }}
+          key: ./key.pem
           source: "build/*"
           target: "/home/ubuntu/frontend"
 
@@ -32,7 +37,7 @@ jobs:
         with:
           host: ${{ secrets.DEV_FE_HOST }}
           username: ubuntu
-          key: ${{ secrets.EC2_SSH_KEY }}
+          key: ./key.pem
           script: |
             pm2 delete all || true
             pm2 serve /home/ubuntu/frontend 3000 --spa
