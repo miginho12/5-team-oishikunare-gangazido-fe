@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.7.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.7.0...v1.7.1) (2025-03-31)
+
+### 🐛 BUG FIXES
+
+* S3 업로드 로그 추가 ([9aaddb9](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/9aaddb921c853bd75459d0949578857e7af5b612))
+
 ## [1.7.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.6.2...v1.7.0) (2025-03-31)
 
 ### 🚀 NEW FEATURES
