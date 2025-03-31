@@ -43,6 +43,13 @@ function MapPage() {
     lng: 126.53171329989748, // 제주도 구름스퀘어 경도
   });
 
+  // 페이지 진입 시 지도 초기화 후 내 위치로 이동
+  useEffect(() => {
+    if (map) {
+      moveToCurrentLocation();
+    }
+  }, [map]);
+
   // 카카오맵 API 스크립트 동적 로드 함수
   const loadKakaoMapScript = useCallback(() => {
     // 이미 로드된 경우 중복 로드 방지
@@ -52,16 +59,10 @@ function MapPage() {
     }
 
     // API 키 가져오기 
-    
     const apiKey =
       process.env.NODE_ENV === "development"
         ? process.env.REACT_APP_KAKAO_MAP_API_KEY
         : window._env_?.KAKAO_MAP_API_KEY;
-    // 배포
-    // const apiKey = window._env_?.KAKAO_MAP_API_KEY;
-
-    // 개발
-    // const apiKey = process.env.REACT_APP_KAKAO_MAP_API_KEY; 
 
     if (!apiKey) {
       console.error("카카오맵 API 키가 환경 변수에 설정되지 않았습니다.");
@@ -937,6 +938,8 @@ function MapPage() {
     [map]
   );
 
+  const triedLocationRef = useRef(false); // ✅ 한 번만 알림 띄우기 위한 ref
+
   // 현재 위치로 이동하기 (경고 제거를 위해 사용되는 함수로 표시)
   // eslint-disable-next-line no-unused-vars
   // 일단 주석처리 제리.. HTTPS 이후 ..?
@@ -945,46 +948,41 @@ function MapPage() {
       alert("지도가 아직 초기화되지 않았습니다.");
       return;
     }
-  
+
     if (!navigator.geolocation) {
       alert("이 브라우저는 위치 정보를 지원하지 않아요.");
       return;
     }
-  
+
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const { latitude, longitude } = position.coords;
-  
         const moveLatLng = new window.kakao.maps.LatLng(latitude, longitude);
-  
-        // 지도 중심 이동
-        map.setCenter(moveLatLng);
-        // 지도 줌 레벨이 너무 멀다면 적당히 당겨주기
+
+        map.panTo(moveLatLng);
         if (map.getLevel() > 5) {
           map.setLevel(4);
         }
-  
-        // 상태 업데이트 (필요할 경우만)
         setCenterPosition({ lat: latitude, lng: longitude });
-  
+
         console.log("📍 현재 위치로 이동 완료:", latitude, longitude);
       },
       (error) => {
-        switch (error.code) {
-          case error.PERMISSION_DENIED:
-            alert("⛔ 위치 접근이 차단되었습니다.\n브라우저 설정에서 위치 권한을 허용해주세요.");
-            break;
-          case error.POSITION_UNAVAILABLE:
-            alert("현재 위치 정보를 사용할 수 없습니다.");
-            break;
-          case error.TIMEOUT:
-            alert("위치 정보를 가져오는 데 시간이 초과되었습니다.");
-            break;
-          default:
-            alert("알 수 없는 오류로 인해 위치 정보를 가져올 수 없습니다.");
-            break;
+        if (!triedLocationRef.current) {
+          triedLocationRef.current = true;
+
+          switch (error.code) {
+            case error.PERMISSION_DENIED:
+              alert("⛔ 위치 접근이 차단되었습니다.\n브라우저 설정에서 위치 권한을 허용해주세요.");
+              break;
+            case error.POSITION_UNAVAILABLE:
+              alert("현재 위치 정보를 사용할 수 없습니다.");
+              break;
+            case error.TIMEOUT:
+              alert("위치 정보를 가져오는 데 시간이 초과되었습니다.");
+              break;
+          }
         }
-        console.error("❌ 위치 접근 오류:", error);
       },
       {
         enableHighAccuracy: true,
@@ -1493,12 +1491,17 @@ function MapPage() {
         )}
 
         {/* 현재 위치 이동 버튼 일단 두기 (HTTPS 전까지..) */}
-        <div className="absolute top-4 right-4 z-30">
+        <div className="absolute bottom-10 right-4 z-30">
           <button
             onClick={moveToCurrentLocation}
-            className="bg-blue-600 hover:bg-blue-700 text-white text-sm px-4 py-2 rounded shadow-md"
+            className="w-11 h-11 bg-white rounded-lg shadow-lg flex items-center justify-center hover:scale-105 transition-transform"
+            aria-label="내 위치로 이동"
           >
-            📍 내 위치로
+            <img
+              src="/images/my-location.png" // 또는 퍼블릭 폴더 위치로 조정
+              alt="내 위치 아이콘"
+              className="w-6 h-6"
+            />
           </button>
         </div>
 
