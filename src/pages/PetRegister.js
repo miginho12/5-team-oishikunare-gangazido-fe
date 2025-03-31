@@ -70,6 +70,7 @@ function PetRegister() {
           ? profileImage
           : `${s3Prefix}${profileImage}?t=${Date.now()}`; // ✅ 캐시 무력화
         setProfileImagePreview(imagePreview);
+        setProfileImage(profileImage); // 🛠️ 이 부분이 중요! 수정 페이지에서 인식하도록
       }
 
       setShowToast(true);
