@@ -1491,12 +1491,17 @@ function MapPage() {
         )}
 
         {/* 현재 위치 이동 버튼 일단 두기 (HTTPS 전까지..) */}
-        <div className="absolute top-4 right-4 z-30">
+        <div className="absolute bottom-10 right-4 z-30">
           <button
             onClick={moveToCurrentLocation}
-            className="bg-blue-600 hover:bg-blue-700 text-white text-sm px-4 py-2 rounded shadow-md"
+            className="w-11 h-11 bg-white rounded-lg shadow-lg flex items-center justify-center hover:scale-105 transition-transform"
+            aria-label="내 위치로 이동"
           >
-            📍 내 위치로
+            <img
+              src="/images/my-location.png" // 또는 퍼블릭 폴더 위치로 조정
+              alt="내 위치 아이콘"
+              className="w-6 h-6"
+            />
           </button>
         </div>
 
