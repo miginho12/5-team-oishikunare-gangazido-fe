@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.6.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.6.0...v1.6.1) (2025-03-31)
+
+### 🐛 BUG FIXES
+
+* 이미지 S3 presigned 업로드 및 미리보기 로직 통합 ([e3e7dcc](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/e3e7dcc097acaffa6f465c4336f4b0fbd7007d6e))
+
 ## [1.6.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.5.0...v1.6.0) (2025-03-31)
 
 ### 📚 DOCUMENTATION
