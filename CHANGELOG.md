@@ -1,36 +1,31 @@
 # CHANGELOG
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-## [1.32.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.32.0...v1.32.1) (2025-04-01)
-
-### 🐛 BUG FIXES
-
-* S3 이미지 업로드 로직 중복 제거 및 등록 로직 정리 ([45c4970](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/45c49702271cff58d1918754c895a8c19b489368))
-
-=======
->>>>>>> ac41dc79c2f2d80c273f7855aa3f5f208e33b1e2
-=======
->>>>>>> b74c78a89ce05cbca081c764bdaaa6b04e6f06aa
 ## [1.32.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.31.0...v1.32.0) (2025-04-01)
 
 ### 🚀 NEW FEATURES
 
 * Sentry update ([4370cd4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/4370cd4a2e3010e802f3ba70eeca3d34b57b20f8))
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> b74c78a89ce05cbca081c764bdaaa6b04e6f06aa
 ### 🐛 BUG FIXES
 
 * sentry ([191def3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/191def3f599859c7b7858fbf17b54c2c8cbdacaf))
 
-<<<<<<< HEAD
->>>>>>> ac41dc79c2f2d80c273f7855aa3f5f208e33b1e2
-=======
->>>>>>> b74c78a89ce05cbca081c764bdaaa6b04e6f06aa
+## [1.32.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.32.0...v1.32.1) (2025-04-01)
+
+### 🐛 BUG FIXES
+
+* S3 이미지 업로드 로직 중복 제거 및 등록 로직 정리 ([45c4970](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/45c49702271cff58d1918754c895a8c19b489368))
+
+## [1.32.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.31.0...v1.32.0) (2025-04-01)
+
+### 🚀 NEW FEATURES
+
+* Sentry update ([4370cd4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/4370cd4a2e3010e802f3ba70eeca3d34b57b20f8))
+
+### 🐛 BUG FIXES
+
+* sentry ([191def3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/191def3f599859c7b7858fbf17b54c2c8cbdacaf))
+
 ## [1.31.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.30.0...v1.31.0) (2025-04-01)
 
 ### 🚀 NEW FEATURES
