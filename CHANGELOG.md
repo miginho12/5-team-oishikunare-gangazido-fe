@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.36.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.35.0...v1.36.0) (2025-04-01)
+
+### 🚀 NEW FEATURES
+
+* 주석처리 했던떄로 되돌리기 ([c1aa56c](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/c1aa56cf78f857268818a2d04e18bcea7e4169a6))
+
 ## [1.35.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.34.0...v1.35.0) (2025-04-01)
 
 ### 🚀 NEW FEATURES
