@@ -442,7 +442,11 @@ function PetEdit() {
                 <input
                   type="number"
                   value={weight}
-                  onChange={(e) => setWeight(e.target.value)}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    const formatted = value.match(/^\d*\.?\d{0,1}/);
+                    setWeight(formatted ? formatted[0] : '');
+                  }}
                   onBlur={() => handleBlur('weight')}
                   placeholder="몸무게 (kg)"
                   className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
