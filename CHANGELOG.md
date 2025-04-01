@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.33.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.33.0...v1.33.1) (2025-04-01)
+
+### 🐛 BUG FIXES
+
+* 몸무게  소숫점 한 자리만 입력 가능하도록 수정 ([1dacacf](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/1dacacf89d81c9649125140a311f05fb68bad24f))
+
 ## [1.33.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.32.1...v1.33.0) (2025-04-01)
 
 ### 📚 DOCUMENTATION
