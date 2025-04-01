@@ -14,6 +14,8 @@ function ChatPage() {
     },
   ]);
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const chatEndRef = useRef(null);
 
   useEffect(() => {
@@ -31,6 +33,7 @@ function ChatPage() {
   const goToPetInfo = () => navigate("/pets");
 
   const handleSendMessage = async (overrideMessage = null) => {
+    if (isLoading) return;
     const userInput =
       typeof (overrideMessage ?? message) === "string"
         ? overrideMessage ?? message
@@ -46,6 +49,7 @@ function ChatPage() {
       alert("메시지를 입력해주세요!");
       return;
     }
+    setIsLoading(true);
 
     const newUserMessage = {
       id: chatMessages.length + 1,
@@ -135,6 +139,8 @@ function ChatPage() {
       };
 
       setChatMessages((prev) => prev.slice(0, -1).concat(errorResponse));
+    }finally {
+      setIsLoading(false); // 무조건 실행
     }
   };
 
