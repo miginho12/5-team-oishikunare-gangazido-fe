@@ -48,11 +48,9 @@ function PetRegister() {
   const goToPetInfo = () => navigate('/pets');
 
   const handleRegister = async () => {
-    setProfileImagePreview(null); // ✅ 먼저 초기화 (blob url 제거)
-
-    const isValid = validateFields(); // 1. 프론트 유효성 검사 먼저
+    const isValid = validateFields();
     if (!isValid) return;
-
+  
     try {
       const petData = {
         name,
@@ -62,18 +60,20 @@ function PetRegister() {
         weight: parseFloat(weight),
         profileImage,
       };
-
+  
       const savedKey = await registerPet(petData); // S3 업로드 + DB 저장
+  
       if (savedKey) {
-        const s3Prefix = 'https://d3jeniacjnodv5.cloudfront.net/';
-        const imageUrl = `${s3Prefix}${savedKey}?t=${Date.now()}`;
-        setProfileImage(savedKey); // 서버에 보낼 키 저장
-        setProfileImagePreview(imageUrl); // 미리보기용 URL
+        const imageUrl = `https://d3jeniacjnodv5.cloudfront.net/${savedKey}?t=${Date.now()}`;
+        console.log("✅ 등록 후 미리보기용 이미지 URL:", imageUrl);
+  
+        setProfileImage(savedKey);               // 🔑 키로 저장
+        setProfileImagePreview(imageUrl);        // ✅ CloudFront 경로로 미리보기 설정
       }
   
       setShowToast(true);
       setTimeout(() => {
-        window.location.href = "/pets"; // 👉 강제 새로고침 포함
+        window.location.href = "/pets"; // 👈 새로고침 포함 이동
       }, 2000);
     } catch (error) {
       const errorMsg = error.response?.data?.message;
@@ -84,8 +84,12 @@ function PetRegister() {
   const handleProfileImageChange = (e) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-      setProfileImage(file); // File 객체 저장
-      setProfileImagePreview(URL.createObjectURL(file)); // 브라우저 preview
+      setProfileImage(file);
+  
+      const tempUrl = URL.createObjectURL(file);
+      console.log("🖼 선택한 로컬 이미지 preview URL:", tempUrl);
+  
+      setProfileImagePreview(tempUrl); // S3 전 임시 미리보기
     }
   };
 

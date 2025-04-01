@@ -1,36 +1,27 @@
 import api from "./index";
 
+// presigned URL 받아오기
+const getPetPresignedUrl = async (file) => {
+  const ext = file.name.split('.').pop() || 'png';
+  const res = await api.post("/v1/pets/me/presigned", {
+    fileExtension: `.${ext}`,
+    contentType: file.type,
+  });
+  return res.data;
+};
+
 // 반려동물 등록
 export const registerPet = async (petData) => {
   let profileImageKey = null;
 
-  // 이미지가 새로 업로드된 파일이면 S3에 업로드
   if (petData.profileImage instanceof File) {
-    const extension = petData.profileImage?.name?.split('.')?.pop() || 'png';
-    const res = await api.post("/v1/pets/me/presigned", {
-      fileExtension: `.${extension}`,
-      contentType: petData.profileImage.type,
+    const { presignedUrl, fileKey } = await getPetPresignedUrl(petData.profileImage);
+    await fetch(presignedUrl, {
+      method: "PUT",
+      headers: { "Content-Type": petData.profileImage.type },
+      body: petData.profileImage,
     });
-    const { presignedUrl, fileKey } = res.data;
-
-    console.log("🚀 S3 업로드 URL:", presignedUrl);
-    
-    try {
-      const uploadRes = await fetch(presignedUrl, {
-        method: "PUT",
-        headers: { "Content-Type": petData.profileImage.type },
-        body: petData.profileImage,
-      });
-
-      if (!uploadRes.ok) {
-        throw new Error(`S3 업로드 실패: ${uploadRes.statusText}`);
-      }
-
-      profileImageKey = fileKey;
-    } catch (err) {
-      console.error("❌ S3 이미지 업로드 실패:", err);
-      throw new Error("이미지 업로드에 실패했습니다.");
-    }
+    profileImageKey = fileKey;
   } else if (typeof petData.profileImage === "string") {
     profileImageKey = petData.profileImage;
   }
@@ -42,11 +33,10 @@ export const registerPet = async (petData) => {
   formData.append("breed", petData.breed);
   formData.append("weight", petData.weight);
   if (profileImageKey) {
-    formData.append("profileImage", profileImageKey); // 문자열로 key 전달
+    formData.append("profileImage", profileImageKey);
   }
-  await api.post("/v1/pets/me", formData);
 
-  // ✅ key를 리턴해줌
+  await api.post("/v1/pets/me", formData);
   return profileImageKey;
 };
 
