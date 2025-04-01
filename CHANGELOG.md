@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.36.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.36.0...v1.36.1) (2025-04-01)
+
+### 🐛 BUG FIXES
+
+* 마커 클릭 시 로그인 한 유저 검증 유효성 추가 ([3088c91](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/3088c918993de7765cb20825ab4fafe3be379998))
+
 ## [1.36.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.35.0...v1.36.0) (2025-04-01)
 
 ### 🚀 NEW FEATURES
