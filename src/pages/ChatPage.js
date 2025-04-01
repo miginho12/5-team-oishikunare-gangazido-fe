@@ -106,7 +106,7 @@ function ChatPage() {
         longitude,
         message: userInput,
       });
-
+      let parsed, aiText;
       const cleanResponse = data.data.response.replace(/```json\n|\n```/g, "");
       cleanResponse = cleanResponse
         .replace(/^```json\s*/i, "")
@@ -114,8 +114,8 @@ function ChatPage() {
         .replace(/```$/, "")
         .trim(); // 혹시 모를 공백 제거
 
-      let parsed, aiText;
-
+      console.log("🧪 정리된 응답:", cleanResponse);
+      
       try {
         parsed = JSON.parse(cleanResponse);
         if (parsed.routes) {
