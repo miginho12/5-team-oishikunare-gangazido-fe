@@ -120,6 +120,15 @@ function App() {
 
   return (
     <div className="app-container">
+      return (
+      <button
+        onClick={() => {
+          throw new Error("Sentry 테스트 에러입니다!");
+        }}
+      >
+        에러 발생 테스트
+      </button>
+      );
       <AuthProvider>
         <Router>
           <div className="App">
