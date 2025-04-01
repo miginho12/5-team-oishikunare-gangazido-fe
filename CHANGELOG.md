@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.22.5](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.22.4...v1.22.5) (2025-04-01)
+
+### 🐛 BUG FIXES
+
+* 회원가입 예외처리 수정2 ([8396d3f](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/8396d3f4296d4362bd5d264f45e78fd56866f5a6))
+
 ## [1.22.4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.22.3...v1.22.4) (2025-04-01)
 
 ### 🐛 BUG FIXES
