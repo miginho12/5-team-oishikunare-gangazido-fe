@@ -5,9 +5,7 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
-const isProduction = window.location.hostname.endsWith(
-  "https://www.gangazido.com"
-);
+const isProduction = window.location.hostname === "www.gangazido.com";
 
 if (isProduction) {
   Sentry.init({
