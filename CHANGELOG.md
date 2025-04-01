@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.25.3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.25.2...v1.25.3) (2025-04-01)
+
+### 🐛 BUG FIXES
+
+* 반려견 정보 없으면alert ([7dcb365](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/7dcb36563b150d66306c4e40f1878ca83303de17))
+
 ## [1.25.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.25.1...v1.25.2) (2025-04-01)
 
 ### 🐛 BUG FIXES
