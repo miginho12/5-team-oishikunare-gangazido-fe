@@ -48,6 +48,14 @@ function PetRegister() {
   const goToPetInfo = () => navigate('/pets');
 
   const handleRegister = async () => {
+    setTouched({
+      name: true,
+      breed: true,
+      age: true,
+      gender: true,
+      weight: true,
+    });
+  
     const isValid = validateFields();
     if (!isValid) return;
   
