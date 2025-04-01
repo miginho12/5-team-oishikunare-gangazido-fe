@@ -148,6 +148,7 @@ function ChatPage() {
             break;
           case 404:
             alert("반려견 정보를 찾을 수 없습니다.");
+            setChatMessages((prev) => prev.slice(0, -2)); // 사용자가 방금 보낸 메시지 + 로딩 메시지 제거
             break;
           case 400:
             alert("요청 형식이 잘못되었거나 날씨 정보가 유효하지 않습니다.");
