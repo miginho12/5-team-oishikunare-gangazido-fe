@@ -62,7 +62,8 @@ function PetRegister() {
       };
 
       // ✅ key를 받아옴
-      //const savedKey = await registerPet(petData);
+      const savedKey = await registerPet(petData);
+      console.log("저장된 S3 key:", savedKey);
   
       setShowToast(true);
       setTimeout(() => {
