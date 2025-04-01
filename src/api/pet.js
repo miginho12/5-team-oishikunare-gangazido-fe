@@ -3,42 +3,34 @@ import api from "./index";
 
 // 반려동물 등록
 export const registerPet = async (formData) => {
-  try {
-    // 1. S3 presigned URL 요청
-    const file = formData.get('profileImage');
-    let fileKey = null;
+  const file = formData.get('profileImage');
+  let fileKey = null;
 
-    if (file && file instanceof File) {
-      const presignedRes = await axios.post(
-        `${process.env.REACT_APP_API_URL}/v1/pets/me/presigned`,
-        { fileName: file.name },
-        { withCredentials: true }
-      );
-      fileKey = presignedRes.data.data.key;
-
-      // 2. 이미지 업로드
-      await axios.put(presignedRes.data.data.presignedUrl, file, {
-        headers: { 'Content-Type': file.type },
-      });
-
-      // 3. 파일 key를 formData에 다시 설정
-      formData.set('profileImage', fileKey);
-    }
-
-    // 4. 반려견 정보 등록
-    await axios.post(
-      `${process.env.REACT_APP_API_URL}/v1/pets/me`,
-      formData,
-      {
-        headers: { 'Content-Type': 'multipart/form-data' },
-        withCredentials: true,
-      }
+  if (file && file instanceof File) {
+    const presignedRes = await axios.post(
+      `${process.env.REACT_APP_API_URL}/v1/pets/me/presigned`,
+      { fileName: file.name },
+      { withCredentials: true }
     );
+    fileKey = presignedRes.data.data.key;
 
-    return fileKey; // ✅ 업로드한 이미지 key 반환
-  } catch (error) {
-    throw error;
+    await axios.put(presignedRes.data.data.presignedUrl, file, {
+      headers: { 'Content-Type': file.type },
+    });
+
+    formData.set('profileImage', fileKey);
   }
+
+  await axios.post(
+    `${process.env.REACT_APP_API_URL}/v1/pets/me`,
+    formData,
+    {
+      headers: { 'Content-Type': 'multipart/form-data' },
+      withCredentials: true,
+    }
+  );
+
+  return fileKey;
 };
 
 // 반려동물 조회
