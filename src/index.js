@@ -11,7 +11,7 @@ const isProduction = window.location.hostname.endsWith(
 
 if (isProduction) {
   Sentry.init({
-    dsn: "https://6c895b444f185158b30bbac672768eae@o4509066231611392.ingest.us.sentry.io/4509066247274496",
+    dsn: "https://3cf3be6e70f8e27208fe64b361fe341d@o4509066231611392.ingest.us.sentry.io/4509066245636096",
     integrations: [Sentry.browserTracingIntegration()],
     tracesSampleRate: 1.0,
     sendDefaultPii: true,
