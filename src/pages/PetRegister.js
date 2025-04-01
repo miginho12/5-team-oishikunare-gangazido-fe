@@ -63,13 +63,6 @@ function PetRegister() {
 
       // ✅ key를 받아옴
       const savedKey = await registerPet(petData);
-
-      if (savedKey) {
-        const s3Prefix = "https://d3jeniacjnodv5.cloudfront.net/";
-        const imagePreview = `${s3Prefix}${savedKey}?t=${Date.now()}`;
-  
-        setProfileImagePreview(imagePreview);
-      }
   
       setShowToast(true);
       setTimeout(() => {
