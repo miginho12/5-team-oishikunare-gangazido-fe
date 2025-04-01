@@ -23,7 +23,7 @@ function MapPage() {
 
   // AuthContext에서 인증 상태 가져오기
   const { isAuthenticated, user } = useAuth();
-  console.log("어쓰", user);
+  // console.log("어쓰", user);
 
   // 모달 관련 상태 수정
   const [showModal, setShowModal] = useState(false);
@@ -1182,8 +1182,8 @@ function MapPage() {
             type === "댕플"
               ? "🐶"
               : MARKER_IMAGES.EMOJI[subType] || "⚠️";
-              console.log("user.userId:", user.userId, typeof user.userId);
-              console.log("markerInfo.user_id:", markerInfo.user_id, typeof markerInfo.user_id);
+              // console.log("user.userId:", user.userId, typeof user.userId);
+              // console.log("markerInfo.user_id:", markerInfo.user_id, typeof markerInfo.user_id);
           const infoContent = `
             <div class="custom-overlay-animate"
               style="
