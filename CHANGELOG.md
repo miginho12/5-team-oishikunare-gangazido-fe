@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.35.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.34.0...v1.35.0) (2025-04-01)
+
+### 🚀 NEW FEATURES
+
+* 이전pet api  코드로 되돌리기2 ([98c3066](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/98c306694a6c85832a33aa92bd0444c3da3f69d9))
+
 ## [1.34.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.33.2...v1.34.0) (2025-04-01)
 
 ### 🚀 NEW FEATURES
