@@ -52,7 +52,12 @@ jobs:
           aws s3 cp --recursive s3://${{ secrets.AWS_BUCKET_NAME }} s3://${{ secrets.AWS_BUCKET_NAME }}/versions/latest
 
       - name: Deploy to S3
-        run: aws s3 sync ./build s3://${{ secrets.AWS_BUCKET_NAME }} --delete # 7 - AWS S3에 빌드 결과물 배포        ## CRA로 생성한 React App은 build 폴더에 빌드 결과물이 들어있습니다. (dist 폴더가 아님!)
+        run: |
+          aws s3 sync ./build s3://${{ secrets.AWS_BUCKET_NAME }} \
+            --delete \
+            --exclude "uploads/" \
+            --exclude "uploads/user/" \
+            --exclude "uploads/pet/*"
 
       - name: Invalidate CloudFront Cache # 8 - CloudFront 캐시 무효화
         run: aws cloudfront create-invalidation --distribution-id ${{ secrets.AWS_DISTRIBUTION_ID }} --paths "/*"

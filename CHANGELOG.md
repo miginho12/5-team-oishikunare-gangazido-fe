@@ -1,5 +1,29 @@
 # CHANGELOG
 
+## [1.32.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.31.0...v1.32.0) (2025-04-01)
+
+### 🚀 NEW FEATURES
+
+* Sentry update ([4370cd4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/4370cd4a2e3010e802f3ba70eeca3d34b57b20f8))
+
+## [1.31.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.30.0...v1.31.0) (2025-04-01)
+
+### 🚀 NEW FEATURES
+
+* Sentry user & S3 Image ([f0a5e65](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/f0a5e65ec8f831a6c0431c55a72b8839a983c5f1))
+
+## [1.30.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.29.0...v1.30.0) (2025-04-01)
+
+### 🚀 NEW FEATURES
+
+* Sentry user & S3 Image ([2d064ee](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/2d064ee3c8de6309d28ed8ffd946fe69c72be026))
+
+## [1.29.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.28.0...v1.29.0) (2025-04-01)
+
+### 🚀 NEW FEATURES
+
+* savedKey 콘솔 추가 ([44b5e1b](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/44b5e1b0a88a4b1b0f5928e55e86d90eda7a91a5))
+
 ## [1.28.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.27.0...v1.28.0) (2025-04-01)
 
 ### 🚀 NEW FEATURES
