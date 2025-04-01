@@ -107,6 +107,11 @@ function ChatPage() {
       });
 
       const cleanResponse = data.data.response.replace(/```json\n|\n```/g, "");
+      cleanResponse = cleanResponse
+        .replace(/^```json\s*/i, "")
+        .replace(/^json\s*/i, "")
+        .replace(/```$/, "")
+        .trim(); // 혹시 모를 공백 제거
 
       let parsed, aiText;
 
