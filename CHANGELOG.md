@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.33.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.33.1...v1.33.2) (2025-04-01)
+
+### 🐛 BUG FIXES
+
+* 주석처리 제거 ([6d694d0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/6d694d0dbcba7484d490a7aafca8ad405229f134))
+
 ## [1.33.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.33.0...v1.33.1) (2025-04-01)
 
 ### 🐛 BUG FIXES
