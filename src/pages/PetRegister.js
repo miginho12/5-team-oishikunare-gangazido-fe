@@ -48,27 +48,32 @@ function PetRegister() {
   const goToPetInfo = () => navigate('/pets');
 
   const handleRegister = async () => {
-    const isValid = validateFields(); // 1. 프론트 유효성 검사 먼저
+    const isValid = validateFields();
     if (!isValid) return;
-
+  
     try {
-      const petData = {
+      // 이미지 업로드 및 반려견 등록
+      const uploadedKey = await registerPet({
         name,
         age: parseInt(age),
         gender: gender === 'male',
         breed,
         weight: parseFloat(weight),
         profileImage,
-      };
-
-      // ✅ key를 받아옴
-      const savedKey = await registerPet(petData);
-      console.log("저장된 S3 key:", savedKey);
+      });
+  
+      // 성공적으로 업로드한 이미지 key가 있으면 미리보기 경로 생성
+      if (uploadedKey) {
+        const imageUrl = `https://d3jeniacjnodv5.cloudfront.net/${uploadedKey}?t=${Date.now()}`;
+        setProfileImagePreview(imageUrl);
+      }
   
       setShowToast(true);
+  
+      // ⏳ 미리보기가 보이도록 잠깐 보여준 후 이동
       setTimeout(() => {
-        window.location.href = "/pets"; // 👉 강제 새로고침 포함
-      }, 2000);
+        window.location.href = '/pets';
+      }, 1500);
     } catch (error) {
       const errorMsg = error.response?.data?.message;
       handleRegisterError(errorMsg);
