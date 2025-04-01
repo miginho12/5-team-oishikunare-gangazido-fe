@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.23.5](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.23.4...v1.23.5) (2025-04-01)
+
+### 🐛 BUG FIXES
+
+* 미세먼지 json 파싱오류 수정 ([15a20a9](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/15a20a99cf87425d43df80c4d22af129cb194521))
+
 ## [1.23.4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.23.3...v1.23.4) (2025-04-01)
 
 ### 🐛 BUG FIXES
