@@ -106,16 +106,11 @@ function ChatPage() {
         longitude,
         message: userInput,
       });
-      let parsed, aiText;
-      const cleanResponse = data.data.response.replace(/```json\n|\n```/g, "");
-      cleanResponse = cleanResponse
-        .replace(/^```json\s*/i, "")
-        .replace(/^json\s*/i, "")
-        .replace(/```$/, "")
-        .trim(); // 혹시 모를 공백 제거
 
-      console.log("🧪 정리된 응답:", cleanResponse);
-      
+      const cleanResponse = data.data.response.replace(/```json\n|\n```/g, "");
+
+      let parsed, aiText;
+
       try {
         parsed = JSON.parse(cleanResponse);
         if (parsed.routes) {
