@@ -52,8 +52,7 @@ function PetRegister() {
     if (!isValid) return;
   
     try {
-      // 이미지 업로드 및 반려견 등록
-      const uploadedKey = await registerPet({
+      const profileImageKey = await registerPet({
         name,
         age: parseInt(age),
         gender: gender === 'male',
@@ -62,18 +61,16 @@ function PetRegister() {
         profileImage,
       });
   
-      // 성공적으로 업로드한 이미지 key가 있으면 미리보기 경로 생성
-      if (uploadedKey) {
-        const imageUrl = `https://d3jeniacjnodv5.cloudfront.net/${uploadedKey}?t=${Date.now()}`;
+      // ✅ 등록 후 미리보기를 위해 이미지 URL 세팅 (CloudFront 주소 구성)
+      if (profileImageKey) {
+        const imageUrl = `https://d3jeniacjnodv5.cloudfront.net/${profileImageKey}?t=${Date.now()}`;
         setProfileImagePreview(imageUrl);
       }
   
       setShowToast(true);
-  
-      // ⏳ 미리보기가 보이도록 잠깐 보여준 후 이동
       setTimeout(() => {
-        window.location.href = '/pets';
-      }, 1500);
+        navigate('/pets');
+      }, 2000);
     } catch (error) {
       const errorMsg = error.response?.data?.message;
       handleRegisterError(errorMsg);
