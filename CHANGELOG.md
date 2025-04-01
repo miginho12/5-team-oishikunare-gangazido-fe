@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.38.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.37.0...v1.38.0) (2025-04-01)
+
+### 🚀 NEW FEATURES
+
+* 로그 추가 ([ede645b](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/ede645b2746de8713917a233b0eb921854bd4be4))
+
 ## [1.37.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.36.2...v1.37.0) (2025-04-01)
 
 ### 🚀 NEW FEATURES
