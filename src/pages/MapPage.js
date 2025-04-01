@@ -1013,7 +1013,9 @@ function MapPage() {
           map.setLevel(4);
         }
         setCenterPosition({ lat: latitude, lng: longitude });
-
+        
+        // 이동한 위치 기준으로 마커 다시 불러오기!
+        fetchMarkersFromBackendRef.current?.();
         console.log("📍 현재 위치로 이동 완료:", latitude, longitude);
       },
       (error) => {
