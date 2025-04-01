@@ -9,7 +9,7 @@ function ChatPage() {
   const [chatMessages, setChatMessages] = useState([
     {
       id: 1,
-      text: "안녕하세요! 반려견에 관한 질문이 있으신가요?",
+      text: "안녕하세요! 산책에 관한 질문이 있으신가요?",
       isUser: false,
     },
   ]);
