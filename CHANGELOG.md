@@ -1,5 +1,23 @@
 # CHANGELOG
 
+## [1.22.5](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.22.4...v1.22.5) (2025-04-01)
+
+### 🐛 BUG FIXES
+
+* 회원가입 예외처리 수정2 ([8396d3f](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/8396d3f4296d4362bd5d264f45e78fd56866f5a6))
+
+## [1.22.4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.22.3...v1.22.4) (2025-04-01)
+
+### 🐛 BUG FIXES
+
+* 회원가입 예외처리 수정 ([03f77ad](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/03f77ad092e51faac149d55e9458607be62d73c5))
+
+## [1.22.3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.22.2...v1.22.3) (2025-04-01)
+
+### 🐛 BUG FIXES
+
+* 채팅 입력중 입력창 비활성화 ([f97baeb](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/f97baebb7ec5a5a1c99f3681bc7fc27c06b59acb))
+
 ## [1.22.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.22.1...v1.22.2) (2025-04-01)
 
 ### 🐛 BUG FIXES
