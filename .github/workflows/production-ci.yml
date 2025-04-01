@@ -38,16 +38,15 @@ jobs:
       - name: Build # 4 - 빌드
         run: npm run build
 
-      - name: Upload Sentry Source Maps # 소스맵 Sentry 업로드
-        uses: getsentry/action-upload-sourcemaps@v1
+      - name: Upload Sentry Release & Sourcemaps
+        uses: getsentry/action-release@v1
         with:
           authToken: ${{ secrets.SENTRY_AUTH_TOKEN }}
           org: kakao-tech-bootcamp
           project: gangazido
           release: ${{ github.sha }}
-          include: ./build/static/js
-          urlPrefix: "~/static/js"
-          stripCommonPrefix: true
+          environment: production
+          sourcemaps: ./build/static/js
 
       - name: Configure AWS Credentials # 5 - AWS 인증
         uses: aws-actions/configure-aws-credentials@v2
