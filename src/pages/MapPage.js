@@ -22,7 +22,8 @@ function MapPage() {
   const clusterRef = useRef(null);
 
   // AuthContext에서 인증 상태 가져오기
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
+  // console.log("어쓰", user);
 
   // 모달 관련 상태 수정
   const [showModal, setShowModal] = useState(false);
@@ -225,6 +226,46 @@ function MapPage() {
   // addMarker 함수의 ref 추가
   const addMarkerRef = useRef(null);
 
+  // 클러스터 스타일 정의
+  const CLUSTER_STYLES = {
+    댕플: {
+      background: "rgba(251, 191, 36, 0.8)", // amber-300
+      text: "#fff",
+    },
+    댕져러스: {
+      background: "rgba(248, 113, 113, 0.8)", // red-400
+      text: "#fff",
+    },
+    all: {
+      background: "rgba(156, 163, 175, 0.8)", // gray-400
+      text: "#fff",
+    },
+  };
+
+  // 필터 타입에 따라 클러스터러 생성 함수
+  const createClustererWithStyle = (mapInstance, styleKey = "all") => {
+    const style = CLUSTER_STYLES[styleKey] || CLUSTER_STYLES.all;
+
+    return new window.kakao.maps.MarkerClusterer({
+      map: mapInstance,
+      averageCenter: true,
+      minLevel: 5,
+      disableClickZoom: false,
+      styles: [
+        {
+          width: "50px",
+          height: "50px",
+          background: style.background,
+          color: style.text,
+          textAlign: "center",
+          lineHeight: "50px",
+          borderRadius: "25px",
+          fontSize: "14px",
+          fontWeight: "bold",
+        },
+      ],
+    });
+  };
   // 지도 초기화
   useEffect(() => {
     // 카카오맵 API가 로드되지 않았으면 초기화하지 않음
@@ -267,7 +308,7 @@ function MapPage() {
         // 상태 업데이트
         setMap(kakaoMapInstance);
         setIsMapLoaded(true);
-
+        
         // 마커 클러스터러 초기화
         try {
           if (window.kakao.maps.MarkerClusterer) {
@@ -1013,7 +1054,9 @@ function MapPage() {
           map.setLevel(4);
         }
         setCenterPosition({ lat: latitude, lng: longitude });
-
+        
+        // 이동한 위치 기준으로 마커 다시 불러오기!
+        fetchMarkersFromBackendRef.current?.();
         console.log("📍 현재 위치로 이동 완료:", latitude, longitude);
       },
       (error) => {
@@ -1159,6 +1202,7 @@ function MapPage() {
 
         const markerInfo = {
           id: mData.id, // ✅ 서버에서 내려준 진짜 마커 ID 사용
+          user_id: mData.user_id, // ✅ 마커주인의 userId 저장
           marker,
           position: {
             lat: mData.latitude,
@@ -1178,7 +1222,8 @@ function MapPage() {
             type === "댕플"
               ? "🐶"
               : MARKER_IMAGES.EMOJI[subType] || "⚠️";
-        
+              // console.log("user.userId:", user.userId, typeof user.userId);
+              // console.log("markerInfo.user_id:", markerInfo.user_id, typeof markerInfo.user_id);
           const infoContent = `
             <div class="custom-overlay-animate"
               style="
@@ -1215,7 +1260,8 @@ function MapPage() {
                   cursor: pointer;
                 ">&times;</button>
               </div>
-              <button id="delete-marker" style="
+              ${user.userId === markerInfo.user_id
+                ? `<button id="delete-marker" style="
                 padding: 8px 12px;
                 width: 70px;
                 background: #ef4444;
@@ -1226,7 +1272,9 @@ function MapPage() {
                 font-size: 14px;
                 font-weight: bold;
                 box-shadow: 0 2px 4px rgba(0,0,0,0.15);
-              ">삭제</button>
+              ">삭제</button>`
+                : ""
+              }
             </div>
           `;
         
@@ -1281,7 +1329,7 @@ function MapPage() {
                       icon: "🔐",
                     });
                   } else if (message === "required_permission") {
-                    toast.error("마커 삭제 권한이 없습니다!", {
+                    toast.error("다른 유저의 마커를 삭제할 수 없습니다", {
                       position: "bottom-center",
                       autoClose: 2000,
                       style: {
@@ -1364,10 +1412,11 @@ function MapPage() {
       hasFetchedMarkers.current = true;
     }
   }, [map]);
+
   // 마커 타입 필터링 함수
   const filterMarkersByType = useCallback(
     (type) => {
-      currentFilterTypeRef.current = type; // ⭐️ 현재 필터 타입 기억
+      currentFilterTypeRef.current = type; // 현재 필터 타입 기억
       setFilterType(type);
 
       // 마커 맵 표시 상태 일괄 업데이트 (최적화)
@@ -1395,6 +1444,13 @@ function MapPage() {
         });
       });
 
+      // 클러스터러 초기화 후 새로 생성
+      if (clusterRef.current) {
+        clusterRef.current.clear();
+        clusterRef.current.setMap(null);
+      }
+      clusterRef.current = createClustererWithStyle(map, type);
+      
       // 클러스터러 업데이트는 약간의 지연 시간을 두고 처리
       setTimeout(() => {
         if (clusterRef.current) {
