@@ -63,13 +63,12 @@ function PetRegister() {
         profileImage,
       };
 
-      // ✅ key를 받아옴
-      const savedKey = await registerPet(petData); // ✅ S3 업로드 + DB 저장
-
+      const savedKey = await registerPet(petData); // S3 업로드 + DB 저장
       if (savedKey) {
-        const s3Prefix = "https://d3jeniacjnodv5.cloudfront.net/";
-        const imagePreview = `${s3Prefix}${savedKey}?t=${Date.now()}`;
-        setProfileImagePreview(imagePreview); // ✅ CloudFront URL로 미리보기 설정
+        const s3Prefix = 'https://d3jeniacjnodv5.cloudfront.net/';
+        const imageUrl = `${s3Prefix}${savedKey}?t=${Date.now()}`;
+        setProfileImage(savedKey); // 서버에 보낼 키 저장
+        setProfileImagePreview(imageUrl); // 미리보기용 URL
       }
   
       setShowToast(true);
@@ -83,21 +82,13 @@ function PetRegister() {
   };
 
   const handleProfileImageChange = (e) => {
-    setProfileImagePreview(null); // ✅ 기존 프리뷰 초기화
-    
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-      setProfileImage(file);
-  
-      // ✅ 미리보기용 S3 URL 생성 (등록 직전에도 동일하게 보여주기 위해)
-      const extension = file.name?.split('.')?.pop() || 'png';
-      const tempKey = `pet/temp-preview.${extension}`;
-      const previewUrl = `https://d3jeniacjnodv5.cloudfront.net/${tempKey}?t=${Date.now()}`;
-  
-      // 실제로는 S3에 업로드 전에 preview를 미리 보여줄 수 없기 때문에 아래 코드는 생략하거나 upload 후에만 설정
-      setProfileImagePreview(URL.createObjectURL(file)); // 여기만 쓰면 나중에 문제 됨
+      setProfileImage(file); // File 객체 저장
+      setProfileImagePreview(URL.createObjectURL(file)); // 브라우저 preview
     }
   };
+
 
   // 프론트 자체 유효성 검사
   const validateFields = () => {
@@ -133,7 +124,7 @@ function PetRegister() {
     } else if (ageNum < 1) {
       setAgeError('반려견의 나이는 1살 이상이어야 해요.');
       isValid = false;
-    } else if (ageNum >= 200) {
+    } else if (ageNum >= 51) {
       setAgeError('입력값이 너무 큽니다. 올바른 나이를 입력해주세요.');
       isValid = false;
     }
@@ -204,7 +195,7 @@ function PetRegister() {
         setAgeError('반려견의 나이는 숫자로 입력해주세요.');
         break;
       case 'invalid_pet_age_value':
-        setAgeError('반려견의 나이는 1살 이상이어야 해요.');
+        setAgeError('반려견 나이는 1부터 50사이의 숫자만 입력 가능합니다.');
         break;
   
       case 'required_pet_weight':
@@ -387,7 +378,11 @@ function PetRegister() {
                   type="number"
                   step="0.1"
                   value={weight}
-                  onChange={(e) => setWeight(e.target.value)}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    const formatted = value.match(/^\d*\.?\d{0,1}/);
+                    setWeight(formatted ? formatted[0] : '');
+                  }}
                   onBlur={() => handleBlur('weight')}
                   placeholder="몸무게"
                   className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
@@ -396,47 +391,7 @@ function PetRegister() {
                   <p className="text-sm text-red-500 mt-1">{weightError}</p>
                 )}
               </div>
-              {/* 생일, 입양일, 중성화, 특이사항 등 추후 사용 예정 */}
-              {/*
-              <div className="relative">
-                <label className="block text-sm font-medium text-gray-700 mb-1">중성화 여부</label>
-                <select
-                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
-                >
-                  <option value="">선택하세요</option>
-                  <option value="yes">완료</option>
-                  <option value="no">미완료</option>
-                </select>
-              </div>
-              */}
             </div>
-            {/* 생일, 입양일, 중성화, 특이사항 등 추후 사용 예정 */}
-            {/*
-            <div className="grid grid-cols-2 gap-4">
-              <div className="relative">
-                <label className="block text-sm font-medium text-gray-700 mb-1">생일</label>
-                <input
-                  type="date"
-                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
-                />
-              </div>
-              <div className="relative">
-                <label className="block text-sm font-medium text-gray-700 mb-1">입양일</label>
-                <input
-                  type="date"
-                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
-                />
-              </div>
-            </div>
-
-            <div className="relative">
-              <label className="block text-sm font-medium text-gray-700 mb-1">특이사항</label>
-              <textarea
-                placeholder="반려견의 특이사항을 입력하세요 (알러지, 성격 등)"
-                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent h-24"
-              ></textarea>
-            </div>
-            */}
             <div className="mt-6">
               <p className="text-xs text-gray-500 mb-2"><span className="text-red-500">*</span> 표시는 필수 입력 항목입니다.</p>
               <button 
