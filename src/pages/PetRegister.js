@@ -63,13 +63,12 @@ function PetRegister() {
         profileImage,
       };
 
-      // ✅ key를 받아옴
-      const savedKey = await registerPet(petData); // ✅ S3 업로드 + DB 저장
-
+      const savedKey = await registerPet(petData); // S3 업로드 + DB 저장
       if (savedKey) {
-        const s3Prefix = "https://d3jeniacjnodv5.cloudfront.net/";
-        const imagePreview = `${s3Prefix}${savedKey}?t=${Date.now()}`;
-        setProfileImagePreview(imagePreview); // ✅ CloudFront URL로 미리보기 설정
+        const s3Prefix = 'https://d3jeniacjnodv5.cloudfront.net/';
+        const imageUrl = `${s3Prefix}${savedKey}?t=${Date.now()}`;
+        setProfileImage(savedKey); // 서버에 보낼 키 저장
+        setProfileImagePreview(imageUrl); // 미리보기용 URL
       }
   
       setShowToast(true);
@@ -83,21 +82,13 @@ function PetRegister() {
   };
 
   const handleProfileImageChange = (e) => {
-    setProfileImagePreview(null); // ✅ 기존 프리뷰 초기화
-    
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-      setProfileImage(file);
-  
-      // ✅ 미리보기용 S3 URL 생성 (등록 직전에도 동일하게 보여주기 위해)
-      const extension = file.name?.split('.')?.pop() || 'png';
-      const tempKey = `pet/temp-preview.${extension}`;
-      const previewUrl = `https://d3jeniacjnodv5.cloudfront.net/${tempKey}?t=${Date.now()}`;
-  
-      // 실제로는 S3에 업로드 전에 preview를 미리 보여줄 수 없기 때문에 아래 코드는 생략하거나 upload 후에만 설정
-      setProfileImagePreview(URL.createObjectURL(file)); // 여기만 쓰면 나중에 문제 됨
+      setProfileImage(file); // File 객체 저장
+      setProfileImagePreview(URL.createObjectURL(file)); // 브라우저 preview
     }
   };
+
 
   // 프론트 자체 유효성 검사
   const validateFields = () => {
