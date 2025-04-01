@@ -22,7 +22,8 @@ function MapPage() {
   const clusterRef = useRef(null);
 
   // AuthContext에서 인증 상태 가져오기
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
+  console.log("어쓰", user);
 
   // 모달 관련 상태 수정
   const [showModal, setShowModal] = useState(false);
@@ -1161,6 +1162,7 @@ function MapPage() {
 
         const markerInfo = {
           id: mData.id, // ✅ 서버에서 내려준 진짜 마커 ID 사용
+          user_id: mData.user_id, // ✅ 마커주인의 userId 저장
           marker,
           position: {
             lat: mData.latitude,
@@ -1180,7 +1182,8 @@ function MapPage() {
             type === "댕플"
               ? "🐶"
               : MARKER_IMAGES.EMOJI[subType] || "⚠️";
-        
+              console.log("user.userId:", user.userId, typeof user.userId);
+              console.log("markerInfo.user_id:", markerInfo.user_id, typeof markerInfo.user_id);
           const infoContent = `
             <div class="custom-overlay-animate"
               style="
@@ -1217,7 +1220,8 @@ function MapPage() {
                   cursor: pointer;
                 ">&times;</button>
               </div>
-              <button id="delete-marker" style="
+              ${user.userId === markerInfo.user_id
+                ? `<button id="delete-marker" style="
                 padding: 8px 12px;
                 width: 70px;
                 background: #ef4444;
@@ -1228,7 +1232,9 @@ function MapPage() {
                 font-size: 14px;
                 font-weight: bold;
                 box-shadow: 0 2px 4px rgba(0,0,0,0.15);
-              ">삭제</button>
+              ">삭제</button>`
+                : ""
+              }
             </div>
           `;
         
