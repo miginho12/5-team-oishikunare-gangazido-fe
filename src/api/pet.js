@@ -1,3 +1,4 @@
+import axios from "axios";
 import api from "./index";
 
 // 반려동물 등록
