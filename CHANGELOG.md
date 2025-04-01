@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.22.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.22.1...v1.22.2) (2025-04-01)
+
+### 🐛 BUG FIXES
+
+* 메세지 중복입력방지 ([962f921](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/962f9216d04151d3d1df6a0a504de123b6835740))
+
 ## [1.22.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.22.0...v1.22.1) (2025-03-31)
 
 ### 🐛 BUG FIXES
