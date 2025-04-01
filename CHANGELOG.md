@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.23.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.23.0...v1.23.1) (2025-04-01)
+
+### 🐛 BUG FIXES
+
+* json 파싱 수정 ([e7c7f54](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/e7c7f54c5f779d10cf706c591a86c77c470c4868))
+
 ## [1.23.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.22.5...v1.23.0) (2025-04-01)
 
 ### 🚀 NEW FEATURES
