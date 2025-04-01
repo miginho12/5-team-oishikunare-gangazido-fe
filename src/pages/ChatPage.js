@@ -213,6 +213,7 @@ function ChatPage() {
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             placeholder="메시지를 입력하세요"
+            disabled={isLoading} // 👉 로딩 중 비활성화
             className="flex-1 p-3 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
             onKeyPress={(e) => {
               if (e.key === "Enter") handleSendMessage();
@@ -220,8 +221,12 @@ function ChatPage() {
           />
           <button
             onClick={() => handleSendMessage()}
+            disabled={isLoading} // 👉 로딩 중 버튼 비활성화
             className="p-3 bg-amber-800 text-white rounded-r-md hover:bg-amber-900 transition-colors"
           >
+            {isLoading ? (
+              <span className="text-sm">전송 중...</span>
+            ) : (
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-6 w-6"
@@ -236,6 +241,7 @@ function ChatPage() {
                 d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
               />
             </svg>
+            )}
           </button>
         </div>
       </div>
