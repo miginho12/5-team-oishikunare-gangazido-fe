@@ -201,7 +201,40 @@ function Register() {
         console.error('회원가입 오류 응답 데이터:', err.response.data);
         
         if (err.response.data && err.response.data.message) {
-          setError(err.response.data.message);
+          // 개별 에러 코드에 따른 세부적인 메시지 처리
+          const errorCode = err.response.data.message;
+          
+          if (errorCode === 'password_mismatch') {
+            setError('비밀번호가 일치하지 않습니다.');
+          } else if (errorCode === 'required_email') {
+            setError('이메일은 필수 입력 항목입니다.');
+          } else if (errorCode === 'invalid_email_format') {
+            setError('유효한 이메일 형식이 아닙니다.');
+          } else if (errorCode === 'required_password') {
+            setError('비밀번호는 필수 입력 항목입니다.');
+          } else if (errorCode === 'invalid_password_length') {
+            setError('비밀번호는 8자 이상 20자 이하여야 합니다.');
+          } else if (errorCode === 'invalid_password_format') {
+            setError('비밀번호는 대문자, 소문자, 숫자, 특수문자를 포함해야 합니다.');
+          } else if (errorCode === 'required_nickname') {
+            setError('닉네임은 필수 입력 항목입니다.');
+          } else if (errorCode === 'invalid_nickname_length') {
+            setError('닉네임은 2자 이상 20자 이하여야 합니다.');
+          } else if (errorCode === 'duplicate_email') {
+            setError('이미 사용 중인 이메일입니다.');
+          } else if (errorCode === 'duplicate_nickname') {
+            setError('이미 사용 중인 닉네임입니다.');
+          } else if (errorCode === 'image_not_found') {
+            setError('업로드된 이미지를 찾을 수 없습니다.');
+          } else if (errorCode === 'invalid_file_extension') {
+            setError('지원하지 않는 파일 형식입니다. (jpg, jpeg, png, gif만 가능)');
+          } else if (errorCode === 'invalid_content_type') {
+            setError('지원하지 않는 콘텐츠 타입입니다.');
+          } else if (errorCode === 'internal_server_error') {
+            setError('서버 내부 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+          } else {
+            // 정의되지 않은 에러 코드는 코드와 함께 표시
+            setError(`오류가 발생했습니다: ${errorCode}`);
         } else if (err.response.status === 400) {
           setError('입력 정보가 유효하지 않습니다. 다시 확인해주세요.');
         } else if (err.response.status === 409) {
