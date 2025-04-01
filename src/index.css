@@ -2,6 +2,33 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+}
+
+/* 모바일 특화 스타일 */
+@layer base {
+  :root {
+    touch-action: none;
+    overflow: hidden;
+  }
+  
+  body {
+    touch-action: manipulation;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: none;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+}
+
 /* 토스트 메시지 애니메이션 */
 @keyframes fadeInUp {
   from {
@@ -24,7 +51,6 @@
     transform: translateY(20px);
   }
 }
-
 
 @keyframes fade-slide-down {
   0% {
@@ -58,4 +84,50 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+/* 스크롤바 숨김 유틸리티 클래스 */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+/* 모바일 터치 관련 최적화 */
+* {
+  -webkit-tap-highlight-color: transparent;
+  box-sizing: border-box;
+}
+
+input, button, a {
+  touch-action: manipulation;
+}
+
+/* 모바일에서 더블탭 확대 방지 */
+.prevent-double-tap-zoom {
+  touch-action: manipulation;
+}
+
+/* 카카오맵 이미지 오버플로우 방지 */
+.overlay-image {
+  max-width: 100%;
+  height: auto;
+}
+
+/* 안전한 영역 활용을 위한 패딩 */
+@supports (padding: max(0px)) {
+  .safe-bottom {
+    padding-bottom: max(env(safe-area-inset-bottom), 0.5rem);
+  }
+  
+  .safe-top {
+    padding-top: max(env(safe-area-inset-top), 0.5rem);
+  }
+  
+  nav.safe-bottom {
+    padding-bottom: max(env(safe-area-inset-bottom), 0.5rem);
+  }
 }

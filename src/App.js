@@ -29,24 +29,69 @@ function App() {
       const vh = window.innerHeight * 0.01;
       document.documentElement.style.setProperty("--vh", `${vh}px`);
       
+      // Safari에서 100vh 문제 해결을 위한 추가 대응
+      const appContainer = document.querySelector('.app-container');
+      if (appContainer) {
+        appContainer.style.height = `${window.innerHeight}px`;
+      }
+      
+      const mobileContainer = document.querySelector('.mobile-container');
+      if (mobileContainer) {
+        mobileContainer.style.height = `${window.innerHeight}px`;
+      }
+      
       // 콘솔에 뷰포트 정보 출력 (디버깅용)
       console.log(`Viewport set: ${window.innerWidth}x${window.innerHeight}, vh=${vh}`);
+    }
+    
+    // debounce 함수
+    let resizeTimeout;
+    function handleResize() {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(setRealViewport, 100);
     }
 
     // 초기 로드 시 실행
     setRealViewport();
     
     // 리사이즈 및 방향 변경 이벤트 시 실행
-    window.addEventListener("resize", setRealViewport);
-    window.addEventListener("orientationchange", setRealViewport);
+    window.addEventListener("resize", handleResize);
+    window.addEventListener("orientationchange", () => {
+      // 방향 전환 후 지연 시간을 두고 실행 (iOS Safari 대응)
+      setTimeout(setRealViewport, 300);
+    });
+    
+    // 스크롤 이벤트 방지
+    function preventScroll(e) {
+      if (e.touches.length > 1) {
+        e.preventDefault();
+      }
+    }
+    
+    // 이중 탭 확대 방지
+    function preventZoom(e) {
+      if (e.touches.length > 1) {
+        e.preventDefault();
+      }
+    }
+    
+    // 모바일 터치 이벤트에 대한 처리 추가
+    document.addEventListener('touchmove', preventScroll, { passive: false });
+    document.addEventListener('touchstart', preventZoom, { passive: false });
     
     // 300ms 후 한번 더 계산 (일부 모바일 브라우저에서 초기 로드 시 높이가 정확하지 않을 수 있음)
     const timeoutId = setTimeout(setRealViewport, 300);
+    // 1초 후에도 한번 더 계산 (추가 안정성을 위해)
+    const secondTimeoutId = setTimeout(setRealViewport, 1000);
 
     return () => {
-      window.removeEventListener("resize", setRealViewport);
-      window.removeEventListener("orientationchange", setRealViewport);
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("orientationchange", handleResize);
+      document.removeEventListener('touchmove', preventScroll);
+      document.removeEventListener('touchstart', preventZoom);
       clearTimeout(timeoutId);
+      clearTimeout(secondTimeoutId);
+      clearTimeout(resizeTimeout);
     };
   }, []);
 
