@@ -386,6 +386,8 @@ function PetRegister() {
                   <p className="text-sm text-red-500 mt-1">{weightError}</p>
                 )}
               </div>
+              {/* 생일, 입양일, 중성화, 특이사항 등 추후 사용 예정 */}
+              {/*
               <div className="relative">
                 <label className="block text-sm font-medium text-gray-700 mb-1">중성화 여부</label>
                 <select
@@ -396,8 +398,10 @@ function PetRegister() {
                   <option value="no">미완료</option>
                 </select>
               </div>
+              */}
             </div>
-
+            {/* 생일, 입양일, 중성화, 특이사항 등 추후 사용 예정 */}
+            {/*
             <div className="grid grid-cols-2 gap-4">
               <div className="relative">
                 <label className="block text-sm font-medium text-gray-700 mb-1">생일</label>
@@ -422,7 +426,7 @@ function PetRegister() {
                 className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent h-24"
               ></textarea>
             </div>
-
+            */}
             <div className="mt-6">
               <p className="text-xs text-gray-500 mb-2"><span className="text-red-500">*</span> 표시는 필수 입력 항목입니다.</p>
               <button 
