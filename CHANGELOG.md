@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.25.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.25.1...v1.25.2) (2025-04-01)
+
+### 🐛 BUG FIXES
+
+* 걍 삭제 ([1937c8a](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/1937c8ab52626683360f32abe1f37389a8064dd4))
+
 ## [1.25.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.25.0...v1.25.1) (2025-04-01)
 
 ### 🐛 BUG FIXES
