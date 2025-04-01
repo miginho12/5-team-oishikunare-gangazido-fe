@@ -42,11 +42,12 @@ jobs:
 
       - name: Upload Sentry Release & Sourcemaps
         uses: getsentry/action-release@v1
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: kakao-tech-bootcamp
+          SENTRY_PROJECT: gangazido
+          SENTRY_RELEASE: ${{ github.sha }}
         with:
-          authToken: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          org: kakao-tech-bootcamp
-          project: gangazido
-          release: ${{ github.sha }}
           environment: production
           sourcemaps: ./build/static/js
 
