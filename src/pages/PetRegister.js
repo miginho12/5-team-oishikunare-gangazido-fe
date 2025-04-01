@@ -62,7 +62,7 @@ function PetRegister() {
       };
 
       // ✅ key를 받아옴
-      const savedKey = await registerPet(petData);
+      //const savedKey = await registerPet(petData);
   
       setShowToast(true);
       setTimeout(() => {
