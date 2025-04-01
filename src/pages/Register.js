@@ -235,6 +235,7 @@ function Register() {
           } else {
             // 정의되지 않은 에러 코드는 코드와 함께 표시
             setError(`오류가 발생했습니다: ${errorCode}`);
+          }
         } else if (err.response.status === 400) {
           setError('입력 정보가 유효하지 않습니다. 다시 확인해주세요.');
         } else if (err.response.status === 409) {

@@ -31,6 +31,23 @@ function ChatPage() {
   const goToMap = () => navigate("/map");
   const goToProfile = () => navigate("/profile");
   const goToPetInfo = () => navigate("/pets");
+  const getCurrentLocation = () => {
+    return new Promise((resolve, reject) => {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          resolve(position.coords);
+        },
+        (error) => {
+          reject(error);
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 0,
+        }
+      );
+    });
+  };
 
   const handleSendMessage = async (overrideMessage = null) => {
     if (isLoading) return;
@@ -72,8 +89,16 @@ function ChatPage() {
     setMessage("");
 
     try {
-      const latitude = 33.450701;
-      const longitude = 126.570667;
+      let coords;
+      try {
+        coords = await getCurrentLocation();
+      } catch (error) {
+        alert("📍 위치 정보를 가져오지 못했어요. 기본 위치로 응답을 생성합니다.");
+        console.error("위치 가져오기 실패:", error);
+        coords = { latitude: 37.5665, longitude: 126.9780 }; // 서울 시청
+      }
+  
+      const { latitude, longitude } = coords;
 
       const { data } = await sendLLMChat({
         latitude,

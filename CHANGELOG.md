@@ -1,5 +1,18 @@
 # CHANGELOG
 
+## [1.23.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.22.5...v1.23.0) (2025-04-01)
+
+### 🚀 NEW FEATURES
+
+* 채팅페이지 현재위치 받아오는 로직 추가 ([255fbc1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/255fbc12effb6ffae03f13d7e428d79cbc2d8b65))
+* 커밋 ([2d4e949](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/2d4e9497c7eba51bc0c59bc0d85a79927f0e7575))
+
+## [1.22.5](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.22.4...v1.22.5) (2025-04-01)
+
+### 🐛 BUG FIXES
+
+* 회원가입 예외처리 수정2 ([8396d3f](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/8396d3f4296d4362bd5d264f45e78fd56866f5a6))
+
 ## [1.22.4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.22.3...v1.22.4) (2025-04-01)
 
 ### 🐛 BUG FIXES
