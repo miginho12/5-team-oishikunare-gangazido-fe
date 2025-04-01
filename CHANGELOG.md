@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.22.3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.22.2...v1.22.3) (2025-04-01)
+
+### 🐛 BUG FIXES
+
+* 채팅 입력중 입력창 비활성화 ([f97baeb](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/f97baebb7ec5a5a1c99f3681bc7fc27c06b59acb))
+
 ## [1.22.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.22.1...v1.22.2) (2025-04-01)
 
 ### 🐛 BUG FIXES
