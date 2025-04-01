@@ -39,7 +39,7 @@ jobs:
         run: npm run build
 
       - name: Upload Sentry Source Maps # 소스맵 Sentry 업로드
-        uses: getsentry/action-upload-sourcemaps@v1.2.0
+        uses: getsentry/action-upload-sourcemaps@v1
         with:
           authToken: ${{ secrets.SENTRY_AUTH_TOKEN }}
           org: kakao-tech-bootcamp
