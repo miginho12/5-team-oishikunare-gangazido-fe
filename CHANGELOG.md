@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.31.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.30.0...v1.31.0) (2025-04-01)
+
+### 🚀 NEW FEATURES
+
+* Sentry user & S3 Image ([f0a5e65](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/f0a5e65ec8f831a6c0431c55a72b8839a983c5f1))
+
 ## [1.30.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.29.0...v1.30.0) (2025-04-01)
 
 ### 🚀 NEW FEATURES
