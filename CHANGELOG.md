@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.25.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.25.0...v1.25.1) (2025-04-01)
+
+### 🐛 BUG FIXES
+
+* cleanresponse오류 수정 ([cc9add3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/cc9add3b27902b9b5af200005dd0c3af655d72c3))
+
 ## [1.25.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.24.0...v1.25.0) (2025-04-01)
 
 ### 🚀 NEW FEATURES
