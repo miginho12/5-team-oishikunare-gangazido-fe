@@ -27,18 +27,6 @@ function PetInfo() {
           const response = await getPetInfo();
           const data = response.data.data;
 
-          // 이미지 경로 조정
-          if (data.profileImage && typeof data.profileImage === "string") {
-            // S3 key일 경우엔 S3 prefix 붙이기
-            const s3Prefix = "https://d3jeniacjnodv5.cloudfront.net/";
-            data.profileImage = data.profileImage.startsWith("http")
-              ? data.profileImage
-              : `${s3Prefix}${data.profileImage}`;
-
-            // 💡 캐시 우회를 위해 타임스탬프 쿼리 추가
-            data.profileImage = `${data.profileImage}?t=${Date.now()}`;
-          }
-
           setPet(data);
           setLoading(false);
         } catch (error) {
