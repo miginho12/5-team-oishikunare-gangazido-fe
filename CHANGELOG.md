@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.23.4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.23.3...v1.23.4) (2025-04-01)
+
+### 🐛 BUG FIXES
+
+* viewport scaling issue on mobile devices ([1963e24](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/1963e240be88f6f2ce05a281952f4e947bb0e73c))
+
 ## [1.23.3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.23.2...v1.23.3) (2025-04-01)
 
 ### 🐛 BUG FIXES
