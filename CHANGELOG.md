@@ -1,5 +1,72 @@
 # CHANGELOG
 
+## [1.33.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.32.1...v1.33.0) (2025-04-01)
+
+### 📚 DOCUMENTATION
+
+* 주석 수정 ([233f7d7](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/233f7d70785a74c3250dfbaeaee9104e8b433882))
+* 콘솔로그 주석처리 ([03d75a3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/03d75a3dec243282f6c75bd03e3961c0c8a1ed47))
+
+### 🚀 NEW FEATURES
+
+* 다른 유저 마커 삭제 시 토스트메시지 변경 ([3c3fbb1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/3c3fbb1d30ec19424c69cf9006032f6b767d07e1))
+* 마커 선택 시 마커 주인만 삭제 버튼 보이도록 구현 ([9157cff](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/9157cff17da88f396c3f9eb7067ffb09c31ad7ff))
+* 마커 필터 클러스터 색상 변경 ([1ab77dc](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/1ab77dc2c9282368f7e0b94cdc3d312944387733))
+
+### 🐛 BUG FIXES
+
+* registerPet 등록 후 CloudFront 이미지 key로 미리보기 URL 세팅하도록 수정 ([943b4df](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/943b4df95e5d58f37f14d307247862c7f5f747d9))
+* registerPet 등록 후 CloudFront 이미지 key로 미리보기 URL 세팅하도록 수정 ([1768b67](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/1768b67a257deb2250088a7690454714ae299167))
+* registerPet 등록 후 CloudFront 이미지 key로 미리보기 URL 세팅하도록 수정 ([75b0155](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/75b015586334d8f42ea48c4b2dab3dd160d092fb))
+* sentry ([191def3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/191def3f599859c7b7858fbf17b54c2c8cbdacaf))
+* 등록 직후 S3 이미지 key를 기반으로 미리보기 경로 설정 ([f8dcd0b](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/f8dcd0b9fa0946a7748fcee9368e49a096d7e69f))
+* 등록 직후 S3 이미지 key를 기반으로 미리보기 경로 설정 ([9bf48f9](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/9bf48f9c2e11dc7420e94a1be3113bbef32e3e1f))
+* 반려견 등록 페이지 헬퍼텍스트 클릭 안해도 뜨게 수정 ([3ea152d](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/3ea152d1f83f851e565fb71c92a9036ee8ff6547))
+* 반려견 등록 후 이미지 미리보기 오류 수정 ([788100e](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/788100ef456e43b9f01829a500ff36fa879db65d))
+* 유효성 검사 수정 ([75ad89a](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/75ad89a3ebb13b3e892f2b3f062ce69017372b6b))
+* 현재 위치 이동 시 마커 안 보이는 이슈 수정 ([f3fd5ac](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/f3fd5ac219bcb57bc2aac3c2858a73811e7f7c9c))
+
+## [1.32.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.32.1...v1.32.2) (2025-04-01)
+
+### 🐛 BUG FIXES
+
+* registerPet 등록 후 CloudFront 이미지 key로 미리보기 URL 세팅하도록 수정 ([943b4df](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/943b4df95e5d58f37f14d307247862c7f5f747d9))
+* registerPet 등록 후 CloudFront 이미지 key로 미리보기 URL 세팅하도록 수정 ([1768b67](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/1768b67a257deb2250088a7690454714ae299167))
+* registerPet 등록 후 CloudFront 이미지 key로 미리보기 URL 세팅하도록 수정 ([75b0155](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/75b015586334d8f42ea48c4b2dab3dd160d092fb))
+* sentry ([191def3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/191def3f599859c7b7858fbf17b54c2c8cbdacaf))
+* 등록 직후 S3 이미지 key를 기반으로 미리보기 경로 설정 ([f8dcd0b](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/f8dcd0b9fa0946a7748fcee9368e49a096d7e69f))
+* 등록 직후 S3 이미지 key를 기반으로 미리보기 경로 설정 ([9bf48f9](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/9bf48f9c2e11dc7420e94a1be3113bbef32e3e1f))
+* 반려견 등록 페이지 헬퍼텍스트 클릭 안해도 뜨게 수정 ([3ea152d](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/3ea152d1f83f851e565fb71c92a9036ee8ff6547))
+* 반려견 등록 후 이미지 미리보기 오류 수정 ([788100e](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/788100ef456e43b9f01829a500ff36fa879db65d))
+* 유효성 검사 수정 ([75ad89a](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/75ad89a3ebb13b3e892f2b3f062ce69017372b6b))
+
+## [1.32.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.32.1...v1.32.2) (2025-04-01)
+
+### 🐛 BUG FIXES
+
+* registerPet 등록 후 CloudFront 이미지 key로 미리보기 URL 세팅하도록 수정 ([943b4df](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/943b4df95e5d58f37f14d307247862c7f5f747d9))
+* registerPet 등록 후 CloudFront 이미지 key로 미리보기 URL 세팅하도록 수정 ([1768b67](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/1768b67a257deb2250088a7690454714ae299167))
+* registerPet 등록 후 CloudFront 이미지 key로 미리보기 URL 세팅하도록 수정 ([75b0155](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/75b015586334d8f42ea48c4b2dab3dd160d092fb))
+* sentry ([191def3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/191def3f599859c7b7858fbf17b54c2c8cbdacaf))
+* 등록 직후 S3 이미지 key를 기반으로 미리보기 경로 설정 ([f8dcd0b](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/f8dcd0b9fa0946a7748fcee9368e49a096d7e69f))
+* 등록 직후 S3 이미지 key를 기반으로 미리보기 경로 설정 ([9bf48f9](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/9bf48f9c2e11dc7420e94a1be3113bbef32e3e1f))
+* 반려견 등록 페이지 헬퍼텍스트 클릭 안해도 뜨게 수정 ([3ea152d](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/3ea152d1f83f851e565fb71c92a9036ee8ff6547))
+* 반려견 등록 후 이미지 미리보기 오류 수정 ([788100e](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/788100ef456e43b9f01829a500ff36fa879db65d))
+* 유효성 검사 수정 ([75ad89a](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/75ad89a3ebb13b3e892f2b3f062ce69017372b6b))
+
+## [1.32.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.32.1...v1.32.2) (2025-04-01)
+
+### 🐛 BUG FIXES
+
+* registerPet 등록 후 CloudFront 이미지 key로 미리보기 URL 세팅하도록 수정 ([943b4df](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/943b4df95e5d58f37f14d307247862c7f5f747d9))
+* registerPet 등록 후 CloudFront 이미지 key로 미리보기 URL 세팅하도록 수정 ([1768b67](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/1768b67a257deb2250088a7690454714ae299167))
+* registerPet 등록 후 CloudFront 이미지 key로 미리보기 URL 세팅하도록 수정 ([75b0155](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/75b015586334d8f42ea48c4b2dab3dd160d092fb))
+* sentry ([191def3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/191def3f599859c7b7858fbf17b54c2c8cbdacaf))
+* 등록 직후 S3 이미지 key를 기반으로 미리보기 경로 설정 ([f8dcd0b](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/f8dcd0b9fa0946a7748fcee9368e49a096d7e69f))
+* 등록 직후 S3 이미지 key를 기반으로 미리보기 경로 설정 ([9bf48f9](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/9bf48f9c2e11dc7420e94a1be3113bbef32e3e1f))
+* 반려견 등록 페이지 헬퍼텍스트 클릭 안해도 뜨게 수정 ([3ea152d](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/3ea152d1f83f851e565fb71c92a9036ee8ff6547))
+* 유효성 검사 수정 ([75ad89a](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/75ad89a3ebb13b3e892f2b3f062ce69017372b6b))
+
 ## [1.32.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.32.1...v1.32.2) (2025-04-01)
 
 ### 🐛 BUG FIXES
