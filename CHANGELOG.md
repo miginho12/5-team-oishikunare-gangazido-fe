@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.37.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.36.2...v1.37.0) (2025-04-01)
+
+### 🚀 NEW FEATURES
+
+* register을 edit처럼 리팩토링 ([87db466](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/87db46609de9f6e233067db8c9bd61df0ffd6acc))
+
 ## [1.36.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.36.1...v1.36.2) (2025-04-01)
 
 ### 🐛 BUG FIXES
