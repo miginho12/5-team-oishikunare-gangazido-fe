@@ -1,43 +1,53 @@
 import api from "./index";
 
 // 반려동물 등록
-export const registerPet = async (formData) => {
-  try {
-    // 1. S3 presigned URL 요청
-    const file = formData.get('profileImage');
-    let fileKey = null;
+export const registerPet = async (petData) => {
+  let profileImageKey = null;
 
-    if (file && file instanceof File) {
-      const presignedRes = await axios.post(
-        `${process.env.REACT_APP_API_URL}/v1/pets/me/presigned`,
-        { fileName: file.name },
-        { withCredentials: true }
-      );
-      fileKey = presignedRes.data.data.key;
+  // 이미지가 새로 업로드된 파일이면 S3에 업로드
+  if (petData.profileImage instanceof File) {
+    const extension = petData.profileImage?.name?.split('.')?.pop() || 'png';
+    const res = await api.post("/v1/pets/me/presigned", {
+      fileExtension: `.${extension}`,
+      contentType: petData.profileImage.type,
+    });
+    const { presignedUrl, fileKey } = res.data;
 
-      // 2. 이미지 업로드
-      await axios.put(presignedRes.data.data.presignedUrl, file, {
-        headers: { 'Content-Type': file.type },
+    console.log("🚀 S3 업로드 URL:", presignedUrl);
+    
+    try {
+      const uploadRes = await fetch(presignedUrl, {
+        method: "PUT",
+        headers: { "Content-Type": petData.profileImage.type },
+        body: petData.profileImage,
       });
 
-      // 3. 파일 key를 formData에 다시 설정
-      formData.set('profileImage', fileKey);
-    }
-
-    // 4. 반려견 정보 등록
-    await axios.post(
-      `${process.env.REACT_APP_API_URL}/v1/pets/me`,
-      formData,
-      {
-        headers: { 'Content-Type': 'multipart/form-data' },
-        withCredentials: true,
+      if (!uploadRes.ok) {
+        throw new Error(`S3 업로드 실패: ${uploadRes.statusText}`);
       }
-    );
 
-    return fileKey; // ✅ 업로드한 이미지 key 반환
-  } catch (error) {
-    throw error;
+      profileImageKey = fileKey;
+    } catch (err) {
+      console.error("❌ S3 이미지 업로드 실패:", err);
+      throw new Error("이미지 업로드에 실패했습니다.");
+    }
+  } else if (typeof petData.profileImage === "string") {
+    profileImageKey = petData.profileImage;
   }
+
+  const formData = new FormData();
+  formData.append("name", petData.name);
+  formData.append("age", petData.age);
+  formData.append("gender", petData.gender);
+  formData.append("breed", petData.breed);
+  formData.append("weight", petData.weight);
+  if (profileImageKey) {
+    formData.append("profileImage", profileImageKey); // 문자열로 key 전달
+  }
+  await api.post("/v1/pets/me", formData);
+
+  // ✅ key를 리턴해줌
+  return profileImageKey;
 };
 
 // 반려동물 조회
