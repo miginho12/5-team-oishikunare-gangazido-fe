@@ -64,9 +64,6 @@ function PetEdit() {
             const s3Prefix = "https://d3jeniacjnodv5.cloudfront.net/";
             data.profileImage = `${s3Prefix}${data.profileImage}?t=${Date.now()}`;
 
-            // 👉 캐시 우회를 위한 쿼리 스트링 추가
-            data.profileImage += `?t=${Date.now()}`;
-
             setProfileImage(data.profileImage);            // 백엔드에 보낼 용도
             setProfileImagePreview(data.profileImage);     // ✅ 미리보기로도 보여주기
           }
@@ -105,28 +102,15 @@ function PetEdit() {
     if (!isValid) return;
 
     try {
-      const formData = new FormData();
-      formData.append('name', name);
-      formData.append('age', age);
-      formData.append('gender', gender === 'male');
-      formData.append('breed', breed);
-      formData.append('weight', weight);
-
-      // 새 파일이면 파일, 기존 이미지 경로면 문자열로 추가
-      if (profileImage instanceof File) {
-        formData.append('profileImage', profileImage);
-      } else if (typeof profileImage === 'string') {
-        formData.append('profileImage', profileImage); // 기존 이미지 경로 유지
-      }
-
       await updatePetInfo({
         name,
         age,
         gender: gender === 'male',
         breed,
         weight,
-        profileImage,
+        profileImage, // File이든 S3 key(string)이든 이 값 하나면 충분
       });
+  
 
       setShowToast(true);
       setTimeout(() => navigate('/pets'), 2000);
