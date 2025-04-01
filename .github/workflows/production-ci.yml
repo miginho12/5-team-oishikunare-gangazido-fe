@@ -47,6 +47,7 @@ jobs:
           release: ${{ github.sha }}
           include: ./build/static/js
           urlPrefix: "~/static/js"
+          stripCommonPrefix: true
 
       - name: Configure AWS Credentials # 5 - AWS 인증
         uses: aws-actions/configure-aws-credentials@v2
