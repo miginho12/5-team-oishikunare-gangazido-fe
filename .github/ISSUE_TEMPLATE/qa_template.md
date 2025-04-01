@@ -2,7 +2,7 @@
 name: 🐞 Bug Report
 about: 앱에서 발견한 버그를 신고해주세요.
 title: "[BUG] "
-labels: bug
+labels: ["🐞 bug", "🧑‍💻 frontend"]
 assignees: ''
 
 ---
