@@ -137,24 +137,6 @@ function Register() {
   const handleRegister = async (e) => {
     e.preventDefault();
     
-    // 기본 유효성 검사
-    if (!email || !password || !passwordConfirm || !nickname) {
-      setError('모든 필수 항목을 입력해주세요.');
-      return;
-    }
-    
-    // 패스워드 일치 확인
-    if (password !== passwordConfirm) {
-      setPasswordError('비밀번호가 일치하지 않습니다.');
-      return;
-    }
-    
-    // 오류가 있는지 확인
-    if (emailError || passwordError || nicknameError) {
-      setError('입력 정보를 확인해주세요.');
-      return;
-    }
-    
     setLoading(true);
     setError(null);
     

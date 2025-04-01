@@ -5,11 +5,17 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
-Sentry.init({
-  dsn: "https://6c895b444f185158b30bbac672768eae@o4509066231611392.ingest.us.sentry.io/4509066247274496",
-  integrations: [Sentry.browserTracingIntegration()],
-  tracesSampleRate: 1.0,
-});
+const isProduction = window.location.hostname === "www.gangazido.com";
+
+if (isProduction) {
+  Sentry.init({
+    dsn: "https://3cf3be6e70f8e27208fe64b361fe341d@o4509066231611392.ingest.us.sentry.io/4509066245636096",
+    environment: "production",
+    integrations: [Sentry.browserTracingIntegration()],
+    tracesSampleRate: 1.0,
+    sendDefaultPii: true,
+  });
+}
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

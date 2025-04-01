@@ -1,5 +1,168 @@
 # CHANGELOG
 
+## [1.32.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.32.1...v1.32.2) (2025-04-01)
+
+### 🐛 BUG FIXES
+
+* registerPet 등록 후 CloudFront 이미지 key로 미리보기 URL 세팅하도록 수정 ([943b4df](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/943b4df95e5d58f37f14d307247862c7f5f747d9))
+* registerPet 등록 후 CloudFront 이미지 key로 미리보기 URL 세팅하도록 수정 ([1768b67](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/1768b67a257deb2250088a7690454714ae299167))
+* registerPet 등록 후 CloudFront 이미지 key로 미리보기 URL 세팅하도록 수정 ([75b0155](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/75b015586334d8f42ea48c4b2dab3dd160d092fb))
+* sentry ([191def3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/191def3f599859c7b7858fbf17b54c2c8cbdacaf))
+* 등록 직후 S3 이미지 key를 기반으로 미리보기 경로 설정 ([f8dcd0b](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/f8dcd0b9fa0946a7748fcee9368e49a096d7e69f))
+* 등록 직후 S3 이미지 key를 기반으로 미리보기 경로 설정 ([9bf48f9](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/9bf48f9c2e11dc7420e94a1be3113bbef32e3e1f))
+* 반려견 등록 페이지 헬퍼텍스트 클릭 안해도 뜨게 수정 ([3ea152d](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/3ea152d1f83f851e565fb71c92a9036ee8ff6547))
+* 반려견 등록 후 이미지 미리보기 오류 수정 ([788100e](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/788100ef456e43b9f01829a500ff36fa879db65d))
+* 유효성 검사 수정 ([75ad89a](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/75ad89a3ebb13b3e892f2b3f062ce69017372b6b))
+
+## [1.32.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.32.1...v1.32.2) (2025-04-01)
+
+### 🐛 BUG FIXES
+
+* registerPet 등록 후 CloudFront 이미지 key로 미리보기 URL 세팅하도록 수정 ([943b4df](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/943b4df95e5d58f37f14d307247862c7f5f747d9))
+* registerPet 등록 후 CloudFront 이미지 key로 미리보기 URL 세팅하도록 수정 ([1768b67](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/1768b67a257deb2250088a7690454714ae299167))
+* registerPet 등록 후 CloudFront 이미지 key로 미리보기 URL 세팅하도록 수정 ([75b0155](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/75b015586334d8f42ea48c4b2dab3dd160d092fb))
+* sentry ([191def3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/191def3f599859c7b7858fbf17b54c2c8cbdacaf))
+* 등록 직후 S3 이미지 key를 기반으로 미리보기 경로 설정 ([f8dcd0b](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/f8dcd0b9fa0946a7748fcee9368e49a096d7e69f))
+* 등록 직후 S3 이미지 key를 기반으로 미리보기 경로 설정 ([9bf48f9](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/9bf48f9c2e11dc7420e94a1be3113bbef32e3e1f))
+* 반려견 등록 페이지 헬퍼텍스트 클릭 안해도 뜨게 수정 ([3ea152d](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/3ea152d1f83f851e565fb71c92a9036ee8ff6547))
+* 유효성 검사 수정 ([75ad89a](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/75ad89a3ebb13b3e892f2b3f062ce69017372b6b))
+
+## [1.32.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.32.1...v1.32.2) (2025-04-01)
+
+### 🐛 BUG FIXES
+
+* registerPet 등록 후 CloudFront 이미지 key로 미리보기 URL 세팅하도록 수정 ([943b4df](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/943b4df95e5d58f37f14d307247862c7f5f747d9))
+* registerPet 등록 후 CloudFront 이미지 key로 미리보기 URL 세팅하도록 수정 ([1768b67](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/1768b67a257deb2250088a7690454714ae299167))
+* registerPet 등록 후 CloudFront 이미지 key로 미리보기 URL 세팅하도록 수정 ([75b0155](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/75b015586334d8f42ea48c4b2dab3dd160d092fb))
+* sentry ([191def3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/191def3f599859c7b7858fbf17b54c2c8cbdacaf))
+* 등록 직후 S3 이미지 key를 기반으로 미리보기 경로 설정 ([f8dcd0b](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/f8dcd0b9fa0946a7748fcee9368e49a096d7e69f))
+* 등록 직후 S3 이미지 key를 기반으로 미리보기 경로 설정 ([9bf48f9](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/9bf48f9c2e11dc7420e94a1be3113bbef32e3e1f))
+* 유효성 검사 수정 ([75ad89a](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/75ad89a3ebb13b3e892f2b3f062ce69017372b6b))
+
+## [1.32.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.32.1...v1.32.2) (2025-04-01)
+
+### 🐛 BUG FIXES
+
+* registerPet 등록 후 CloudFront 이미지 key로 미리보기 URL 세팅하도록 수정 ([943b4df](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/943b4df95e5d58f37f14d307247862c7f5f747d9))
+* registerPet 등록 후 CloudFront 이미지 key로 미리보기 URL 세팅하도록 수정 ([1768b67](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/1768b67a257deb2250088a7690454714ae299167))
+* registerPet 등록 후 CloudFront 이미지 key로 미리보기 URL 세팅하도록 수정 ([75b0155](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/75b015586334d8f42ea48c4b2dab3dd160d092fb))
+* sentry ([191def3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/191def3f599859c7b7858fbf17b54c2c8cbdacaf))
+* 등록 직후 S3 이미지 key를 기반으로 미리보기 경로 설정 ([f8dcd0b](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/f8dcd0b9fa0946a7748fcee9368e49a096d7e69f))
+* 등록 직후 S3 이미지 key를 기반으로 미리보기 경로 설정 ([9bf48f9](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/9bf48f9c2e11dc7420e94a1be3113bbef32e3e1f))
+
+## [1.32.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.32.0...v1.32.1) (2025-04-01)
+
+### 🐛 BUG FIXES
+
+* S3 이미지 업로드 로직 중복 제거 및 등록 로직 정리 ([45c4970](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/45c49702271cff58d1918754c895a8c19b489368))
+
+## [1.32.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.31.0...v1.32.0) (2025-04-01)
+
+### 🚀 NEW FEATURES
+
+* Sentry update ([4370cd4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/4370cd4a2e3010e802f3ba70eeca3d34b57b20f8))
+
+
+### 🐛 BUG FIXES
+
+* sentry ([191def3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/191def3f599859c7b7858fbf17b54c2c8cbdacaf))
+
+## [1.31.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.30.0...v1.31.0) (2025-04-01)
+
+### 🚀 NEW FEATURES
+
+* Sentry user & S3 Image ([f0a5e65](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/f0a5e65ec8f831a6c0431c55a72b8839a983c5f1))
+
+## [1.30.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.29.0...v1.30.0) (2025-04-01)
+
+### 🚀 NEW FEATURES
+
+* Sentry user & S3 Image ([2d064ee](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/2d064ee3c8de6309d28ed8ffd946fe69c72be026))
+
+## [1.29.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.28.0...v1.29.0) (2025-04-01)
+
+### 🚀 NEW FEATURES
+
+* savedKey 콘솔 추가 ([44b5e1b](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/44b5e1b0a88a4b1b0f5928e55e86d90eda7a91a5))
+
+## [1.28.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.27.0...v1.28.0) (2025-04-01)
+
+### 🚀 NEW FEATURES
+
+* log 추가 ([0558e25](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/0558e25ae2bdca99de68bbde22d738d81009255b))
+
+## [1.27.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.26.0...v1.27.0) (2025-04-01)
+
+### 🚀 NEW FEATURES
+
+* 반려견 등록 후 S3 이미지 key 기반 불러오기 ([c17299f](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/c17299fc1ac31d830ab99c7e7ebe2853f35cff75))
+
+## [1.26.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.25.3...v1.26.0) (2025-04-01)
+
+### 🚀 NEW FEATURES
+
+* 채팅 추천 질문 순서 변경 ([6aec426](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/6aec42694249a60bcd8ab45b7d24cce64a7f45f3))
+
+## [1.25.3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.25.2...v1.25.3) (2025-04-01)
+
+### 🐛 BUG FIXES
+
+* 반려견 정보 없으면alert ([7dcb365](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/7dcb36563b150d66306c4e40f1878ca83303de17))
+
+## [1.25.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.25.1...v1.25.2) (2025-04-01)
+
+### 🐛 BUG FIXES
+
+* 걍 삭제 ([1937c8a](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/1937c8ab52626683360f32abe1f37389a8064dd4))
+
+## [1.25.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.25.0...v1.25.1) (2025-04-01)
+
+### 🐛 BUG FIXES
+
+* cleanresponse오류 수정 ([cc9add3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/cc9add3b27902b9b5af200005dd0c3af655d72c3))
+
+## [1.25.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.24.0...v1.25.0) (2025-04-01)
+
+### 🚀 NEW FEATURES
+
+* 반영 되거라 젭알 ([0e42cf7](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/0e42cf7a4f80e28ee882a59c0f16a51ca3f88e46))
+
+## [1.24.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.23.5...v1.24.0) (2025-04-01)
+
+### 🚀 NEW FEATURES
+
+* 예시질문 추가 ([fd5fcde](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/fd5fcde28f350c4ea8e117b94fcfdea2c4aaac4f))
+
+## [1.23.5](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.23.4...v1.23.5) (2025-04-01)
+
+### 🐛 BUG FIXES
+
+* 미세먼지 json 파싱오류 수정 ([15a20a9](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/15a20a99cf87425d43df80c4d22af129cb194521))
+
+## [1.23.4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.23.3...v1.23.4) (2025-04-01)
+
+### 🐛 BUG FIXES
+
+* viewport scaling issue on mobile devices ([1963e24](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/1963e240be88f6f2ce05a281952f4e947bb0e73c))
+
+## [1.23.3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.23.2...v1.23.3) (2025-04-01)
+
+### 🐛 BUG FIXES
+
+* 회원가입 유효성 검사 일부 수정 ([d8bf888](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/d8bf888e8e5d9f3543787b96cf10877a4fbf3883))
+
+## [1.23.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.23.1...v1.23.2) (2025-04-01)
+
+### 📚 DOCUMENTATION
+
+* 백연동 없는 기능 주석처리 ([47010de](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/47010de3eec58418a9708a311baf5d91a2736ffb))
+
+## [1.23.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.23.0...v1.23.1) (2025-04-01)
+
+### 🐛 BUG FIXES
+
+* json 파싱 수정 ([e7c7f54](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/e7c7f54c5f779d10cf706c591a86c77c470c4868))
+
 ## [1.23.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.22.5...v1.23.0) (2025-04-01)
 
 ### 🚀 NEW FEATURES

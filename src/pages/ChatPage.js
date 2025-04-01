@@ -23,9 +23,10 @@ function ChatPage() {
   }, [chatMessages]);
 
   const suggestedQuestions = [
+    "오늘 어디 갈까?",
+    "오늘 미세먼지 어때?",
     "오늘 산책하는거 어떨까?",
     "오늘 옷은 어떻게 입히는 게 좋을까?",
-    "오늘 미세먼지 어때?",
   ];
 
   const goToMap = () => navigate("/map");
@@ -95,7 +96,7 @@ function ChatPage() {
       } catch (error) {
         alert("📍 위치 정보를 가져오지 못했어요. 기본 위치로 응답을 생성합니다.");
         console.error("위치 가져오기 실패:", error);
-        coords = { latitude: 37.5665, longitude: 126.9780 }; // 서울 시청
+        //coords = { latitude: 37.5665, longitude: 126.9780 }; // 서울 시청
       }
   
       const { latitude, longitude } = coords;
@@ -112,9 +113,17 @@ function ChatPage() {
 
       try {
         parsed = JSON.parse(cleanResponse);
-        aiText = `🐾 오늘은 ${parsed.recommendation}!\n📌 이유: ${
-          parsed.reason
-        }\n✅ 팁: ${parsed.safety_tips.join(", ")}`;
+        if (parsed.routes) {
+          // 산책로 추천 응답
+          aiText = "🏞️ 근처 산책로 추천!\n\n" + parsed.routes.map((route, idx) =>
+            `📍 ${idx + 1}. ${route.name} (${route.distance_km}km)\n- ${route.description}`
+          ).join("\n\n");
+        } else {
+          // 일반 산책 추천 응답
+          aiText = `🐾 오늘은 ${parsed.recommendation}!\n📌 이유: ${
+            parsed.reason
+          }\n✅ 팁: ${parsed.safety_tips.join(", ")}`;
+        }
       } catch {
         aiText = cleanResponse;
       }
@@ -138,7 +147,7 @@ function ChatPage() {
             alert("로그인 해주세요");
             break;
           case 404:
-            alert("반려견 정보를 찾을 수 없습니다.");
+            alert("반려견 정보를 찾을 수 없습니다. 반려견 정보를 등록해주세요.");
             break;
           case 400:
             alert("요청 형식이 잘못되었거나 날씨 정보가 유효하지 않습니다.");

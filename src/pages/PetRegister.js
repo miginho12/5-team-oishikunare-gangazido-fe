@@ -48,33 +48,31 @@ function PetRegister() {
   const goToPetInfo = () => navigate('/pets');
 
   const handleRegister = async () => {
-    const isValid = validateFields(); // 1. 프론트 유효성 검사 먼저
+    const isValid = validateFields(); // 프론트 유효성 검사
     if (!isValid) return;
-
-    try {
-      const petData = {
-        name,
-        age: parseInt(age),
-        gender: gender === 'male',
-        breed,
-        weight: parseFloat(weight),
-        profileImage,
-      };
-
-      // ✅ key를 받아옴
-      const savedKey = await registerPet(petData);
-
-      if (savedKey) {
-        const s3Prefix = "https://d3jeniacjnodv5.cloudfront.net/";
-        const imagePreview = `${s3Prefix}${savedKey}?t=${Date.now()}`;
   
-        setProfileImagePreview(imagePreview);
+    try {
+      const formData = new FormData();
+      formData.append('name', name);
+      formData.append('age', age);
+      formData.append('gender', gender === 'male'); // boolean
+      formData.append('breed', breed);
+      formData.append('weight', weight);
+  
+      if (profileImage instanceof File) {
+        formData.append('profileImage', profileImage);
+      }
+  
+      const uploadedKey = await registerPet(formData); // ✅ 수정된 registerPet 함수 사용
+  
+      if (uploadedKey) {
+        const s3Prefix = "https://d3jeniacjnodv5.cloudfront.net/";
+        const previewUrl = `${s3Prefix}${uploadedKey}?t=${Date.now()}`;
+        setProfileImagePreview(previewUrl); // ✅ CloudFront URL로 preview 설정
       }
   
       setShowToast(true);
-      setTimeout(() => {
-        window.location.href = "/pets"; // 👉 강제 새로고침 포함
-      }, 2000);
+      setTimeout(() => navigate('/pets'), 2000);
     } catch (error) {
       const errorMsg = error.response?.data?.message;
       handleRegisterError(errorMsg);
@@ -123,7 +121,7 @@ function PetRegister() {
     } else if (ageNum < 1) {
       setAgeError('반려견의 나이는 1살 이상이어야 해요.');
       isValid = false;
-    } else if (ageNum >= 200) {
+    } else if (ageNum >= 51) {
       setAgeError('입력값이 너무 큽니다. 올바른 나이를 입력해주세요.');
       isValid = false;
     }
@@ -194,7 +192,7 @@ function PetRegister() {
         setAgeError('반려견의 나이는 숫자로 입력해주세요.');
         break;
       case 'invalid_pet_age_value':
-        setAgeError('반려견의 나이는 1살 이상이어야 해요.');
+        setAgeError('반려견 나이는 1부터 50사이의 숫자만 입력 가능합니다.');
         break;
   
       case 'required_pet_weight':
@@ -386,6 +384,8 @@ function PetRegister() {
                   <p className="text-sm text-red-500 mt-1">{weightError}</p>
                 )}
               </div>
+              {/* 생일, 입양일, 중성화, 특이사항 등 추후 사용 예정 */}
+              {/*
               <div className="relative">
                 <label className="block text-sm font-medium text-gray-700 mb-1">중성화 여부</label>
                 <select
@@ -396,8 +396,10 @@ function PetRegister() {
                   <option value="no">미완료</option>
                 </select>
               </div>
+              */}
             </div>
-
+            {/* 생일, 입양일, 중성화, 특이사항 등 추후 사용 예정 */}
+            {/*
             <div className="grid grid-cols-2 gap-4">
               <div className="relative">
                 <label className="block text-sm font-medium text-gray-700 mb-1">생일</label>
@@ -422,7 +424,7 @@ function PetRegister() {
                 className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent h-24"
               ></textarea>
             </div>
-
+            */}
             <div className="mt-6">
               <p className="text-xs text-gray-500 mb-2"><span className="text-red-500">*</span> 표시는 필수 입력 항목입니다.</p>
               <button 

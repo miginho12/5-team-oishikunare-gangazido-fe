@@ -178,7 +178,7 @@ function PetEdit() {
     } else if (ageNum <= 0) {
       setAgeError('반려견의 나이는 1살 이상이어야 해요.');
       isValid = false;
-    } else if (ageNum >= 200) {
+    } else if (ageNum >= 51) {
       setAgeError('입력값이 너무 큽니다. 올바른 나이를 입력해주세요.');
       isValid = false;
     }
@@ -247,7 +247,7 @@ function PetEdit() {
         setAgeError('반려견의 나이는 숫자로 입력해주세요.');
         break;
       case 'invalid_pet_age_value':
-        setAgeError('반려견의 나이는 0살 이상이어야 해요.');
+        setAgeError('반려견 나이는 1부터 50사이의 숫자만 입력 가능합니다.');
         break;
   
       case 'required_pet_weight':
@@ -452,6 +452,8 @@ function PetEdit() {
                   <p className="text-sm text-red-500 mt-1">{weightError}</p>
                 )}
               </div>
+              {/* 생일, 입양일, 중성화, 특이사항 등 추후 사용 예정 */}
+              {/*}
               <div className="relative">
                 <label className="block text-sm font-medium text-gray-700 mb-1">중성화 여부</label>
                 <select
@@ -463,8 +465,10 @@ function PetEdit() {
                   <option value="no">미완료</option>
                 </select>
               </div>
+              */}
             </div>
-
+            {/* 생일, 입양일, 중성화, 특이사항 등 추후 사용 예정 */}
+            {/*}
             <div className="grid grid-cols-2 gap-4">
               <div className="relative">
                 <label className="block text-sm font-medium text-gray-700 mb-1">생일</label>
@@ -485,7 +489,6 @@ function PetEdit() {
                 />
               </div>
             </div>
-
             <div className="relative">
               <label className="block text-sm font-medium text-gray-700 mb-1">특이사항</label>
               <textarea
@@ -493,7 +496,7 @@ function PetEdit() {
                 className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent h-24"
               ></textarea>
             </div>
-
+            */}
             <button 
               onClick={handleUpdatePet}
               className="w-full bg-amber-800 text-white p-3 rounded-md text-center font-medium mt-4"
