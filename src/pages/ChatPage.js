@@ -147,7 +147,7 @@ function ChatPage() {
             alert("로그인 해주세요");
             break;
           case 404:
-            alert("반려견 정보를 찾을 수 없습니다.");
+            alert("반려견 정보를 찾을 수 없습니다. 반려견 정보를 등록해주세요.");
             break;
           case 400:
             alert("요청 형식이 잘못되었거나 날씨 정보가 유효하지 않습니다.");
