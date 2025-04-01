@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.23.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.23.1...v1.23.2) (2025-04-01)
+
+### 📚 DOCUMENTATION
+
+* 백연동 없는 기능 주석처리 ([47010de](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/47010de3eec58418a9708a311baf5d91a2736ffb))
+
 ## [1.23.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.23.0...v1.23.1) (2025-04-01)
 
 ### 🐛 BUG FIXES
