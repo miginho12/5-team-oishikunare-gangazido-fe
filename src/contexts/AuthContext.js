@@ -42,7 +42,7 @@ export const AuthProvider = ({ children }) => {
 
   // 로그인 함수
   const login = (userData) => {
-    console.log('로그인 함수 호출, 사용자 데이터:', userData);
+    // console.log('로그인 함수 호출, 사용자 데이터:', userData);
     if (!userData) {
       console.error('로그인 함수가 유효하지 않은 사용자 데이터로 호출됨:', userData);
       return;
