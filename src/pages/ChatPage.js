@@ -23,10 +23,10 @@ function ChatPage() {
   }, [chatMessages]);
 
   const suggestedQuestions = [
+    "오늘 어디 갈까?",
+    "오늘 미세먼지 어때?",
     "오늘 산책하는거 어떨까?",
     "오늘 옷은 어떻게 입히는 게 좋을까?",
-    "오늘 미세먼지 어때?",
-    "오늘 어디 갈까?",
   ];
 
   const goToMap = () => navigate("/map");
@@ -148,7 +148,6 @@ function ChatPage() {
             break;
           case 404:
             alert("반려견 정보를 찾을 수 없습니다.");
-            setChatMessages((prev) => prev.slice(0, -2)); // 사용자가 방금 보낸 메시지 + 로딩 메시지 제거
             break;
           case 400:
             alert("요청 형식이 잘못되었거나 날씨 정보가 유효하지 않습니다.");
