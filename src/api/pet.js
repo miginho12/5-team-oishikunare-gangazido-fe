@@ -1,43 +1,37 @@
 import api from "./index";
 
-// presigned URL 받아오기
-const getPetPresignedUrl = async (file) => {
+// 🟢 이미지 업로드 전용 함수
+export const uploadPetImage = async (file) => {
   const ext = file.name.split('.').pop() || 'png';
   const res = await api.post("/v1/pets/me/presigned", {
     fileExtension: `.${ext}`,
     contentType: file.type,
   });
-  return res.data;
+
+  const { presignedUrl, fileKey } = res.data;
+
+  await fetch(presignedUrl, {
+    method: "PUT",
+    headers: { "Content-Type": file.type },
+    body: file,
+  });
+
+  return fileKey; // S3 키 반환
 };
 
-// 반려동물 등록
+// 🟢 이미지 키를 받아 반려견 등록
 export const registerPet = async (petData) => {
-  let profileImageKey = null;
-
-  if (petData.profileImage instanceof File) {
-    const { presignedUrl, fileKey } = await getPetPresignedUrl(petData.profileImage);
-    await fetch(presignedUrl, {
-      method: "PUT",
-      headers: { "Content-Type": petData.profileImage.type },
-      body: petData.profileImage,
-    });
-    profileImageKey = fileKey;
-  } else if (typeof petData.profileImage === "string") {
-    profileImageKey = petData.profileImage;
-  }
-
   const formData = new FormData();
   formData.append("name", petData.name);
   formData.append("age", petData.age);
   formData.append("gender", petData.gender);
   formData.append("breed", petData.breed);
   formData.append("weight", petData.weight);
-  if (profileImageKey) {
-    formData.append("profileImage", profileImageKey);
+  if (petData.profileImage) {
+    formData.append("profileImage", petData.profileImage); // 문자열 키
   }
 
   await api.post("/v1/pets/me", formData);
-  return profileImageKey;
 };
 
 // 반려동물 조회

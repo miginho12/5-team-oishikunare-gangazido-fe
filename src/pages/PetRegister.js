@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { registerPet } from '../api/pet';
+import { uploadPetImage, registerPet } from '../api/pet';
 
 function PetRegister() {
   const navigate = useNavigate();
@@ -52,29 +52,31 @@ function PetRegister() {
     if (!isValid) return;
   
     try {
+      let profileImageKey = null;
+
+      // ✅ 이미지 파일이 있다면 먼저 업로드 후 key 확보
+      if (profileImage instanceof File) {
+        profileImageKey = await uploadPetImage(profileImage);
+        const imageUrl = `https://d3jeniacjnodv5.cloudfront.net/${profileImageKey}?t=${Date.now()}`;
+        setProfileImagePreview(imageUrl);
+        console.log("✅ 등록 후 미리보기용 이미지 URL:", imageUrl);
+      }
+
       const petData = {
         name,
         age: parseInt(age),
         gender: gender === 'male',
         breed,
         weight: parseFloat(weight),
-        profileImage,
+        profileImage: profileImageKey,
       };
-  
-      console.log("🐾 등록 직전 profileImage 값:", petData.profileImage);
-      const savedKey = await registerPet(petData); // S3 업로드 + DB 저장
-  
-      if (savedKey) {
-        const imageUrl = `https://d3jeniacjnodv5.cloudfront.net/${savedKey}?t=${Date.now()}`;
-        console.log("✅ 등록 후 미리보기용 이미지 URL:", imageUrl);
-  
-        setProfileImage(savedKey);               // 🔑 키로 저장
-        setProfileImagePreview(imageUrl);        // ✅ CloudFront 경로로 미리보기 설정
-      }
-  
+
+      console.log("📦 최종 전송 데이터:", petData);
+      await registerPet(petData);
+
       setShowToast(true);
       setTimeout(() => {
-        window.location.href = "/pets"; // 👈 새로고침 포함 이동
+        window.location.href = "/pets";
       }, 2000);
     } catch (error) {
       const errorMsg = error.response?.data?.message;
@@ -93,7 +95,6 @@ function PetRegister() {
       setProfileImagePreview(tempUrl); // S3 전 임시 미리보기
     }
   };
-
 
   // 프론트 자체 유효성 검사
   const validateFields = () => {
