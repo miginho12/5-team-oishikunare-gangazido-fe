@@ -1281,7 +1281,7 @@ function MapPage() {
                       icon: "🔐",
                     });
                   } else if (message === "required_permission") {
-                    toast.error("마커 삭제 권한이 없습니다!", {
+                    toast.error("다른 유저의 마커를 삭제할 수 없습니다", {
                       position: "bottom-center",
                       autoClose: 2000,
                       style: {
