@@ -32,10 +32,22 @@ jobs:
       - name: Set Kakao API Key in env.js
         run: |
           echo "🛠️ 카카오맵 API 키를 env.js에 주입 중..."
-          sed -i 's|REPLACE_KAKAO_MAP_API_KEY|${{ secrets.KAKAO_MAP_API_KEY }}|' ./public/env.js
+          sed -i "s|REPLACE_KAKAO_MAP_API_KEY|${{ secrets.KAKAO_MAP_API_KEY }}|" ./public/env.js
+          sed -i "s|REPLACE_API_BASE_URL|${{ secrets.API_BASE_URL }}|" ./public/env.js
 
       - name: Build # 4 - 빌드
         run: npm run build
+
+      - name: Upload Sentry Source Maps # 소스맵 Sentry 업로드
+        uses: getsentry/action-upload-sourcemaps@v1
+        with:
+          authToken: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          org: kakao-tech-bootcamp
+          project: gangazido
+          release: ${{ github.sha }}
+          include: ./build/static/js
+          urlPrefix: "~/static/js"
+          stripCommonPrefix: true
 
       - name: Configure AWS Credentials # 5 - AWS 인증
         uses: aws-actions/configure-aws-credentials@v2
@@ -51,7 +63,12 @@ jobs:
           aws s3 cp --recursive s3://${{ secrets.AWS_BUCKET_NAME }} s3://${{ secrets.AWS_BUCKET_NAME }}/versions/latest
 
       - name: Deploy to S3
-        run: aws s3 sync ./build s3://${{ secrets.AWS_BUCKET_NAME }} --delete # 7 - AWS S3에 빌드 결과물 배포        ## CRA로 생성한 React App은 build 폴더에 빌드 결과물이 들어있습니다. (dist 폴더가 아님!)
+        run: |
+          aws s3 sync ./build s3://${{ secrets.AWS_BUCKET_NAME }} \
+            --delete \
+            --exclude "uploads/" \
+            --exclude "uploads/user/" \
+            --exclude "uploads/pet/*"
 
       - name: Invalidate CloudFront Cache # 8 - CloudFront 캐시 무효화
         run: aws cloudfront create-invalidation --distribution-id ${{ secrets.AWS_DISTRIBUTION_ID }} --paths "/*"

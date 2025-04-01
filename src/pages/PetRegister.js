@@ -27,34 +27,56 @@ function PetRegister() {
     weight: false,
   });
 
+  const breedOptions = [
+    '푸들',
+    '비숑 프리제',
+    '포메라니안',
+    '말티즈',
+    '웰시코기',
+    '골든 리트리버',
+    '래브라도 리트리버',
+    '보더 콜리',
+    '시베리안 허스키',
+    '진돗개',
+    '믹스견',
+    '기타',
+  ];
+
   const goToMap = () => navigate('/map');
   const goToChat = () => navigate('/chat');
   const goToProfile = () => navigate('/profile');
   const goToPetInfo = () => navigate('/pets');
 
   const handleRegister = async () => {
-    const isValid = validateFields(); // 1. 프론트 유효성 검사 먼저
+    const isValid = validateFields();
     if (!isValid) return;
-
+  
     try {
-      const petData = {
+      // 이미지 업로드 및 반려견 등록
+      const uploadedKey = await registerPet({
         name,
         age: parseInt(age),
         gender: gender === 'male',
         breed,
         weight: parseFloat(weight),
         profileImage,
-      };
-
-      await registerPet(petData); // API 호출
+      });
+  
+      // 성공적으로 업로드한 이미지 key가 있으면 미리보기 경로 생성
+      if (uploadedKey) {
+        const imageUrl = `https://d3jeniacjnodv5.cloudfront.net/${uploadedKey}?t=${Date.now()}`;
+        setProfileImagePreview(imageUrl);
+      }
+  
       setShowToast(true);
-
+  
+      // ⏳ 미리보기가 보이도록 잠깐 보여준 후 이동
       setTimeout(() => {
-        navigate('/pets');
-      }, 2000);
+        window.location.href = '/pets';
+      }, 1500);
     } catch (error) {
       const errorMsg = error.response?.data?.message;
-      handleRegisterError(errorMsg); // 3. 백엔드 에러 메시지 처리
+      handleRegisterError(errorMsg);
     }
   };
 
@@ -97,10 +119,10 @@ function PetRegister() {
     } else if (isNaN(ageNum)) {
       setAgeError('반려견의 나이는 숫자로 입력해주세요.');
       isValid = false;
-    } else if (ageNum <= 0) {
-      setAgeError('반려견의 나이는 0살 이상이어야 해요.');
+    } else if (ageNum < 1) {
+      setAgeError('반려견의 나이는 1살 이상이어야 해요.');
       isValid = false;
-    } else if (ageNum >= 200) {
+    } else if (ageNum >= 51) {
       setAgeError('입력값이 너무 큽니다. 올바른 나이를 입력해주세요.');
       isValid = false;
     }
@@ -171,7 +193,7 @@ function PetRegister() {
         setAgeError('반려견의 나이는 숫자로 입력해주세요.');
         break;
       case 'invalid_pet_age_value':
-        setAgeError('반려견의 나이는 0살 이상이어야 해요.');
+        setAgeError('반려견 나이는 1부터 50사이의 숫자만 입력 가능합니다.');
         break;
   
       case 'required_pet_weight':
@@ -206,10 +228,6 @@ function PetRegister() {
         alert('사용자를 찾을 수 없습니다.');
         break;
 
-      case 'not_found_pet': 
-        alert('반려견 정보를 찾을 수 없습니다.');
-        break;
-
       case 'internal_server_error':
         alert('서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
         break;
@@ -232,13 +250,19 @@ function PetRegister() {
   return (
     <div className="flex flex-col h-full bg-gray-50">
       {/* 헤더 */}
-      <header className="bg-white p-4 shadow-md flex items-center">
-        <button onClick={() => navigate('/profile')} className="mr-2">
+      <header className="bg-white pt-2 pb-0 px-4 shadow-md flex items-center relative">
+        <button onClick={() => navigate('/profile')} className="absolute left-4">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
         </button>
-        <h1 className="text-lg font-bold text-gray-800">반려견 정보 등록</h1>
+        <div className="flex-grow flex justify-center">
+          <img
+            src="/gangazido-logo-header.png"
+            alt="Gangazido Logo Header"
+            className="h-14 w-28 object-cover"
+          />
+        </div>
       </header>
 
       {/* 메인 컨텐츠 */}
@@ -289,15 +313,20 @@ function PetRegister() {
             <div className="relative">
               <label className="block text-sm font-medium text-gray-700 mb-1">품종 <span className="text-red-500">*</span></label>
               {/* 품종 */}
-              <input
-                type="text"
+              <select
                 value={breed}
                 onChange={(e) => setBreed(e.target.value)}
                 onBlur={() => handleBlur('breed')}
-                placeholder="품종을 입력하세요"
                 className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
                 required
-              />
+              >
+                <option value="">선택하세요</option>
+                {breedOptions.map((option, index) => (
+                  <option key={index} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
               {touched.breed && breedError && (
                 <p className="text-sm text-red-500 mt-1">{breedError}</p>
               )}
@@ -356,6 +385,8 @@ function PetRegister() {
                   <p className="text-sm text-red-500 mt-1">{weightError}</p>
                 )}
               </div>
+              {/* 생일, 입양일, 중성화, 특이사항 등 추후 사용 예정 */}
+              {/*
               <div className="relative">
                 <label className="block text-sm font-medium text-gray-700 mb-1">중성화 여부</label>
                 <select
@@ -366,8 +397,10 @@ function PetRegister() {
                   <option value="no">미완료</option>
                 </select>
               </div>
+              */}
             </div>
-
+            {/* 생일, 입양일, 중성화, 특이사항 등 추후 사용 예정 */}
+            {/*
             <div className="grid grid-cols-2 gap-4">
               <div className="relative">
                 <label className="block text-sm font-medium text-gray-700 mb-1">생일</label>
@@ -392,7 +425,7 @@ function PetRegister() {
                 className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent h-24"
               ></textarea>
             </div>
-
+            */}
             <div className="mt-6">
               <p className="text-xs text-gray-500 mb-2"><span className="text-red-500">*</span> 표시는 필수 입력 항목입니다.</p>
               <button 

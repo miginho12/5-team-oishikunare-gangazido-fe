@@ -25,3 +25,5 @@ yarn-error.log*
 
 # vscode 추가 제리 작성
 .vscode/
+# Sentry Config File
+.sentryclirc

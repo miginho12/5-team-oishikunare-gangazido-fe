@@ -28,6 +28,21 @@ function PetEdit() {
     weight: false,
   });
 
+  const breedOptions = [
+    '푸들',
+    '비숑 프리제',
+    '포메라니안',
+    '말티즈',
+    '웰시코기',
+    '골든 리트리버',
+    '래브라도 리트리버',
+    '보더 콜리',
+    '시베리안 허스키',
+    '진돗개',
+    '믹스견',
+    '기타',
+  ];
+
   // 최초 로딩 시 기존 반려견 정보 불러오기
   useEffect(() => {
     const fetchPet = async () => {
@@ -42,13 +57,18 @@ function PetEdit() {
           setAge(data.age);
           setGender(data.gender ? 'male' : 'female');
           setWeight(data.weight);
-          if (data.profileImage && typeof data.profileImage === 'string') {
-            const baseUrl = 'http://localhost:8080'; 
-            const imageUrl = data.profileImage.startsWith('http')
-              ? data.profileImage
-              : `${baseUrl}${data.profileImage}`;
-            setProfileImagePreview(imageUrl); // img src용
-            setProfileImage(data.profileImage); // 전송용 유지
+
+          // 이미지 경로 조정
+          if (data.profileImage && typeof data.profileImage === "string") {
+            // S3 key일 경우엔 S3 prefix 붙이기
+            const s3Prefix = "https://d3jeniacjnodv5.cloudfront.net/";
+            data.profileImage = `${s3Prefix}${data.profileImage}?t=${Date.now()}`;
+
+            // 👉 캐시 우회를 위한 쿼리 스트링 추가
+            data.profileImage += `?t=${Date.now()}`;
+
+            setProfileImage(data.profileImage);            // 백엔드에 보낼 용도
+            setProfileImagePreview(data.profileImage);     // ✅ 미리보기로도 보여주기
           }
         }
       } catch (err) {
@@ -99,7 +119,15 @@ function PetEdit() {
         formData.append('profileImage', profileImage); // 기존 이미지 경로 유지
       }
 
-      await updatePetInfo(formData);
+      await updatePetInfo({
+        name,
+        age,
+        gender: gender === 'male',
+        breed,
+        weight,
+        profileImage,
+      });
+
       setShowToast(true);
       setTimeout(() => navigate('/pets'), 2000);
     } catch (error) {
@@ -148,7 +176,7 @@ function PetEdit() {
       setAgeError('반려견의 나이는 숫자로 입력해주세요.');
       isValid = false;
     } else if (ageNum <= 0) {
-      setAgeError('반려견의 나이는 0살 이상이어야 해요.');
+      setAgeError('반려견의 나이는 1살 이상이어야 해요.');
       isValid = false;
     } else if (ageNum >= 200) {
       setAgeError('입력값이 너무 큽니다. 올바른 나이를 입력해주세요.');
@@ -249,6 +277,10 @@ function PetEdit() {
       case 'not_found_user':
         alert('사용자를 찾을 수 없습니다.');
         break;
+
+      case 'not_found_pet': 
+        alert('반려견 정보를 찾을 수 없습니다.');
+        break;
   
       case 'internal_server_error':
         alert('서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
@@ -272,13 +304,19 @@ function PetEdit() {
   return (
     <div className="flex flex-col h-full bg-gray-50">
       {/* 헤더 */}
-      <header className="bg-white p-4 shadow-md flex items-center">
-        <button onClick={() => navigate('/pets')} className="mr-2">
+      <header className="bg-white pt-2 pb-0 px-4 shadow-md flex items-center relative">
+        <button onClick={() => navigate('/pets')} className="absolute left-4">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
         </button>
-        <h1 className="text-lg font-bold text-gray-800">반려견 정보 수정</h1>
+        <div className="flex-grow flex justify-center">
+          <img
+            src="/gangazido-logo-header.png"
+            alt="Gangazido Logo Header"
+            className="h-14 w-28 object-cover"
+          />
+        </div>
       </header>
 
       {/* 메인 컨텐츠 */}
@@ -342,16 +380,20 @@ function PetEdit() {
 
             <div className="relative">
               <label className="block text-sm font-medium text-gray-700 mb-1">품종</label>
-              {/* 품종 */}
-              <input
-                type="text"
+              <select
                 value={breed}
                 onChange={(e) => setBreed(e.target.value)}
                 onBlur={() => handleBlur('breed')}
-                placeholder="품종"
                 className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
                 required
-              />
+              >
+                <option value="">선택하세요</option>
+                {breedOptions.map((option, index) => (
+                  <option key={index} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
               {touched.breed && breedError && (
                 <p className="text-sm text-red-500 mt-1">{breedError}</p>
               )}
@@ -410,6 +452,8 @@ function PetEdit() {
                   <p className="text-sm text-red-500 mt-1">{weightError}</p>
                 )}
               </div>
+              {/* 생일, 입양일, 중성화, 특이사항 등 추후 사용 예정 */}
+              {/*}
               <div className="relative">
                 <label className="block text-sm font-medium text-gray-700 mb-1">중성화 여부</label>
                 <select
@@ -421,8 +465,10 @@ function PetEdit() {
                   <option value="no">미완료</option>
                 </select>
               </div>
+              */}
             </div>
-
+            {/* 생일, 입양일, 중성화, 특이사항 등 추후 사용 예정 */}
+            {/*}
             <div className="grid grid-cols-2 gap-4">
               <div className="relative">
                 <label className="block text-sm font-medium text-gray-700 mb-1">생일</label>
@@ -443,7 +489,6 @@ function PetEdit() {
                 />
               </div>
             </div>
-
             <div className="relative">
               <label className="block text-sm font-medium text-gray-700 mb-1">특이사항</label>
               <textarea
@@ -451,7 +496,7 @@ function PetEdit() {
                 className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent h-24"
               ></textarea>
             </div>
-
+            */}
             <button 
               onClick={handleUpdatePet}
               className="w-full bg-amber-800 text-white p-3 rounded-md text-center font-medium mt-4"

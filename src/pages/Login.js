@@ -72,13 +72,15 @@ function Login() {
     } catch (err) {
       console.error('로그인 오류:', err);
       console.error('오류 응답:', err.response?.data);
-      err.response?.data?.message
-      // 특정 에러 코드에 대한 맞춤 메시지 설정
-      if (err.response?.data?.message === 'invalid_email') {
-        setError('이메일을 다시 입력해주세요');
-      } else if (err.response?.data?.message === 'invalid_password') {
-        setError('비밀번호를 다시 입력해주세요');
+
+      const errorCode = err.response?.data?.message;
+  
+      if (errorCode === 'invalid_email' || errorCode === 'invalid_password') {
+        setError('이메일과 비밀번호를 정확히 입력해 주세요.');
+      } else if (errorCode === 'invalid_email_format') {
+        setError('이메일 형식이 잘못되었습니다.');
       } else {
+        // 기타 오류
         setError(err.response?.data?.message || '로그인 중 오류가 발생했습니다');
       }
     } finally {
@@ -97,13 +99,19 @@ function Login() {
   return (
     <div className="flex flex-col h-full bg-gray-50">
       {/* 헤더 - 뒤로가기 버튼 추가 */}
-      <header className="bg-white p-4 shadow-md flex items-center">
-        <button onClick={goToMap} className="mr-2">
+      <header className="bg-white pt-2 pb-0 px-4 shadow-md flex items-center relative">
+        <button onClick={goToMap} className="absolute left-4">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
         </button>
-        <h1 className="text-xl font-bold text-gray-800">강아지도</h1>
+        <div className="flex-grow flex justify-center">
+          <img
+            src="/gangazido-logo-header.png"
+            alt="Gangazido Logo Header"
+            className="h-14 w-28 object-cover"
+          />
+        </div>
       </header>
 
       <div className="flex-1 p-4 flex flex-col">

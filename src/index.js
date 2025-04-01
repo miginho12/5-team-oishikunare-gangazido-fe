@@ -1,13 +1,31 @@
+import * as Sentry from "@sentry/react";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
+const isProduction = window.location.hostname.endsWith(
+  "https://www.gangazido.com"
+);
+
+if (isProduction) {
+  Sentry.init({
+    dsn: "https://3cf3be6e70f8e27208fe64b361fe341d@o4509066231611392.ingest.us.sentry.io/4509066245636096",
+    integrations: [Sentry.browserTracingIntegration()],
+    tracesSampleRate: 1.0,
+    sendDefaultPii: true,
+  });
+}
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <App />
+    <Sentry.ErrorBoundary
+      fallback={<p>에러가 발생했습니다. 잠시 후 다시 시도해주세요.</p>}
+    >
+      <App />
+    </Sentry.ErrorBoundary>
   </React.StrictMode>
 );
 

@@ -3,6 +3,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  -webkit-tap-highlight-color: transparent; /* 모바일에서 탭 시 파란색 하이라이트 제거 */
 }
 
 body {
@@ -10,6 +11,23 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #f3f4f6;
+  overflow: hidden; /* 스크롤 오버플로우 방지 */
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
 }
 
 .app-container {
@@ -18,7 +36,11 @@ body {
   align-items: center;
   width: 100%;
   height: 100vh;
-  min-width: 402px;
+  height: calc(var(--vh, 1vh) * 100);
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
 }
 
 .App {
@@ -27,28 +49,41 @@ body {
   align-items: center;
   width: 100%;
   height: 100%;
-  min-width: 402px;
+  overflow: hidden;
 }
 
 .mobile-container {
   width: 402px;
   height: 874px;
+  max-height: 100vh;
+  max-height: calc(var(--vh, 1vh) * 100);
   background-color: white;
   border-radius: 30px;
   overflow: hidden;
   position: relative;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
   display: flex;
-  flex-shrink: 0;
   flex-direction: column;
 }
 
 /* 모바일 화면에서는 전체 화면으로 표시 */
 @media (max-width: 767px) {
-  .mobile-container {
-    width: 402px;
+  .app-container,
+  .App {
     height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
+    align-items: flex-start;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .mobile-container {
+    width: 100%;
+    height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
     border-radius: 0;
+    max-height: none;
+    box-shadow: none;
   }
 }
 
@@ -56,6 +91,7 @@ body {
 button {
   cursor: pointer;
   transition: all 0.2s ease;
+  user-select: none;
 }
 
 button:hover {
@@ -105,6 +141,10 @@ input {
   justify-content: space-around;
   background-color: white;
   box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+  width: 100%;
+  z-index: 100;
+  position: relative;
+  bottom: 0;
 }
 
 .nav-item {
@@ -160,6 +200,21 @@ input {
   }
 }
 
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.custom-overlay-animate {
+  animation: fadeInUp 0.3s ease-out;
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -186,30 +241,84 @@ body {
   }
 }
 
-/* 모바일 화면에서는 전체 화면으로 표시 */
+/* 모바일 화면에서는 전체 화면으로 표시(유동) */
 @media (max-width: 767px) {
   .App > div {
-    width: 402px;
-    height: 874px;
+    width: 100%;
+    height: calc(var(--vh, 1vh) * 100);
+    border-radius: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
   }
 }
 
 @media (max-height: 900px) {
   .mobile-container {
-    height: 874px;
+    height: calc(var(--vh, 1vh) * 100);
     border-radius: 0;
   }
 }
 
 /* 지도 관련 스타일 추가 */
 #map {
-  width: 100%;
-  height: 100%;
+  width: 100% !important;
+  height: 100% !important;
+  position: absolute !important;
+  top: 0;
+  left: 0;
+  z-index: 1;
 }
 
 /* 지도 컨테이너가 전체 높이를 차지하도록 설정 */
 .flex-1 {
   flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
   position: relative;
-  min-height: 0; /* 중요: 이것이 없으면 flex 컨테이너 내에서 제대로 작동하지 않을 수 있음 */
+  z-index: 1;
+  width: 100%;
+}
+
+/* 헤더와 내비게이션 바 스타일 */
+header {
+  flex-shrink: 0;
+  z-index: 10;
+  min-height: 60px;
+  width: 100%;
+  position: relative;
+  top: 0;
+}
+
+nav {
+  flex-shrink: 0;
+  z-index: 10;
+  min-height: 60px;
+  width: 100%;
+  position: relative;
+  bottom: 0;
+}
+
+/* 지도 필터 버튼 그룹 */
+.filter-button-group {
+  z-index: 5;
+  position: relative;
+  width: 100%;
+  overflow-x: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.filter-button-group::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+/* 카카오맵 관련 추가 스타일 */
+.custom-overlay {
+  max-width: 100%;
+}
+
+.custom-overlay * {
+  max-width: 100%;
 }
