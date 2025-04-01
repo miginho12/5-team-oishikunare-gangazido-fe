@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.39.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.39.0...v1.39.1) (2025-04-01)
+
+### 🐛 BUG FIXES
+
+* 마커 생성 후 재로그인 시 삭제버튼 안 눌리는 버그 수정 ([5627f95](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/5627f95f1c5cbe9c64a563c3af44beceb36c2947))
+
 ## [1.39.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.38.0...v1.39.0) (2025-04-01)
 
 ### 🚀 NEW FEATURES
