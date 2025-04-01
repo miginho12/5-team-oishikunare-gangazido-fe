@@ -48,29 +48,31 @@ function PetRegister() {
   const goToPetInfo = () => navigate('/pets');
 
   const handleRegister = async () => {
-    const isValid = validateFields();
+    const isValid = validateFields(); // 프론트 유효성 검사
     if (!isValid) return;
   
     try {
-      const profileImageKey = await registerPet({
-        name,
-        age: parseInt(age),
-        gender: gender === 'male',
-        breed,
-        weight: parseFloat(weight),
-        profileImage,
-      });
+      const formData = new FormData();
+      formData.append('name', name);
+      formData.append('age', age);
+      formData.append('gender', gender === 'male'); // boolean
+      formData.append('breed', breed);
+      formData.append('weight', weight);
   
-      // ✅ 등록 후 미리보기를 위해 이미지 URL 세팅 (CloudFront 주소 구성)
-      if (profileImageKey) {
-        const imageUrl = `https://d3jeniacjnodv5.cloudfront.net/${profileImageKey}?t=${Date.now()}`;
-        setProfileImagePreview(imageUrl);
+      if (profileImage instanceof File) {
+        formData.append('profileImage', profileImage);
+      }
+  
+      const uploadedKey = await registerPet(formData); // ✅ 수정된 registerPet 함수 사용
+  
+      if (uploadedKey) {
+        const s3Prefix = "https://d3jeniacjnodv5.cloudfront.net/";
+        const previewUrl = `${s3Prefix}${uploadedKey}?t=${Date.now()}`;
+        setProfileImagePreview(previewUrl); // ✅ CloudFront URL로 preview 설정
       }
   
       setShowToast(true);
-      setTimeout(() => {
-        navigate('/pets');
-      }, 2000);
+      setTimeout(() => navigate('/pets'), 2000);
     } catch (error) {
       const errorMsg = error.response?.data?.message;
       handleRegisterError(errorMsg);
