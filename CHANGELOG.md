@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.26.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.25.3...v1.26.0) (2025-04-01)
+
+### 🚀 NEW FEATURES
+
+* 채팅 추천 질문 순서 변경 ([6aec426](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/6aec42694249a60bcd8ab45b7d24cce64a7f45f3))
+
 ## [1.25.3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.25.2...v1.25.3) (2025-04-01)
 
 ### 🐛 BUG FIXES
