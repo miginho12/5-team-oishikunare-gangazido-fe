@@ -61,6 +61,7 @@ function PetRegister() {
         profileImage,
       };
   
+      console.log("🐾 등록 직전 profileImage 값:", petData.profileImage);
       const savedKey = await registerPet(petData); // S3 업로드 + DB 저장
   
       if (savedKey) {
