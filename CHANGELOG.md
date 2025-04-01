@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.27.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.26.0...v1.27.0) (2025-04-01)
+
+### 🚀 NEW FEATURES
+
+* 반려견 등록 후 S3 이미지 key 기반 불러오기 ([c17299f](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/c17299fc1ac31d830ab99c7e7ebe2853f35cff75))
+
 ## [1.26.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.25.3...v1.26.0) (2025-04-01)
 
 ### 🚀 NEW FEATURES
