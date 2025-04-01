@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.36.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.36.1...v1.36.2) (2025-04-01)
+
+### 🐛 BUG FIXES
+
+* 이미지 미리보기 url 변경 ([fd2f2ec](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/fd2f2ec097b43610cc53931fffd663c6bb248d42))
+
 ## [1.36.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.36.0...v1.36.1) (2025-04-01)
 
 ### 🐛 BUG FIXES
