@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## [1.40.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.39.1...v1.40.0) (2025-04-01)
+
+### 🚀 NEW FEATURES
+
+* 반려견 이미지 URL 조립 로직 제거 및 백엔드 응답 사용 ([1e57a97](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/1e57a97723f0f93546949224bcf7b81a3db5fadd))
+
+### 🐛 BUG FIXES
+
+* 반려견 등록 시 이미지 업로드 흐름 분리 및 등록 순서 보장 ([ea3b241](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/ea3b24169adb615ebbc9ff2074d5ed1fb6fd291d))
+
 ## [1.39.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.39.0...v1.39.1) (2025-04-01)
 
 ### 🐛 BUG FIXES
