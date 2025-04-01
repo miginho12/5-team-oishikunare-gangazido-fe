@@ -48,26 +48,22 @@ function PetRegister() {
   const goToPetInfo = () => navigate('/pets');
 
   const handleRegister = async () => {
-    const isValid = validateFields(); // 1. 프론트 유효성 검사 먼저
+    const isValid = validateFields();
     if (!isValid) return;
-
+  
     try {
-      const petData = {
+      await registerPet({
         name,
         age: parseInt(age),
         gender: gender === 'male',
         breed,
         weight: parseFloat(weight),
-        profileImage,
-      };
-
-      // ✅ key를 받아옴
-      const savedKey = await registerPet(petData);
-      console.log("저장된 S3 key:", savedKey);
+        profileImage, // 이게 File이면 내부에서 presigned URL 요청하고 업로드까지 함
+      });
   
       setShowToast(true);
       setTimeout(() => {
-        window.location.href = "/pets"; // 👉 강제 새로고침 포함
+        window.location.href = '/pets'; // 강제 새로고침
       }, 2000);
     } catch (error) {
       const errorMsg = error.response?.data?.message;
