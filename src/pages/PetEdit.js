@@ -102,6 +102,13 @@ function PetEdit() {
     const isValid = validateFields(); // 1. 프론트 유효성 검사 먼저
     if (!isValid) return;
 
+    let profileImageKeyToSend = originalProfileImageKey;
+
+    if (profileImage instanceof File) {
+      // ✅ 새 파일이면 S3에 업로드 후 key 획득
+      profileImageKeyToSend = await uploadPetImage(profileImage);
+    }
+
     try {
       await updatePetInfo({
         name,
@@ -109,9 +116,7 @@ function PetEdit() {
         gender: gender === 'male',
         breed,
         weight,
-        profileImage: profileImage instanceof File || typeof profileImage === 'string'
-          ? profileImage
-          : originalProfileImageKey,
+        profileImage: profileImageKeyToSend,
       });
   
 

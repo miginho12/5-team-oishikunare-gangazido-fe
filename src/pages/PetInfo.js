@@ -82,7 +82,7 @@ function PetInfo() {
                   className="w-full h-full object-cover"
                   onError={(e) => {
                     e.target.onerror = null;
-                    e.target.style.display = "none";
+                    setPet((prev) => ({ ...prev, profileImage: null }));
                   }}
                 />
               ) : (
