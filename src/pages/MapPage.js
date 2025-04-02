@@ -648,11 +648,11 @@ function MapPage() {
                 infoContent = `<div style="padding:5px;font-size:12px;">
                 <div class="custom-overlay-animate" style="margin-bottom:4px;">${emoji} ${markerType}${markerSubType ? ` - ${markerSubType}` : ""
                   }</div>
-                <button id="delete-marker" style="padding:2px 5px;background:#ff5555;color:white;border:none;border-radius:3px;">삭제</button>
+                <button id="delete-marker-${markerInfo.id}" style="padding:2px 5px;background:#ff5555;color:white;border:none;border-radius:3px;">삭제</button>
               </div>`;
               } else {
                 // 일반 마커 클릭 시
-                infoContent = `<div class="custom-overlay-animate" style="padding:5px;font-size:12px;">${markerType}<br><button id="delete-marker" style="padding:2px 5px;margin-top:5px;background:#ff5555;color:white;border:none;border-radius:3px;">삭제</button></div>`;
+                infoContent = `<div class="custom-overlay-animate" style="padding:5px;font-size:12px;">${markerType}<br><button id="delete-marker-${markerInfo.id}" style="padding:2px 5px;margin-top:5px;background:#ff5555;color:white;border:none;border-radius:3px;">삭제</button></div>`;
               }
 
               const overlay = new window.kakao.maps.CustomOverlay({
@@ -673,7 +673,7 @@ function MapPage() {
 
               // 인포윈도우 내부의 삭제 버튼에 이벤트 리스너 추가
               setTimeout(() => {
-                const deleteBtn = document.getElementById("delete-marker");
+                const deleteBtn = document.getElementById(`delete-marker-${markerInfo.id}`);
                 if (deleteBtn) {
                   deleteBtn.onclick = () => {
                     // removeMarker 함수 ref 사용
@@ -850,6 +850,9 @@ function MapPage() {
               ? MARKER_IMAGES.EMOJI[tempMarkerSubType] || "⚠️"
               : "⚠️";
 
+        const deleteBtnId = `delete-marker-${markerInfo.id}`;
+        const closeBtnId = `close-overlay-${markerInfo.id}`;
+
         const infoContent = `
           <div class="custom-overlay-animate"
             class="custom-overlay-animate" style="
@@ -886,7 +889,7 @@ function MapPage() {
                 cursor: pointer;
               ">&times;</button>
             </div>
-            <button id="delete-marker" style="
+            <button id="${deleteBtnId}" style="
               padding: 8px 12px;
               width: 70px;
               background: #ef4444;
@@ -910,12 +913,11 @@ function MapPage() {
           zIndex: 9999 // ✅ 마커보다 높은 z-index 설정
         });
 
-        // overlay.open(map, marker);
-        overlay.setMap(map); // ✅ 올바른 방식
+        overlay.setMap(map);
         markerInfo.overlay = overlay;
 
         setTimeout(() => {
-          const deleteBtn = document.getElementById("delete-marker");
+          const deleteBtn = document.getElementById(deleteBtnId);
           if (deleteBtn) {
             deleteBtn.onclick = async () => {
               try {
@@ -939,12 +941,19 @@ function MapPage() {
                     boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
                     fontWeight: "bold",
                   },
-                  icon: "🗑", // 커스텀 이모지 가능
+                  icon: "🗑", 
                 });
               } catch (err) {
                 console.error("삭제 실패:", err);
                 alert("삭제 권한이 없거나 로그인되지 않았습니다.");
               }
+            };
+          }
+
+          const closeBtn = document.getElementById(closeBtnId);
+          if (closeBtn) {
+            closeBtn.onclick = () => {
+              overlay.setMap(null);
             };
           }
         }, 100);
@@ -1274,8 +1283,8 @@ function MapPage() {
                   cursor: pointer;
                 ">&times;</button>
               </div>
-              ${userRef.current?.userId == markerInfo.user_id // delete 버튼 조건, 삭제 이벤트에서도 userRef 사용
-                ? `<button id="delete-marker" style="
+              ${user?.userId == markerInfo.user_id // 마커 권한 문제뜨는 것 수정
+                ? `<button id="delete-marker-${markerInfo.id}" style="
                 padding: 8px 12px;
                 width: 70px;
                 background: #ef4444;
@@ -1306,7 +1315,7 @@ function MapPage() {
         
           // ✅ delete 버튼이 나타날 때까지 기다려서 이벤트 등록
           const tryAttachDeleteHandler = () => {
-            const deleteBtn = document.getElementById("delete-marker");
+            const deleteBtn = document.getElementById(`delete-marker-${markerInfo.id}`);
             if (deleteBtn) {
               deleteBtn.onclick = async () => {
                 try {
