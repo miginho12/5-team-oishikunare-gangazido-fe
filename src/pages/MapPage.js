@@ -400,7 +400,7 @@ function MapPage() {
           }
         );
 
-        // 보이는 마커 업데이트 함수 (필터 적용 버전)
+        // 보이는 마커 업데이트 함수 (지도 드래그, 줌 이벤트 후 호출되는 함수)
         const updateVisibleMarkers = (mapInstance) => {
           if (!mapInstance) return;
 
@@ -418,8 +418,16 @@ function MapPage() {
                 const inBounds = bounds.contain(
                   markerInfo.marker.getPosition()
                 );
+
+                // 내 마커 필터 조건 추가
+                const isMine = isAuthenticated && markerInfo.user_id === userRef.current?.userId;
+
                 const matchesFilter =
-                  filterType === "all" || markerInfo.type === filterType;
+                  filterType === "all"
+                    ? true
+                    : filterType === "mine"
+                      ? isMine
+                      : markerInfo.type === filterType;
 
                 // 👉 필터와 영역 조건 모두 만족하는 경우만 지도에 표시
                 if (inBounds && matchesFilter) {
