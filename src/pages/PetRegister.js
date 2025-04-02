@@ -109,7 +109,7 @@ function PetRegister() {
     // 이름
     const nameRegex = /^[가-힣a-zA-Z]+$/;
     if (!name) {
-      setNameError('반려견의 이름을 입력해주세요.');
+      setNameError('반려견의 이름을 입력하세요.');
       isValid = false;
     } else if (!nameRegex.test(name)) {
       setNameError('반려견의 이름은 한글 또는 영문만 입력 가능합니다.');
@@ -122,7 +122,7 @@ function PetRegister() {
     // 나이
     const ageNum = parseInt(age);
     if (!age) {
-      setAgeError('반려견의 나이를 입력해주세요.');
+      setAgeError('반려견의 나이를 입력하세요.');
       isValid = false;
     } else if (isNaN(ageNum)) {
       setAgeError('반려견의 나이는 숫자로 입력해주세요.');
@@ -157,13 +157,13 @@ function PetRegister() {
   
     // 성별
     if (!gender) {
-      setGenderError('반려견의 성별을 선택해주세요.');
+      setGenderError('반려견의 성별을 선택하세요.');
       isValid = false;
     }
   
     // 품종
     if (!breed) {
-      setBreedError('반려견의 품종을 입력해주세요.');
+      setBreedError('반려견의 품종을 입력하세요.');
       isValid = false;
     }
   

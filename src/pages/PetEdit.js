@@ -140,7 +140,7 @@ function PetEdit() {
     // 이름
     const nameRegex = /^[가-힣a-zA-Z]+$/;
     if (!name) {
-      setNameError('반려견의 이름을 입력해주세요.');
+      setNameError('반려견의 이름을 입력하세요.');
       isValid = false;
     } else if (!nameRegex.test(name)) {
       setNameError('반려견의 이름은 한글 또는 영문만 입력 가능합니다.');
@@ -153,7 +153,7 @@ function PetEdit() {
     // 나이
     const ageNum = parseInt(age);
     if (!age) {
-      setAgeError('반려견의 나이를 입력해주세요.');
+      setAgeError('반려견의 나이를 입력하세요.');
       isValid = false;
     } else if (isNaN(ageNum)) {
       setAgeError('반려견의 나이는 숫자로 입력해주세요.');
@@ -170,7 +170,7 @@ function PetEdit() {
     const weightNum = parseFloat(trimmed);
 
     if (trimmed === '') {
-      setWeightError('반려견의 몸무게를 입력해주세요.');
+      setWeightError('반려견의 몸무게를 입력하세요.');
       isValid = false;
     } else if (isNaN(weightNum)) {
       setWeightError('올바른 몸무게 형식을 입력해주세요. (예: 5 또는 5.2)');
@@ -186,13 +186,13 @@ function PetEdit() {
     }
     // 성별
     if (!gender) {
-      setGenderError('반려견의 성별을 선택해주세요.');
+      setGenderError('반려견의 성별을 선택하세요.');
       isValid = false;
     }
   
     // 품종
     if (!breed) {
-      setBreedError('반려견의 품종을 입력해주세요.');
+      setBreedError('반려견의 품종을 입력하세요.');
       isValid = false;
     }
   
@@ -214,7 +214,7 @@ function PetEdit() {
   
     switch (message) {
       case 'required_pet_name':
-        setNameError('반려견의 이름을 입력해주세요.');
+        setNameError('반려견의 이름을 입력하세요.');
         break;
       case 'invalid_pet_name_format':
         setNameError('반려견의 이름은 한글 또는 영문만 입력 가능합니다.');
@@ -224,7 +224,7 @@ function PetEdit() {
         break;
   
       case 'required_pet_age':
-        setAgeError('반려견의 나이를 입력해주세요.');
+        setAgeError('반려견의 나이를 입력하세요.');
         break;
       case 'invalid_pet_age_format':
         setAgeError('반려견의 나이는 숫자로 입력해주세요.');
@@ -234,18 +234,18 @@ function PetEdit() {
         break;
   
       case 'required_pet_weight':
-        setWeightError('반려견의 몸무게를 입력해주세요.');
+        setWeightError('반려견의 몸무게를 입력하세요.');
         break;
       case 'invalid_pet_weight':
         setWeightError('올바른 몸무게 형식을 입력해주세요. (예: 5 또는 5.2)');
         break;
   
       case 'required_pet_gender':
-        setGenderError('반려견의 성별을 선택해주세요.');
+        setGenderError('반려견의 성별을 선택하세요.');
         break;
   
       case 'required_pet_breed':
-        setBreedError('반려견의 품종을 입력해주세요.');
+        setBreedError('반려견의 품종을 입력하세요.');
         break;
   
       case 'already_exits_pet':
