@@ -109,7 +109,9 @@ function PetEdit() {
         gender: gender === 'male',
         breed,
         weight,
-        profileImage: profileImage || originalProfileImageKey, // File이든 S3 key(string)이든 이 값 하나면 충분
+        profileImage: profileImage instanceof File || typeof profileImage === 'string'
+          ? profileImage
+          : originalProfileImageKey,
       });
   
 
@@ -126,6 +128,9 @@ function PetEdit() {
       const file = e.target.files[0];
       setProfileImage(file);
       setProfileImagePreview(URL.createObjectURL(file));
+    } else {
+      // 파일 선택 안 했을 때 기존 이미지 유지
+      setProfileImage(originalProfileImageKey);
     }
   };
 
