@@ -61,8 +61,12 @@ function PetEdit() {
 
           // 🔥 여기서 CloudFront 미리보기 설정 추가!
           if (data.profileImage) {
-            const imageUrl = `https://d3jeniacjnodv5.cloudfront.net/${data.profileImage}?t=${Date.now()}`;
-            setProfileImagePreview(imageUrl);
+            const key = data.profileImage;
+            const imageUrl = `https://d3jeniacjnodv5.cloudfront.net/${key}?t=${Date.now()}`;
+
+            setProfileImage(key); // key 저장 (string)
+            setProfileImagePreview(imageUrl); // 미리보기 URL 따로 저장
+            
             console.log("🖼 수정 페이지 최초 미리보기 이미지 URL:", imageUrl);
           }
         }
@@ -311,6 +315,10 @@ function PetEdit() {
                   src={profileImagePreview}
                   alt="프로필 미리보기"
                   className="w-full h-full object-cover"
+                  onError={() => {
+                    console.warn("🐛 이미지 로딩 실패! fallback 아이콘 표시");
+                    setProfileImagePreview(null); // fallback svg로 대체되게
+                  }}
                 />
               ) : (
                 <svg
