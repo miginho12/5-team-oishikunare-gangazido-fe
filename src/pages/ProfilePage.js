@@ -375,7 +375,10 @@ function ProfilePage() {
             </li>
 
             <li>
-              <button className="w-full flex items-center justify-between p-3 rounded-md hover:bg-gray-50">
+              <button 
+                className="w-full flex items-center justify-between p-3 rounded-md hover:bg-gray-50"
+                onClick={() => window.open('https://github.com/orgs/100-hours-a-week/teams/jeju-2nd-5?query=', '_blank')}
+              >
                 <div className="flex items-center">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
