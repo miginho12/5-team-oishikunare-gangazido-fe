@@ -404,7 +404,7 @@ function ProfilePage() {
               </button>
             </li>
 
-            <li>
+            {/* <li>
               <button className="w-full flex items-center justify-between p-3 rounded-md hover:bg-gray-50">
                 <div className="flex items-center">
                   <svg
@@ -438,7 +438,7 @@ function ProfilePage() {
                   />
                 </svg>
               </button>
-            </li>
+            </li> */}
 
             <li>
               <button className="w-full flex items-center justify-between p-3 rounded-md hover:bg-gray-50">
