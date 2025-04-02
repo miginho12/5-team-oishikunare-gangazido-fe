@@ -57,15 +57,13 @@ function PetEdit() {
           setAge(data.age);
           setGender(data.gender ? 'male' : 'female');
           setWeight(data.weight);
+          setProfileImage(data.profileImage); // 이미지 키
 
-          // 이미지 경로 조정
-          if (data.profileImage && typeof data.profileImage === "string") {
-            // S3 key일 경우엔 S3 prefix 붙이기
-            const s3Prefix = "https://d3jeniacjnodv5.cloudfront.net/";
-            data.profileImage = `${s3Prefix}${data.profileImage}?t=${Date.now()}`;
-
-            setProfileImage(data.profileImage);            // 백엔드에 보낼 용도
-            setProfileImagePreview(data.profileImage);     // ✅ 미리보기로도 보여주기
+          // 🔥 여기서 CloudFront 미리보기 설정 추가!
+          if (data.profileImage) {
+            const imageUrl = `https://d3jeniacjnodv5.cloudfront.net/${data.profileImage}?t=${Date.now()}`;
+            setProfileImagePreview(imageUrl);
+            console.log("🖼 수정 페이지 최초 미리보기 이미지 URL:", imageUrl);
           }
         }
       } catch (err) {
