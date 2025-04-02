@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## [1.42.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.41.0...v1.42.0) (2025-04-02)
+
+### 🚀 NEW FEATURES
+
+* S3 Uploads ([8032f17](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/8032f17d832a2bdeffbf4e6ab3af5aebbe6868dc))
+* 수정 페이지 미리보기 오류 키 추가 ([5d156f5](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/5d156f5711933ae0a979e3cd5585e860652e8319))
+
 ## [1.41.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.40.0...v1.41.0) (2025-04-02)
 
 ### 🚀 NEW FEATURES
