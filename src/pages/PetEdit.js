@@ -59,13 +59,10 @@ function PetEdit() {
           setWeight(data.weight);
           setProfileImage(data.profileImage); // 이미지 키
 
-          // 🔥 여기서 CloudFront 미리보기 설정 추가!
-          if (data.profileImage) {
-            const key = data.profileImage;
-            const imageUrl = `https://d3jeniacjnodv5.cloudfront.net/${key}?t=${Date.now()}`;
-
-            setProfileImage(key); // key 저장 (string)
-            setProfileImagePreview(imageUrl); // 미리보기 URL 따로 저장
+          // 🔥 CloudFront 미리보기 설정
+          if (data.profileImage && typeof data.profileImage === 'string') {
+            setProfileImage(data.profileImage);         // key 저장용 (수정 시 사용됨)
+            setProfileImagePreview(data.profileImage);  // full URL (백에서 줌)
             
             console.log("🖼 수정 페이지 최초 미리보기 이미지 URL:", imageUrl);
           }
