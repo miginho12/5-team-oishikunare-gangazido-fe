@@ -77,16 +77,12 @@ function PetInfo() {
             <div className="w-20 h-20 bg-amber-100 rounded-full overflow-hidden flex items-center justify-center mr-4">
               {pet.profileImage ? (
                 <img
-                  src={
-                    pet.profileImage ||
-                    process.env.PUBLIC_URL + "/images/banzi.jpeg"
-                  }
+                  src={pet.profileImage}
                   alt="반려견 프로필"
                   className="w-full h-full object-cover"
                   onError={(e) => {
                     e.target.onerror = null;
-                    e.target.src =
-                      process.env.PUBLIC_URL + "/images/banzi.jpeg";
+                    e.target.src = ""; // 오류 시 fallback
                   }}
                 />
               ) : (

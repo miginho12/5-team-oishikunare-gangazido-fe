@@ -14,6 +14,7 @@ function PetEdit() {
   const [weight, setWeight] = useState('');
   const [profileImage, setProfileImage] = useState(null);
   const [profileImagePreview, setProfileImagePreview] = useState(null);
+  const [originalProfileImageKey, setOriginalProfileImageKey] = useState(null);
 
   const [nameError, setNameError] = useState('');
   const [ageError, setAgeError] = useState('');
@@ -62,6 +63,7 @@ function PetEdit() {
           // 🔥 CloudFront 미리보기 설정
           if (data.profileImage && typeof data.profileImage === 'string') {
             setProfileImage(data.profileImage);         // key 저장용 (수정 시 사용됨)
+            setOriginalProfileImageKey(data.profileImage);
             setProfileImagePreview(data.profileImage);  // full URL (백에서 줌)
             
             console.log("🖼 수정 페이지 최초 미리보기 이미지 URL:", data.profileImage);
@@ -107,7 +109,7 @@ function PetEdit() {
         gender: gender === 'male',
         breed,
         weight,
-        profileImage, // File이든 S3 key(string)이든 이 값 하나면 충분
+        profileImage: profileImage || originalProfileImageKey, // File이든 S3 key(string)이든 이 값 하나면 충분
       });
   
 
