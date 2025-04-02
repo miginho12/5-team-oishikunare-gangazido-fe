@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.41.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.40.0...v1.41.0) (2025-04-02)
+
+### 🚀 NEW FEATURES
+
+* 수정 페이지 미리보기 오류 해결 ([76aa90f](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/76aa90f6f276fcd2115f0d68e300f7d43771efe2))
+
 ## [1.40.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.39.1...v1.40.0) (2025-04-01)
 
 ### 🚀 NEW FEATURES
