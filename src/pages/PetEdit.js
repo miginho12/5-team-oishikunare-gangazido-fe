@@ -64,7 +64,7 @@ function PetEdit() {
             setProfileImage(data.profileImage);         // key 저장용 (수정 시 사용됨)
             setProfileImagePreview(data.profileImage);  // full URL (백에서 줌)
             
-            console.log("🖼 수정 페이지 최초 미리보기 이미지 URL:", imageUrl);
+            console.log("🖼 수정 페이지 최초 미리보기 이미지 URL:", data.profileImage);
           }
         }
       } catch (err) {
