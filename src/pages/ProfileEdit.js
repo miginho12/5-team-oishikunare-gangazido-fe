@@ -2,6 +2,33 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getUserInfo, updateUserInfo, deleteUser } from '../api/user';
 
+// 서버 에러 코드를 한글 메시지로 변환하는 객체
+const ERROR_MESSAGES = {
+  // 닉네임 관련 에러
+  'required_nickname': '닉네임은 필수 입력 항목입니다.',
+  'invalid_nickname_length': '닉네임은 2~20자 이내로 입력해주세요.',
+  'duplicate_nickname': '이미 사용 중인 닉네임입니다.',
+  
+  // 프로필 이미지 관련 에러
+  'image_not_found': '업로드된 이미지를 찾을 수 없습니다.',
+  'invalid_file_extension': '지원하지 않는 파일 형식입니다. (jpg, jpeg, png, gif만 가능)',
+  'invalid_content_type': '지원하지 않는 콘텐츠 타입입니다.',
+  
+  // 인증 관련 에러
+  'unauthorized': '로그인이 필요한 서비스입니다.',
+  'missing_user': '사용자 정보를 찾을 수 없습니다.',
+  
+  // 기타 에러
+  'internal_server_error': '서버 내부 오류가 발생했습니다. 잠시 후 다시 시도해주세요.',
+  'required_profile_update_data': '변경할 정보를 입력해주세요.',
+  'update_user_data_failed': '프로필 수정에 실패했습니다.',
+};
+
+// 에러 코드를 한글 메시지로 변환하는 함수
+const getErrorMessage = (errorCode) => {
+  return ERROR_MESSAGES[errorCode] || `오류가 발생했습니다. (${errorCode})`;
+};
+
 function ProfileEdit() {
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState(null);
@@ -33,7 +60,14 @@ function ProfileEdit() {
           // 인증되지 않은 사용자는 로그인 페이지로 리다이렉트
           navigate('/login');
         } else {
-          setError('사용자 정보를 불러오는데 실패했습니다.');
+          // 에러 메시지 처리 개선
+          if (err.response?.data?.message) {
+            setError(getErrorMessage(err.response.data.message));
+          } else if (err.response?.data?.errorCode) {
+            setError(getErrorMessage(err.response.data.errorCode));
+          } else {
+            setError('사용자 정보를 불러오는데 실패했습니다.');
+          }
         }
       } finally {
         setLoading(false);
@@ -62,6 +96,22 @@ function ProfileEdit() {
   const handleProfileImageChange = (e) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
+      
+      // 파일 크기 체크 (5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        setToastMessage("프로필 이미지 크기는 5MB 이하여야 합니다.");
+        setShowToast(true);
+        return;
+      }
+      
+      // 파일 타입 체크
+      const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg'];
+      if (!validTypes.includes(file.type)) {
+        setToastMessage("지원하지 않는 파일 형식입니다. (jpg, jpeg, png, gif만 가능)");
+        setShowToast(true);
+        return;
+      }
+      
       setProfileImage(file);
       setProfileImagePreview(URL.createObjectURL(file));
     }
@@ -86,9 +136,22 @@ function ProfileEdit() {
       if (error.response) {
         console.error('오류 상태:', error.response.status);
         console.error('오류 데이터:', error.response.data);
+        
+        // 에러 메시지 처리 개선
+        if (error.response.data?.message) {
+          setToastMessage(getErrorMessage(error.response.data.message));
+        } else if (error.response.data?.errorCode) {
+          setToastMessage(getErrorMessage(error.response.data.errorCode));
+        } else if (error.response.status === 401) {
+          setToastMessage("로그인이 필요한 서비스입니다.");
+        } else {
+          setToastMessage("회원 탈퇴 처리 중 오류가 발생했습니다.");
+        }
+      } else {
+        setToastMessage("서버에 연결할 수 없습니다. 네트워크 연결을 확인해주세요.");
       }
+
       setShowWithdrawalModal(false);
-      setToastMessage("회원 탈퇴 처리 중 오류가 발생했습니다.");
       setShowToast(true);
     }
   };
@@ -102,8 +165,8 @@ function ProfileEdit() {
     }
     
     // 닉네임 길이 체크
-    if (nickname.length < 2 || nickname.length > 10) {
-      setToastMessage("닉네임은 2~10자 이내로 입력해주세요.");
+    if (nickname.length < 2 || nickname.length > 20) {
+      setToastMessage("닉네임은 2~20자 이내로 입력해주세요.");
       setShowToast(true);
       return;
     }
@@ -131,7 +194,54 @@ function ProfileEdit() {
     } catch (err) {
       console.error('프로필 수정 실패:', err);
       setShowProfileModal(false);
-      setToastMessage("프로필 수정에 실패했습니다.");
+      
+      // 에러 응답에 따른 구체적인 메시지 표시
+      if (err.response) {
+        console.error('오류 응답:', err.response.data);
+        
+        if (err.response.data?.message) {
+          const errorCode = err.response.data.message;
+          
+          if (errorCode === 'duplicate_nickname') {
+            setToastMessage("이미 사용 중인 닉네임입니다.");
+          } else if (errorCode === 'invalid_nickname_length') {
+            setToastMessage("닉네임은 2~20자 이내로 입력해주세요.");
+          } else if (errorCode === 'image_not_found') {
+            setToastMessage("업로드된 이미지를 찾을 수 없습니다.");
+          } else if (errorCode === 'invalid_file_extension') {
+            setToastMessage("지원하지 않는 파일 형식입니다. (jpg, jpeg, png, gif만 가능)");
+          } else if (errorCode === 'required_profile_update_data') {
+            setToastMessage("변경할 정보를 입력해주세요.");
+          } else if (errorCode === 'unauthorized') {
+            setToastMessage("로그인이 필요한 서비스입니다.");
+            // 로그인 페이지로 리다이렉트
+            setTimeout(() => {
+              navigate('/login');
+            }, 2000);
+          } else {
+            setToastMessage(getErrorMessage(errorCode));
+          }
+        } else if (err.response.data?.errorCode) {
+          setToastMessage(getErrorMessage(err.response.data.errorCode));
+        } else if (err.response.status === 401) {
+          setToastMessage("로그인이 필요한 서비스입니다.");
+          // 로그인 페이지로 리다이렉트
+          setTimeout(() => {
+            navigate('/login');
+          }, 2000);
+        } else if (err.response.status === 400) {
+          setToastMessage("입력한 정보가 유효하지 않습니다.");
+        } else if (err.response.status === 409) {
+          setToastMessage("이미 사용 중인 닉네임입니다.");
+        } else {
+          setToastMessage("프로필 수정에 실패했습니다.");
+        }
+      } else if (err.request) {
+        setToastMessage("서버에 연결할 수 없습니다. 네트워크 연결을 확인해주세요.");
+      } else {
+        setToastMessage("프로필 수정 중 오류가 발생했습니다.");
+      }
+      
       setShowToast(true);
     }
   };
@@ -176,13 +286,19 @@ function ProfileEdit() {
   return (
     <div className="flex flex-col h-full bg-gray-50">
       {/* 헤더 */}
-      <header className="bg-white p-4 shadow-md flex items-center">
-        <button onClick={() => navigate('/profile')} className="mr-2">
+      <header className="bg-white pt-2 pb-0 px-4 shadow-md flex items-center relative">
+        <button onClick={() => navigate('/profile')} className="absolute left-4">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
         </button>
-        <h1 className="text-lg font-bold text-gray-800">회원정보 수정</h1>
+        <div className="flex-grow flex justify-center">
+          <img
+            src="/gangazido-logo-header.png"
+            alt="Gangazido Logo Header"
+            className="h-14 w-28 object-cover"
+          />
+        </div>
       </header>
 
       {/* 메인 컨텐츠 */}
@@ -236,7 +352,7 @@ function ProfileEdit() {
                 className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
                 required
               />
-              <p className="text-xs text-gray-500 mt-1">2~10자 이내로 입력해주세요</p>
+              <p className="text-xs text-gray-500 mt-1">2~20자 이내로 입력해주세요</p>
             </div>
 
             <button 

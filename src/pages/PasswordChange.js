@@ -135,7 +135,11 @@ function PasswordChange() {
         if (err.response.status === 401) {
           setError('현재 비밀번호가 일치하지 않습니다.');
         } else if (err.response.data && err.response.data.message) {
-          setError(err.response.data.message);
+          if (err.response.data.message === "invalid_current_password") {
+            setError('현재 비밀번호가 일치하지 않습니다.');
+          } else if(err.response.data.message === "invalid_password_format") {
+            setError('새 비밀번호는 대문자, 소문자, 숫자, 특수문자를 모두 포함한 8~20자여야 합니다.');
+          }
         } else {
           setError('비밀번호 변경 중 오류가 발생했습니다.');
         }
@@ -160,13 +164,19 @@ function PasswordChange() {
   return (
     <div className="flex flex-col h-full bg-gray-50">
       {/* 헤더 */}
-      <header className="bg-white p-4 shadow-md flex items-center">
-        <button onClick={() => navigate('/profile')} className="mr-2">
+      <header className="bg-white pt-2 pb-0 px-4 shadow-md flex items-center relative">
+        <button onClick={() => navigate('/profile')} className="absolute left-4">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
         </button>
-        <h1 className="text-lg font-bold text-gray-800">비밀번호 변경</h1>
+        <div className="flex-grow flex justify-center">
+          <img
+            src="/gangazido-logo-header.png"
+            alt="Gangazido Logo Header"
+            className="h-14 w-28 object-cover"
+          />
+        </div>
       </header>
 
       {/* 메인 컨텐츠 */}

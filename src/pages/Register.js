@@ -137,24 +137,6 @@ function Register() {
   const handleRegister = async (e) => {
     e.preventDefault();
     
-    // 기본 유효성 검사
-    if (!email || !password || !passwordConfirm || !nickname) {
-      setError('모든 필수 항목을 입력해주세요.');
-      return;
-    }
-    
-    // 패스워드 일치 확인
-    if (password !== passwordConfirm) {
-      setPasswordError('비밀번호가 일치하지 않습니다.');
-      return;
-    }
-    
-    // 오류가 있는지 확인
-    if (emailError || passwordError || nicknameError) {
-      setError('입력 정보를 확인해주세요.');
-      return;
-    }
-    
     setLoading(true);
     setError(null);
     
@@ -201,7 +183,41 @@ function Register() {
         console.error('회원가입 오류 응답 데이터:', err.response.data);
         
         if (err.response.data && err.response.data.message) {
-          setError(err.response.data.message);
+          // 개별 에러 코드에 따른 세부적인 메시지 처리
+          const errorCode = err.response.data.message;
+          
+          if (errorCode === 'password_mismatch') {
+            setError('비밀번호가 일치하지 않습니다.');
+          } else if (errorCode === 'required_email') {
+            setError('이메일은 필수 입력 항목입니다.');
+          } else if (errorCode === 'invalid_email_format') {
+            setError('유효한 이메일 형식이 아닙니다.');
+          } else if (errorCode === 'required_password') {
+            setError('비밀번호는 필수 입력 항목입니다.');
+          } else if (errorCode === 'invalid_password_length') {
+            setError('비밀번호는 8자 이상 20자 이하여야 합니다.');
+          } else if (errorCode === 'invalid_password_format') {
+            setError('비밀번호는 대문자, 소문자, 숫자, 특수문자를 포함해야 합니다.');
+          } else if (errorCode === 'required_nickname') {
+            setError('닉네임은 필수 입력 항목입니다.');
+          } else if (errorCode === 'invalid_nickname_length') {
+            setError('닉네임은 2자 이상 20자 이하여야 합니다.');
+          } else if (errorCode === 'duplicate_email') {
+            setError('이미 사용 중인 이메일입니다.');
+          } else if (errorCode === 'duplicate_nickname') {
+            setError('이미 사용 중인 닉네임입니다.');
+          } else if (errorCode === 'image_not_found') {
+            setError('업로드된 이미지를 찾을 수 없습니다.');
+          } else if (errorCode === 'invalid_file_extension') {
+            setError('지원하지 않는 파일 형식입니다. (jpg, jpeg, png, gif만 가능)');
+          } else if (errorCode === 'invalid_content_type') {
+            setError('지원하지 않는 콘텐츠 타입입니다.');
+          } else if (errorCode === 'internal_server_error') {
+            setError('서버 내부 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+          } else {
+            // 정의되지 않은 에러 코드는 코드와 함께 표시
+            setError(`오류가 발생했습니다: ${errorCode}`);
+          }
         } else if (err.response.status === 400) {
           setError('입력 정보가 유효하지 않습니다. 다시 확인해주세요.');
         } else if (err.response.status === 409) {
@@ -236,13 +252,19 @@ function Register() {
   return (
     <div className="flex flex-col h-full bg-gray-50">
       {/* 헤더 - 뒤로가기 버튼 추가 */}
-      <header className="bg-white p-4 shadow-md flex items-center">
-        <button onClick={goToMap} className="mr-2">
+      <header className="bg-white pt-2 pb-0 px-4 shadow-md flex items-center relative">
+        <button onClick={goToMap} className="absolute left-4">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
         </button>
-        <h1 className="text-xl font-bold text-gray-800">강아지도</h1>
+        <div className="flex-grow flex justify-center">
+          <img
+            src="/gangazido-logo-header.png"
+            alt="Gangazido Logo Header"
+            className="h-14 w-28 object-cover"
+          />
+        </div>
       </header>
 
       <div className="flex-1 p-4 flex flex-col overflow-auto">
