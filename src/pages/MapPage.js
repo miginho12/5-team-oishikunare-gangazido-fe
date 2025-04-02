@@ -235,6 +235,10 @@ function MapPage() {
 
   // 클러스터 스타일 정의
   const CLUSTER_STYLES = {
+    mine: {
+      background: "rgba(34, 197, 94, 0.8)", // green-500
+      text: "#fff",
+    },
     댕플: {
       background: "rgba(251, 191, 36, 0.8)", // amber-300
       text: "#fff",
