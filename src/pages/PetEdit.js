@@ -102,6 +102,13 @@ function PetEdit() {
     const isValid = validateFields(); // 1. 프론트 유효성 검사 먼저
     if (!isValid) return;
 
+    let profileImageKeyToSend = originalProfileImageKey;
+
+    if (profileImage instanceof File) {
+      // ✅ 새 파일이면 S3에 업로드 후 key 획득
+      profileImageKeyToSend = await uploadPetImage(profileImage);
+    }
+
     try {
       await updatePetInfo({
         name,
@@ -109,9 +116,7 @@ function PetEdit() {
         gender: gender === 'male',
         breed,
         weight,
-        profileImage: profileImage instanceof File || typeof profileImage === 'string'
-          ? profileImage
-          : originalProfileImageKey,
+        profileImage: profileImageKeyToSend,
       });
   
 
@@ -147,7 +152,7 @@ function PetEdit() {
     // 이름
     const nameRegex = /^[가-힣a-zA-Z]+$/;
     if (!name) {
-      setNameError('반려견의 이름을 입력해주세요.');
+      setNameError('반려견의 이름을 입력하세요.');
       isValid = false;
     } else if (!nameRegex.test(name)) {
       setNameError('반려견의 이름은 한글 또는 영문만 입력 가능합니다.');
@@ -160,7 +165,7 @@ function PetEdit() {
     // 나이
     const ageNum = parseInt(age);
     if (!age) {
-      setAgeError('반려견의 나이를 입력해주세요.');
+      setAgeError('반려견의 나이를 입력하세요.');
       isValid = false;
     } else if (isNaN(ageNum)) {
       setAgeError('반려견의 나이는 숫자로 입력해주세요.');
@@ -168,7 +173,7 @@ function PetEdit() {
     } else if (ageNum <= 0) {
       setAgeError('반려견의 나이는 1살 이상이어야 해요.');
       isValid = false;
-    } else if (ageNum >= 200) {
+    } else if (ageNum >= 51) {
       setAgeError('입력값이 너무 큽니다. 올바른 나이를 입력해주세요.');
       isValid = false;
     }
@@ -177,7 +182,7 @@ function PetEdit() {
     const weightNum = parseFloat(trimmed);
 
     if (trimmed === '') {
-      setWeightError('반려견의 몸무게를 입력해주세요.');
+      setWeightError('반려견의 몸무게를 입력하세요.');
       isValid = false;
     } else if (isNaN(weightNum)) {
       setWeightError('올바른 몸무게 형식을 입력해주세요. (예: 5 또는 5.2)');
@@ -193,13 +198,13 @@ function PetEdit() {
     }
     // 성별
     if (!gender) {
-      setGenderError('반려견의 성별을 선택해주세요.');
+      setGenderError('반려견의 성별을 선택하세요.');
       isValid = false;
     }
   
     // 품종
     if (!breed) {
-      setBreedError('반려견의 품종을 입력해주세요.');
+      setBreedError('반려견의 품종을 입력하세요.');
       isValid = false;
     }
   
@@ -221,7 +226,7 @@ function PetEdit() {
   
     switch (message) {
       case 'required_pet_name':
-        setNameError('반려견의 이름을 입력해주세요.');
+        setNameError('반려견의 이름을 입력하세요.');
         break;
       case 'invalid_pet_name_format':
         setNameError('반려견의 이름은 한글 또는 영문만 입력 가능합니다.');
@@ -231,28 +236,28 @@ function PetEdit() {
         break;
   
       case 'required_pet_age':
-        setAgeError('반려견의 나이를 입력해주세요.');
+        setAgeError('반려견의 나이를 입력하세요.');
         break;
       case 'invalid_pet_age_format':
         setAgeError('반려견의 나이는 숫자로 입력해주세요.');
         break;
       case 'invalid_pet_age_value':
-        setAgeError('반려견의 나이는 0살 이상이어야 해요.');
+        setAgeError('반려견 나이는 1부터 50사이의 숫자만 입력 가능합니다.');
         break;
   
       case 'required_pet_weight':
-        setWeightError('반려견의 몸무게를 입력해주세요.');
+        setWeightError('반려견의 몸무게를 입력하세요.');
         break;
       case 'invalid_pet_weight':
         setWeightError('올바른 몸무게 형식을 입력해주세요. (예: 5 또는 5.2)');
         break;
   
       case 'required_pet_gender':
-        setGenderError('반려견의 성별을 선택해주세요.');
+        setGenderError('반려견의 성별을 선택하세요.');
         break;
   
       case 'required_pet_breed':
-        setBreedError('반려견의 품종을 입력해주세요.');
+        setBreedError('반려견의 품종을 입력하세요.');
         break;
   
       case 'already_exits_pet':
@@ -436,7 +441,11 @@ function PetEdit() {
                 <input
                   type="number"
                   value={weight}
-                  onChange={(e) => setWeight(e.target.value)}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    const formatted = value.match(/^\d*\.?\d{0,1}/);
+                    setWeight(formatted ? formatted[0] : '');
+                  }}
                   onBlur={() => handleBlur('weight')}
                   placeholder="몸무게 (kg)"
                   className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
