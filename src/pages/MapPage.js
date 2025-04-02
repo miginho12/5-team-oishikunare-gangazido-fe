@@ -181,8 +181,8 @@ function MapPage() {
     }
 
     try {
-      const size = new window.kakao.maps.Size(40, 40);
-      const option = { offset: new window.kakao.maps.Point(20, 20) };
+      const size = new window.kakao.maps.Size(25, 25);
+      const option = { offset: new window.kakao.maps.Point(12.5, 12.5) };
 
       // 1. 댕플 마커
       markerImages.current[0].image = new window.kakao.maps.MarkerImage(
