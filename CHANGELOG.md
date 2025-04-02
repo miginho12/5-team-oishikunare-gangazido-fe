@@ -6,6 +6,15 @@
 
 * S3 Uploads ([587a4ba](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/587a4ba5eb2264d82fbed9268aff3240a7a8b826))
 * S3 Uploads ([8032f17](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/8032f17d832a2bdeffbf4e6ab3af5aebbe6868dc))
+* 수정 url 받아오기 백에서 보내주는걸로 쓰기 ([d0f75e6](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/d0f75e6a8f9d2bed0ebf0ed1218ca443921288f7))
+* 수정 페이지 미리보기 오류 키 추가 ([5d156f5](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/5d156f5711933ae0a979e3cd5585e860652e8319))
+
+## [1.42.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.41.0...v1.42.0) (2025-04-02)
+
+### 🚀 NEW FEATURES
+
+* S3 Uploads ([587a4ba](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/587a4ba5eb2264d82fbed9268aff3240a7a8b826))
+* S3 Uploads ([8032f17](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/8032f17d832a2bdeffbf4e6ab3af5aebbe6868dc))
 * 수정 페이지 미리보기 오류 키 추가 ([5d156f5](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/5d156f5711933ae0a979e3cd5585e860652e8319))
 
 ## [1.42.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.41.0...v1.42.0) (2025-04-02)
