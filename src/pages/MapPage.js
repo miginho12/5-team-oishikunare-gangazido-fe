@@ -921,6 +921,12 @@ function MapPage() {
               try {
                 await deleteMarker(markerInfo.id);
                 overlay.setMap(null); // ✅ 커스텀 오버레이 닫기
+
+                // 👇 클러스터도 비우고 다시 마커를 불러와 강제 동기화
+                if (clusterRef.current) {
+                  clusterRef.current.clear();
+                }
+                
                 fetchMarkersFromBackend(); // 🔁 최신 데이터로 다시 로드
                 // ✅ 토스트 메시지 추가
                 toast.success("마커가 삭제되었습니다!", {
