@@ -1731,26 +1731,26 @@ function MapPage() {
             addMarkerAtCenter("댕플");
             setShowSubTypeButtons(false);
           }}
-          className="flex flex-col items-center justify-center w-16 h-16 bg-yellow-100 border border-yellow-300 rounded-full shadow hover:scale-105 transition"
+          className="flex flex-col items-center justify-center w-14 h-14 bg-yellow-100 border border-yellow-300 rounded-full shadow hover:scale-105 transition"
           aria-label="댕플 마커 추가"
         >
           <img
             src="/images/dangple_square.png"
             alt="댕플"
-            className="w-7 h-7 object-contain"
+            className="w-6 h-6 object-contain"
           />
-          <span className="text-[12px] font-semibold text-yellow-700 mt-1">댕플</span>
+          <span className="text-[11px] font-semibold text-yellow-700 mt-1">댕플</span>
         </button>
 
         {/* 댕져러스 드롭다운 트리거 버튼 */}
         <div className="relative">
           <button
             onClick={() => setShowSubTypeButtons(!showSubTypeButtons)}
-            className="flex flex-col items-center justify-center w-16 h-16 bg-red-100 border border-red-300 rounded-full shadow hover:scale-105 transition"
+            className="flex flex-col items-center justify-center w-14 h-14 bg-red-100 border border-red-300 rounded-full shadow hover:scale-105 transition"
             aria-label="댕져러스 마커 추가"
           >
-            <span className="text-xl">⚠️</span>
-            <span className="text-[12px] font-bold text-red-700 mt-1">댕져러스</span>
+            <span className="text-[13px]">⚠️</span>
+            <span className="text-[11px] font-bold text-red-700 mt-1">댕져러스</span>
           </button>
 
           {/* 드롭다운 메뉴 */}
@@ -1768,11 +1768,11 @@ function MapPage() {
                     addDangerousMarkerWithSubType(label);
                     setShowSubTypeButtons(false);
                   }}
-                  className={`flex flex-col items-center justify-center w-16 h-16 ${bg} ${border} ${text} border rounded-full shadow hover:scale-105 transition`}
+                  className={`flex flex-col items-center justify-center w-14 h-14 ${bg} ${border} ${text} border rounded-full shadow hover:scale-105 transition`}
                   title={label}
                 >
-                  <img src={icon} alt={label} className="w-7 h-7 object-contain" />
-                  <span className="text-[12px] font-semibold mt-1">{label}</span>
+                  <img src={icon} alt={label} className="w-6 h-6 object-contain" />
+                  <span className="text-[11px] font-semibold mt-1">{label}</span>
                 </button>
               ))}
             </div>
@@ -1818,7 +1818,7 @@ function MapPage() {
                 }
                 filterMarkersByType(value);
               }}
-              className={`text-xs font-semibold py-3 px-5 rounded-full shadow transition ${
+              className={`text-xs font-semibold py-2 px-3 rounded-full shadow transition ${
                 filterType === value
                   ? `${color} text-white`
                   : "bg-white text-gray-600 border border-gray-300"
