@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { updatePetInfo, deletePet, getPetInfo } from '../api/pet';
+import { uploadPetImage, updatePetInfo, deletePet, getPetInfo } from '../api/pet';
 
 function PetEdit() {
   const navigate = useNavigate();
