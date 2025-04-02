@@ -7,6 +7,24 @@
 * S3 Uploads ([587a4ba](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/587a4ba5eb2264d82fbed9268aff3240a7a8b826))
 * S3 Uploads ([8032f17](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/8032f17d832a2bdeffbf4e6ab3af5aebbe6868dc))
 * 수정 url 받아오기 백에서 보내주는걸로 쓰기 ([d0f75e6](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/d0f75e6a8f9d2bed0ebf0ed1218ca443921288f7))
+* 수정 기본이미지 & 수정 미리보기 ([2feb52f](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/2feb52f60bbd127f3206a07a52cc401054d41a6d))
+* 수정 페이지 미리보기 오류 키 추가 ([5d156f5](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/5d156f5711933ae0a979e3cd5585e860652e8319))
+
+### 🐛 BUG FIXES
+
+* delete 버튼 조건, 삭제 이벤트에서도 userRef 사용 ([b339ab7](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/b339ab72d94e20c03e97d83b714e0c57e0065335))
+* url 변수 오류 고침 ([8fb4f4a](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/8fb4f4ab17a4301c04320ffa36d61110705d00c9))
+* 마커 삭제 후 마커 표기 오류 수정 ([83371df](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/83371dfe0b6b08d148cd49457487fdb565f15304))
+* 수정 시 이미지 안넣으면 null 오류 ([d2548c1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/d2548c19a9f9edd44dc55562a9468d74f7268202))
+* 헬텍 멘트 수정 ([bc76a4c](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/bc76a4c92c1ddefc3a249d5ec065d2d829103abf))
+
+## [1.42.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.41.0...v1.42.0) (2025-04-02)
+
+### 🚀 NEW FEATURES
+
+* S3 Uploads ([587a4ba](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/587a4ba5eb2264d82fbed9268aff3240a7a8b826))
+* S3 Uploads ([8032f17](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/8032f17d832a2bdeffbf4e6ab3af5aebbe6868dc))
+* 수정 url 받아오기 백에서 보내주는걸로 쓰기 ([d0f75e6](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/d0f75e6a8f9d2bed0ebf0ed1218ca443921288f7))
 * 수정 페이지 미리보기 오류 키 추가 ([5d156f5](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/5d156f5711933ae0a979e3cd5585e860652e8319))
 
 ### 🐛 BUG FIXES
