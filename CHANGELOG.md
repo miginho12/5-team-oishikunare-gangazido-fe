@@ -10,6 +10,33 @@
 * 내 마커 필터링 기능 추가 ([3f79b50](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/3f79b508d691b84091a01a2e0efc0a283e439736))
 * 내 마커 필터링 클러스터링 색상 변경 ([3df1884](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/3df18848a10a6f8256e513584f22cc2e8775c028))
 * 댕플 마커 이미지 변경 ([01bf8cd](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/01bf8cdc93d0f81f12b5d5b36c8888a9733fb4bd))
+* 마커 크기 축소 적용 ([3e233a8](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/3e233a88a59c68347e30e0b83a1a1a14c8c5170c))
+* 수정 url 받아오기 백에서 보내주는걸로 쓰기 ([d0f75e6](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/d0f75e6a8f9d2bed0ebf0ed1218ca443921288f7))
+* 수정 기본이미지 & 수정 미리보기 ([2d1be77](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/2d1be774a20ded80cbb8329502c7508711272f61))
+* 수정 기본이미지 & 수정 미리보기 ([2feb52f](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/2feb52f60bbd127f3206a07a52cc401054d41a6d))
+* 수정 페이지 미리보기 오류 키 추가 ([5d156f5](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/5d156f5711933ae0a979e3cd5585e860652e8319))
+* 필터링, 마커추가 버튼 크키 줄임 ([c6f33ea](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/c6f33ea3b99e8fce33ffa393449e77e6918b366e))
+
+### 🐛 BUG FIXES
+
+* delete 버튼 조건, 삭제 이벤트에서도 userRef 사용 ([b339ab7](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/b339ab72d94e20c03e97d83b714e0c57e0065335))
+* url 변수 오류 고침 ([8fb4f4a](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/8fb4f4ab17a4301c04320ffa36d61110705d00c9))
+* 내마커 필터 적용 후 지도 업데이트 시 마커 안 보이는 이슈 수정 ([7513dfd](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/7513dfd03723ff20a751ea35a25b6726079f40ce))
+* 다른유저 마커 클릭했다가, 내 마커 삭제 시 권한문제 해결 ([8435213](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/843521329137d61dd3f2e262b9ce59143608b4be))
+* 마커 삭제 후 마커 표기 오류 수정 ([83371df](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/83371dfe0b6b08d148cd49457487fdb565f15304))
+* 수정 시 이미지 안넣으면 null 오류 ([d2548c1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/d2548c19a9f9edd44dc55562a9468d74f7268202))
+* 헬텍 멘트 수정 ([bc76a4c](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/bc76a4c92c1ddefc3a249d5ec065d2d829103abf))
+
+## [1.42.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.41.0...v1.42.0) (2025-04-02)
+
+### 🚀 NEW FEATURES
+
+* import문 추가 ([4f33c2d](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/4f33c2ddb75dd2ead255b3bf74656d762f37b808))
+* S3 Uploads ([587a4ba](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/587a4ba5eb2264d82fbed9268aff3240a7a8b826))
+* S3 Uploads ([8032f17](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/8032f17d832a2bdeffbf4e6ab3af5aebbe6868dc))
+* 내 마커 필터링 기능 추가 ([3f79b50](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/3f79b508d691b84091a01a2e0efc0a283e439736))
+* 내 마커 필터링 클러스터링 색상 변경 ([3df1884](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/3df18848a10a6f8256e513584f22cc2e8775c028))
+* 댕플 마커 이미지 변경 ([01bf8cd](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/01bf8cdc93d0f81f12b5d5b36c8888a9733fb4bd))
 * 수정 url 받아오기 백에서 보내주는걸로 쓰기 ([d0f75e6](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/d0f75e6a8f9d2bed0ebf0ed1218ca443921288f7))
 * 수정 기본이미지 & 수정 미리보기 ([2d1be77](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/2d1be774a20ded80cbb8329502c7508711272f61))
 * 수정 기본이미지 & 수정 미리보기 ([2feb52f](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/2feb52f60bbd127f3206a07a52cc401054d41a6d))
