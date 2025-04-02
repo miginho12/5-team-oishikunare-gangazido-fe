@@ -1443,73 +1443,77 @@ function MapPage() {
   // 마커 타입 필터링 함수
   const filterMarkersByType = useCallback(
     (type) => {
-      currentFilterTypeRef.current = type; // 현재 필터 타입 기억
+      currentFilterTypeRef.current = type;
       setFilterType(type);
-
-      // 마커 맵 표시 상태 일괄 업데이트 (최적화)
+  
       const markersToShow = [];
+  
       setMarkers((prev) => {
-        // 기존 마커 배열을 수정하되 표시 상태만 변경
         return prev.map((markerInfo) => {
-          const shouldShow = markerInfo.type === type || type === "all";
-
-          // 바로 상태를 변경하지 않고 변경할 마커만 컬렉션
+          let shouldShow = false;
+  
+          // 👇 내 마커 필터링
+          if (type === "mine") {
+            shouldShow =
+              isAuthenticated && markerInfo.user_id === user?.userId;
+          } else {
+            // 기존 방식
+            shouldShow = markerInfo.type === type || type === "all";
+          }
+  
           if (shouldShow) {
             markersToShow.push(markerInfo.marker);
             if (!markerInfo.marker.getMap()) {
-              // 현재 표시되지 않은 경우만 표시 설정
               markerInfo.marker.setMap(map);
             }
           } else {
             if (markerInfo.marker.getMap()) {
-              // 현재 표시된 경우만 숨김 설정
               markerInfo.marker.setMap(null);
             }
           }
-
+  
           return markerInfo;
         });
       });
-
-      // 클러스터러 초기화 후 새로 생성
+  
+      // 클러스터 새로 만들기 (생략 가능하긴 함)
       if (clusterRef.current) {
         clusterRef.current.clear();
         clusterRef.current.setMap(null);
       }
       clusterRef.current = createClustererWithStyle(map, type);
-      
-      // 클러스터러 업데이트는 약간의 지연 시간을 두고 처리
+  
       setTimeout(() => {
         if (clusterRef.current) {
-          // 클러스터 초기화
-          clusterRef.current.clear();
-
-          // 필터링된 마커 중 보이는 영역에 있는 마커만 클러스터에 추가
           const currentMarkers = markersRef.current;
-          const bounds = map ? map.getBounds() : null;
-
+          const bounds = map?.getBounds();
           if (bounds && currentMarkers) {
             const visibleFilteredMarkers = currentMarkers.filter(
-              (markerInfo) =>
-                (markerInfo.type === type || type === "all") &&
-                bounds.contain(markerInfo.marker.getPosition())
+              (markerInfo) => {
+                const inBounds = bounds.contain(
+                  markerInfo.marker.getPosition()
+                );
+                const isMine =
+                  isAuthenticated && markerInfo.user_id === user?.userId;
+  
+                const matchesFilter =
+                  type === "mine"
+                    ? isMine
+                    : type === "all" || markerInfo.type === type;
+  
+                return matchesFilter && inBounds;
+              }
             );
-
-            // 클러스터에 표시될 마커들을 일괄 추가
-            if (visibleFilteredMarkers.length > 0) {
-              const markersForCluster = visibleFilteredMarkers.map(
-                (m) => m.marker
-              );
-              clusterRef.current.addMarkers(markersForCluster);
-            }
-
-            // 보이는 마커 상태 업데이트
+  
+            clusterRef.current.addMarkers(
+              visibleFilteredMarkers.map((m) => m.marker)
+            );
             setVisibleMarkers(visibleFilteredMarkers);
           }
         }
       }, 10);
     },
-    [map]
+    [map, user, isAuthenticated]
   );
 
   // 컴포넌트 언마운트 시 마커 정리
@@ -1777,13 +1781,31 @@ function MapPage() {
         {/* 지도 상단에 마커 타입 필터링 버튼 추가 - 배경 없이 왼쪽 정렬 */}
         <div className="absolute top-4 left-4 z-20 flex gap-2">
           {[
+            { label: "내 마커", value: "mine", color: "bg-green-500" },
             { label: "댕플", value: "댕플", color: "bg-amber-300" },
             { label: "댕져러스", value: "댕져러스", color: "bg-red-400" },
             { label: "전체", value: "all", color: "bg-gray-400" },
           ].map(({ label, value, color }) => (
             <button
               key={value}
-              onClick={() => filterMarkersByType(value)}
+              onClick={() => {
+                if (value === "mine" && !isAuthenticated) {
+                  toast.error("로그인 후 이용해주세요!", {
+                    position: "bottom-center",
+                    autoClose: 2000,
+                    style: {
+                      background: "#fff5f5",
+                      color: "#a94442",
+                      border: "1px solid #f5c6cb",
+                      boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+                      fontWeight: "bold",
+                    },
+                    icon: "🔐",
+                  });
+                  return;
+                }
+                filterMarkersByType(value);
+              }}
               className={`text-xs font-semibold py-3 px-5 rounded-full shadow transition ${
                 filterType === value
                   ? `${color} text-white`
