@@ -31,6 +31,7 @@ function MapPage() {
   useEffect(() => {
     userRef.current = user;
   }, [user]);
+
   // 모달 관련 상태 수정
   const [showModal, setShowModal] = useState(false);
   const [tempMarkerType, setTempMarkerType] = useState("댕플");
@@ -1267,7 +1268,7 @@ function MapPage() {
                   cursor: pointer;
                 ">&times;</button>
               </div>
-              ${user?.userId == markerInfo.user_id
+              ${userRef.current?.userId == markerInfo.user_id // delete 버튼 조건, 삭제 이벤트에서도 userRef 사용
                 ? `<button id="delete-marker" style="
                 padding: 8px 12px;
                 width: 70px;
