@@ -66,13 +66,14 @@ jobs:
           aws s3 cp --recursive s3://${{ secrets.AWS_BUCKET_NAME }} s3://${{ secrets.AWS_BUCKET_NAME }}/versions/$TIMESTAMP
           aws s3 cp --recursive s3://${{ secrets.AWS_BUCKET_NAME }} s3://${{ secrets.AWS_BUCKET_NAME }}/versions/latest
 
-      - name: Deploy to S3
+      - name: Deploy to S3 safely (Preserve uploads)
         run: |
-          aws s3 sync ./build s3://${{ secrets.AWS_BUCKET_NAME }} \
-            --delete \
-            --exclude "uploads/" \
-            --exclude "uploads/user/*" \
-            --exclude "pet/*"
+          mkdir temp-build
+          rsync -a \
+            --exclude uploads/user \
+            --exclude /pet \
+            ./build/ temp-build/
+          aws s3 sync temp-build/ s3://${{ secrets.AWS_BUCKET_NAME }} --delete
 
       - name: Invalidate CloudFront Cache # 8 - CloudFront 캐시 무효화
         run: aws cloudfront create-invalidation --distribution-id ${{ secrets.AWS_DISTRIBUTION_ID }} --paths "/*"
