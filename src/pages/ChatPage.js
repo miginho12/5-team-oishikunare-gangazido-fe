@@ -81,7 +81,7 @@ function ChatPage() {
 
     const loadingMessage = {
       id: newUserMessage.id + 1,
-      text: "답변을 생성 중입니다...",
+      text: "답변을 생성 중입니다... (최대 30초)",
       isUser: false,
       time: "",
     };
