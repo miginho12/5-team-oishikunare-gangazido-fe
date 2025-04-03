@@ -41,6 +41,8 @@ function ProfileEdit() {
   const [showWithdrawalModal, setShowWithdrawalModal] = useState(false);
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
+  const [defaultProfileImage, setDefaultProfileImage] = useState(null);
+  const [isDefaultSvg, setIsDefaultSvg] = useState(false);
 
   // 컴포넌트 마운트 시 사용자 정보 로드
   useEffect(() => {
@@ -53,6 +55,12 @@ function ProfileEdit() {
         setNickname(userData.nickname || '');
         if (userData.profileImage) {
           setProfileImagePreview(userData.profileImage);
+          // 기본 프로필 이미지 저장
+          setDefaultProfileImage(userData.profileImage);
+          setIsDefaultSvg(false);
+        } else {
+          // 프로필 이미지가 없는 경우 SVG 사용을 표시
+          setIsDefaultSvg(true);
         }
       } catch (err) {
         console.error('사용자 정보 로드 실패:', err);
@@ -73,7 +81,7 @@ function ProfileEdit() {
         setLoading(false);
       }
     };
-
+  
     fetchUserInfo();
   }, [navigate]);
 
@@ -114,8 +122,71 @@ function ProfileEdit() {
       
       setProfileImage(file);
       setProfileImagePreview(URL.createObjectURL(file));
+    } else {
+      // 파일 선택 취소했을 때 기본 이미지로 복원
+      setProfileImage(null);
+      if (isDefaultSvg) {
+        setProfileImagePreview(null);
+      } else {
+        setProfileImagePreview(defaultProfileImage);
+      }
     }
   };
+  
+  // 추가: 파일 입력 요소 클릭 시 값 초기화
+  const handleProfileImageClick = (e) => {
+    e.target.value = null;
+  };
+
+  // 추가: 파일 선택 취소 감지 함수
+  useEffect(() => {
+    let fileInputClicked = false;
+    
+    const handleFileInputClick = () => {
+      fileInputClicked = true;
+      
+      // 짧은 지연 후 클릭 상태 초기화
+      setTimeout(() => {
+        fileInputClicked = false;
+      }, 100);
+    };
+    
+    const handleWindowFocus = () => {
+      // 파일 입력을 클릭한 후 포커스가 돌아오면 다이얼로그가 닫힌 것으로 간주
+      if (fileInputClicked) {
+        setTimeout(() => {
+          // 파일이 없으면 취소한 것으로 간주
+          const fileInput = document.getElementById('profile-upload');
+          if (fileInput && fileInput.files.length === 0) {
+            setProfileImage(null);
+            if (isDefaultSvg) {
+              setProfileImagePreview(null);
+            } else {
+              setProfileImagePreview(defaultProfileImage);
+            }
+          }
+          fileInputClicked = false;
+        }, 300);
+      }
+    };
+    
+    // 이벤트 리스너 등록
+    const fileInput = document.getElementById('profile-upload');
+    if (fileInput) {
+      fileInput.addEventListener('click', handleFileInputClick);
+    }
+    
+    window.addEventListener('focus', handleWindowFocus);
+    
+    // 컴포넌트 언마운트 시 이벤트 리스너 제거
+    return () => {
+      if (fileInput) {
+        fileInput.removeEventListener('click', handleFileInputClick);
+      }
+      window.removeEventListener('focus', handleWindowFocus);
+    };
+  }, [defaultProfileImage, isDefaultSvg]);
+
 
   const handleWithdrawal = async () => {
     try {
@@ -325,6 +396,7 @@ function ProfileEdit() {
                 type="file"
                 accept="image/*"
                 onChange={handleProfileImageChange}
+                onClick={handleProfileImageClick}
                 className="hidden"
               />
             </label>
