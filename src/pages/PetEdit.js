@@ -413,6 +413,24 @@ function PetEdit() {
                 <p className="text-sm text-red-500 mt-1">{ageError}</p>
               )}
             </div>
+            
+            <div className="relative">
+              <label className="block text-sm font-medium text-gray-700 mb-1">몸무게</label>
+              <input
+                type="number"
+                value={weight}
+                onChange={(e) => setWeight(e.target.value)}
+                onBlur={() => handleBlur('weight')}
+                placeholder="kg 단위로 입력해주세요"
+                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
+                required
+                step="0.1"
+              />
+              {touched.weight && weightError && (
+                <p className="text-sm text-red-500 mt-1">{weightError}</p>
+              )}
+            </div>
+
             <div className="relative">
               <label className="block text-sm font-medium text-gray-700 mb-1">성별</label>
               <select
