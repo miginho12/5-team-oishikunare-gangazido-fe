@@ -1177,7 +1177,7 @@ function MapPage() {
       (error) => {
         switch (error.code) {
           case error.PERMISSION_DENIED:
-            toast.error("⛔ 위치 접근이 차단되었습니다. 브라우저 설정에서 위치 권한을 허용해주세요.", {
+            toast.error("브라우저 위치 권한을 허용해주세요!", {
               position: "bottom-center",
               autoClose: 1500,
             });
