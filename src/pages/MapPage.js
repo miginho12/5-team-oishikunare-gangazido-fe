@@ -143,10 +143,10 @@ function MapPage() {
     댕플: "/images/dangple_square.png",
     댕져러스: {
       DEFAULT: "https://cdn-icons-png.flaticon.com/512/4636/4636076.png",
-      들개: "/images/beware_dog_square.png",
-      빙판길: "/images/icy_road_square.png",
-      염화칼슘: "/images/beware_foot_square.png",
-      공사중: "/images/construction_square.png",
+      들개: "/images/dog.png",
+      빙판길: "/images/icy.png",
+      염화칼슘: "/images/foot.png",
+      공사중: "/images/construction.png",
     },
     // 이모티콘 URL 추가
     EMOJI: {
@@ -1846,10 +1846,10 @@ function MapPage() {
           {showSubTypeButtons && (
             <div className="absolute top-full right-0 mt-2 flex flex-col gap-3 animate-fade-slide-down">
               {[
-                { label: "들개", icon: "/images/beware_dog_square.png", bg: "bg-rose-100", text: "text-rose-700", border: "border-rose-300" },
-                { label: "빙판길", icon: "/images/icy_road_square.png", bg: "bg-blue-100", text: "text-blue-700", border: "border-blue-300" },
-                { label: "염화칼슘", icon: "/images/beware_foot_square.png", bg: "bg-green-100", text: "text-green-700", border: "border-green-300" },
-                { label: "공사중", icon: "/images/construction_square.png", bg: "bg-gray-100", text: "text-gray-700", border: "border-gray-300" },
+                { label: "들개", icon: "/images/dog.png", bg: "bg-rose-100", text: "text-rose-700", border: "border-rose-300" },
+                { label: "빙판길", icon: "/images/icy.png", bg: "bg-blue-100", text: "text-blue-700", border: "border-blue-300" },
+                { label: "염화칼슘", icon: "/images/foot.png", bg: "bg-green-100", text: "text-green-700", border: "border-green-300" },
+                { label: "공사중", icon: "/images/construction.png", bg: "bg-gray-100", text: "text-gray-700", border: "border-gray-300" },
               ].map(({ label, icon, bg, text, border }) => (
                 <button
                   key={label}
