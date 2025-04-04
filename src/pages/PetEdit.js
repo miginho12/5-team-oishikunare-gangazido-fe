@@ -52,7 +52,7 @@ function PetEdit() {
         if (res?.data?.message === 'get_pet_success') {
           const data = res.data.data;
           console.log("🐶 불러온 반려견 정보:", data); // 추가 로그
-          
+
           setName(data.name);
           setBreed(data.breed);
           setAge(data.age);
@@ -65,7 +65,7 @@ function PetEdit() {
             setProfileImage(data.profileImage);         // key 저장용 (수정 시 사용됨)
             setOriginalProfileImageKey(data.profileImage);
             setProfileImagePreview(data.profileImage);  // full URL (백에서 줌)
-            
+
             console.log("🖼 수정 페이지 최초 미리보기 이미지 URL:", data.profileImage);
           }
         }
@@ -118,7 +118,7 @@ function PetEdit() {
         weight,
         profileImage: profileImageKeyToSend,
       });
-  
+
 
       setShowToast(true);
       setTimeout(() => navigate('/pets'), 2000);
@@ -142,13 +142,13 @@ function PetEdit() {
   // 프론트 자체 유효성 검사
   const validateFields = () => {
     let isValid = true;
-  
+
     setNameError('');
     setAgeError('');
     setWeightError('');
     setGenderError('');
     setBreedError('');
-  
+
     // 이름
     const nameRegex = /^[가-힣a-zA-Z]+$/;
     if (!name) {
@@ -161,7 +161,7 @@ function PetEdit() {
       setNameError('반려견의 이름은 최대 10자까지 입력 가능합니다.');
       isValid = false;
     }
-  
+
     // 나이
     const ageNum = parseInt(age);
     if (!age) {
@@ -177,7 +177,7 @@ function PetEdit() {
       setAgeError('입력값이 너무 큽니다. 올바른 나이를 입력해주세요.');
       isValid = false;
     }
-  
+
     const trimmed = String(weight).trim();
     const weightNum = parseFloat(trimmed);
 
@@ -201,13 +201,13 @@ function PetEdit() {
       setGenderError('반려견의 성별을 선택하세요.');
       isValid = false;
     }
-  
+
     // 품종
     if (!breed) {
       setBreedError('반려견의 품종을 입력하세요.');
       isValid = false;
     }
-  
+
     return isValid;
   };
 
@@ -223,7 +223,7 @@ function PetEdit() {
     setWeightError('');
     setGenderError('');
     setBreedError('');
-  
+
     switch (message) {
       case 'required_pet_name':
         setNameError('반려견의 이름을 입력하세요.');
@@ -234,7 +234,7 @@ function PetEdit() {
       case 'invalid_pet_name_length':
         setNameError('반려견의 이름은 최대 10자까지 입력 가능합니다.');
         break;
-  
+
       case 'required_pet_age':
         setAgeError('반려견의 나이를 입력하세요.');
         break;
@@ -244,43 +244,43 @@ function PetEdit() {
       case 'invalid_pet_age_value':
         setAgeError('반려견 나이는 1부터 50사이의 숫자만 입력 가능합니다.');
         break;
-  
+
       case 'required_pet_weight':
         setWeightError('반려견의 몸무게를 입력하세요.');
         break;
       case 'invalid_pet_weight':
         setWeightError('올바른 몸무게 형식을 입력해주세요. (예: 5 또는 5.2)');
         break;
-  
+
       case 'required_pet_gender':
         setGenderError('반려견의 성별을 선택하세요.');
         break;
-  
+
       case 'required_pet_breed':
         setBreedError('반려견의 품종을 입력하세요.');
         break;
-  
+
       case 'already_exits_pet':
         setNameError('이미 등록된 반려견이 있어요.');
         break;
-  
+
       case 'required_authorization':
         alert('로그인이 필요합니다.');
         navigate('/login');
         break;
-  
+
       case 'not_found_user':
         alert('사용자를 찾을 수 없습니다.');
         break;
 
-      case 'not_found_pet': 
+      case 'not_found_pet':
         alert('반려견 정보를 찾을 수 없습니다.');
         break;
-  
+
       case 'internal_server_error':
         alert('서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
         break;
-  
+
       default:
         alert('알 수 없는 오류가 발생했습니다.');
     }
@@ -347,17 +347,17 @@ function PetEdit() {
               )}
             </div>
 
-          <label htmlFor="pet-profile-upload" className="text-sm text-amber-800 font-medium cursor-pointer">
-            프로필 사진 변경
-            <input
-              id="pet-profile-upload"
-              type="file"
-              accept="image/*"
-              onChange={handleProfileImageChange}
-              className="hidden"
-            />
-          </label>
-        </div>
+            <label htmlFor="pet-profile-upload" className="text-sm text-amber-800 font-medium cursor-pointer">
+              프로필 사진 변경
+              <input
+                id="pet-profile-upload"
+                type="file"
+                accept="image/*"
+                onChange={handleProfileImageChange}
+                className="hidden"
+              />
+            </label>
+          </div>
 
           <div className="space-y-4">
             <div className="relative">
@@ -398,65 +398,47 @@ function PetEdit() {
               )}
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div className="relative">
-                <label className="block text-sm font-medium text-gray-700 mb-1">나이</label>
-                {/* 나이 */}
-                <input
-                  type="number"
-                  value={age}
-                  onChange={(e) => setAge(e.target.value)}
-                  onBlur={() => handleBlur('age')}
-                  placeholder="나이"
-                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
-                  required
-                />
-                {touched.age && ageError && (
-                  <p className="text-sm text-red-500 mt-1">{ageError}</p>
-                )}
-              </div>
-              <div className="relative">
-                <label className="block text-sm font-medium text-gray-700 mb-1">성별</label>
-                {/* 성별 */}
-                <select
-                  value={gender}
-                  onChange={(e) => setGender(e.target.value)}
-                  onBlur={() => handleBlur('gender')}
-                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
-                  required
-                >
-                  <option value="male">수컷</option>
-                  <option value="female">암컷</option>
-                </select>
-                {touched.gender && genderError && (
-                  <p className="text-sm text-red-500 mt-1">{genderError}</p>
-                )}
-              </div>
+            <div className="relative">
+              <label className="block text-sm font-medium text-gray-700 mb-1">나이</label>
+              <input
+                type="number"
+                value={age}
+                onChange={(e) => setAge(e.target.value)}
+                onBlur={() => handleBlur('age')}
+                placeholder="나이"
+                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
+                required
+              />
+              {touched.age && ageError && (
+                <p className="text-sm text-red-500 mt-1">{ageError}</p>
+              )}
+            </div>
+            <div className="relative">
+              <label className="block text-sm font-medium text-gray-700 mb-1">성별</label>
+              <select
+                value={gender}
+                onChange={(e) => setGender(e.target.value)}
+                onBlur={() => handleBlur('gender')}
+                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
+                required
+              >
+                <option value="male">수컷</option>
+                <option value="female">암컷</option>
+              </select>
+              {touched.gender && genderError && (
+                <p className="text-sm text-red-500 mt-1">{genderError}</p>
+              )}
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div className="relative">
-                <label className="block text-sm font-medium text-gray-700 mb-1">몸무게 (kg)</label>
-                {/* 몸무게 */}
-                <input
-                  type="number"
-                  value={weight}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    const formatted = value.match(/^\d*\.?\d{0,1}/);
-                    setWeight(formatted ? formatted[0] : '');
-                  }}
-                  onBlur={() => handleBlur('weight')}
-                  placeholder="몸무게 (kg)"
-                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
-                  required
-                />
-                {touched.weight && weightError && (
-                  <p className="text-sm text-red-500 mt-1">{weightError}</p>
-                )}
-              </div>
-              {/* 생일, 입양일, 중성화, 특이사항 등 추후 사용 예정 */}
-              {/*}
+
+
+
+
+
+
+
+            {/* 생일, 입양일, 중성화, 특이사항 등 추후 사용 예정 */}
+            {/*}
               <div className="relative">
                 <label className="block text-sm font-medium text-gray-700 mb-1">중성화 여부</label>
                 <select
@@ -469,9 +451,9 @@ function PetEdit() {
                 </select>
               </div>
               */}
-            </div>
-            {/* 생일, 입양일, 중성화, 특이사항 등 추후 사용 예정 */}
-            {/*}
+          </div>
+          {/* 생일, 입양일, 중성화, 특이사항 등 추후 사용 예정 */}
+          {/*}
             <div className="grid grid-cols-2 gap-4">
               <div className="relative">
                 <label className="block text-sm font-medium text-gray-700 mb-1">생일</label>
@@ -500,20 +482,19 @@ function PetEdit() {
               ></textarea>
             </div>
             */}
-            <button 
-              onClick={handleUpdatePet}
-              className="w-full bg-amber-800 text-white p-3 rounded-md text-center font-medium mt-4"
-            >
-              수정 완료
-            </button>
+          <button
+            onClick={handleUpdatePet}
+            className="w-full bg-amber-800 text-white p-3 rounded-md text-center font-medium mt-4"
+          >
+            수정 완료
+          </button>
 
-            <button 
-              onClick={handleDeletePet}
-              className="w-full bg-white border border-red-500 text-red-500 p-3 rounded-md text-center font-medium mt-2"
-            >
-              반려견 정보 삭제
-            </button>
-          </div>
+          <button
+            onClick={handleDeletePet}
+            className="w-full bg-white border border-red-500 text-red-500 p-3 rounded-md text-center font-medium mt-2"
+          >
+            반려견 정보 삭제
+          </button>
         </div>
       </div>
 
