@@ -25,8 +25,22 @@ function Register() {
 
   // 이메일 중복 체크
   const handleEmailBlur = async () => {
-    if (!email || !email.match(/^[\w-]+@([\w-]+\.)+[\w-]{2,4}$/)) {
-      setEmailError('유효한 이메일 형식이 아닙니다.');
+    // 이메일 형식 검사 - 사용자 이름@도메인.최상위도메인 형식 확인
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    
+    if (!email) {
+      setEmailError('이메일을 입력해 주세요.');
+      return;
+    }
+    
+    if (!emailRegex.test(email)) {
+      setEmailError('example@email.com 형식의 올바른 이메일 주소를 입력해 주세요.');
+      return;
+    }
+    
+    // 흔한 오류 패턴 체크 (예: .com 뒤에 추가 문자)
+    if (/\.com[a-zA-Z]+$/.test(email)) {
+      setEmailError('올바르지 않은 최상위 도메인입니다. (.com, .net 등 확인)');
       return;
     }
     
@@ -54,16 +68,23 @@ function Register() {
   };
 
   // 비밀번호 변경 핸들러
+  // 비밀번호 변경 핸들러
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
     
-    if (e.target.value.length < 8) {
-      setPasswordError('비밀번호는 8자 이상이어야 합니다.');
+    // 비밀번호 유효성 검사 - 길이 및 포맷 체크
+    const password = e.target.value;
+    
+    // 비밀번호 유효성 검사 정규식
+    const validPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,20}$/;
+    
+    if (!validPasswordRegex.test(password)) {
+      setPasswordError('8~20자의 영문 대/소문자, 숫자, 특수문자를 모두 사용해 주세요.');
     } else {
       setPasswordError(null);
       
       // 비밀번호 확인과 일치 여부 체크
-      if (passwordConfirm && e.target.value !== passwordConfirm) {
+      if (passwordConfirm && password !== passwordConfirm) {
         setPasswordError('비밀번호가 일치하지 않습니다.');
       }
     }
@@ -314,7 +335,7 @@ function Register() {
   };
 
   return (
-    <div className="flex flex-col h-full bg-gray-50">
+    <div className="flex flex-col h-full bg-amber-50">
       {/* 헤더 - 뒤로가기 버튼 추가 */}
       <header className="bg-white pt-2 pb-0 px-4 shadow-md flex items-center relative">
         <button onClick={goToMap} className="absolute left-4">

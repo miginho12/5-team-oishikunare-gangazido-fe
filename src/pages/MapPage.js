@@ -1007,13 +1007,79 @@ function MapPage() {
         },
         icon: "📍",
       });
+      // 마커 등록 후 필터를 전체로 전환
+      setFilterType("all");
+      currentFilterTypeRef.current = "all";
+      filterMarkersByType("all");
+
       return markerInfo;
-    } catch (error) {
-      const status = error.response?.status;
-      const message = error.response?.data?.message;
+      } catch (error) {
+        const status = error.response?.status;
+        const message = error.response?.data?.message;
 
       if (status === 401 || message === "required_authorization") {
         alert("로그인 후 이용해주세요");
+      } else if (message === "duplicate_location") {
+        toast.warn("같은 곳에 마커를 찍을 수 없어요!", {
+          position: "bottom-center",
+          autoClose: 2500,
+          style: {
+            background: "#fffbea",
+            color: "#92400e",
+            border: "1px solid #fde68a",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+            fontWeight: "bold",
+          },
+          icon: "📍",
+        });
+        setIsCenterMode(false);
+        setShowModal(false);
+      } else if (message === "too_close_dangple") {
+        toast.warn("댕플 주변에 너무 가깝게 찍을 수 없어요!", {
+          position: "bottom-center",
+          autoClose: 2500,
+          style: {
+            background: "#fff7ed",
+            color: "#b45309",
+            border: "1px solid #fcd34d",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+            fontWeight: "bold",
+          },
+          icon: "🐶",
+        });
+        setIsCenterMode(false);
+        setShowModal(false);
+      } else if (message === "too_close_dangerous") {
+        toast.warn("주변에 위험 정보가 이미 있어요!", {
+          position: "bottom-center",
+          autoClose: 2500,
+          style: {
+            background: "#fef2f2",
+            color: "#991b1b",
+            border: "1px solid #fecaca",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+            fontWeight: "bold",
+          },
+          icon: "⚠️",
+        });
+        setIsCenterMode(false);
+        setShowModal(false);
+      } else if (message === "limit_exceeded") {
+        toast.warn("마커는 1시간에 최대 30개까지 등록돼요!", {
+          position: "bottom-center",
+          autoClose: 2500,
+          style: {
+            background: "#fffbea",
+            color: "#92400e",
+            border: "1px solid #fde68a",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+            fontWeight: "bold",
+          },
+          icon: "⚠️",
+        });
+        // 마커 등록모드 해제
+        setIsCenterMode(false);
+        setShowModal(false);
       } else {
         console.error("❌ 마커 등록 중 오류:", error);
         setIsCenterMode(false);
@@ -1029,22 +1095,15 @@ function MapPage() {
     isAuthenticated,
   ]);
 
-  // 특정 타입의 마커 추가하기
-  // eslint-disable-next-line no-unused-vars
-  const addMarkerByType = useCallback(
-    (type, subType = null) => {
-      if (!map || !addMarkerRef.current) return;
-
-      const center = map.getCenter();
-      addMarkerRef.current(center, type, subType);
-    },
-    [map]
-  );
-
   // 현재 중앙 위치에 마커 추가하기
   const addMarkerAtCenter = useCallback(
     (type = "댕플", subType = null) => {
       if (!map || !addMarkerRef.current) return;
+
+      // 마커 등록모드 시 필터링 전체로 변경 
+      setFilterType("all");
+      currentFilterTypeRef.current = "all";
+      filterMarkersByType("all");
 
       const center = map.getCenter();
       addMarkerRef.current(center, type, subType);
@@ -1057,25 +1116,32 @@ function MapPage() {
     (subType) => {
       if (!map || !addMarkerRef.current) return;
 
+      // 등록모드 시 필터 전체로 변경
+      setFilterType("all");
+      currentFilterTypeRef.current = "all";
+      filterMarkersByType("all");
+
       const center = map.getCenter();
       addMarkerRef.current(center, "댕져러스", subType);
     },
     [map]
   );
 
-  const triedLocationRef = useRef(false); // ✅ 한 번만 알림 띄우기 위한 ref
-
-  // 현재 위치로 이동하기 (경고 제거를 위해 사용되는 함수로 표시)
-  // eslint-disable-next-line no-unused-vars
-  // 일단 주석처리 제리.. HTTPS 이후 ..?
+  const triedLocationRef = useRef(false); 
   const moveToCurrentLocation = useCallback(() => { 
     if (!map) {
-      alert("지도가 아직 초기화되지 않았습니다.");
+      toast.error("지도가 아직 초기화되지 않았습니다!", {
+        position: "bottom-center",
+        autoClose: 2000,
+      });
       return;
     }
 
     if (!navigator.geolocation) {
-      alert("이 브라우저는 위치 정보를 지원하지 않아요.");
+      toast.error("이 브라우저는 위치 정보를 지원하지 않아요.", {
+        position: "bottom-center",
+        autoClose: 2000,
+      });
       return;
     }
 
@@ -1100,13 +1166,22 @@ function MapPage() {
 
           switch (error.code) {
             case error.PERMISSION_DENIED:
-              alert("⛔ 위치 접근이 차단되었습니다.\n브라우저 설정에서 위치 권한을 허용해주세요.");
+              toast.error("⛔ 위치 접근이 차단되었습니다.\n브라우저 설정에서 위치 권한을 허용해주세요.", {
+                position: "bottom-center",
+                autoClose: 2500,
+              });
               break;
             case error.POSITION_UNAVAILABLE:
-              alert("현재 위치 정보를 사용할 수 없습니다.");
+              toast.error("현재 위치 정보를 사용할 수 없습니다.", {
+                position: "bottom-center",
+                autoClose: 2500,
+              });
               break;
             case error.TIMEOUT:
-              alert("위치 정보를 가져오는 데 시간이 초과되었습니다.");
+              toast.error("위치 정보를 가져오는 데 시간이 초과되었습니다.", {
+                position: "bottom-center",
+                autoClose: 2500,
+              });
               break;
           }
         }
@@ -1118,37 +1193,6 @@ function MapPage() {
       }
     );
   }, [map]);
-
-  // 모든 마커 지우기
-  // eslint-disable-next-line no-unused-vars
-  const clearAllMarkers = useCallback(() => {
-    if (window.confirm("모든 마커를 삭제하시겠습니까?")) {
-      // 지도에서 모든 마커 제거
-      markers.forEach((markerInfo) => {
-        markerInfo.marker.setMap(null);
-        if (markerInfo.overlay) {
-          markerInfo.overlay.setMap(null); // ✅ 커스텀 오버레이 닫기
-        }
-      });
-
-      // 클러스터 초기화
-      if (clusterRef.current) {
-        clusterRef.current.clear();
-      }
-
-      // 마커 배열 초기화
-      setMarkers([]);
-
-      // 보이는 마커 초기화
-      setVisibleMarkers([]);
-
-      // 선택된 마커 초기화
-      setSelectedMarker(null);
-
-      // 로컬 스토리지 초기화
-      localStorage.removeItem("kakaoMapData");
-    }
-  }, [markers]);
 
   // 현재 지도 범위와 줌 레벨 정보 가져오기
   const getCurrentMapBounds = useCallback(() => {
@@ -1322,6 +1366,14 @@ function MapPage() {
             zIndex: 9999,
           });
         
+          // 마커 클릭 시 줌 확대 + 중앙 이동
+          map.panTo(marker.getPosition()); // 먼저 위치 이동
+          setTimeout(() => {
+            if (map.getLevel() > 4) {
+              map.setLevel(4); // 줌인 약간 나중에
+            }
+          }, 300); // 약간의 시간차를 줘야 안정적으로 이동함
+
           overlay.setMap(map);
           markerInfo.overlay = overlay;
         
@@ -1424,8 +1476,9 @@ function MapPage() {
       setMarkers(newMarkers);
       setMapMarkers(newMarkers.map((m) => m.marker));
 
-      // ⭐️ 현재 필터 다시 적용
+      // 바로 필터 적용
       filterMarkersByType(currentFilterTypeRef.current);
+
     } catch (error) {
       const message = error.response?.data?.message; // 응답 메시지
       const status = error.response?.status; // 응답 코드
@@ -1433,7 +1486,10 @@ function MapPage() {
         alert("로그인 후 이용해주세요!");
       } else {
         console.error("📛 마커 불러오기 실패:", error);
-        alert("마커를 불러오는 중 오류가 발생했습니다.");
+        toast.error("마커를 불러오는 중 오류가 발생했습니다!", {
+          position: "bottom-center",
+          autoClose: 2000,
+        });
       }
     }
   }, [map, markerImages, mapMarkers]);
@@ -1441,14 +1497,14 @@ function MapPage() {
   const hasFetchedMarkers = useRef(false); // 딱 한 번만 실행되게 플래그
 
   useEffect(() => { // user 정보가 로딩되지 않은 상태에서 마커 불러오는 것 방지
-    if (map && user?.userId !== undefined && !hasFetchedMarkers.current) {
+    if (map && !hasFetchedMarkers.current) {
       console.log("🛰 마커 요청 딱 한 번 보내기!");
       fetchMarkersFromBackend();
       hasFetchedMarkers.current = true;
-    } else {
-      // 재로그인 이후 user 정보가 생기면 다시 마커를 불러오기
+    } else if (!hasFetchedMarkers.current) {
       console.log("🔁 사용자 정보 업데이트 감지, 마커 다시 불러오기!");
       fetchMarkersFromBackend();
+      hasFetchedMarkers.current = true;
     }
   }, [map, user]);
 
@@ -1658,7 +1714,7 @@ function MapPage() {
         <p className="text-center text-amber-800 text-sm font-medium">
           {isCenterMode
             ? "지도를 움직여 중앙에 마커를 위치시키고 '확정' 버튼을 누르세요"
-            : "우측 버튼을 눌러 마커를 추가하세요"}
+            : "댕플, 댕져러스 버튼을 눌러 마커를 추가하세요"}
         </p>
       </div>
       

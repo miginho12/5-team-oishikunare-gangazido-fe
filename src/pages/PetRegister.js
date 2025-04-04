@@ -85,14 +85,18 @@ function PetRegister() {
   };
 
   const handleProfileImageChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
+    const file = e.target.files?.[0];
+
+    if (file) {
+      // ✅ 사용자가 실제로 파일을 선택한 경우
       setProfileImage(file);
-  
       const tempUrl = URL.createObjectURL(file);
+      setProfileImagePreview(tempUrl);
       console.log("🖼 선택한 로컬 이미지 preview URL:", tempUrl);
-  
-      setProfileImagePreview(tempUrl); // S3 전 임시 미리보기
+    } else {
+      // ✅ 사용자가 '파일 선택' 창에서 취소를 누른 경우
+      setProfileImage(null); // S3 업로드 대상 제거
+      setProfileImagePreview(null); // 미리보기 초기화
     }
   };
 
@@ -125,13 +129,13 @@ function PetRegister() {
       setAgeError('반려견의 나이를 입력하세요.');
       isValid = false;
     } else if (isNaN(ageNum)) {
-      setAgeError('반려견의 나이는 숫자로 입력해주세요.');
+      setAgeError('반려견 나이는 1부터 50사이의 숫자만 입력 가능합니다.');
       isValid = false;
     } else if (ageNum < 1) {
-      setAgeError('반려견의 나이는 1살 이상이어야 해요.');
+      setAgeError('반려견 나이는 1부터 50사이의 숫자만 입력 가능합니다.');
       isValid = false;
     } else if (ageNum >= 51) {
-      setAgeError('입력값이 너무 큽니다. 올바른 나이를 입력해주세요.');
+      setAgeError('반려견 나이는 1부터 50사이의 숫자만 입력 가능합니다.');
       isValid = false;
     }
   
@@ -146,10 +150,10 @@ function PetRegister() {
       setWeightError('올바른 몸무게 형식을 입력해주세요. (예: 5 또는 5.2)');
       isValid = false;
     } else if (weightNum <= 0) {
-      setWeightError('반려견의 몸무게는 0kg 이상이어야 해요.');
+      setWeightError('반려견 몸무게는 1부터 200사이의 숫자만 입력 가능합니다.');
       isValid = false;
     } else if (weightNum >= 200) {
-      setWeightError('입력값이 너무 큽니다. 올바른 몸무게를 입력해주세요.');
+      setWeightError('반려견 몸무게는 1부터 200사이의 숫자만 입력 가능합니다.');
       isValid = false;
     } else {
       setWeightError('');
@@ -276,41 +280,55 @@ function PetRegister() {
       {/* 메인 컨텐츠 */}
       <div className="flex-1 p-4 overflow-y-auto">
         <div className="bg-white rounded-xl shadow-md p-4 mb-4">
-        <div className="flex flex-col items-center mb-6">
-          <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center mb-3 overflow-hidden">
-            {profileImagePreview ? (
-              <img 
-                src={profileImagePreview}
-                alt="미리보기"
-                className="w-full h-full object-cover"
+          <div className="flex flex-col items-center mb-6">
+            <div className="w-24 h-24 rounded-full bg-amber-100 flex items-center justify-center mb-3 overflow-hidden">
+              {profileImagePreview ? (
+                <img 
+                  src={profileImagePreview}
+                  alt="미리보기"
+                  className="w-full h-full object-cover"
+                  onError={() => {
+                    console.warn("🐛 이미지 로딩 실패! fallback 아이콘 표시");
+                    setProfileImagePreview(null); // fallback svg로 대체되게
+                  }}
+                />
+              ) : (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-12 w-12 text-amber-800"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                  />
+                </svg>
+              )}
+            </div>
+            <label htmlFor="pet-profile-upload" className="text-sm text-amber-800 font-medium cursor-pointer">
+              프로필 사진 추가
+              <input
+                id="pet-profile-upload"
+                type="file"
+                accept="image/*"
+                onChange={handleProfileImageChange}
+                className="hidden"
               />
-            ) : (
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-              </svg>
-            )}
+            </label>
           </div>
-          <label htmlFor="pet-profile-upload" className="text-sm text-amber-800 font-medium cursor-pointer">
-            프로필 사진 추가
-            <input
-              id="pet-profile-upload"
-              type="file"
-              accept="image/*"
-              onChange={handleProfileImageChange}
-              className="hidden"
-            />
-          </label>
-        </div>
           <div className="space-y-4">
             <div className="relative">
-              <label className="block text-sm font-medium text-gray-700 mb-1">반려견 이름 <span className="text-red-500">*</span></label>
-              {/* 이름 */}
+              <label className="block text-sm font-medium text-gray-700 mb-1">반려견 이름</label>
               <input
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 onBlur={() => handleBlur('name')}
-                placeholder="반려견 이름을 입력하세요"
+                placeholder="이름"
                 className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
                 required
               />
@@ -318,9 +336,9 @@ function PetRegister() {
                 <p className="text-sm text-red-500 mt-1">{nameError}</p>
               )}
             </div>
+
             <div className="relative">
-              <label className="block text-sm font-medium text-gray-700 mb-1">품종 <span className="text-red-500">*</span></label>
-              {/* 품종 */}
+              <label className="block text-sm font-medium text-gray-700 mb-1">품종</label>
               <select
                 value={breed}
                 onChange={(e) => setBreed(e.target.value)}
@@ -339,74 +357,66 @@ function PetRegister() {
                 <p className="text-sm text-red-500 mt-1">{breedError}</p>
               )}
             </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="relative">
-                <label className="block text-sm font-medium text-gray-700 mb-1">나이 <span className="text-red-500">*</span></label>
-                {/* 나이 */}
-                <input
-                  type="number"
-                  value={age}
-                  onChange={(e) => setAge(e.target.value)}
-                  onBlur={() => handleBlur('age')}
-                  placeholder="나이"
-                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
-                  required
-                />
-                {touched.age && ageError && (
-                  <p className="text-sm text-red-500 mt-1">{ageError}</p>
-                )}
-              </div>
-              <div className="relative">
-                <label className="block text-sm font-medium text-gray-700 mb-1">성별 <span className="text-red-500">*</span></label>
-                {/* 성별 */}
-                <select
-                  value={gender}
-                  onChange={(e) => setGender(e.target.value)}
-                  onBlur={() => handleBlur('gender')}
-                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
-                  required
-                >
-                  <option value="">선택하세요</option>
-                  <option value="male">수컷</option>
-                  <option value="female">암컷</option>
-                </select>
-                {touched.gender && genderError && (
-                  <p className="text-sm text-red-500 mt-1">{genderError}</p>
-                )}
-              </div>
+
+            <div className="relative">
+              <label className="block text-sm font-medium text-gray-700 mb-1">나이</label>
+              <input
+                type="number"
+                value={age}
+                onChange={(e) => setAge(e.target.value)}
+                onBlur={() => handleBlur('age')}
+                placeholder="나이"
+                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
+                required
+                min="1"
+              />
+              {touched.age && ageError && (
+                <p className="text-sm text-red-500 mt-1">{ageError}</p>
+              )}
+            </div>
+            
+            <div className="relative">
+              <label className="block text-sm font-medium text-gray-700 mb-1">몸무게</label>
+              <input
+                type="number"
+                value={weight}
+                onChange={(e) => setWeight(e.target.value)}
+                onBlur={() => handleBlur('weight')}
+                placeholder="kg 단위로 입력해주세요"
+                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
+                required
+                step="0.1"
+                min="0.1"
+              />
+              {touched.weight && weightError && (
+                <p className="text-sm text-red-500 mt-1">{weightError}</p>
+              )}
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div className="relative">
-                <label className="block text-sm font-medium text-gray-700 mb-1">몸무게 (kg)</label>
-                {/* 몸무게 */}
-                <input
-                  type="number"
-                  step="0.1"
-                  value={weight}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    const formatted = value.match(/^\d*\.?\d{0,1}/);
-                    setWeight(formatted ? formatted[0] : '');
-                  }}
-                  onBlur={() => handleBlur('weight')}
-                  placeholder="몸무게"
-                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
-                />
-                {touched.weight && weightError && (
-                  <p className="text-sm text-red-500 mt-1">{weightError}</p>
-                )}
-              </div>
-            </div>
-            <div className="mt-6">
-              <p className="text-xs text-gray-500 mb-2"><span className="text-red-500">*</span> 표시는 필수 입력 항목입니다.</p>
-              <button 
-                onClick={handleRegister}
-                className="w-full bg-amber-800 text-white p-3 rounded-md text-center font-medium"
+            <div className="relative">
+              <label className="block text-sm font-medium text-gray-700 mb-1">성별</label>
+              <select
+                value={gender}
+                onChange={(e) => setGender(e.target.value)}
+                onBlur={() => handleBlur('gender')}
+                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
+                required
               >
-                등록하기
-              </button>
+                <option value="">선택하세요</option>
+                <option value="male">수컷</option>
+                <option value="female">암컷</option>
+              </select>
+              {touched.gender && genderError && (
+                <p className="text-sm text-red-500 mt-1">{genderError}</p>
+              )}
             </div>
+
+            <button 
+              onClick={handleRegister}
+              className="w-full bg-amber-800 text-white p-3 rounded-md text-center font-medium mt-4"
+            >
+              등록하기
+            </button>
           </div>
         </div>
       </div>
