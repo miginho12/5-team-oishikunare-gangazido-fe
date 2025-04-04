@@ -56,14 +56,15 @@ function PasswordChange() {
     const value = e.target.value;
     setNewPassword(value);
     
-    const error = validateNewPassword(value);
-    if (error) {
+    // 빈 값이 아닐 때만 유효성 검사 수행
+    if (value) {
+      const error = validateNewPassword(value);
       setPasswordError(error);
     } else {
       setPasswordError(null);
     }
     
-    // 비밀번호 확인과 일치 여부 체크
+    // 비밀번호 확인란이 비어있지 않고, 값이 다를 경우
     if (confirmPassword && value !== confirmPassword) {
       setPasswordError('새 비밀번호가 일치하지 않습니다.');
     }
@@ -77,7 +78,13 @@ function PasswordChange() {
     if (newPassword && value && newPassword !== value) {
       setPasswordError('새 비밀번호가 일치하지 않습니다.');
     } else {
-      setPasswordError(null);
+      // 새 비밀번호가 유효하지 않다면 그 오류 메시지 유지
+      if (newPassword) {
+        const error = validateNewPassword(newPassword);
+        setPasswordError(error);
+      } else {
+        setPasswordError(null);
+      }
     }
   };
 
@@ -95,6 +102,14 @@ function PasswordChange() {
     
     if (!confirmPassword) {
       setError('새 비밀번호 확인을 입력해주세요.');
+      return;
+    }
+    
+    // 새 비밀번호 유효성 확인 - 즉시 검사 추가
+    const newPasswordError = validateNewPassword(newPassword);
+    if (newPasswordError) {
+      setPasswordError(newPasswordError);
+      setError('입력한 새 비밀번호가 유효하지 않습니다.');
       return;
     }
     
@@ -282,4 +297,4 @@ function PasswordChange() {
   );
 }
 
-export default PasswordChange; 
+export default PasswordChange;

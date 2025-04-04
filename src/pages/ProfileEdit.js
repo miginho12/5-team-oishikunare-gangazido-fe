@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getUserInfo, updateUserInfo, deleteUser } from '../api/user';
 
@@ -6,8 +6,9 @@ import { getUserInfo, updateUserInfo, deleteUser } from '../api/user';
 const ERROR_MESSAGES = {
   // 닉네임 관련 에러
   'required_nickname': '닉네임은 필수 입력 항목입니다.',
-  'invalid_nickname_length': '닉네임은 2~20자 이내로 입력해주세요.',
+  'invalid_nickname_length': '닉네임은 10자 이내로 입력해주세요.',
   'duplicate_nickname': '이미 사용 중인 닉네임입니다.',
+  'invalid_nickname_format': '닉네임에는 띄어쓰기를 사용할 수 없습니다.',
   
   // 프로필 이미지 관련 에러
   'image_not_found': '업로드된 이미지를 찾을 수 없습니다.',
@@ -41,14 +42,6 @@ function ProfileEdit() {
   const [showWithdrawalModal, setShowWithdrawalModal] = useState(false);
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
-  const [defaultProfileImage, setDefaultProfileImage] = useState(null);
-  const [isDefaultSvg, setIsDefaultSvg] = useState(false);
-  const [removeProfileImage, setRemoveProfileImage] = useState(false);
-
-  // 파일 입력 요소에 대한 ref 추가 
-  const fileInputRef = useRef(null);
-
-
 
   // 컴포넌트 마운트 시 사용자 정보 로드
   useEffect(() => {
@@ -61,12 +54,6 @@ function ProfileEdit() {
         setNickname(userData.nickname || '');
         if (userData.profileImage) {
           setProfileImagePreview(userData.profileImage);
-          // 기본 프로필 이미지 저장
-          setDefaultProfileImage(userData.profileImage);
-          setIsDefaultSvg(false);
-        } else {
-          // 프로필 이미지가 없는 경우 SVG 사용을 표시
-          setIsDefaultSvg(true);
         }
       } catch (err) {
         console.error('사용자 정보 로드 실패:', err);
@@ -87,7 +74,7 @@ function ProfileEdit() {
         setLoading(false);
       }
     };
-  
+
     fetchUserInfo();
   }, [navigate]);
 
@@ -107,13 +94,10 @@ function ProfileEdit() {
     navigate('/pets');
   };
 
-  // 프로필 이미지 변경 핸들러
   const handleProfileImageChange = (e) => {
-    console.log("handleProfileImageChange !!");
-    const file = e.target.files?.[0];
-  
-    if (file) {
-      // ✅ 새 파일 선택 시
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      
       // 파일 크기 체크 (5MB)
       if (file.size > 5 * 1024 * 1024) {
         setToastMessage("프로필 이미지 크기는 5MB 이하여야 합니다.");
@@ -131,21 +115,8 @@ function ProfileEdit() {
       
       setProfileImage(file);
       setProfileImagePreview(URL.createObjectURL(file));
-      setRemoveProfileImage(false);
-    } else {
-      // ✅ 파일 선택 취소 시
-      console.log("파일 선택 취소됨 → 이미지 삭제 처리");
-      setProfileImage(null);
-      setProfileImagePreview(null);
-      setRemoveProfileImage(true);
-    }
-  
-    // ✅ 항상 초기화해서 onChange가 다시 작동하도록
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
     }
   };
-
 
   const handleWithdrawal = async () => {
     try {
@@ -194,9 +165,16 @@ function ProfileEdit() {
       return;
     }
     
-    // 닉네임 길이 체크
-    if (nickname.length < 2 || nickname.length > 20) {
-      setToastMessage("닉네임은 2~20자 이내로 입력해주세요.");
+    // 닉네임 길이 체크 - 10자 이내로 수정
+    if (nickname.trim().length > 10) {
+      setToastMessage("닉네임은 10자 이내로 입력해주세요.");
+      setShowToast(true);
+      return;
+    }
+    
+    // 띄어쓰기 확인
+    if (nickname.includes(' ')) {
+      setToastMessage("닉네임에는 띄어쓰기를 사용할 수 없습니다.");
       setShowToast(true);
       return;
     }
@@ -208,8 +186,7 @@ function ProfileEdit() {
     try {
       const userData = {
         user_nickname: nickname,
-        user_profile_image: profileImage,
-        removeProfileImage: removeProfileImage
+        user_profile_image: profileImage
       };
       
       await updateUserInfo(userData);
@@ -236,7 +213,7 @@ function ProfileEdit() {
           if (errorCode === 'duplicate_nickname') {
             setToastMessage("이미 사용 중인 닉네임입니다.");
           } else if (errorCode === 'invalid_nickname_length') {
-            setToastMessage("닉네임은 2~20자 이내로 입력해주세요.");
+            setToastMessage("닉네임은 10자 이내로 입력해주세요.");
           } else if (errorCode === 'image_not_found') {
             setToastMessage("업로드된 이미지를 찾을 수 없습니다.");
           } else if (errorCode === 'invalid_file_extension') {
@@ -276,21 +253,6 @@ function ProfileEdit() {
       setShowToast(true);
     }
   };
-
-  // 파일 입력 요소 클릭 시 처리 
-  const handleProfileImageClick = (e) => {
-    // 이미 input의 value는 빈 값으로 재설정됨 (onChange 핸들러에서)
-    console.log("프로필 이미지 선택 창 열림");
-  };
-
-  // 상태 로깅용 useEffect만 유지 (디버깅용)
-  useEffect(() => {
-    console.log('프로필 이미지 상태 변경:', {
-      hasProfileImage: !!profileImage,
-      hasProfileImagePreview: !!profileImagePreview,
-      removeProfileImage
-    });
-  }, [profileImage, profileImagePreview, removeProfileImage]);
 
   // 토스트 메시지가 표시되면 3초 후에 자동으로 사라지도록 설정
   useEffect(() => {
@@ -354,23 +316,19 @@ function ProfileEdit() {
       <div className="flex-1 p-4 overflow-y-auto">
         <div className="bg-white rounded-xl shadow-md p-4 mb-4">
           <div className="flex flex-col items-center mb-6">
-          <div className="w-24 h-24 rounded-full bg-amber-100 flex items-center justify-center mb-3 overflow-hidden">
-            {profileImagePreview && profileImagePreview !== "null" ? (
-              <img 
-                src={profileImagePreview} 
-                alt="프로필 이미지"
-                className="w-full h-full object-cover"
-                onError={() => {
-                  // 이미지 로드 실패 시 상태 업데이트
-                  setProfileImagePreview(null);
-                }}
-              />
-            ) : (
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-amber-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-              </svg>
-            )}
-          </div>
+            <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center mb-3 overflow-hidden">
+              {profileImagePreview ? (
+                <img 
+                  src={profileImagePreview} 
+                  alt="프로필 이미지"
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-full h-full text-gray-400">
+                  <path fillRule="evenodd" d="M18.685 19.097A9.723 9.723 0 0021.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 003.065 7.097A9.716 9.716 0 0012 21.75a9.716 9.716 0 006.685-2.653zm-12.54-1.285A7.486 7.486 0 0112 15a7.486 7.486 0 015.855 2.812A8.224 8.224 0 0112 20.25a8.224 8.224 0 01-5.855-2.438zM15.75 9a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" clipRule="evenodd" />
+                </svg>
+              )}
+            </div>
             <label htmlFor="profile-upload" className="text-sm text-amber-800 font-medium cursor-pointer">
               프로필 사진 변경
               <input
@@ -378,12 +336,10 @@ function ProfileEdit() {
                 type="file"
                 accept="image/*"
                 onChange={handleProfileImageChange}
-                onClick={handleProfileImageClick}
-                ref={fileInputRef}
                 className="hidden"
               />
             </label>
-        </div>
+          </div>
 
           <div className="space-y-4">
             <div className="relative">
@@ -403,11 +359,20 @@ function ProfileEdit() {
                 type="text"
                 placeholder="닉네임을 입력하세요"
                 value={nickname}
-                onChange={(e) => setNickname(e.target.value)}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  // 띄어쓰기가 있는 경우 알림만 하고 입력은 허용
+                  if (value.includes(' ')) {
+                    setToastMessage("닉네임에는 띄어쓰기를 사용할 수 없습니다.");
+                    setShowToast(true);
+                  }
+                  // 입력값 그대로 설정 (검증은 제출 시에만)
+                  setNickname(value);
+                }}
                 className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
                 required
               />
-              <p className="text-xs text-gray-500 mt-1">2~20자 이내로 입력해주세요</p>
+              <p className="text-xs text-gray-500 mt-1">10자 이내로 입력해주세요 (띄어쓰기 불가)</p>
             </div>
 
             <button 
@@ -534,4 +499,4 @@ function ProfileEdit() {
   );
 }
 
-export default ProfileEdit; 
+export default ProfileEdit;
