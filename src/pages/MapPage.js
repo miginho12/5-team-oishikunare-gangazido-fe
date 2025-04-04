@@ -286,6 +286,13 @@ function MapPage() {
           borderRadius: "25px",
           fontSize: "14px",
           fontWeight: "bold",
+
+          // 모바일 클러스터링 위함
+          position: "absolute",
+          transform: "translate(-50%, -50%)", // 중심 기준 위치 이동
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
         },
       ],
     });
