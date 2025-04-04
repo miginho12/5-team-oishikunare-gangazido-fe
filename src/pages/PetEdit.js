@@ -108,13 +108,14 @@ function PetEdit() {
       setProfileImage(file);
       setProfileImagePreview(URL.createObjectURL(file));
       setIsImageRemoved(false);
+      setOriginalProfileImageKey(null); // 새로 바꾸면 원래 이미지도 무시
     } else {
       // ✅ 파일 선택 취소 시
       console.log("파일 선택 취소됨 → 이미지 삭제 처리");
       // 원본 이미지 키도 제거해야 함!
       setProfileImage(null);
       setProfileImagePreview(null);
-      setOriginalProfileImageKey(null);  
+      setOriginalProfileImageKey(null);  // 원래 이미지도 안 보내짐
       setIsImageRemoved(true);
     }
 
@@ -134,8 +135,8 @@ function PetEdit() {
       profileImageKeyToSend = await uploadPetImage(profileImage); // 새 이미지 업로드
     } else if (isImageRemoved) {
       profileImageKeyToSend = null; // 이미지 삭제 요청
-    } else if (originalProfileImageKey) {
-      profileImageKeyToSend = undefined; // 기존 이미지 유지 → append 안 함
+    } else {
+      profileImageKeyToSend = undefined; // 기존 이미지 유지
     }
 
     try {
