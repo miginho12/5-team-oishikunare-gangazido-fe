@@ -149,22 +149,26 @@ function PetEdit() {
       profileImageToSend = undefined;
     }
 
+    const payload = {
+      name,
+      age,
+      gender: gender === 'male',
+      breed,
+      weight,
+      profileImage: profileImageToSend,
+    };
+
+    if (profileImageToSend === undefined) {
+      delete payload.profileImage; // 🔥 핵심 처리
+    }
+
     try {
-      await updatePetInfo({
-        name,
-        age,
-        gender: gender === 'male',
-        breed,
-        weight,
-        profileImage: profileImageToSend,
-      });
-
-
+      await updatePetInfo(payload);
       setShowToast(true);
       setTimeout(() => navigate('/pets'), 2000);
     } catch (error) {
       const errorMsg = error.response?.data?.message;
-      handleRegisterError(errorMsg); // 3. 백엔드 에러 메시지 처리
+      handleRegisterError(errorMsg);
     }
   };
 
