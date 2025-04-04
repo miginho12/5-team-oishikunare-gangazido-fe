@@ -101,20 +101,19 @@ function PetEdit() {
   const fileInputRef = useRef(); // 👈 input ref 선언
 
   const handleProfileImageChange = (e) => {
-    const fileList = e.target.files;
+    const file = e.target.files?.[0];
 
-    if (fileList && fileList.length > 0) {
-      // ✅ 새 파일 선택한 경우
-      const file = fileList[0];
-      setProfileImage(file); // 실제 새 파일
+    if (file) {
+      // ✅ 새 파일 선택 시
+      setProfileImage(file);
       setProfileImagePreview(URL.createObjectURL(file));
-      setIsImageRemoved(false); // 삭제 아님
+      setIsImageRemoved(false);
     } else {
-      // 파일 선택창에서 취소한 경우 → 이미지 완전히 삭제
-      console.log("파일 선택창 취소됨 → 이미지 삭제 처리");
-      setProfileImage(null); // 삭제 의미
+      // ✅ 파일 선택 취소 시
+      console.log("파일 선택 취소됨 → 이미지 삭제 처리");
+      setProfileImage(null);
       setProfileImagePreview(null);
-      setIsImageRemoved(true); // 삭제 요청
+      setIsImageRemoved(true);
     }
 
     // ✅ 항상 초기화해서 onChange가 다시 작동하도록
