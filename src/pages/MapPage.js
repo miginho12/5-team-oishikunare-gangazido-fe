@@ -1501,7 +1501,7 @@ function MapPage() {
   const hasFetchedMarkers = useRef(false); // 딱 한 번만 실행되게 플래그
 
   useEffect(() => { // user 정보가 로딩되지 않은 상태에서 마커 불러오는 것 방지
-    if (map && user?.userId !== undefined && !hasFetchedMarkers.current) {
+    if (map && !hasFetchedMarkers.current) {
       console.log("🛰 마커 요청 딱 한 번 보내기!");
       fetchMarkersFromBackend();
       hasFetchedMarkers.current = true;
