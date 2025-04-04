@@ -339,7 +339,7 @@ function ProfileEdit() {
       <div className="flex-1 p-4 overflow-y-auto">
         <div className="bg-white rounded-xl shadow-md p-4 mb-4">
           <div className="flex flex-col items-center mb-6">
-            <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center mb-3 overflow-hidden">
+            <div className="w-24 h-24 rounded-full bg-amber-100 flex items-center justify-center mb-3 overflow-hidden">
               {profileImagePreview ? (
                 <img 
                   src={profileImagePreview} 
