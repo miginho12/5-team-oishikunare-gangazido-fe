@@ -30,8 +30,6 @@ function PetEdit() {
   });
 
   const fileInputRef = useRef(); // 👈 input ref 선언
-  const prevImageRef = useRef(null); // profileImage 백업용
-  const prevPreviewRef = useRef(null); // preview 백업용
 
   const breedOptions = [
     '푸들',
@@ -101,12 +99,6 @@ function PetEdit() {
     setShowConfirm(false);
   };
 
-  const handleClickFileInput = () => {
-    // 파일 선택 전 상태 백업
-    prevImageRef.current = profileImage;
-    prevPreviewRef.current = profileImagePreview;
-  };
-
   const handleProfileImageChange = (e) => {
     const file = e.target.files?.[0];
   
@@ -116,20 +108,12 @@ function PetEdit() {
       setProfileImagePreview(URL.createObjectURL(file));
       setIsImageRemoved(false);
     } else {
-      // 취소한 경우: 기존 값이 있었으면 삭제 처리
-      const hadPrevImage = prevImageRef.current || prevPreviewRef.current;
-  
-      if (hadPrevImage) {
-        console.log("파일 선택 취소됨 → 이미지 삭제 처리");
-        setProfileImage(null);
-        setProfileImagePreview(null);
-        setIsImageRemoved(true);
-      } else {
-        console.log("파일 선택 취소됨 → 원래 상태 복원");
-        setProfileImage(prevImageRef.current);
-        setProfileImagePreview(prevPreviewRef.current);
-        setIsImageRemoved(false);
-      }
+      // 파일 선택 창 열고 취소 누른 경우
+      console.log("파일 선택 취소됨 → 이미지 제거");
+
+      setProfileImage(null);
+      setProfileImagePreview(null);
+      setIsImageRemoved(true);
     }
   
     // input 초기화 (재선택 가능하게)
