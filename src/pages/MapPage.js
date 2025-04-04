@@ -1371,10 +1371,12 @@ function MapPage() {
           });
         
           // 마커 클릭 시 줌 확대 + 중앙 이동
-          map.panTo(marker.getPosition());
-          if (map.getLevel() > 4) {
-            map.setLevel(4); // 현재 너무 멀면 4레벨로 확대
-          }
+          map.panTo(marker.getPosition()); // 먼저 위치 이동
+          setTimeout(() => {
+            if (map.getLevel() > 4) {
+              map.setLevel(4); // 줌인 약간 나중에
+            }
+          }, 300); // 약간의 시간차를 줘야 안정적으로 이동함
 
           overlay.setMap(map);
           markerInfo.overlay = overlay;
@@ -1478,10 +1480,9 @@ function MapPage() {
       setMarkers(newMarkers);
       setMapMarkers(newMarkers.map((m) => m.marker));
 
-      // 마커가 화면에 보이도록 하기 위해 filterMarkersByType을 약간 지연 실행
-      requestAnimationFrame(() => {
-        filterMarkersByType(currentFilterTypeRef.current); // 현재 필터 다시 적용
-      });
+      // 바로 필터 적용
+      filterMarkersByType(currentFilterTypeRef.current);
+
     } catch (error) {
       const message = error.response?.data?.message; // 응답 메시지
       const status = error.response?.status; // 응답 코드
