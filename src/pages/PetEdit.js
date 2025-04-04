@@ -58,13 +58,12 @@ function PetEdit() {
           setAge(data.age);
           setGender(data.gender ? 'male' : 'female');
           setWeight(data.weight);
-          setProfileImage(data.profileImage); // 이미지 키
 
           // 🔥 CloudFront 미리보기 설정
           if (data.profileImage && typeof data.profileImage === 'string') {
-            setProfileImage(data.profileImage);         // key 저장용 (수정 시 사용됨)
-            setOriginalProfileImageKey(data.profileImage);
-            setProfileImagePreview(data.profileImage);  // full URL (백에서 줌)
+            setProfileImage(data.profileImage);               
+            setOriginalProfileImageKey(data.profileImage);    
+            setProfileImagePreview(data.profileImage);        
             
             console.log("🖼 수정 페이지 최초 미리보기 이미지 URL:", data.profileImage);
           }
@@ -98,11 +97,31 @@ function PetEdit() {
     setShowConfirm(false);
   };
 
+  const handleProfileImageChange = (e) => {
+    const file = e.target.files?.[0];
+
+    if (file) {
+      // ✅ 사용자가 새 파일 선택했을 경우
+      setProfileImage(file);
+      setProfileImagePreview(URL.createObjectURL(file));
+    } else {
+      // ✅ 사용자가 파일 선택창에서 '취소' 누른 경우 (선택 안함)
+      setProfileImage(null); // 🌟 S3에 안 보내기 위해 null 처리
+      setProfileImagePreview(null); // 🌟 미리보기도 초기화
+      setOriginalProfileImageKey(null); // 🌟 기존 이미지도 제거 의도로 간주
+    }
+  };
+
   const handleUpdatePet = async () => {
     const isValid = validateFields(); // 1. 프론트 유효성 검사 먼저
     if (!isValid) return;
 
     let profileImageKeyToSend = originalProfileImageKey;
+
+    // ✅ 이미지 제거 의도가 명확한 경우만 null 전송
+    if (profileImage === null && !profileImagePreview) {
+      profileImageKeyToSend = null;
+    }
 
     if (profileImage instanceof File) {
       // ✅ 새 파일이면 S3에 업로드 후 key 획득
@@ -125,17 +144,6 @@ function PetEdit() {
     } catch (error) {
       const errorMsg = error.response?.data?.message;
       handleRegisterError(errorMsg); // 3. 백엔드 에러 메시지 처리
-    }
-  };
-
-  const handleProfileImageChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      setProfileImage(file);
-      setProfileImagePreview(URL.createObjectURL(file));
-    } else {
-      // 파일 선택 안 했을 때 기존 이미지 유지
-      setProfileImage(originalProfileImageKey);
     }
   };
 
