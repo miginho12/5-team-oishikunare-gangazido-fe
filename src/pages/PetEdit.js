@@ -297,7 +297,7 @@ function PetEdit() {
   }, [showToast]);
 
   return (
-    <div className="flex flex-col h-full bg-gray-50">
+    <div className="flex flex-col h-full bg-amber-50">
       {/* 헤더 */}
       <header className="bg-white pt-2 pb-0 px-4 shadow-md flex items-center relative">
         <button onClick={() => navigate('/pets')} className="absolute left-4">
