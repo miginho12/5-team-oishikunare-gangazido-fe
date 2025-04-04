@@ -34,7 +34,7 @@ function MapPage() {
     if (hideGuide === "true") {
       setShowGuideModal(false); // 다시 보지 않기 눌렀다면 false로
     } else {
-      setShowGuideModal(true);  // 아니면 보여줌
+      setShowGuideModal(true);  // 👉 아니면 보여줌
     }
   }, []);
 
@@ -1799,13 +1799,13 @@ function MapPage() {
       </header>
 
       {/* 마커 생성 안내 */}
-      <div className="bg-amber-50 p-3 shadow-sm border-b border-amber-200">
+      {/* <div className="bg-amber-50 p-3 shadow-sm border-b border-amber-200">
         <p className="text-center text-amber-800 text-sm font-medium">
           {isCenterMode
             ? "지도를 움직여 중앙에 마커를 위치시키고 '확정' 버튼을 누르세요"
             : "댕플, 댕져러스 버튼을 눌러 마커를 추가하세요"}
         </p>
-      </div>
+      </div> */}
       
       <ToastContainer
           position="bottom-center"
