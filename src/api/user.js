@@ -51,20 +51,23 @@ export const getUserInfo = () => {
   return api.get(`/v1/users/me`)
     .then(response => {
       // 응답에 프로필 이미지 URL이 있으면 CloudFront URL로 변환
-      if (response.data && response.data.data && response.data.data.profileImage) {
-        response.data.data.profileImage = convertToCloudFrontUrl(response.data.data.profileImage);
-      }
+      // if (response.data && response.data.data && response.data.data.profileImage) {
+      //   response.data.data.profileImage = convertToCloudFrontUrl(response.data.data.profileImage);
+      // }
       return response;
     });
 };
 
-// updateUserInfo 함수 수정
 export const updateUserInfo = async (userData) => {
   try {
-    // 이미지가 있으면 S3에 업로드
-    let profileImageKey = null;
+    // 업데이트 데이터 준비
+    const updateData = {
+      user_nickname: userData.user_nickname
+    };
     
+    // 프로필 이미지 처리 로직
     if (userData.user_profile_image) {
+      // 새 이미지가 있으면 업로드
       const file = userData.user_profile_image;
       const fileExtension = `.${file.name.split('.').pop().toLowerCase()}`;
       const contentType = file.type;
@@ -80,30 +83,37 @@ export const updateUserInfo = async (userData) => {
       // 2. S3에 직접 업로드
       await uploadImageToS3(presignedUrl, file, contentType);
       
-      profileImageKey = fileKey;
+      updateData.profile_image_key = fileKey;
+    } else if (userData.removeProfileImage === true) {
+      // 이미지 제거 요청 - null을 명시적으로 설정
+      // null 값을 보내는 것이 중요함
+      updateData.profile_image_key = null;
+      
+      console.log('이미지 제거 요청: profile_image_key = null');
     }
     
-    // 업데이트 데이터 준비
-    const updateData = {
-      user_nickname: userData.user_nickname
-    };
-    
-    // 이미지 키가 있으면 추가
-    if (profileImageKey) {
-      updateData.profile_image_key = profileImageKey;
-    }
+    // 디버깅을 위해 요청 데이터 로깅
+    console.log('서버로 전송될 데이터:', JSON.stringify(updateData));
     
     // Content-Type이 application/json으로 변경됨
     const response = await api.patch("/v1/users/me", updateData);
     
+    // 응답 디버깅
+    console.log('서버 응답:', response.data);
+    
     // 응답에 프로필 이미지 URL이 있으면 CloudFront URL로 변환
-    if (response.data && response.data.data && response.data.data.profileImage) {
-      response.data.data.profileImage = convertToCloudFrontUrl(response.data.data.profileImage);
-    }
+    // if (response.data && response.data.data && response.data.data.profileImage) {
+    //   response.data.data.profileImage = convertToCloudFrontUrl(response.data.data.profileImage);
+    // }
     
     return response;
   } catch (error) {
     console.error('사용자 정보 업데이트 실패:', error);
+    // 에러 응답 디버깅
+    if (error.response) {
+      console.error('에러 응답 데이터:', error.response.data);
+      console.error('에러 응답 상태:', error.response.status);
+    }
     throw error;
   }
 };

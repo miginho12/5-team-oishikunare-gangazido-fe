@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 import { registerUser, checkEmailDuplicate, checkNicknameDuplicate } from '../api/auth';
@@ -15,6 +15,11 @@ function Register() {
   const [emailError, setEmailError] = useState(null);
   const [passwordError, setPasswordError] = useState(null);
   const [nicknameError, setNicknameError] = useState(null);
+  const [removeProfileImage, setRemoveProfileImage] = useState(false);
+
+  // 파일 입력 요소에 대한 ref 추가 (component 시작 부분에)
+  const fileInputRef = useRef(null);
+  const [fileInputClicked, setFileInputClicked] = useState(false);
 
   // 이메일 변경 핸들러
   const handleEmailChange = (e) => {
@@ -141,25 +146,68 @@ function Register() {
     }
   };
 
-  // 프로필 이미지 변경 핸들러
+  // 프로필 이미지 변경 핸들러 수정
   const handleProfileImageChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
+    const file = e.target.files?.[0];
+  
+    if (file) {
+      // ✅ 새 파일 선택 시
       // 파일 크기 체크 (5MB)
-      if (e.target.files[0].size > 5 * 1024 * 1024) {
+      if (file.size > 5 * 1024 * 1024) {
         setError('프로필 이미지 크기는 5MB 이하여야 합니다.');
         return;
       }
       
-      setProfileImage(e.target.files[0]);
+      // 파일 타입 체크 (필요하다면 추가)
+      const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg'];
+      if (!validTypes.includes(file.type)) {
+        setError("지원하지 않는 파일 형식입니다. (jpg, jpeg, png, gif만 가능)");
+        return;
+      }
+      
+      setProfileImage(file);
+      setProfileImagePreview(URL.createObjectURL(file));
+      setRemoveProfileImage(false);
+    } else {
+      // ✅ 파일 선택 취소 시
+      console.log("파일 선택 취소됨 → 이미지 삭제 처리");
+      setProfileImage(null);
+      setProfileImagePreview(null);
+      setRemoveProfileImage(true);
+    }
+  
+    // ✅ 항상 초기화해서 onChange가 다시 작동하도록
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
     }
   };
+  
 
-  // 회원가입 폼 제출 핸들러
-  const handleRegister = async (e) => {
-    e.preventDefault();
-    
-    setLoading(true);
-    setError(null);
+  // 파일 입력 요소 클릭 시 처리 - 단순화
+  const handleProfileImageClick = (e) => {
+    // 이미 input의 value는 빈 값으로 재설정됨 (onChange 핸들러에서)
+    console.log("프로필 이미지 선택 창 열림");
+  };
+
+
+  // 추가: 컴포넌트 상태 추가
+  const [profileImagePreview, setProfileImagePreview] = useState(null);
+
+  // 상태 로깅용 useEffect만 유지 (디버깅용)
+  useEffect(() => {
+    console.log('프로필 이미지 상태 변경:', {
+      hasProfileImage: !!profileImage,
+      hasProfileImagePreview: !!profileImagePreview,
+      removeProfileImage
+    });
+  }, [profileImage, profileImagePreview, removeProfileImage]);
+
+    // 회원가입 폼 제출 핸들러
+    const handleRegister = async (e) => {
+      e.preventDefault();
+      
+      setLoading(true);
+      setError(null);
     
     try {
       console.log('회원가입 요청 시작 ============================');
@@ -172,7 +220,8 @@ function Register() {
         user_password: password,
         user_password_confirm: passwordConfirm,
         user_nickname: nickname,
-        user_profileImage: profileImage
+        user_profileImage: profileImage,
+        removeProfileImage: removeProfileImage
       };
       
       console.log('회원가입 FormData가 생성되기 전 userData:', 
@@ -301,19 +350,19 @@ function Register() {
         {/* 입력 폼 */}
         <div className="bg-white rounded-xl shadow-md p-4 mb-4">
           <div className="flex flex-col items-center mb-6">
-            <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center mb-3 overflow-hidden">
-              {profileImage ? (
-                <img
-                  src={URL.createObjectURL(profileImage)}
-                  alt="프로필 미리보기"
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-full h-full text-gray-400">
-                  <path fillRule="evenodd" d="M18.685 19.097A9.723 9.723 0 0021.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 003.065 7.097A9.716 9.716 0 0012 21.75a9.716 9.716 0 006.685-2.653zm-12.54-1.285A7.486 7.486 0 0112 15a7.486 7.486 0 015.855 2.812A8.224 8.224 0 0112 20.25a8.224 8.224 0 01-5.855-2.438zM15.75 9a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" clipRule="evenodd" />
-                </svg>
-              )}
-            </div>
+          <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center mb-3 overflow-hidden">
+            {profileImagePreview ? (
+              <img
+                src={profileImagePreview}
+                alt="프로필 미리보기"
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+              </svg>
+            )}
+          </div>
             <label htmlFor="profile-upload" className="text-sm text-amber-800 font-medium cursor-pointer">
               프로필 사진 추가
               <input
@@ -321,6 +370,8 @@ function Register() {
                 type="file"
                 accept="image/*"
                 onChange={handleProfileImageChange}
+                onClick={handleProfileImageClick}
+                ref={fileInputRef}
                 className="hidden"
               />
             </label>

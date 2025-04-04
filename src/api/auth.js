@@ -1,7 +1,7 @@
 import api from "./index";
 
 // S3 URL을 CloudFront URL로 변환하는 함수
-export const convertToCloudFrontUrl = (url) => {
+const convertToCloudFrontUrl = (url) => {
   if (!url) return url;
   
   // S3 URL 패턴 확인 (https://bucket-name.s3.region.amazonaws.com/path)
@@ -46,6 +46,7 @@ export const uploadImageToS3 = async (presignedUrl, file, contentType) => {
 };
 
 // registerUser 함수 수정
+// registerUser 함수 수정
 export const registerUser = async (userData) => {
   console.log('회원가입 요청 데이터:', userData);
   
@@ -73,6 +74,9 @@ export const registerUser = async (userData) => {
       console.log('S3 업로드 완료');
       
       profileImageKey = fileKey;
+    } else if (userData.removeProfileImage === true) {
+      // 이미지 제거 요청 - null로 명시적 설정
+      profileImageKey = null;
     }
     
     // 회원가입 데이터 준비
@@ -83,8 +87,8 @@ export const registerUser = async (userData) => {
       user_nickname: userData.user_nickname
     };
     
-    // 이미지 키가 있으면 추가
-    if (profileImageKey) {
+    // 프로필 이미지 키 설정 (null인 경우도 포함)
+    if (profileImageKey !== undefined) {
       signupData.profile_image_key = profileImageKey;
     }
     

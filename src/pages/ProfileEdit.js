@@ -6,8 +6,9 @@ import { getUserInfo, updateUserInfo, deleteUser } from '../api/user';
 const ERROR_MESSAGES = {
   // 닉네임 관련 에러
   'required_nickname': '닉네임은 필수 입력 항목입니다.',
-  'invalid_nickname_length': '닉네임은 2~20자 이내로 입력해주세요.',
+  'invalid_nickname_length': '닉네임은 10자 이내로 입력해주세요.',
   'duplicate_nickname': '이미 사용 중인 닉네임입니다.',
+  'invalid_nickname_format': '닉네임에는 띄어쓰기를 사용할 수 없습니다.',
   
   // 프로필 이미지 관련 에러
   'image_not_found': '업로드된 이미지를 찾을 수 없습니다.',
@@ -187,9 +188,16 @@ function ProfileEdit() {
       return;
     }
     
-    // 닉네임 길이 체크
-    if (nickname.length > 10) {
+    // 닉네임 길이 체크 - 10자 이내로 수정
+    if (nickname.trim().length > 10) {
       setToastMessage("닉네임은 10자 이내로 입력해주세요.");
+      setShowToast(true);
+      return;
+    }
+    
+    // 띄어쓰기 확인
+    if (nickname.includes(' ')) {
+      setToastMessage("닉네임에는 띄어쓰기를 사용할 수 없습니다.");
       setShowToast(true);
       return;
     }
@@ -228,7 +236,7 @@ function ProfileEdit() {
           if (errorCode === 'duplicate_nickname') {
             setToastMessage("이미 사용 중인 닉네임입니다.");
           } else if (errorCode === 'invalid_nickname_length') {
-            setToastMessage("닉네임은 2~20자 이내로 입력해주세요.");
+            setToastMessage("닉네임은 10자 이내로 입력해주세요.");
           } else if (errorCode === 'image_not_found') {
             setToastMessage("업로드된 이미지를 찾을 수 없습니다.");
           } else if (errorCode === 'invalid_file_extension') {
@@ -374,11 +382,20 @@ function ProfileEdit() {
                 type="text"
                 placeholder="닉네임을 입력하세요"
                 value={nickname}
-                onChange={(e) => setNickname(e.target.value)}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  // 띄어쓰기가 있는 경우 알림만 하고 입력은 허용
+                  if (value.includes(' ')) {
+                    setToastMessage("닉네임에는 띄어쓰기를 사용할 수 없습니다.");
+                    setShowToast(true);
+                  }
+                  // 입력값 그대로 설정 (검증은 제출 시에만)
+                  setNickname(value);
+                }}
                 className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
                 required
               />
-              <p className="text-xs text-gray-500 mt-1">2~20자 이내로 입력해주세요</p>
+              <p className="text-xs text-gray-500 mt-1">10자 이내로 입력해주세요 (띄어쓰기 불가)</p>
             </div>
 
             <button 
@@ -505,4 +522,4 @@ function ProfileEdit() {
   );
 }
 
-export default ProfileEdit; 
+export default ProfileEdit;
