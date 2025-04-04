@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.5.9](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.5.8...v1.5.9) (2025-04-04)
+
+### 🐛 BUG FIXES
+
+* 수정 시 이미지 유지로 돌리기 ([7838b36](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/7838b3685e1f691baeb9cc94460a56af2d0a7b15))
+
 ## [1.5.8](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.5.7...v1.5.8) (2025-04-04)
 
 ### 🐛 BUG FIXES
