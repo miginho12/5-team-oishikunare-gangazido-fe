@@ -174,11 +174,11 @@ function ProfileEdit() {
   // };
 
   // 그리고 handleUpdateProfile 함수에도 검증 로직 추가
-  if (nickname.includes(' ')) {
-    setToastMessage("닉네임에는 띄어쓰기를 사용할 수 없습니다.");
-    setShowToast(true);
-    return;
-  }
+  // if (nickname.includes(' ')) {
+  //   setToastMessage("닉네임에는 띄어쓰기를 사용할 수 없습니다.");
+  //   setShowToast(true);
+  //   return;
+  // }
 
   const handleUpdateProfile = () => {
     // 폼 유효성 검사
