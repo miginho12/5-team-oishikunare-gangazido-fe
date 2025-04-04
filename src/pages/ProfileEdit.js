@@ -2,6 +2,34 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getUserInfo, updateUserInfo, deleteUser } from '../api/user';
 
+// 서버 에러 코드를 한글 메시지로 변환하는 객체
+const ERROR_MESSAGES = {
+  // 닉네임 관련 에러
+  'required_nickname': '닉네임은 필수 입력 항목입니다.',
+  'invalid_nickname_length': '닉네임은 10자 이내로 입력해주세요.',
+  'duplicate_nickname': '이미 사용 중인 닉네임입니다.',
+  'invalid_nickname_format': '닉네임에는 띄어쓰기를 사용할 수 없습니다.',
+  
+  // 프로필 이미지 관련 에러
+  'image_not_found': '업로드된 이미지를 찾을 수 없습니다.',
+  'invalid_file_extension': '지원하지 않는 파일 형식입니다. (jpg, jpeg, png, gif만 가능)',
+  'invalid_content_type': '지원하지 않는 콘텐츠 타입입니다.',
+  
+  // 인증 관련 에러
+  'unauthorized': '로그인이 필요한 서비스입니다.',
+  'missing_user': '사용자 정보를 찾을 수 없습니다.',
+  
+  // 기타 에러
+  'internal_server_error': '서버 내부 오류가 발생했습니다. 잠시 후 다시 시도해주세요.',
+  'required_profile_update_data': '변경할 정보를 입력해주세요.',
+  'update_user_data_failed': '프로필 수정에 실패했습니다.',
+};
+
+// 에러 코드를 한글 메시지로 변환하는 함수
+const getErrorMessage = (errorCode) => {
+  return ERROR_MESSAGES[errorCode] || `오류가 발생했습니다. (${errorCode})`;
+};
+
 function ProfileEdit() {
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState(null);
@@ -33,7 +61,14 @@ function ProfileEdit() {
           // 인증되지 않은 사용자는 로그인 페이지로 리다이렉트
           navigate('/login');
         } else {
-          setError('사용자 정보를 불러오는데 실패했습니다.');
+          // 에러 메시지 처리 개선
+          if (err.response?.data?.message) {
+            setError(getErrorMessage(err.response.data.message));
+          } else if (err.response?.data?.errorCode) {
+            setError(getErrorMessage(err.response.data.errorCode));
+          } else {
+            setError('사용자 정보를 불러오는데 실패했습니다.');
+          }
         }
       } finally {
         setLoading(false);
@@ -62,6 +97,22 @@ function ProfileEdit() {
   const handleProfileImageChange = (e) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
+      
+      // 파일 크기 체크 (5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        setToastMessage("프로필 이미지 크기는 5MB 이하여야 합니다.");
+        setShowToast(true);
+        return;
+      }
+      
+      // 파일 타입 체크
+      const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg'];
+      if (!validTypes.includes(file.type)) {
+        setToastMessage("지원하지 않는 파일 형식입니다. (jpg, jpeg, png, gif만 가능)");
+        setShowToast(true);
+        return;
+      }
+      
       setProfileImage(file);
       setProfileImagePreview(URL.createObjectURL(file));
     }
@@ -86,12 +137,48 @@ function ProfileEdit() {
       if (error.response) {
         console.error('오류 상태:', error.response.status);
         console.error('오류 데이터:', error.response.data);
+        
+        // 에러 메시지 처리 개선
+        if (error.response.data?.message) {
+          setToastMessage(getErrorMessage(error.response.data.message));
+        } else if (error.response.data?.errorCode) {
+          setToastMessage(getErrorMessage(error.response.data.errorCode));
+        } else if (error.response.status === 401) {
+          setToastMessage("로그인이 필요한 서비스입니다.");
+        } else {
+          setToastMessage("회원 탈퇴 처리 중 오류가 발생했습니다.");
+        }
+      } else {
+        setToastMessage("서버에 연결할 수 없습니다. 네트워크 연결을 확인해주세요.");
       }
+
       setShowWithdrawalModal(false);
-      setToastMessage("회원 탈퇴 처리 중 오류가 발생했습니다.");
       setShowToast(true);
     }
   };
+
+  // 닉네임 입력 변경 핸들러 추가
+  // const handleNicknameChange = (e) => {
+  //   const value = e.target.value;
+    
+  //   // 띄어쓰기 확인 및 제거
+  //   if (value.includes(' ')) {
+  //     setToastMessage("닉네임에는 띄어쓰기를 사용할 수 없습니다.");
+  //     setShowToast(true);
+  //     // 띄어쓰기 제거한 값으로 설정
+  //     setNickname(value.replace(/\s/g, ''));
+  //     return;
+  //   }
+    
+  //   setNickname(value);
+  // };
+
+  // 그리고 handleUpdateProfile 함수에도 검증 로직 추가
+  // if (nickname.includes(' ')) {
+  //   setToastMessage("닉네임에는 띄어쓰기를 사용할 수 없습니다.");
+  //   setShowToast(true);
+  //   return;
+  // }
 
   const handleUpdateProfile = () => {
     // 폼 유효성 검사
@@ -101,9 +188,16 @@ function ProfileEdit() {
       return;
     }
     
-    // 닉네임 길이 체크
-    if (nickname.length < 2 || nickname.length > 20) {
-      setToastMessage("닉네임은 2~20자 이내로 입력해주세요.");
+    // 닉네임 길이 체크 - 10자 이내로 수정
+    if (nickname.trim().length > 10) {
+      setToastMessage("닉네임은 10자 이내로 입력해주세요.");
+      setShowToast(true);
+      return;
+    }
+    
+    // 띄어쓰기 확인
+    if (nickname.includes(' ')) {
+      setToastMessage("닉네임에는 띄어쓰기를 사용할 수 없습니다.");
       setShowToast(true);
       return;
     }
@@ -131,7 +225,54 @@ function ProfileEdit() {
     } catch (err) {
       console.error('프로필 수정 실패:', err);
       setShowProfileModal(false);
-      setToastMessage("프로필 수정에 실패했습니다.");
+      
+      // 에러 응답에 따른 구체적인 메시지 표시
+      if (err.response) {
+        console.error('오류 응답:', err.response.data);
+        
+        if (err.response.data?.message) {
+          const errorCode = err.response.data.message;
+          
+          if (errorCode === 'duplicate_nickname') {
+            setToastMessage("이미 사용 중인 닉네임입니다.");
+          } else if (errorCode === 'invalid_nickname_length') {
+            setToastMessage("닉네임은 10자 이내로 입력해주세요.");
+          } else if (errorCode === 'image_not_found') {
+            setToastMessage("업로드된 이미지를 찾을 수 없습니다.");
+          } else if (errorCode === 'invalid_file_extension') {
+            setToastMessage("지원하지 않는 파일 형식입니다. (jpg, jpeg, png, gif만 가능)");
+          } else if (errorCode === 'required_profile_update_data') {
+            setToastMessage("변경할 정보를 입력해주세요.");
+          } else if (errorCode === 'unauthorized') {
+            setToastMessage("로그인이 필요한 서비스입니다.");
+            // 로그인 페이지로 리다이렉트
+            setTimeout(() => {
+              navigate('/login');
+            }, 2000);
+          } else {
+            setToastMessage(getErrorMessage(errorCode));
+          }
+        } else if (err.response.data?.errorCode) {
+          setToastMessage(getErrorMessage(err.response.data.errorCode));
+        } else if (err.response.status === 401) {
+          setToastMessage("로그인이 필요한 서비스입니다.");
+          // 로그인 페이지로 리다이렉트
+          setTimeout(() => {
+            navigate('/login');
+          }, 2000);
+        } else if (err.response.status === 400) {
+          setToastMessage("입력한 정보가 유효하지 않습니다.");
+        } else if (err.response.status === 409) {
+          setToastMessage("이미 사용 중인 닉네임입니다.");
+        } else {
+          setToastMessage("프로필 수정에 실패했습니다.");
+        }
+      } else if (err.request) {
+        setToastMessage("서버에 연결할 수 없습니다. 네트워크 연결을 확인해주세요.");
+      } else {
+        setToastMessage("프로필 수정 중 오류가 발생했습니다.");
+      }
+      
       setShowToast(true);
     }
   };
@@ -149,9 +290,9 @@ function ProfileEdit() {
   // 로딩 중이면 로딩 표시
   if (loading) {
     return (
-      <div className="flex flex-col h-full items-center justify-center bg-gray-50">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-800"></div>
-        <p className="mt-4 text-gray-600">사용자 정보를 불러오는 중...</p>
+      <div className="flex flex-col h-full items-center justify-center bg-amber-50">
+        <div className="animate-spin rounded-full h-14 w-14 border-4 border-amber-800 border-t-transparent"></div>
+        <p className="mt-4 text-amber-800 font-medium">사용자 정보를 불러오는 중...</p>
       </div>
     );
   }
@@ -159,14 +300,17 @@ function ProfileEdit() {
   // 에러가 있으면 에러 메시지 표시
   if (error) {
     return (
-      <div className="flex flex-col h-full items-center justify-center bg-gray-50">
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative max-w-md">
-          <span className="block sm:inline">{error}</span>
+      <div className="flex flex-col h-full items-center justify-center bg-amber-50">
+        <div className="bg-red-100 border border-red-400 text-red-700 px-6 py-4 rounded-lg shadow-md mb-4 w-full max-w-md">
+          <span className="block sm:inline font-medium">{error}</span>
         </div>
-        <button 
+        <button
           onClick={() => navigate('/profile')}
-          className="mt-4 px-4 py-2 bg-amber-800 text-white rounded hover:bg-amber-700"
+          className="mt-4 px-6 py-3 bg-amber-800 text-white rounded-full shadow-md hover:bg-amber-700 transition-all duration-300 flex items-center"
         >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
           프로필 페이지로 이동
         </button>
       </div>
@@ -174,22 +318,28 @@ function ProfileEdit() {
   }
 
   return (
-    <div className="flex flex-col h-full bg-gray-50">
+    <div className="flex flex-col h-full bg-amber-50">
       {/* 헤더 */}
-      <header className="bg-white p-4 shadow-md flex items-center">
-        <button onClick={() => navigate('/profile')} className="mr-2">
+      <header className="bg-white pt-2 pb-0 px-4 shadow-md flex items-center relative">
+        <button onClick={() => navigate('/profile')} className="absolute left-4">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
         </button>
-        <h1 className="text-lg font-bold text-gray-800">회원정보 수정</h1>
+        <div className="flex-grow flex justify-center">
+          <img
+            src="/gangazido-logo-header.png"
+            alt="Gangazido Logo Header"
+            className="h-14 w-28 object-cover"
+          />
+        </div>
       </header>
 
       {/* 메인 컨텐츠 */}
       <div className="flex-1 p-4 overflow-y-auto">
         <div className="bg-white rounded-xl shadow-md p-4 mb-4">
           <div className="flex flex-col items-center mb-6">
-            <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center mb-3 overflow-hidden">
+            <div className="w-24 h-24 rounded-full bg-amber-100 flex items-center justify-center mb-3 overflow-hidden">
               {profileImagePreview ? (
                 <img 
                   src={profileImagePreview} 
@@ -197,9 +347,9 @@ function ProfileEdit() {
                   className="w-full h-full object-cover"
                 />
               ) : (
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-full h-full text-gray-400">
-                  <path fillRule="evenodd" d="M18.685 19.097A9.723 9.723 0 0021.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 003.065 7.097A9.716 9.716 0 0012 21.75a9.716 9.716 0 006.685-2.653zm-12.54-1.285A7.486 7.486 0 0112 15a7.486 7.486 0 015.855 2.812A8.224 8.224 0 0112 20.25a8.224 8.224 0 01-5.855-2.438zM15.75 9a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" clipRule="evenodd" />
-                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-amber-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>    
               )}
             </div>
             <label htmlFor="profile-upload" className="text-sm text-amber-800 font-medium cursor-pointer">
@@ -232,11 +382,20 @@ function ProfileEdit() {
                 type="text"
                 placeholder="닉네임을 입력하세요"
                 value={nickname}
-                onChange={(e) => setNickname(e.target.value)}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  // 띄어쓰기가 있는 경우 알림만 하고 입력은 허용
+                  if (value.includes(' ')) {
+                    setToastMessage("닉네임에는 띄어쓰기를 사용할 수 없습니다.");
+                    setShowToast(true);
+                  }
+                  // 입력값 그대로 설정 (검증은 제출 시에만)
+                  setNickname(value);
+                }}
                 className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
                 required
               />
-              <p className="text-xs text-gray-500 mt-1">2~20자 이내로 입력해주세요</p>
+              <p className="text-xs text-gray-500 mt-1">10자 이내로 입력해주세요 (띄어쓰기 불가)</p>
             </div>
 
             <button 
@@ -363,4 +522,4 @@ function ProfileEdit() {
   );
 }
 
-export default ProfileEdit; 
+export default ProfileEdit;

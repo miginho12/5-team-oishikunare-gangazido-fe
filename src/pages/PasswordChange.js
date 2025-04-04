@@ -56,14 +56,15 @@ function PasswordChange() {
     const value = e.target.value;
     setNewPassword(value);
     
-    const error = validateNewPassword(value);
-    if (error) {
+    // 값이 비어있지 않을 때만 유효성 검사 실행
+    if (value) {
+      const error = validateNewPassword(value);
       setPasswordError(error);
     } else {
       setPasswordError(null);
     }
     
-    // 비밀번호 확인과 일치 여부 체크
+    // 비밀번호 확인란이 비어있지 않고, 값이 다를 경우
     if (confirmPassword && value !== confirmPassword) {
       setPasswordError('새 비밀번호가 일치하지 않습니다.');
     }
@@ -77,7 +78,13 @@ function PasswordChange() {
     if (newPassword && value && newPassword !== value) {
       setPasswordError('새 비밀번호가 일치하지 않습니다.');
     } else {
-      setPasswordError(null);
+      // 새 비밀번호가 유효하지 않다면 그 오류 메시지 유지
+      if (newPassword) {
+        const error = validateNewPassword(newPassword);
+        setPasswordError(error);
+      } else {
+        setPasswordError(null);
+      }
     }
   };
 
@@ -95,6 +102,14 @@ function PasswordChange() {
     
     if (!confirmPassword) {
       setError('새 비밀번호 확인을 입력해주세요.');
+      return;
+    }
+    
+    // 새 비밀번호 유효성 확인 - 즉시 검사 추가
+    const newPasswordError = validateNewPassword(newPassword);
+    if (newPasswordError) {
+      setPasswordError(newPasswordError);
+      setError('입력한 새 비밀번호가 유효하지 않습니다.');
       return;
     }
     
@@ -162,15 +177,21 @@ function PasswordChange() {
   }, [showToast]);
 
   return (
-    <div className="flex flex-col h-full bg-gray-50">
+    <div className="flex flex-col h-full bg-amber-50">
       {/* 헤더 */}
-      <header className="bg-white p-4 shadow-md flex items-center">
-        <button onClick={() => navigate('/profile')} className="mr-2">
+      <header className="bg-white pt-2 pb-0 px-4 shadow-md flex items-center relative">
+        <button onClick={() => navigate('/profile')} className="absolute left-4">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
         </button>
-        <h1 className="text-lg font-bold text-gray-800">비밀번호 변경</h1>
+        <div className="flex-grow flex justify-center">
+          <img
+            src="/gangazido-logo-header.png"
+            alt="Gangazido Logo Header"
+            className="h-14 w-28 object-cover"
+          />
+        </div>
       </header>
 
       {/* 메인 컨텐츠 */}
@@ -276,4 +297,4 @@ function PasswordChange() {
   );
 }
 
-export default PasswordChange; 
+export default PasswordChange;
