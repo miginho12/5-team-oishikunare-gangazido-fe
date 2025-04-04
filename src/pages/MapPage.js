@@ -1584,7 +1584,7 @@ function MapPage() {
         return prev.map((markerInfo) => {
           let shouldShow = false;
 
-          // 👇 내 마커 필터링
+          // 내 마커 필터링
           if (type === "mine") {
             shouldShow = isAuthenticated && markerInfo.user_id === user?.userId;
           } else {
@@ -1592,15 +1592,22 @@ function MapPage() {
             shouldShow = markerInfo.type === type || type === "all";
           }
 
+          // if (shouldShow) {
+          //   markersToShow.push(markerInfo.marker);
+          //   if (!markerInfo.marker.getMap()) {
+          //     markerInfo.marker.setMap(map);
+          //   }
+          // } else {
+          //   if (markerInfo.marker.getMap()) {
+          //     markerInfo.marker.setMap(null);
+          //   }
+          // }
+
+          // 항상 setMap(null) 처리해두기 (중복 방지) 모바일 위해
+          markerInfo.marker.setMap(null);
+
           if (shouldShow) {
             markersToShow.push(markerInfo.marker);
-            if (!markerInfo.marker.getMap()) {
-              markerInfo.marker.setMap(map);
-            }
-          } else {
-            if (markerInfo.marker.getMap()) {
-              markerInfo.marker.setMap(null);
-            }
           }
 
           return markerInfo;
