@@ -147,22 +147,26 @@ function PetEdit() {
       profileImageToSend = undefined;
     }
 
+    const payload = {
+      name,
+      age,
+      gender: gender === 'male',
+      breed,
+      weight,
+      profileImage: profileImageToSend,
+    };
+  
+    if (profileImageToSend === undefined) {
+      delete payload.profileImage; // 기존 이미지 유지
+    }
+  
     try {
-      await updatePetInfo({
-        name,
-        age,
-        gender: gender === 'male',
-        breed,
-        weight,
-        profileImage: profileImageToSend,
-      });
-
-
+      await updatePetInfo(payload); // ⬅ 기존 코드 이 위치 유지!
       setShowToast(true);
       setTimeout(() => navigate('/pets'), 2000);
     } catch (error) {
       const errorMsg = error.response?.data?.message;
-      handleRegisterError(errorMsg); // 3. 백엔드 에러 메시지 처리
+      handleRegisterError(errorMsg);
     }
   };
 
