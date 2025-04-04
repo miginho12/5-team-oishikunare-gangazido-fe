@@ -119,7 +119,7 @@ function PetEdit() {
     let profileImageKeyToSend = originalProfileImageKey;
 
     // ✅ 이미지 제거 의도가 명확한 경우만 null 전송
-    if (profileImage === null && !profileImagePreview) {
+    if (profileImage === null && !profileImagePreview && !originalProfileImageKey) {
       profileImageKeyToSend = null;
     }
 

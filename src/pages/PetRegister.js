@@ -85,14 +85,18 @@ function PetRegister() {
   };
 
   const handleProfileImageChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
+    const file = e.target.files?.[0];
+
+    if (file) {
+      // ✅ 사용자가 실제로 파일을 선택한 경우
       setProfileImage(file);
-  
       const tempUrl = URL.createObjectURL(file);
+      setProfileImagePreview(tempUrl);
       console.log("🖼 선택한 로컬 이미지 preview URL:", tempUrl);
-  
-      setProfileImagePreview(tempUrl); // S3 전 임시 미리보기
+    } else {
+      // ✅ 사용자가 '파일 선택' 창에서 취소를 누른 경우
+      setProfileImage(null); // S3 업로드 대상 제거
+      setProfileImagePreview(null); // 미리보기 초기화
     }
   };
 
