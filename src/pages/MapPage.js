@@ -1007,6 +1007,11 @@ function MapPage() {
         },
         icon: "📍",
       });
+      // 마커 등록 후 필터를 전체로 전환
+      setFilterType("all");
+      currentFilterTypeRef.current = "all";
+      filterMarkersByType("all");
+      
       return markerInfo;
       } catch (error) {
         const status = error.response?.status;
