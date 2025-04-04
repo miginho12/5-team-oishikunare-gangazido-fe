@@ -16,6 +16,14 @@ function ProfilePage() {
   console.log(logoutError);
   const [showPrivacyModal, setShowPrivacyModal] = useState(false);
   const [showTermsModal, setShowTermsModal] = useState(false);
+  const [version, setVersion] = useState < string > "";
+
+  useEffect(() => {
+    fetch("/version.json")
+      .then((res) => res.json())
+      .then((data) => setVersion(data.version))
+      .catch(() => setVersion("unknown"));
+  }, []);
 
   // 컴포넌트 마운트 시 사용자 정보 로드
   useEffect(() => {
@@ -92,7 +100,9 @@ function ProfilePage() {
     return (
       <div className="flex flex-col h-full items-center justify-center bg-amber-50">
         <div className="animate-spin rounded-full h-14 w-14 border-4 border-amber-800 border-t-transparent"></div>
-        <p className="mt-4 text-amber-800 font-medium">사용자 정보를 불러오는 중...</p>
+        <p className="mt-4 text-amber-800 font-medium">
+          사용자 정보를 불러오는 중...
+        </p>
       </div>
     );
   }
@@ -108,8 +118,19 @@ function ProfilePage() {
           onClick={() => navigate("/login")}
           className="mt-4 px-6 py-3 bg-amber-800 text-white rounded-full shadow-md hover:bg-amber-700 transition-all duration-300 flex items-center"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-5 w-5 mr-2"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M10 19l-7-7m0 0l7-7m-7 7h18"
+            />
           </svg>
           로그인 페이지로 이동
         </button>
@@ -149,7 +170,7 @@ function ProfilePage() {
                     e.target.src =
                       process.env.PUBLIC_URL + "/images/default.jpg";
                   }}
-                //src={userInfo.profileImage}
+                  //src={userInfo.profileImage}
                 />
               ) : (
                 <svg
@@ -375,14 +396,19 @@ function ProfilePage() {
                   </svg>
                   <span className="text-gray-700">앱 버전</span>
                 </div>
-                <span className="text-gray-500">1.0.0</span>
+                <span className="text-gray-500">{version || "0.0.1"}</span>
               </button>
             </li>
 
             <li>
-              <button 
+              <button
                 className="w-full flex items-center justify-between p-3 rounded-md hover:bg-gray-50"
-                onClick={() => window.open('https://github.com/orgs/100-hours-a-week/teams/jeju-2nd-5?query=', '_blank')}
+                onClick={() =>
+                  window.open(
+                    "https://github.com/orgs/100-hours-a-week/teams/jeju-2nd-5?query=",
+                    "_blank"
+                  )
+                }
               >
                 <div className="flex items-center">
                   <svg
@@ -449,7 +475,7 @@ function ProfilePage() {
             </li> */}
 
             <li>
-              <button 
+              <button
                 className="w-full flex items-center justify-between p-3 rounded-md hover:bg-gray-50"
                 onClick={() => setShowPrivacyModal(true)}
               >
@@ -487,7 +513,7 @@ function ProfilePage() {
               </button>
             </li>
             <li>
-              <button 
+              <button
                 className="w-full flex items-center justify-between p-3 rounded-md hover:bg-gray-50"
                 onClick={() => setShowTermsModal(true)}
               >
@@ -616,60 +642,82 @@ function ProfilePage() {
           </button>
         </div>
       </nav>
-      
+
       {/* 개인정보 처리방침 모달 */}
       {showPrivacyModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-4/5 max-w-md overflow-y-auto max-h-[80vh]">
-            <h3 className="text-lg font-medium text-gray-900 mb-3">📌 개인정보 처리방침</h3>
+            <h3 className="text-lg font-medium text-gray-900 mb-3">
+              📌 개인정보 처리방침
+            </h3>
             <div className="space-y-4">
               <p className="text-sm text-gray-600">
-                &apos;강아지 산책 도우미&apos;는 사용자들의 위치 기반 산책 경험을 향상시키기 위해 다음과 같은 개인정보를 수집 및 이용합니다.
+                &apos;강아지 산책 도우미&apos;는 사용자들의 위치 기반 산책
+                경험을 향상시키기 위해 다음과 같은 개인정보를 수집 및
+                이용합니다.
               </p>
-              
+
               <div>
-                <h4 className="text-md font-medium text-gray-800 mb-1">1. 수집하는 개인정보 항목</h4>
+                <h4 className="text-md font-medium text-gray-800 mb-1">
+                  1. 수집하는 개인정보 항목
+                </h4>
                 <ul className="text-sm text-gray-600 list-disc pl-5">
                   <li>닉네임, 프로필 사진 (선택)</li>
                   <li>반려견 정보 (이름, 품종, 나이 등)</li>
                   <li>사용자의 위치 정보 (지도 마커 등록 시)</li>
                 </ul>
               </div>
-              
+
               <div>
-                <h4 className="text-md font-medium text-gray-800 mb-1">2. 개인정보의 이용 목적</h4>
+                <h4 className="text-md font-medium text-gray-800 mb-1">
+                  2. 개인정보의 이용 목적
+                </h4>
                 <ul className="text-sm text-gray-600 list-disc pl-5">
                   <li>마커 등록 및 공유 기능 제공</li>
                   <li>사용자 맞춤형 지도 정보 제공</li>
                   <li>서비스 개선 및 사용자 통계 분석</li>
                 </ul>
               </div>
-              
+
               <div>
-                <h4 className="text-md font-medium text-gray-800 mb-1">3. 보관 및 파기</h4>
+                <h4 className="text-md font-medium text-gray-800 mb-1">
+                  3. 보관 및 파기
+                </h4>
                 <ul className="text-sm text-gray-600 list-disc pl-5">
                   <li>개인정보는 회원 탈퇴 시 즉시 파기됩니다.</li>
-                  <li>단, 관련 법령에 따라 보존이 필요한 경우 일정 기간 동안 보관될 수 있습니다.</li>
+                  <li>
+                    단, 관련 법령에 따라 보존이 필요한 경우 일정 기간 동안
+                    보관될 수 있습니다.
+                  </li>
                 </ul>
               </div>
-              
+
               <div>
-                <h4 className="text-md font-medium text-gray-800 mb-1">4. 제3자 제공</h4>
+                <h4 className="text-md font-medium text-gray-800 mb-1">
+                  4. 제3자 제공
+                </h4>
                 <ul className="text-sm text-gray-600 list-disc pl-5">
-                  <li>본 서비스는 사용자의 동의 없이 개인정보를 외부에 제공하지 않습니다.</li>
+                  <li>
+                    본 서비스는 사용자의 동의 없이 개인정보를 외부에 제공하지
+                    않습니다.
+                  </li>
                 </ul>
               </div>
-              
+
               <div>
-                <h4 className="text-md font-medium text-gray-800 mb-1">5. 사용자 권리</h4>
+                <h4 className="text-md font-medium text-gray-800 mb-1">
+                  5. 사용자 권리
+                </h4>
                 <ul className="text-sm text-gray-600 list-disc pl-5">
-                  <li>개인정보 조회, 수정, 삭제 요청은 [설정 {'>'}  내정보] 메뉴를 통해 가능하며, 언제든지 탈퇴하실 수 있습니다.</li>
+                  <li>
+                    개인정보 조회, 수정, 삭제 요청은 [설정 {">"} 내정보] 메뉴를
+                    통해 가능하며, 언제든지 탈퇴하실 수 있습니다.
+                  </li>
                 </ul>
               </div>
-              
             </div>
             <div className="mt-6 flex justify-end">
-              <button 
+              <button
                 onClick={() => setShowPrivacyModal(false)}
                 className="px-4 py-2 text-sm font-medium text-white bg-amber-800 rounded-md hover:bg-amber-700"
               >
@@ -684,55 +732,82 @@ function ProfilePage() {
       {showTermsModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-4/5 max-w-md overflow-y-auto max-h-[80vh]">
-            <h3 className="text-lg font-medium text-gray-900 mb-3">📌 이용약관</h3>
+            <h3 className="text-lg font-medium text-gray-900 mb-3">
+              📌 이용약관
+            </h3>
             <div className="space-y-4">
               <p className="text-sm text-gray-600">
-                본 서비스는 사용자들이 반려견과의 산책을 더욱 안전하고 즐겁게 만들 수 있도록,<br />
-                직접 마커를 통해 장소를 기록하고 공유할 수 있는 위치 기반 서비스입니다.
+                본 서비스는 사용자들이 반려견과의 산책을 더욱 안전하고 즐겁게
+                만들 수 있도록,
+                <br />
+                직접 마커를 통해 장소를 기록하고 공유할 수 있는 위치 기반
+                서비스입니다.
               </p>
-              
+
               <div>
-                <h4 className="text-md font-medium text-gray-800 mb-1">1. 서비스 목적</h4>
+                <h4 className="text-md font-medium text-gray-800 mb-1">
+                  1. 서비스 목적
+                </h4>
                 <ul className="text-sm text-gray-600 list-disc pl-5">
                   <li>반려견 산책 장소 추천, 위험요소 정보 공유</li>
                   <li>커뮤니티 기반 마킹 지도 운영</li>
                 </ul>
               </div>
-              
+
               <div>
-                <h4 className="text-md font-medium text-gray-800 mb-1">2. 이용자 의무</h4>
+                <h4 className="text-md font-medium text-gray-800 mb-1">
+                  2. 이용자 의무
+                </h4>
                 <ul className="text-sm text-gray-600 list-disc pl-5">
                   <li>허위 정보나 불쾌감을 유발하는 콘텐츠 등록 금지</li>
                   <li>서비스 이용 시 타인의 권리를 침해하지 않을 것</li>
                   <li>마커 등록 시 정확하고 책임 있는 정보 공유</li>
                 </ul>
               </div>
-              
+
               <div>
-                <h4 className="text-md font-medium text-gray-800 mb-1">3. 위치 정보 이용</h4>
+                <h4 className="text-md font-medium text-gray-800 mb-1">
+                  3. 위치 정보 이용
+                </h4>
                 <ul className="text-sm text-gray-600 list-disc pl-5">
-                  <li>본 서비스는 위치 기반 기능을 포함하며, 마커 등록 시 현재 위치를 사용할 수 있습니다.</li>
-                  <li>위치 정보는 서버에 저장되지 않으며, 사용자의 마커 생성 시에만 사용됩니다.</li>
+                  <li>
+                    본 서비스는 위치 기반 기능을 포함하며, 마커 등록 시 현재
+                    위치를 사용할 수 있습니다.
+                  </li>
+                  <li>
+                    위치 정보는 서버에 저장되지 않으며, 사용자의 마커 생성
+                    시에만 사용됩니다.
+                  </li>
                 </ul>
               </div>
-              
+
               <div>
-                <h4 className="text-md font-medium text-gray-800 mb-1">4. 서비스 제한 및 종료</h4>
+                <h4 className="text-md font-medium text-gray-800 mb-1">
+                  4. 서비스 제한 및 종료
+                </h4>
                 <ul className="text-sm text-gray-600 list-disc pl-5">
-                  <li>운영자는 부적절한 마커 또는 활동에 대해 사전 경고 없이 삭제하거나 이용을 제한할 수 있습니다.</li>
+                  <li>
+                    운영자는 부적절한 마커 또는 활동에 대해 사전 경고 없이
+                    삭제하거나 이용을 제한할 수 있습니다.
+                  </li>
                   <li>서비스는 사전 공지 후 변경되거나 중단될 수 있습니다.</li>
                 </ul>
               </div>
-              
+
               <div>
-                <h4 className="text-md font-medium text-gray-800 mb-1">5. 기타</h4>
+                <h4 className="text-md font-medium text-gray-800 mb-1">
+                  5. 기타
+                </h4>
                 <ul className="text-sm text-gray-600 list-disc pl-5">
-                  <li>본 약관에 동의함으로써 사용자는 서비스의 모든 정책에 따를 것을 인정합니다.</li>
+                  <li>
+                    본 약관에 동의함으로써 사용자는 서비스의 모든 정책에 따를
+                    것을 인정합니다.
+                  </li>
                 </ul>
               </div>
             </div>
             <div className="mt-6 flex justify-end">
-              <button 
+              <button
                 onClick={() => setShowTermsModal(false)}
                 className="px-4 py-2 text-sm font-medium text-white bg-amber-800 rounded-md hover:bg-amber-700"
               >
