@@ -134,7 +134,7 @@ function PetEdit() {
       profileImageKeyToSend = await uploadPetImage(profileImage); // 새 이미지 업로드
     } else if (isImageRemoved) {
       profileImageKeyToSend = null; // 이미지 삭제 요청
-    } else if (typeof originalProfileImageKey === 'string') {
+    } else if (originalProfileImageKey) {
       profileImageKeyToSend = undefined; // 기존 이미지 유지 → append 안 함
     }
 
