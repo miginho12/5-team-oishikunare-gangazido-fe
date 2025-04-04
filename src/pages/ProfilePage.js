@@ -32,22 +32,16 @@ function ProfilePage() {
         setLoading(true);
         const response = await getUserInfo();
         setUserInfo(response.data.data);
-        console.log(userInfo);
       } catch (err) {
         console.error("사용자 정보 로드 실패:", err);
-        if (err.response && err.response.status === 401) {
-          // 인증되지 않은 사용자는 로그인 페이지로 리다이렉트
-          navigate("/login");
-        } else {
-          setError("사용자 정보를 불러오는데 실패했습니다.");
-        }
+        setError("사용자 정보를 불러오는데 실패했습니다.");
       } finally {
         setLoading(false);
       }
     };
 
     fetchUserInfo();
-  }, [navigate]);
+  }, []);
 
   const goToMap = () => {
     navigate("/map");
@@ -107,36 +101,7 @@ function ProfilePage() {
     );
   }
 
-  // 에러가 있으면 에러 메시지 표시
-  if (error) {
-    return (
-      <div className="flex flex-col h-full items-center justify-center bg-amber-50">
-        <div className="bg-red-100 border border-red-400 text-red-700 px-6 py-4 rounded-lg shadow-md mb-4 w-full max-w-md">
-          <span className="block sm:inline font-medium">{error}</span>
-        </div>
-        <button
-          onClick={() => navigate("/login")}
-          className="mt-4 px-6 py-3 bg-amber-800 text-white rounded-full shadow-md hover:bg-amber-700 transition-all duration-300 flex items-center"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5 mr-2"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M10 19l-7-7m0 0l7-7m-7 7h18"
-            />
-          </svg>
-          로그인 페이지로 이동
-        </button>
-      </div>
-    );
-  }
+  
 
   return (
     <div className="flex flex-col h-full bg-amber-50">
