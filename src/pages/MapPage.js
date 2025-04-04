@@ -22,7 +22,15 @@ function MapPage() {
   const clusterRef = useRef(null);
 
   // AuthContext에서 인증 상태 가져오기
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
+  // console.log("어쓰", user);
+
+  const userRef = useRef(null);
+
+  // user를 useRef에 저장함으로써 최신 값 참조하도록
+  useEffect(() => {
+    userRef.current = user;
+  }, [user]);
 
   // 모달 관련 상태 수정
   const [showModal, setShowModal] = useState(false);
@@ -173,8 +181,8 @@ function MapPage() {
     }
 
     try {
-      const size = new window.kakao.maps.Size(40, 40);
-      const option = { offset: new window.kakao.maps.Point(20, 20) };
+      const size = new window.kakao.maps.Size(25, 25);
+      const option = { offset: new window.kakao.maps.Point(12.5, 12.5) };
 
       // 1. 댕플 마커
       markerImages.current[0].image = new window.kakao.maps.MarkerImage(
@@ -225,6 +233,50 @@ function MapPage() {
   // addMarker 함수의 ref 추가
   const addMarkerRef = useRef(null);
 
+  // 클러스터 스타일 정의
+  const CLUSTER_STYLES = {
+    mine: {
+      background: "rgba(34, 197, 94, 0.8)", // green-500
+      text: "#fff",
+    },
+    댕플: {
+      background: "rgba(251, 191, 36, 0.8)", // amber-300
+      text: "#fff",
+    },
+    댕져러스: {
+      background: "rgba(248, 113, 113, 0.8)", // red-400
+      text: "#fff",
+    },
+    all: {
+      background: "rgba(156, 163, 175, 0.8)", // gray-400
+      text: "#fff",
+    },
+  };
+
+  // 필터 타입에 따라 클러스터러 생성 함수
+  const createClustererWithStyle = (mapInstance, styleKey = "all") => {
+    const style = CLUSTER_STYLES[styleKey] || CLUSTER_STYLES.all;
+
+    return new window.kakao.maps.MarkerClusterer({
+      map: mapInstance,
+      averageCenter: true,
+      minLevel: 5,
+      disableClickZoom: false,
+      styles: [
+        {
+          width: "50px",
+          height: "50px",
+          background: style.background,
+          color: style.text,
+          textAlign: "center",
+          lineHeight: "50px",
+          borderRadius: "25px",
+          fontSize: "14px",
+          fontWeight: "bold",
+        },
+      ],
+    });
+  };
   // 지도 초기화
   useEffect(() => {
     // 카카오맵 API가 로드되지 않았으면 초기화하지 않음
@@ -267,7 +319,7 @@ function MapPage() {
         // 상태 업데이트
         setMap(kakaoMapInstance);
         setIsMapLoaded(true);
-
+        
         // 마커 클러스터러 초기화
         try {
           if (window.kakao.maps.MarkerClusterer) {
@@ -352,7 +404,7 @@ function MapPage() {
           }
         );
 
-        // 보이는 마커 업데이트 함수 (필터 적용 버전)
+        // 보이는 마커 업데이트 함수 (지도 드래그, 줌 이벤트 후 호출되는 함수)
         const updateVisibleMarkers = (mapInstance) => {
           if (!mapInstance) return;
 
@@ -370,8 +422,16 @@ function MapPage() {
                 const inBounds = bounds.contain(
                   markerInfo.marker.getPosition()
                 );
+
+                // 내 마커 필터 조건 추가
+                const isMine = isAuthenticated && markerInfo.user_id === userRef.current?.userId;
+
                 const matchesFilter =
-                  filterType === "all" || markerInfo.type === filterType;
+                  filterType === "all"
+                    ? true
+                    : filterType === "mine"
+                      ? isMine
+                      : markerInfo.type === filterType;
 
                 // 👉 필터와 영역 조건 모두 만족하는 경우만 지도에 표시
                 if (inBounds && matchesFilter) {
@@ -600,11 +660,11 @@ function MapPage() {
                 infoContent = `<div style="padding:5px;font-size:12px;">
                 <div class="custom-overlay-animate" style="margin-bottom:4px;">${emoji} ${markerType}${markerSubType ? ` - ${markerSubType}` : ""
                   }</div>
-                <button id="delete-marker" style="padding:2px 5px;background:#ff5555;color:white;border:none;border-radius:3px;">삭제</button>
+                <button id="delete-marker-${markerInfo.id}" style="padding:2px 5px;background:#ff5555;color:white;border:none;border-radius:3px;">삭제</button>
               </div>`;
               } else {
                 // 일반 마커 클릭 시
-                infoContent = `<div class="custom-overlay-animate" style="padding:5px;font-size:12px;">${markerType}<br><button id="delete-marker" style="padding:2px 5px;margin-top:5px;background:#ff5555;color:white;border:none;border-radius:3px;">삭제</button></div>`;
+                infoContent = `<div class="custom-overlay-animate" style="padding:5px;font-size:12px;">${markerType}<br><button id="delete-marker-${markerInfo.id}" style="padding:2px 5px;margin-top:5px;background:#ff5555;color:white;border:none;border-radius:3px;">삭제</button></div>`;
               }
 
               const overlay = new window.kakao.maps.CustomOverlay({
@@ -625,7 +685,7 @@ function MapPage() {
 
               // 인포윈도우 내부의 삭제 버튼에 이벤트 리스너 추가
               setTimeout(() => {
-                const deleteBtn = document.getElementById("delete-marker");
+                const deleteBtn = document.getElementById(`delete-marker-${markerInfo.id}`);
                 if (deleteBtn) {
                   deleteBtn.onclick = () => {
                     // removeMarker 함수 ref 사용
@@ -779,6 +839,7 @@ function MapPage() {
 
       const markerInfo = {
         id: serverMarker.id, // 서버에서 받은 ID
+        user_id: user.userId, // 사용자 ID
         marker,
         position: {
           lat: serverMarker.latitude,
@@ -800,6 +861,9 @@ function MapPage() {
             : tempMarkerSubType
               ? MARKER_IMAGES.EMOJI[tempMarkerSubType] || "⚠️"
               : "⚠️";
+
+        const deleteBtnId = `delete-marker-${markerInfo.id}`;
+        const closeBtnId = `close-overlay-${markerInfo.id}`;
 
         const infoContent = `
           <div class="custom-overlay-animate"
@@ -837,7 +901,7 @@ function MapPage() {
                 cursor: pointer;
               ">&times;</button>
             </div>
-            <button id="delete-marker" style="
+            <button id="${deleteBtnId}" style="
               padding: 8px 12px;
               width: 70px;
               background: #ef4444;
@@ -861,17 +925,22 @@ function MapPage() {
           zIndex: 9999 // ✅ 마커보다 높은 z-index 설정
         });
 
-        // overlay.open(map, marker);
-        overlay.setMap(map); // ✅ 올바른 방식
+        overlay.setMap(map);
         markerInfo.overlay = overlay;
 
         setTimeout(() => {
-          const deleteBtn = document.getElementById("delete-marker");
+          const deleteBtn = document.getElementById(deleteBtnId);
           if (deleteBtn) {
             deleteBtn.onclick = async () => {
               try {
                 await deleteMarker(markerInfo.id);
                 overlay.setMap(null); // ✅ 커스텀 오버레이 닫기
+
+                // 👇 클러스터도 비우고 다시 마커를 불러와 강제 동기화
+                if (clusterRef.current) {
+                  clusterRef.current.clear();
+                }
+                
                 fetchMarkersFromBackend(); // 🔁 최신 데이터로 다시 로드
                 // ✅ 토스트 메시지 추가
                 toast.success("마커가 삭제되었습니다!", {
@@ -884,12 +953,19 @@ function MapPage() {
                     boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
                     fontWeight: "bold",
                   },
-                  icon: "🗑", // 커스텀 이모지 가능
+                  icon: "🗑", 
                 });
               } catch (err) {
                 console.error("삭제 실패:", err);
                 alert("삭제 권한이 없거나 로그인되지 않았습니다.");
               }
+            };
+          }
+
+          const closeBtn = document.getElementById(closeBtnId);
+          if (closeBtn) {
+            closeBtn.onclick = () => {
+              overlay.setMap(null);
             };
           }
         }, 100);
@@ -932,12 +1008,28 @@ function MapPage() {
         icon: "📍",
       });
       return markerInfo;
-    } catch (error) {
-      const status = error.response?.status;
-      const message = error.response?.data?.message;
+      } catch (error) {
+        const status = error.response?.status;
+        const message = error.response?.data?.message;
 
       if (status === 401 || message === "required_authorization") {
         alert("로그인 후 이용해주세요");
+      } else if (message === "limit_exceeded") {
+        toast.warn("마커는 1시간에 최대 30개까지 등록돼요!", {
+          position: "bottom-center",
+          autoClose: 2500,
+          style: {
+            background: "#fffbea",
+            color: "#92400e",
+            border: "1px solid #fde68a",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+            fontWeight: "bold",
+          },
+          icon: "⚠️",
+        });
+        // 마커 등록모드 해제
+        setIsCenterMode(false);
+        setShowModal(false);
       } else {
         console.error("❌ 마커 등록 중 오류:", error);
         setIsCenterMode(false);
@@ -987,19 +1079,21 @@ function MapPage() {
     [map]
   );
 
-  const triedLocationRef = useRef(false); // ✅ 한 번만 알림 띄우기 위한 ref
-
-  // 현재 위치로 이동하기 (경고 제거를 위해 사용되는 함수로 표시)
-  // eslint-disable-next-line no-unused-vars
-  // 일단 주석처리 제리.. HTTPS 이후 ..?
+  const triedLocationRef = useRef(false); 
   const moveToCurrentLocation = useCallback(() => { 
     if (!map) {
-      alert("지도가 아직 초기화되지 않았습니다.");
+      toast.error("지도가 아직 초기화되지 않았습니다!", {
+        position: "bottom-center",
+        autoClose: 2000,
+      });
       return;
     }
 
     if (!navigator.geolocation) {
-      alert("이 브라우저는 위치 정보를 지원하지 않아요.");
+      toast.error("이 브라우저는 위치 정보를 지원하지 않아요.", {
+        position: "bottom-center",
+        autoClose: 2000,
+      });
       return;
     }
 
@@ -1013,7 +1107,9 @@ function MapPage() {
           map.setLevel(4);
         }
         setCenterPosition({ lat: latitude, lng: longitude });
-
+        
+        // 이동한 위치 기준으로 마커 다시 불러오기!
+        fetchMarkersFromBackendRef.current?.();
         console.log("📍 현재 위치로 이동 완료:", latitude, longitude);
       },
       (error) => {
@@ -1159,6 +1255,7 @@ function MapPage() {
 
         const markerInfo = {
           id: mData.id, // ✅ 서버에서 내려준 진짜 마커 ID 사용
+          user_id: mData.user_id, // ✅ 마커주인의 userId 저장
           marker,
           position: {
             lat: mData.latitude,
@@ -1178,7 +1275,8 @@ function MapPage() {
             type === "댕플"
               ? "🐶"
               : MARKER_IMAGES.EMOJI[subType] || "⚠️";
-        
+              console.log("user.userId:", user?.userId, typeof user?.userId);
+              console.log("markerInfo.user_id:", markerInfo.user_id, typeof markerInfo.user_id);
           const infoContent = `
             <div class="custom-overlay-animate"
               style="
@@ -1215,7 +1313,8 @@ function MapPage() {
                   cursor: pointer;
                 ">&times;</button>
               </div>
-              <button id="delete-marker" style="
+              ${user?.userId == markerInfo.user_id // 마커 권한 문제뜨는 것 수정
+                ? `<button id="delete-marker-${markerInfo.id}" style="
                 padding: 8px 12px;
                 width: 70px;
                 background: #ef4444;
@@ -1226,7 +1325,9 @@ function MapPage() {
                 font-size: 14px;
                 font-weight: bold;
                 box-shadow: 0 2px 4px rgba(0,0,0,0.15);
-              ">삭제</button>
+              ">삭제</button>`
+                : ""
+              }
             </div>
           `;
         
@@ -1244,7 +1345,7 @@ function MapPage() {
         
           // ✅ delete 버튼이 나타날 때까지 기다려서 이벤트 등록
           const tryAttachDeleteHandler = () => {
-            const deleteBtn = document.getElementById("delete-marker");
+            const deleteBtn = document.getElementById(`delete-marker-${markerInfo.id}`);
             if (deleteBtn) {
               deleteBtn.onclick = async () => {
                 try {
@@ -1281,7 +1382,7 @@ function MapPage() {
                       icon: "🔐",
                     });
                   } else if (message === "required_permission") {
-                    toast.error("마커 삭제 권한이 없습니다!", {
+                    toast.error("다른 유저의 마커를 삭제할 수 없습니다", {
                       position: "bottom-center",
                       autoClose: 2000,
                       style: {
@@ -1350,83 +1451,102 @@ function MapPage() {
         alert("로그인 후 이용해주세요!");
       } else {
         console.error("📛 마커 불러오기 실패:", error);
-        alert("마커를 불러오는 중 오류가 발생했습니다.");
+        toast.error("마커를 불러오는 중 오류가 발생했습니다!", {
+          position: "bottom-center",
+          autoClose: 2000,
+        });
       }
     }
   }, [map, markerImages, mapMarkers]);
 
   const hasFetchedMarkers = useRef(false); // 딱 한 번만 실행되게 플래그
 
-  useEffect(() => {
-    if (map && !hasFetchedMarkers.current) {
+  useEffect(() => { // user 정보가 로딩되지 않은 상태에서 마커 불러오는 것 방지
+    if (map && user?.userId !== undefined && !hasFetchedMarkers.current) {
       console.log("🛰 마커 요청 딱 한 번 보내기!");
       fetchMarkersFromBackend();
       hasFetchedMarkers.current = true;
+    } else if (!hasFetchedMarkers.current) {
+      console.log("🔁 사용자 정보 업데이트 감지, 마커 다시 불러오기!");
+      fetchMarkersFromBackend();
+      hasFetchedMarkers.current = true;
     }
-  }, [map]);
+  }, [map, user]);
+
   // 마커 타입 필터링 함수
   const filterMarkersByType = useCallback(
     (type) => {
-      currentFilterTypeRef.current = type; // ⭐️ 현재 필터 타입 기억
+      currentFilterTypeRef.current = type;
       setFilterType(type);
-
-      // 마커 맵 표시 상태 일괄 업데이트 (최적화)
+  
       const markersToShow = [];
+  
       setMarkers((prev) => {
-        // 기존 마커 배열을 수정하되 표시 상태만 변경
         return prev.map((markerInfo) => {
-          const shouldShow = markerInfo.type === type || type === "all";
-
-          // 바로 상태를 변경하지 않고 변경할 마커만 컬렉션
+          let shouldShow = false;
+  
+          // 👇 내 마커 필터링
+          if (type === "mine") {
+            shouldShow =
+              isAuthenticated && markerInfo.user_id === user?.userId;
+          } else {
+            // 기존 방식
+            shouldShow = markerInfo.type === type || type === "all";
+          }
+  
           if (shouldShow) {
             markersToShow.push(markerInfo.marker);
             if (!markerInfo.marker.getMap()) {
-              // 현재 표시되지 않은 경우만 표시 설정
               markerInfo.marker.setMap(map);
             }
           } else {
             if (markerInfo.marker.getMap()) {
-              // 현재 표시된 경우만 숨김 설정
               markerInfo.marker.setMap(null);
             }
           }
-
+  
           return markerInfo;
         });
       });
-
-      // 클러스터러 업데이트는 약간의 지연 시간을 두고 처리
+  
+      // 클러스터 새로 만들기 (생략 가능하긴 함)
+      if (clusterRef.current) {
+        clusterRef.current.clear();
+        clusterRef.current.setMap(null);
+      }
+      clusterRef.current = createClustererWithStyle(map, type);
+  
       setTimeout(() => {
         if (clusterRef.current) {
-          // 클러스터 초기화
-          clusterRef.current.clear();
-
-          // 필터링된 마커 중 보이는 영역에 있는 마커만 클러스터에 추가
           const currentMarkers = markersRef.current;
-          const bounds = map ? map.getBounds() : null;
-
+          const bounds = map?.getBounds();
           if (bounds && currentMarkers) {
             const visibleFilteredMarkers = currentMarkers.filter(
-              (markerInfo) =>
-                (markerInfo.type === type || type === "all") &&
-                bounds.contain(markerInfo.marker.getPosition())
+              (markerInfo) => {
+                const inBounds = bounds.contain(
+                  markerInfo.marker.getPosition()
+                );
+                const isMine =
+                  isAuthenticated && markerInfo.user_id === user?.userId;
+  
+                const matchesFilter =
+                  type === "mine"
+                    ? isMine
+                    : type === "all" || markerInfo.type === type;
+  
+                return matchesFilter && inBounds;
+              }
             );
-
-            // 클러스터에 표시될 마커들을 일괄 추가
-            if (visibleFilteredMarkers.length > 0) {
-              const markersForCluster = visibleFilteredMarkers.map(
-                (m) => m.marker
-              );
-              clusterRef.current.addMarkers(markersForCluster);
-            }
-
-            // 보이는 마커 상태 업데이트
+  
+            clusterRef.current.addMarkers(
+              visibleFilteredMarkers.map((m) => m.marker)
+            );
             setVisibleMarkers(visibleFilteredMarkers);
           }
         }
       }, 10);
     },
-    [map]
+    [map, user, isAuthenticated]
   );
 
   // 컴포넌트 언마운트 시 마커 정리
@@ -1559,7 +1679,7 @@ function MapPage() {
         <p className="text-center text-amber-800 text-sm font-medium">
           {isCenterMode
             ? "지도를 움직여 중앙에 마커를 위치시키고 '확정' 버튼을 누르세요"
-            : "우측 버튼을 눌러 마커를 추가하세요"}
+            : "댕플, 댕져러스 버튼을 눌러 마커를 추가하세요"}
         </p>
       </div>
       
@@ -1609,7 +1729,7 @@ function MapPage() {
           </div>
         )}
 
-        {/* 현재 위치 이동 버튼 일단 두기 (HTTPS 전까지..) */}
+        {/* 현재 위치 이동 버튼 */}
         <div className="absolute bottom-3 right-3 z-30">
           <button
             onClick={moveToCurrentLocation}
@@ -1632,26 +1752,26 @@ function MapPage() {
             addMarkerAtCenter("댕플");
             setShowSubTypeButtons(false);
           }}
-          className="flex flex-col items-center justify-center w-16 h-16 bg-yellow-100 border border-yellow-300 rounded-full shadow hover:scale-105 transition"
+          className="flex flex-col items-center justify-center w-14 h-14 bg-yellow-100 border border-yellow-300 rounded-full shadow hover:scale-105 transition"
           aria-label="댕플 마커 추가"
         >
           <img
             src="/images/dangple_square.png"
             alt="댕플"
-            className="w-7 h-7 object-contain"
+            className="w-6 h-6 object-contain"
           />
-          <span className="text-[12px] font-semibold text-yellow-700 mt-1">댕플</span>
+          <span className="text-[11px] font-semibold text-yellow-700 mt-1">댕플</span>
         </button>
 
         {/* 댕져러스 드롭다운 트리거 버튼 */}
         <div className="relative">
           <button
             onClick={() => setShowSubTypeButtons(!showSubTypeButtons)}
-            className="flex flex-col items-center justify-center w-16 h-16 bg-red-100 border border-red-300 rounded-full shadow hover:scale-105 transition"
+            className="flex flex-col items-center justify-center w-14 h-14 bg-red-100 border border-red-300 rounded-full shadow hover:scale-105 transition"
             aria-label="댕져러스 마커 추가"
           >
-            <span className="text-xl">⚠️</span>
-            <span className="text-[12px] font-bold text-red-700 mt-1">댕져러스</span>
+            <span className="text-[13px]">⚠️</span>
+            <span className="text-[11px] font-bold text-red-700 mt-1">댕져러스</span>
           </button>
 
           {/* 드롭다운 메뉴 */}
@@ -1669,11 +1789,11 @@ function MapPage() {
                     addDangerousMarkerWithSubType(label);
                     setShowSubTypeButtons(false);
                   }}
-                  className={`flex flex-col items-center justify-center w-16 h-16 ${bg} ${border} ${text} border rounded-full shadow hover:scale-105 transition`}
+                  className={`flex flex-col items-center justify-center w-14 h-14 ${bg} ${border} ${text} border rounded-full shadow hover:scale-105 transition`}
                   title={label}
                 >
-                  <img src={icon} alt={label} className="w-7 h-7 object-contain" />
-                  <span className="text-[12px] font-semibold mt-1">{label}</span>
+                  <img src={icon} alt={label} className="w-6 h-6 object-contain" />
+                  <span className="text-[11px] font-semibold mt-1">{label}</span>
                 </button>
               ))}
             </div>
@@ -1694,14 +1814,32 @@ function MapPage() {
         {/* 지도 상단에 마커 타입 필터링 버튼 추가 - 배경 없이 왼쪽 정렬 */}
         <div className="absolute top-4 left-4 z-20 flex gap-2">
           {[
+            { label: "내 마커", value: "mine", color: "bg-green-500" },
             { label: "댕플", value: "댕플", color: "bg-amber-300" },
             { label: "댕져러스", value: "댕져러스", color: "bg-red-400" },
             { label: "전체", value: "all", color: "bg-gray-400" },
           ].map(({ label, value, color }) => (
             <button
               key={value}
-              onClick={() => filterMarkersByType(value)}
-              className={`text-xs font-semibold py-3 px-5 rounded-full shadow transition ${
+              onClick={() => {
+                if (value === "mine" && !isAuthenticated) {
+                  toast.error("로그인 후 이용해주세요!", {
+                    position: "bottom-center",
+                    autoClose: 2000,
+                    style: {
+                      background: "#fff5f5",
+                      color: "#a94442",
+                      border: "1px solid #f5c6cb",
+                      boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+                      fontWeight: "bold",
+                    },
+                    icon: "🔐",
+                  });
+                  return;
+                }
+                filterMarkersByType(value);
+              }}
+              className={`text-xs font-semibold py-2 px-3 rounded-full shadow transition ${
                 filterType === value
                   ? `${color} text-white`
                   : "bg-white text-gray-600 border border-gray-300"

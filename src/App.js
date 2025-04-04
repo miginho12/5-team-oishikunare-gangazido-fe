@@ -107,6 +107,7 @@ function App() {
         const result = await res.json();
         if (res.ok && result?.data?.nickname) {
           Sentry.setUser({
+            id: result.data.id,
             username: result.data.nickname,
           });
         }
