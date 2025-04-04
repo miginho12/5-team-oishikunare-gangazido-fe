@@ -376,9 +376,8 @@ function PetEdit() {
                 type="file"
                 accept="image/*"
                 ref={fileInputRef} // 👈 연결
-                onClick={handleClickFileInput}
                 onChange={handleProfileImageChange}
-                className="hidden"
+                className="hidden "
               />
             </label>
           </div>
