@@ -1014,6 +1014,21 @@ function MapPage() {
 
       if (status === 401 || message === "required_authorization") {
         alert("로그인 후 이용해주세요");
+      } else if (message === "duplicate_location") {
+        toast.warn("같은 곳에 마커를 찍을 수 없어요!", {
+          position: "bottom-center",
+          autoClose: 2500,
+          style: {
+            background: "#fffbea",
+            color: "#92400e",
+            border: "1px solid #fde68a",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+            fontWeight: "bold",
+          },
+          icon: "📍",
+        });
+        setIsCenterMode(false);
+        setShowModal(false);
       } else if (message === "limit_exceeded") {
         toast.warn("마커는 1시간에 최대 30개까지 등록돼요!", {
           position: "bottom-center",
@@ -1122,13 +1137,22 @@ function MapPage() {
 
           switch (error.code) {
             case error.PERMISSION_DENIED:
-              alert("⛔ 위치 접근이 차단되었습니다.\n브라우저 설정에서 위치 권한을 허용해주세요.");
+              toast.error("⛔ 위치 접근이 차단되었습니다.\n브라우저 설정에서 위치 권한을 허용해주세요.", {
+                position: "bottom-center",
+                autoClose: 2500,
+              });
               break;
             case error.POSITION_UNAVAILABLE:
-              alert("현재 위치 정보를 사용할 수 없습니다.");
+              toast.error("현재 위치 정보를 사용할 수 없습니다.", {
+                position: "bottom-center",
+                autoClose: 2500,
+              });
               break;
             case error.TIMEOUT:
-              alert("위치 정보를 가져오는 데 시간이 초과되었습니다.");
+              toast.error("위치 정보를 가져오는 데 시간이 초과되었습니다.", {
+                position: "bottom-center",
+                autoClose: 2500,
+              });
               break;
           }
         }
