@@ -71,13 +71,12 @@ export const updatePetInfo = async(petData) => {
   formData.append("breed", petData.breed);
   formData.append("weight", petData.weight);
 
-  // ✅ 이미지 관련 조건 처리
   if (petData.profileImage === null) {
-    formData.append("profileImage", "");  // 삭제 명시
-  } else if (profileImageKey) {
-    formData.append("profileImage", profileImageKey);  // 새 이미지 또는 기존 이미지 유지
+    formData.append("profileImage", "");  // 명시적 삭제
+  } else if (typeof petData.profileImage === 'string') {
+    formData.append("profileImage", petData.profileImage); // 유지
   }
-  // ✅ profileImage가 undefined인 경우에는 아무 것도 append 하지 않음 (변경 없음 의미)
+  // undefined면 append 안 함
 
   return api.patch("/v1/pets/me", formData);
 };
