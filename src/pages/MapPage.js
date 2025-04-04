@@ -1015,7 +1015,7 @@ function MapPage() {
       if (status === 401 || message === "required_authorization") {
         alert("로그인 후 이용해주세요");
       } else if (message === "limit_exceeded") {
-        toast.warn("1시간에 마커는 최대 30개까지 등록할 수 있어요!", {
+        toast.warn("마커는 1시간에 최대 30개까지 등록돼요!", {
           position: "bottom-center",
           autoClose: 2500,
           style: {
@@ -1027,6 +1027,9 @@ function MapPage() {
           },
           icon: "⚠️",
         });
+        // 마커 등록모드 해제
+        setIsCenterMode(false);
+        setShowModal(false);
       } else {
         console.error("❌ 마커 등록 중 오류:", error);
         setIsCenterMode(false);
