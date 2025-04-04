@@ -124,15 +124,19 @@ function PetEdit() {
     const isValid = validateFields(); // 1. 프론트 유효성 검사 먼저
     if (!isValid) return;
 
-    let profileImageKeyToSend = originalProfileImageKey;
+    let profileImageKeyToSend = null;
 
-    if (isImageRemoved) {
-      profileImageKeyToSend = null; // ✅ 진짜로 제거한 경우만 null 전송
-    }    
-
+    // ✅ 새 이미지 업로드
     if (profileImage instanceof File) {
-      // ✅ 새 파일이면 S3에 업로드 후 key 획득
       profileImageKeyToSend = await uploadPetImage(profileImage);
+    }
+    // ✅ 이미지 제거
+    else if (isImageRemoved) {
+      profileImageKeyToSend = null;
+    }
+    // ✅ 기존 이미지 유지
+    else if (typeof originalProfileImageKey === 'string') {
+      profileImageKeyToSend = originalProfileImageKey;
     }
 
     try {
