@@ -99,19 +99,24 @@ function PetEdit() {
   };
 
   const handleProfileImageChange = (e) => {
-    const file = e.target.files?.[0];
+    const fileList = e.target.files;
 
-    if (file) {
-      // ✅ 사용자가 새 파일 선택했을 경우
-      setProfileImage(file);
-      setProfileImagePreview(URL.createObjectURL(file));
-      setIsImageRemoved(false); // ✅ 이미지 제거 아님
+  if (fileList && fileList.length > 0) {
+    // ✅ 새 파일 선택한 경우
+    const file = fileList[0];
+    setProfileImage(file);
+    setProfileImagePreview(URL.createObjectURL(file));
+    setIsImageRemoved(false); // 삭제 아님
     } else {
-      // ✅ 사용자가 파일 선택창에서 '취소' 누른 경우 (선택 안함)
-      setProfileImage(null); // 🌟 S3에 안 보내기 위해 null 처리
-      setProfileImagePreview(null); // 🌟 미리보기도 초기화
-      setOriginalProfileImageKey(null); // 🌟 기존 이미지도 제거 의도로 간주
-      setIsImageRemoved(true); // ✅ 사용자가 이미지 제거한 것으로 간주
+      // ✅ 사용자가 "기존에 업로드된 이미지 제거"를 원해서 빈 파일 입력을 강제로 만든 경우에만 삭제로 간주
+      // 👉 이 케이스는 input 값을 초기화해서 만든 사용자 액션이 필요함
+      if (profileImagePreview) {
+        // 👉 프리뷰가 있던 상태에서 비워진 경우만 제거로 간주
+        setProfileImage(null);
+        setProfileImagePreview(null);
+        setOriginalProfileImageKey(null);
+        setIsImageRemoved(true); // ✅ 실제 삭제 처리
+      }
     }
   };
 
