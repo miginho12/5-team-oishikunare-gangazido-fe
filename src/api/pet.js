@@ -79,3 +79,23 @@ export const updatePetInfo = async(petData) => {
 export const deletePet = () => {
   return api.delete(`/v1/pets/me`);
 };
+
+// 반려동물 건강 정보 조회
+export const getPetHealthInfo = () => {
+  return api.get(`/v1/pets/me/health`);
+};
+
+// 반려동물 산책 기록 조회
+export const getPetWalkRecords = (period = 'week') => {
+  return api.get(`/v1/pets/me/walks?period=${period}`);
+};
+
+// 반려동물 특정 날짜의 산책 기록 조회
+export const getPetWalkRecordsByDate = (date) => {
+  return api.get(`/v1/pets/me/walks/daily?date=${date}`);
+};
+
+// 반려동물 산책 기록 추가
+export const addPetWalkRecord = (walkData) => {
+  return api.post('/v1/pets/me/walks', walkData);
+};
