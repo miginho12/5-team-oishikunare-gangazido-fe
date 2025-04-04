@@ -43,6 +43,7 @@ function ProfileEdit() {
   const [toastMessage, setToastMessage] = useState('');
   const [defaultProfileImage, setDefaultProfileImage] = useState(null);
   const [isDefaultSvg, setIsDefaultSvg] = useState(false);
+  const [removeProfileImage, setRemoveProfileImage] = useState(false);
 
   // 컴포넌트 마운트 시 사용자 정보 로드
   useEffect(() => {
@@ -101,6 +102,7 @@ function ProfileEdit() {
     navigate('/pets');
   };
 
+  // 프로필 이미지 변경 핸들러
   const handleProfileImageChange = (e) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
@@ -122,70 +124,14 @@ function ProfileEdit() {
       
       setProfileImage(file);
       setProfileImagePreview(URL.createObjectURL(file));
+      setRemoveProfileImage(false);
     } else {
-      // 파일 선택 취소했을 때 기본 이미지로 복원
+      // 파일 선택 취소했을 때 이미지 제거하고 기본 이미지로 설정
       setProfileImage(null);
-      if (isDefaultSvg) {
-        setProfileImagePreview(null);
-      } else {
-        setProfileImagePreview(defaultProfileImage);
-      }
+      setProfileImagePreview(null);
+      setRemoveProfileImage(true);
     }
   };
-  
-  // 추가: 파일 입력 요소 클릭 시 값 초기화
-  const handleProfileImageClick = (e) => {
-    e.target.value = null;
-  };
-
-  // 추가: 파일 선택 취소 감지 함수
-  useEffect(() => {
-    let fileInputClicked = false;
-    
-    const handleFileInputClick = () => {
-      fileInputClicked = true;
-      
-      // 짧은 지연 후 클릭 상태 초기화
-      setTimeout(() => {
-        fileInputClicked = false;
-      }, 100);
-    };
-    
-    const handleWindowFocus = () => {
-      // 파일 입력을 클릭한 후 포커스가 돌아오면 다이얼로그가 닫힌 것으로 간주
-      if (fileInputClicked) {
-        setTimeout(() => {
-          // 파일이 없으면 취소한 것으로 간주
-          const fileInput = document.getElementById('profile-upload');
-          if (fileInput && fileInput.files.length === 0) {
-            setProfileImage(null);
-            if (isDefaultSvg) {
-              setProfileImagePreview(null);
-            } else {
-              setProfileImagePreview(defaultProfileImage);
-            }
-          }
-          fileInputClicked = false;
-        }, 300);
-      }
-    };
-    
-    // 이벤트 리스너 등록
-    const fileInput = document.getElementById('profile-upload');
-    if (fileInput) {
-      fileInput.addEventListener('click', handleFileInputClick);
-    }
-    
-    window.addEventListener('focus', handleWindowFocus);
-    
-    // 컴포넌트 언마운트 시 이벤트 리스너 제거
-    return () => {
-      if (fileInput) {
-        fileInput.removeEventListener('click', handleFileInputClick);
-      }
-      window.removeEventListener('focus', handleWindowFocus);
-    };
-  }, [defaultProfileImage, isDefaultSvg]);
 
 
   const handleWithdrawal = async () => {
@@ -249,7 +195,8 @@ function ProfileEdit() {
     try {
       const userData = {
         user_nickname: nickname,
-        user_profile_image: profileImage
+        user_profile_image: profileImage,
+        removeProfileImage: removeProfileImage
       };
       
       await updateUserInfo(userData);
@@ -317,6 +264,55 @@ function ProfileEdit() {
     }
   };
 
+  // 파일 입력 요소 클릭 시 값 초기화
+const handleProfileImageClick = (e) => {
+  e.target.value = null;
+};
+
+// 파일 선택 취소 감지 함수
+useEffect(() => {
+  let fileInputClicked = false;
+  
+  const handleFileInputClick = () => {
+    fileInputClicked = true;
+    setTimeout(() => {
+      fileInputClicked = false;
+    }, 100);
+  };
+  
+  const handleWindowFocus = () => {
+    if (fileInputClicked) {
+      setTimeout(() => {
+        const fileInput = document.getElementById('profile-upload');
+        if (fileInput && fileInput.files.length === 0) {
+          // 파일 선택 취소 시 이미지 제거 플래그 설정
+          setProfileImage(null);
+          setProfileImagePreview(null);
+          setRemoveProfileImage(true);
+          console.log('파일 선택 취소: removeProfileImage = true');
+        }
+        fileInputClicked = false;
+      }, 300);
+    }
+  };
+  
+  // 이벤트 리스너 등록
+  const fileInput = document.getElementById('profile-upload');
+  if (fileInput) {
+    fileInput.addEventListener('click', handleFileInputClick);
+  }
+  
+  window.addEventListener('focus', handleWindowFocus);
+  
+  // 컴포넌트 언마운트 시 이벤트 리스너 제거
+  return () => {
+    if (fileInput) {
+      fileInput.removeEventListener('click', handleFileInputClick);
+    }
+    window.removeEventListener('focus', handleWindowFocus);
+  };
+}, []);
+
   // 토스트 메시지가 표시되면 3초 후에 자동으로 사라지도록 설정
   useEffect(() => {
     if (showToast) {
@@ -376,19 +372,23 @@ function ProfileEdit() {
       <div className="flex-1 p-4 overflow-y-auto">
         <div className="bg-white rounded-xl shadow-md p-4 mb-4">
           <div className="flex flex-col items-center mb-6">
-            <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center mb-3 overflow-hidden">
-              {profileImagePreview ? (
-                <img 
-                  src={profileImagePreview} 
-                  alt="프로필 이미지"
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-full h-full text-gray-400">
-                  <path fillRule="evenodd" d="M18.685 19.097A9.723 9.723 0 0021.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 003.065 7.097A9.716 9.716 0 0012 21.75a9.716 9.716 0 006.685-2.653zm-12.54-1.285A7.486 7.486 0 0112 15a7.486 7.486 0 015.855 2.812A8.224 8.224 0 0112 20.25a8.224 8.224 0 01-5.855-2.438zM15.75 9a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" clipRule="evenodd" />
-                </svg>
-              )}
-            </div>
+          <div className="w-24 h-24 rounded-full bg-amber-100 flex items-center justify-center mb-3 overflow-hidden">
+            {profileImagePreview && profileImagePreview !== "null" ? (
+              <img 
+                src={profileImagePreview} 
+                alt="프로필 이미지"
+                className="w-full h-full object-cover"
+                onError={() => {
+                  // 이미지 로드 실패 시 상태 업데이트
+                  setProfileImagePreview(null);
+                }}
+              />
+            ) : (
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-amber-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+              </svg>
+            )}
+          </div>
             <label htmlFor="profile-upload" className="text-sm text-amber-800 font-medium cursor-pointer">
               프로필 사진 변경
               <input
@@ -400,7 +400,7 @@ function ProfileEdit() {
                 className="hidden"
               />
             </label>
-          </div>
+        </div>
 
           <div className="space-y-4">
             <div className="relative">

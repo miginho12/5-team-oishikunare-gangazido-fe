@@ -15,6 +15,7 @@ function Register() {
   const [emailError, setEmailError] = useState(null);
   const [passwordError, setPasswordError] = useState(null);
   const [nicknameError, setNicknameError] = useState(null);
+  const [removeProfileImage, setRemoveProfileImage] = useState(false);
 
   // 이메일 변경 핸들러
   const handleEmailChange = (e) => {
@@ -120,7 +121,7 @@ function Register() {
     }
   };
 
-  // 프로필 이미지 변경 핸들러
+  // 프로필 이미지 변경 핸들러 수정
   const handleProfileImageChange = (e) => {
     if (e.target.files && e.target.files[0]) {
       // 파일 크기 체크 (5MB)
@@ -130,35 +131,37 @@ function Register() {
       }
       
       setProfileImage(e.target.files[0]);
-      // 파일이 선택되면 미리보기 URL 생성
       setProfileImagePreview(URL.createObjectURL(e.target.files[0]));
+      setRemoveProfileImage(false);
     } else {
-      // 파일 선택 취소한 경우
+      // 파일 선택 취소한 경우 - 기본 이미지로 설정
       setProfileImage(null);
       setProfileImagePreview(null);
+      setRemoveProfileImage(true);
     }
   };
 
-  // 추가: 파일 입력 요소 클릭 시 값 초기화
+  // 파일 입력 요소 클릭 시 값 초기화 함수
   const handleProfileImageClick = (e) => {
     e.target.value = null;
   };
 
-  // 추가: 컴포넌트 상태 추가
-const [profileImagePreview, setProfileImagePreview] = useState(null);
 
-// 추가: 파일 선택 취소 감지 함수
-useEffect(() => {
-  let fileInputClicked = false;
-  
-  const handleFileInputClick = () => {
-    fileInputClicked = true;
+  // 추가: 컴포넌트 상태 추가
+  const [profileImagePreview, setProfileImagePreview] = useState(null);
+
+  // 파일 선택 취소 감지 함수
+  useEffect(() => {
+    let fileInputClicked = false;
     
-    // 짧은 지연 후 클릭 상태 초기화
-    setTimeout(() => {
-      fileInputClicked = false;
-    }, 100);
-  };
+    const handleFileInputClick = () => {
+      fileInputClicked = true;
+      
+      // 짧은 지연 후 클릭 상태 초기화
+      setTimeout(() => {
+        fileInputClicked = false;
+      }, 100);
+    };
   
   const handleWindowFocus = () => {
     // 파일 입력을 클릭한 후 포커스가 돌아오면 다이얼로그가 닫힌 것으로 간주
@@ -169,6 +172,7 @@ useEffect(() => {
         if (fileInput && fileInput.files.length === 0) {
           setProfileImage(null);
           setProfileImagePreview(null);
+          setRemoveProfileImage(true);
         }
         fileInputClicked = false;
       }, 300);
@@ -210,7 +214,8 @@ useEffect(() => {
         user_password: password,
         user_password_confirm: passwordConfirm,
         user_nickname: nickname,
-        user_profileImage: profileImage
+        user_profileImage: profileImage,
+        removeProfileImage: removeProfileImage
       };
       
       console.log('회원가입 FormData가 생성되기 전 userData:', 
@@ -339,30 +344,19 @@ useEffect(() => {
         {/* 입력 폼 */}
         <div className="bg-white rounded-xl shadow-md p-4 mb-4">
           <div className="flex flex-col items-center mb-6">
-            <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center mb-3 overflow-hidden">
-              {profileImage ? (
-                <img
-                  src={URL.createObjectURL(profileImage)}
-                  alt="프로필 미리보기"
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-full h-full text-amber-800"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                  />
-                </svg>
-              )}
-            </div>
+          <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center mb-3 overflow-hidden">
+            {profileImagePreview ? (
+              <img
+                src={URL.createObjectURL(profileImage)}
+                alt="프로필 미리보기"
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+              </svg>
+            )}
+          </div>
             <label htmlFor="profile-upload" className="text-sm text-amber-800 font-medium cursor-pointer">
               프로필 사진 추가
               <input
