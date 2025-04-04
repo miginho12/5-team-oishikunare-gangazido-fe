@@ -1220,13 +1220,35 @@ function MapPage() {
 
   // 제리 추가 마커 관련 요청
   const fetchMarkersFromBackend = useCallback(async () => {
-    if (!map) return;
+    console.log("🚀 제리추가 fetchMarkersFromBackend() called!");
+
+    if (!window.kakao || !window.kakao.maps) {
+      console.warn("⚠️ 카카오맵이 아직 로드되지 않았습니다. 마커 로딩 중단");
+      return;
+    }
+    
+    // ✅ map이 없어도 기본 좌표로 fetch 시도
+    const fallbackLat = 33.48717138746649; // 제주도 구름스퀘어
+    const fallbackLng = 126.53171329989748;
+    
+    let centerLat = fallbackLat;
+    let centerLng = fallbackLng;
+    if (map) {
+      try {
+        const center = map.getCenter();
+        centerLat = center.getLat();
+        centerLng = center.getLng();
+      } catch (e) {
+        console.warn("❗️ map.getCenter() 실패, 기본 좌표 사용:", e);
+      }
+    } else {
+      console.warn("❗️ map이 아직 없지만 기본 좌표로 마커 요청");
+    }
 
     try {
-      const center = map.getCenter();
       const params = {
-        latitude: center.getLat(),
-        longitude: center.getLng(),
+        latitude: centerLat,
+        longitude: centerLng,
         radius: 10000,
       };
 
@@ -1496,17 +1518,13 @@ function MapPage() {
 
   const hasFetchedMarkers = useRef(false); // 딱 한 번만 실행되게 플래그
 
-  useEffect(() => { // user 정보가 로딩되지 않은 상태에서 마커 불러오는 것 방지
-    if (map && !hasFetchedMarkers.current) {
-      console.log("🛰 마커 요청 딱 한 번 보내기!");
-      fetchMarkersFromBackend();
-      hasFetchedMarkers.current = true;
-    } else if (!hasFetchedMarkers.current) {
-      console.log("🔁 사용자 정보 업데이트 감지, 마커 다시 불러오기!");
+  useEffect(() => {
+    if (!hasFetchedMarkers.current && map && kakaoMapLoaded) {
+      console.log("✅ 맵과 카카오맵 모두 준비됨, 마커 요청 시작");
       fetchMarkersFromBackend();
       hasFetchedMarkers.current = true;
     }
-  }, [map, user]);
+  }, [map, kakaoMapLoaded]);
 
   // 마커 타입 필터링 함수
   const filterMarkersByType = useCallback(
