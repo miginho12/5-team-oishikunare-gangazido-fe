@@ -1064,6 +1064,21 @@ function MapPage() {
         });
         setIsCenterMode(false);
         setShowModal(false);
+      } else if (message === "too_close_mixed") {
+        toast.warn("댕플과 댕져러스는 너무 가까이 찍을 수 없어요 !", {
+          position: "bottom-center",
+          autoClose: 2500,
+          style: {
+            background: "#fef2f2",
+            color: "#991b1b",
+            border: "1px solid #fecaca",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+            fontWeight: "bold",
+          },
+          icon: "⚠️",
+        });
+        setIsCenterMode(false);
+        setShowModal(false);
       } else if (message === "limit_exceeded") {
         toast.warn("마커는 1시간에 최대 30개까지 등록돼요!", {
           position: "bottom-center",
