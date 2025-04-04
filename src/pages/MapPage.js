@@ -1090,22 +1090,15 @@ function MapPage() {
     isAuthenticated,
   ]);
 
-  // 특정 타입의 마커 추가하기
-  // eslint-disable-next-line no-unused-vars
-  const addMarkerByType = useCallback(
-    (type, subType = null) => {
-      if (!map || !addMarkerRef.current) return;
-
-      const center = map.getCenter();
-      addMarkerRef.current(center, type, subType);
-    },
-    [map]
-  );
-
   // 현재 중앙 위치에 마커 추가하기
   const addMarkerAtCenter = useCallback(
     (type = "댕플", subType = null) => {
       if (!map || !addMarkerRef.current) return;
+
+      // 마커 등록모드 시 필터링 전체로 변경 
+      setFilterType("all");
+      currentFilterTypeRef.current = "all";
+      filterMarkersByType("all");
 
       const center = map.getCenter();
       addMarkerRef.current(center, type, subType);
@@ -1117,6 +1110,11 @@ function MapPage() {
   const addDangerousMarkerWithSubType = useCallback(
     (subType) => {
       if (!map || !addMarkerRef.current) return;
+
+      // 등록모드 시 필터 전체로 변경
+      setFilterType("all");
+      currentFilterTypeRef.current = "all";
+      filterMarkersByType("all");
 
       const center = map.getCenter();
       addMarkerRef.current(center, "댕져러스", subType);
