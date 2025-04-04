@@ -101,6 +101,12 @@ function PetEdit() {
 
   // input 클릭 시 강제로 상태 제거하는 핸들러 추가
   const handleFileInputClick = () => {
+    // 클릭 시점에 input 초기화 → 다음 파일 선택 때 무조건 onChange 발생
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+
+    // 현재 상태 모두 초기화 → '취소'든 '재선택'이든 동일 처리
     setProfileImage(null);
     setProfileImagePreview(null);
     setIsImageRemoved(true);
@@ -318,6 +324,14 @@ function PetEdit() {
       return () => clearTimeout(timer);
     }
   }, [showToast]);
+
+  useEffect(() => {
+    if (isImageRemoved) {
+      if (fileInputRef.current) {
+        fileInputRef.current.value = ''; // 💡 실제 input 내부 값까지 초기화
+      }
+    }
+  }, [isImageRemoved]);
 
   return (
     <div className="flex flex-col h-full bg-amber-50">
