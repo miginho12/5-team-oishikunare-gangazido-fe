@@ -101,22 +101,19 @@ function PetEdit() {
   const fileInputRef = useRef(); // 👈 input ref 선언
 
   const handleProfileImageChange = (e) => {
-    const fileList = e.target.files;
+    const file = e.target.files?.[0];
 
-    if (fileList && fileList.length > 0) {
-      // ✅ 새 파일 선택한 경우
-      const file = fileList[0];
+    if (file) {
+      // ✅ 새 파일 선택 시
       setProfileImage(file);
       setProfileImagePreview(URL.createObjectURL(file));
-      setIsImageRemoved(false); // 삭제 아님
+      setIsImageRemoved(false);
     } else {
-      // 파일 선택창을 열고 아무 것도 선택하지 않은 경우
-    if (fileInputRef.current?.files?.length === 0) {
-      console.log('파일 선택 취소 감지됨');
-      setProfileImage(undefined); // ❗ undefined로 유지해야 기존 이미지 유지됨
-      setProfileImagePreview(originalProfileImageKey ? originalProfileImageKey : null); // ❗ 원래 이미지 복원
-      setIsImageRemoved(false); // ❌ 삭제 아님
-      }
+      // ✅ 파일 선택 취소 시
+      console.log("파일 선택 취소됨 → 이미지 삭제 처리");
+      setProfileImage(null);
+      setProfileImagePreview(null);
+      setIsImageRemoved(true);
     }
 
     // ✅ 항상 초기화해서 onChange가 다시 작동하도록
@@ -132,13 +129,11 @@ function PetEdit() {
     let profileImageKeyToSend;
 
     if (profileImage instanceof File) {
-      profileImageKeyToSend = await uploadPetImage(profileImage);
+      profileImageKeyToSend = await uploadPetImage(profileImage); // 새 이미지 업로드
     } else if (isImageRemoved) {
-      profileImageKeyToSend = null; // ❗ 실제 삭제
-    } else if (typeof profileImage === 'string') {
-      profileImageKeyToSend = profileImage; // 유지
-    } else {
-      profileImageKeyToSend = undefined; // ❗ 진짜 "아무것도 안 건드림"
+      profileImageKeyToSend = null; // 이미지 삭제 요청
+    } else if (typeof originalProfileImageKey === 'string') {
+      profileImageKeyToSend = undefined; // 기존 이미지 유지 → append 안 함
     }
 
     try {
