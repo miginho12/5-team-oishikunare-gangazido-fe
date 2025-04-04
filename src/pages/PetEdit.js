@@ -99,45 +99,35 @@ function PetEdit() {
     setShowConfirm(false);
   };
 
-  const handleClickFileInput = () => {
-    // 기존 이미지 있는 상태에서 "파일 선택창"만 열면 → 사용자가 취소할 수도 있으므로
-    // 미리 제거 플래그 세팅
+  // input 클릭 시 강제로 상태 제거하는 핸들러 추가
+  const handleFileInputClick = () => {
+    // 클릭 시점에 input 초기화 → 다음 파일 선택 때 무조건 onChange 발생
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+
+    // 현재 상태 모두 초기화 → '취소'든 '재선택'이든 동일 처리
     setProfileImage(null);
     setProfileImagePreview(null);
     setIsImageRemoved(true);
-  
-    // input 값도 초기화 (중요!)
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-    }
   };
 
   const handleProfileImageChange = (e) => {
-    // ✅ input 먼저 초기화 (이게 가장 중요!)
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-    }
-
     const file = e.target.files?.[0];
 
-    if (file) {
-      // ✅ 새 파일 선택
-      setProfileImage(file);
-      setProfileImagePreview(URL.createObjectURL(file));
-      setIsImageRemoved(false);
-      console.log('새 이미지 선택됨');
-    } else {
-      // ✅ 선택 취소: 새 이미지든 기존 이미지든 제거
+    if (!file) {
+      // 선택 안 하고 '취소' 눌렀을 때
+      console.log('❌ 파일 선택 취소됨 → 이미지 제거됨');
       setProfileImage(null);
       setProfileImagePreview(null);
       setIsImageRemoved(true);
-      console.log('파일 선택 취소됨 → 이미지 제거됨');
+      return;
     }
   
-    // input 초기화 (재선택 가능하게)
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-    }
+    console.log('✅ 새 이미지 선택됨');
+    setProfileImage(file);
+    setProfileImagePreview(URL.createObjectURL(file));
+    setIsImageRemoved(false);
   };
 
   const handleUpdatePet = async () => {
@@ -336,6 +326,14 @@ function PetEdit() {
     }
   }, [showToast]);
 
+  useEffect(() => {
+    if (isImageRemoved) {
+      if (fileInputRef.current) {
+        fileInputRef.current.value = ''; // 💡 실제 input 내부 값까지 초기화
+      }
+    }
+  }, [isImageRemoved]);
+
   return (
     <div className="flex flex-col h-full bg-amber-50">
       {/* 헤더 */}
@@ -394,7 +392,7 @@ function PetEdit() {
                 type="file"
                 accept="image/*"
                 ref={fileInputRef} // 👈 연결
-                onClick={handleClickFileInput}
+                onClick={handleFileInputClick}
                 onChange={handleProfileImageChange}
                 className="hidden "
               />

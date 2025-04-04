@@ -43,7 +43,3 @@ jobs:
         run: |
           VERSION=$(git describe --tags --abbrev=0)
           echo "RELEASE_VERSION=${VERSION}" >> $GITHUB_ENV
-
-      - name: Create version.json
-        run: |
-          echo "{\"version\": \"${RELEASE_VERSION}\"}" > public/version.json
