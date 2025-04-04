@@ -997,7 +997,7 @@ function MapPage() {
       console.log("✅ 마커 등록 완료:", serverMarker.id);
       toast.success("마커가 등록되었습니다!", {
         position: "bottom-center",
-        autoClose: 2000,
+        autoClose: 500,
         style: {
           background: "#e8f5e9", // 연한 초록
           color: "#2e7d32",      // 진한 초록 텍스트
