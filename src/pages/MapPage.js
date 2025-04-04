@@ -16,16 +16,27 @@ function MapPage() {
   const [isMapLoaded, setIsMapLoaded] = useState(false);
   const [isCenterMode, setIsCenterMode] = useState(false);
   const [currentZoomLevel, setCurrentZoomLevel] = useState(3);
-  // eslint-disable-next-line no-unused-vars
   const [visibleMarkers, setVisibleMarkers] = useState([]);
   const mapBoundsRef = useRef(null);
   const clusterRef = useRef(null);
+  // 첫 페이지 모달
+  const [showGuideModal, setShowGuideModal] = useState(true); // 실제로 보일지 여부
 
   // AuthContext에서 인증 상태 가져오기
   const { isAuthenticated, user } = useAuth();
   // console.log("어쓰", user);
 
   const userRef = useRef(null);
+
+  // 첫 페이지 모달 창
+  useEffect(() => {
+    const hideGuide = localStorage.getItem("hideGuideModal");
+    if (hideGuide === "true") {
+      setShowGuideModal(false); // 다시 보지 않기 눌렀다면 false로
+    } else {
+      setShowGuideModal(true);  // 아니면 보여줌
+    }
+  }, []);
 
   // user를 useRef에 저장함으로써 최신 값 참조하도록
   useEffect(() => {
@@ -768,7 +779,6 @@ function MapPage() {
       initMarkerImages,
       markerImages,
       mapBoundsRef,
-      // saveMarkersToLocalStorage,
     ]
   );
 
@@ -1407,7 +1417,7 @@ function MapPage() {
           map.panTo(marker.getPosition()); // 먼저 위치 이동
           setTimeout(() => {
             if (map.getLevel() > 4) {
-              map.setLevel(4); // 줌인 약간 나중에
+              map.setLevel(3); // 줌인 약간 나중에
             }
           }, 300); // 약간의 시간차를 줘야 안정적으로 이동함
 
@@ -1667,8 +1677,6 @@ function MapPage() {
   const [showSubTypeButtons, setShowSubTypeButtons] = useState(false);
 
   // 함수 ref 추가
-  // const loadMarkersFromLocalStorageRef = useRef(null);
-  // const saveMarkersToLocalStorageRef = useRef(null);
   const getCurrentMapBoundsRef = useRef(null);
   const fetchMarkersFromBackendRef = useRef(null);
   const markerImagesRef = useRef(null);
@@ -1729,8 +1737,56 @@ function MapPage() {
     };
   }, [showSubTypeButtons]);
 
+  const handleCloseGuideModal = () => {
+    setShowGuideModal(false); // ✅ 애니메이션 없이 바로 닫기
+  };
+  
+  const handleDoNotShowAgain = () => {
+    localStorage.setItem("hideGuideModal", "true");
+    setShowGuideModal(false); // ✅ 그냥 바로 닫기
+  };
+  
   return (
     <div className="flex flex-col h-full bg-gray-50">
+      {showGuideModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+          <div className="bg-white rounded-xl shadow-lg p-6 w-11/12 max-w-sm text-center relative">
+            
+            {/* 닫기 버튼 */}
+            <button
+              onClick={handleCloseGuideModal}
+              className="absolute top-2 right-3 text-gray-400 hover:text-gray-700 text-2xl font-bold"
+            >
+              ×
+            </button>
+      
+            {/* 로고 이미지 */}
+            <img
+              src="/images/gangazido-logo-header.png"
+              alt="Gangazido Logo"
+              className="w-40 mx-auto mb-4"
+            />
+      
+            {/* 안내 텍스트 */}
+            <h2 className="text-lg font-bold mb-2">마커를 등록해보세요!</h2>
+            <p className="text-sm text-gray-600 mb-4 leading-snug">
+              오른쪽 위의 <strong>댕플</strong> 또는 <strong>댕져러스</strong> 버튼을 눌러 <br></br> 마커를 추가할 수 있어요.
+            </p>
+            <br></br>
+            <div className="text-xs text-gray-500 mb-4 space-y-1">
+              <p><strong>댕플</strong>: 반려견과의 행복한 장소를 기록해요 🐶</p>
+              <p><strong>댕져러스</strong>: 위험하거나 조심해야 할 장소를 표시해요 ⚠️</p>
+            </div>
+            {/* 다시 보지 않기 */}
+            <button
+              onClick={handleDoNotShowAgain}
+              className="text-sm text-gray-500 hover:text-gray-700 underline"
+            >
+              다시 보지 않기
+            </button>
+          </div>
+        </div>
+      )}
       {/* 헤더 */}
       <header className="bg-white pt-2 pb-0 px-4 shadow-md flex items-center justify-center">
         <div className="flex items-center h-full gap-2">
