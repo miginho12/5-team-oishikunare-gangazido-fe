@@ -41,10 +41,20 @@ export const getPetInfo = () => {
 
 // 반려동물 수정
 export const updatePetInfo = async(petData) => {
-  let profileImageKey = null;
+  const formData = new FormData();
+  formData.append("name", petData.name);
+  formData.append("age", petData.age);
+  formData.append("gender", petData.gender);
+  formData.append("breed", petData.breed);
+  formData.append("weight", petData.weight);
 
-  // 🟡 새 파일 업로드 시 presigned URL 사용
-  if (petData.profileImage instanceof File) {
+  // 상황 1: 이미지 완전 삭제 요청 (파일창 열고 '취소' 누른 케이스)
+  if (petData.profileImage === null) {
+    formData.append("profileImage", ""); // 백엔드에 이미지 삭제 요청
+  }
+
+  // 상황 2: 새 이미지 선택한 경우 -> presigned URL 업로드 후 key 전달
+  else if (petData.profileImage instanceof File) {
     const extension = petData.profileImage?.name?.split('.')?.pop() || 'png';
     const res = await api.post("/v1/pets/me/presigned", {
       fileExtension: `.${extension}`,
@@ -58,25 +68,11 @@ export const updatePetInfo = async(petData) => {
       body: petData.profileImage,
     });
 
-    profileImageKey = fileKey;
-  } else if (typeof petData.profileImage === "string") {
-    // 🟡 기존 이미지 키 유지
-    profileImageKey = petData.profileImage;
+    formData.append("profileImage", fileKey); // 업로드한 키 전송
   }
 
-  const formData = new FormData();
-  formData.append("name", petData.name);
-  formData.append("age", petData.age);
-  formData.append("gender", petData.gender);
-  formData.append("breed", petData.breed);
-  formData.append("weight", petData.weight);
-
-  if (petData.profileImage === null) {
-    formData.append("profileImage", "");  // 명시적 삭제
-  } else if (typeof petData.profileImage === 'string') {
-    formData.append("profileImage", petData.profileImage); // 유지
-  }
-  // undefined면 append 안 함
+  // 상황 3: 기존 이미지 그대로 유지 -> 아무 것도 안 보냄 (undefined 상태)
+  // 👉 append 안 하면 됨
 
   return api.patch("/v1/pets/me", formData);
 };
@@ -85,3 +81,23 @@ export const updatePetInfo = async(petData) => {
 export const deletePet = () => {
   return api.delete(`/v1/pets/me`);
 };
+
+// // 반려동물 건강 정보 조회
+// export const getPetHealthInfo = () => {
+//   return api.get(`/v1/pets/me/health`);
+// };
+
+// // 반려동물 산책 기록 조회
+// export const getPetWalkRecords = (period = 'week') => {
+//   return api.get(`/v1/pets/me/walks?period=${period}`);
+// };
+
+// // 반려동물 특정 날짜의 산책 기록 조회
+// export const getPetWalkRecordsByDate = (date) => {
+//   return api.get(`/v1/pets/me/walks/daily?date=${date}`);
+// };
+
+// // 반려동물 산책 기록 추가
+// export const addPetWalkRecord = (walkData) => {
+//   return api.post('/v1/pets/me/walks', walkData);
+// };
