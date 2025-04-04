@@ -1011,7 +1011,7 @@ function MapPage() {
       setFilterType("all");
       currentFilterTypeRef.current = "all";
       filterMarkersByType("all");
-      
+
       return markerInfo;
       } catch (error) {
         const status = error.response?.status;
@@ -1198,37 +1198,6 @@ function MapPage() {
     );
   }, [map]);
 
-  // 모든 마커 지우기
-  // eslint-disable-next-line no-unused-vars
-  const clearAllMarkers = useCallback(() => {
-    if (window.confirm("모든 마커를 삭제하시겠습니까?")) {
-      // 지도에서 모든 마커 제거
-      markers.forEach((markerInfo) => {
-        markerInfo.marker.setMap(null);
-        if (markerInfo.overlay) {
-          markerInfo.overlay.setMap(null); // ✅ 커스텀 오버레이 닫기
-        }
-      });
-
-      // 클러스터 초기화
-      if (clusterRef.current) {
-        clusterRef.current.clear();
-      }
-
-      // 마커 배열 초기화
-      setMarkers([]);
-
-      // 보이는 마커 초기화
-      setVisibleMarkers([]);
-
-      // 선택된 마커 초기화
-      setSelectedMarker(null);
-
-      // 로컬 스토리지 초기화
-      localStorage.removeItem("kakaoMapData");
-    }
-  }, [markers]);
-
   // 현재 지도 범위와 줌 레벨 정보 가져오기
   const getCurrentMapBounds = useCallback(() => {
     if (!map) return null;
@@ -1401,6 +1370,12 @@ function MapPage() {
             zIndex: 9999,
           });
         
+          // 마커 클릭 시 줌 확대 + 중앙 이동
+          map.panTo(marker.getPosition());
+          if (map.getLevel() > 4) {
+            map.setLevel(4); // 현재 너무 멀면 4레벨로 확대
+          }
+
           overlay.setMap(map);
           markerInfo.overlay = overlay;
         
@@ -1503,8 +1478,10 @@ function MapPage() {
       setMarkers(newMarkers);
       setMapMarkers(newMarkers.map((m) => m.marker));
 
-      // ⭐️ 현재 필터 다시 적용
-      filterMarkersByType(currentFilterTypeRef.current);
+      // 마커가 화면에 보이도록 하기 위해 filterMarkersByType을 약간 지연 실행
+      requestAnimationFrame(() => {
+        filterMarkersByType(currentFilterTypeRef.current); // 현재 필터 다시 적용
+      });
     } catch (error) {
       const message = error.response?.data?.message; // 응답 메시지
       const status = error.response?.status; // 응답 코드
