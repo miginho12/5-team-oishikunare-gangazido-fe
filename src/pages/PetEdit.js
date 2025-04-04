@@ -111,8 +111,10 @@ function PetEdit() {
     } else {
       // ✅ 파일 선택 취소 시
       console.log("파일 선택 취소됨 → 이미지 삭제 처리");
+      // 원본 이미지 키도 제거해야 함!
       setProfileImage(null);
       setProfileImagePreview(null);
+      setOriginalProfileImageKey(null);  
       setIsImageRemoved(true);
     }
 
