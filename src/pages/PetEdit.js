@@ -124,19 +124,17 @@ function PetEdit() {
     const isValid = validateFields(); // 1. 프론트 유효성 검사 먼저
     if (!isValid) return;
 
-    let profileImageKeyToSend = null;
+    let profileImageKeyToSend;
 
-    // ✅ 새 이미지 업로드
+   
     if (profileImage instanceof File) {
-      profileImageKeyToSend = await uploadPetImage(profileImage);
-    }
-    // ✅ 이미지 제거
-    else if (isImageRemoved) {
-      profileImageKeyToSend = null;
-    }
-    // ✅ 기존 이미지 유지
-    else if (typeof originalProfileImageKey === 'string') {
-      profileImageKeyToSend = originalProfileImageKey;
+      profileImageKeyToSend = await uploadPetImage(profileImage);   // ✅ 새 이미지 업로드
+    } else if (isImageRemoved) {
+      profileImageKeyToSend = null;   // ✅ 이미지 제거
+    } else if (typeof originalProfileImageKey === 'string') {
+      profileImageKeyToSend = originalProfileImageKey;    // ✅ 기존 이미지 유지
+    } else {
+      profileImageKeyToSend = undefined; // 아무 조작도 안 했을 때는 undefined
     }
 
     try {
