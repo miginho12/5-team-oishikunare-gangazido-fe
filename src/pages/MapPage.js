@@ -26,7 +26,7 @@ function MapPage() {
 
   // AuthContext에서 인증 상태 가져오기
   const { isAuthenticated, user } = useAuth();
-  // console.log("어쓰", user);
+  // //console.log(...)
 
   const userRef = useRef(null);
 
@@ -102,7 +102,7 @@ function MapPage() {
     script.onload = () => {
       // autoload=false 옵션을 사용했으므로 수동으로 로드 실행
       window.kakao.maps.load(() => {
-        console.log("카카오맵 API 로드 완료");
+        ////console.log(...)
         setKakaoMapLoaded(true);
       });
     };
@@ -189,7 +189,7 @@ function MapPage() {
   // 마커 이미지 설정 함수
   const initMarkerImages = useCallback(() => {
     if (!window.kakao || !window.kakao.maps) {
-      console.log("Kakao Maps API가 아직 준비되지 않았습니다.");
+      ////console.log(...)
       return;
     }
 
@@ -234,10 +234,7 @@ function MapPage() {
         option
       );
 
-      console.log(
-        "✅ 마커 이미지 모두 PNG로 초기화 완료",
-        markerImages.current
-      );
+      //console.log(...)
     } catch (error) {
       console.error("마커 이미지 초기화 중 오류 발생:", error);
     }
@@ -781,7 +778,7 @@ function MapPage() {
         // 마커 생성 완료 후 중앙 모드 비활성화
         setIsCenterMode(false);
 
-        console.log("마커가 성공적으로 생성되었습니다.");
+        ////console.log(...)
         return markerInfo;
       } catch (error) {
         console.error("마커 생성 중 예상치 못한 오류 발생:", error);
@@ -1016,7 +1013,7 @@ function MapPage() {
       }
 
       setIsCenterMode(false);
-      console.log("✅ 마커 등록 완료:", serverMarker.id);
+      ////console.log(...)
       toast.success("마커가 등록되었습니다!", {
         position: "bottom-center",
         autoClose: 500,
@@ -1194,7 +1191,7 @@ function MapPage() {
 
         // 이동한 위치 기준으로 마커 다시 불러오기!
         fetchMarkersFromBackendRef.current?.();
-        console.log("📍 현재 위치로 이동 완료:", latitude, longitude);
+        ////console.log(...)
       },
       (error) => {
         switch (error.code) {
@@ -1260,7 +1257,7 @@ function MapPage() {
 
   // 제리 추가 마커 관련 요청
   const fetchMarkersFromBackend = useCallback(async () => {
-    console.log("🚀 제리추가 fetchMarkersFromBackend() called!");
+    ////console.log(...)
 
     if (!window.kakao || !window.kakao.maps) {
       console.warn("⚠️ 카카오맵이 아직 로드되지 않았습니다. 마커 로딩 중단");
@@ -1293,7 +1290,7 @@ function MapPage() {
       };
 
       const res = await getMapMarkers(params);
-      console.log("📡 마커 응답:", res.data);
+      ////console.log(...)
 
       const markersData = res.data.data.markers;
 
@@ -1361,12 +1358,8 @@ function MapPage() {
 
           const emoji =
             type === "댕플" ? "🐶" : MARKER_IMAGES.EMOJI[subType] || "⚠️";
-          console.log("user.userId:", user?.userId, typeof user?.userId);
-          console.log(
-            "markerInfo.user_id:",
-            markerInfo.user_id,
-            typeof markerInfo.user_id
-          );
+          ////console.log(...)
+          //console.log(...)
           const infoContent = `
             <div class="custom-overlay-animate"
               style="
@@ -1566,7 +1559,7 @@ function MapPage() {
 
   useEffect(() => {
     if (!hasFetchedMarkers.current && map && kakaoMapLoaded) {
-      console.log("✅ 맵과 카카오맵 모두 준비됨, 마커 요청 시작");
+      ////console.log(...)
       fetchMarkersFromBackend();
       hasFetchedMarkers.current = true;
     }

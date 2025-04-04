@@ -120,9 +120,9 @@ function ProfileEdit() {
 
   const handleWithdrawal = async () => {
     try {
-      console.log('회원탈퇴 API 호출 시작');
+      ////console.log(...)
       await deleteUser();
-      console.log('회원탈퇴 API 호출 성공');
+      ////console.log(...)
       
       setShowWithdrawalModal(false);
       setToastMessage("회원 탈퇴가 완료되었습니다.");

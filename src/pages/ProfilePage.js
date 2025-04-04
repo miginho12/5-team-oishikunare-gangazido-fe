@@ -13,9 +13,9 @@ function ProfilePage() {
   console.log(error);
 
   const [showToast, setShowToast] = useState(false);
-  console.log(showToast);
+  console.log(showToast)
   const [logoutError, setLogoutError] = useState(null);
-  console.log(logoutError);
+  console.log(logoutError)
   const [showPrivacyModal, setShowPrivacyModal] = useState(false);
   const [showTermsModal, setShowTermsModal] = useState(false);
   const [version, setVersion] = useState("");
@@ -66,23 +66,23 @@ function ProfilePage() {
   };
 
   const handleLogout = async () => {
-    console.log("로그아웃 버튼 클릭");
+    ////console.log(...)
 
     try {
-      console.log("로그아웃 API 호출 시작");
+      ////console.log(...)
       const response = await logoutUser();
-      console.log("로그아웃 API 응답:", response);
+      console.log(response);
 
       // AuthContext의 로그아웃 함수 호출
-      console.log("AuthContext logout 함수 호출");
+      ////console.log(...)
       logout();
 
       // 토스트 메시지 표시
-      console.log("로그아웃 토스트 메시지 표시");
+      ////console.log(...)
       setShowToast(true);
 
       // 리디렉션
-      console.log("로그아웃 후 /login 페이지로 리디렉션");
+      ////console.log(...)
       navigate("/login");
     } catch (error) {
       console.error("로그아웃 처리 중 오류 발생:", error);

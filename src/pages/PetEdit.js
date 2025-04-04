@@ -52,7 +52,7 @@ function PetEdit() {
         const res = await getPetInfo();
         if (res?.data?.message === 'get_pet_success') {
           const data = res.data.data;
-          console.log("🐶 불러온 반려견 정보:", data); // 추가 로그
+          ////console.log(...) // 추가 로그
 
           setName(data.name);
           setBreed(data.breed);
@@ -66,7 +66,7 @@ function PetEdit() {
             setOriginalProfileImageKey(data.profileImage);    
             setProfileImagePreview(data.profileImage);        
             
-            console.log("🖼 수정 페이지 최초 미리보기 이미지 URL:", data.profileImage);
+            ////console.log(...)
           }
         }
       } catch (err) {
@@ -110,7 +110,7 @@ function PetEdit() {
       setIsImageRemoved(false);
     } else {
       // ✅ 파일 선택 취소 시
-      console.log("파일 선택 취소됨 → 이미지 삭제 처리");
+      ////console.log(...)
       setProfileImage(null);
       setProfileImagePreview(null);
       setIsImageRemoved(true);

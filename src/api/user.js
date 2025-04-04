@@ -89,17 +89,17 @@ export const updateUserInfo = async (userData) => {
       // null 값을 보내는 것이 중요함
       updateData.profile_image_key = null;
       
-      console.log('이미지 제거 요청: profile_image_key = null');
+      ////console.log(...)
     }
     
     // 디버깅을 위해 요청 데이터 로깅
-    console.log('서버로 전송될 데이터:', JSON.stringify(updateData));
+    ////console.log(...)
     
     // Content-Type이 application/json으로 변경됨
     const response = await api.patch("/v1/users/me", updateData);
     
     // 응답 디버깅
-    console.log('서버 응답:', response.data);
+    ////console.log(...)
     
     // 응답에 프로필 이미지 URL이 있으면 CloudFront URL로 변환
     if (response.data && response.data.data && response.data.data.profileImage) {
@@ -121,13 +121,13 @@ export const updateUserInfo = async (userData) => {
 // 회원 탈퇴
 export const deleteUser = async () => {
   try {
-    console.log("회원탈퇴 API 요청 시작");
+    ////console.log(...)
     const response = await api.delete(`/v1/users/me`);
-    console.log("회원탈퇴 API 응답:", response);
+    ////console.log(...)
 
     // 응답 데이터 확인 - 응답에 사용자 정보 삭제 확인 필드가 있는지 검증
     if (response.data && response.data.message) {
-      console.log("회원탈퇴 메시지:", response.data.message);
+      ////console.log(...)
     }
 
     return response.data;
@@ -144,7 +144,7 @@ export const deleteUser = async () => {
 // 비밀번호 변경
 export const changePassword = async (passwordData) => {
   try {
-    console.log("비밀번호 변경 요청 데이터:", passwordData);
+    ////console.log(...)
 
     const data = {
       current_password: passwordData.currentPassword,
@@ -152,10 +152,10 @@ export const changePassword = async (passwordData) => {
       confirm_password: passwordData.newPasswordConfirm,
     };
 
-    console.log("서버에 전송되는 데이터:", data);
+    ////console.log(...)
 
     const response = await api.patch(`/v1/users/me/password`, data);
-    console.log("서버 응답:", response);
+    ////console.log(...)
     return response.data;
   } catch (error) {
     console.error("비밀번호 변경 API 오류:", error);

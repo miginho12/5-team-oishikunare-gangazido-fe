@@ -24,11 +24,11 @@ function Login() {
     setLoading(true);
     setError('');
 
-    console.log('로그인 시도 - 이메일:', email);
+    ////console.log(...)
     
     try {
       const response = await loginUser({ email, password });
-      console.log('로그인 API 응답:', JSON.stringify(response.data, null, 2));
+      ////console.log(...)
       
       // 응답 구조 확인
       let userData = null;
@@ -38,12 +38,12 @@ function Login() {
         // data 필드가 있으면 사용
         if (response.data.data) {
           userData = response.data.data;
-          console.log('API 응답에서 user 데이터 추출:', userData);
+          ////console.log(...)
         } 
         // user 필드가 있으면 사용
         else if (response.data.user) {
           userData = response.data.user;
-          console.log('API 응답에서 user 필드 추출:', userData);
+          ////console.log(...)
         }
         // 응답 자체를 사용
         else {
@@ -51,23 +51,23 @@ function Login() {
             email: email,
             id: 'user-' + Date.now()
           };
-          console.log('API 응답에서 사용자 데이터를 찾을 수 없어 기본값 사용:', userData);
+          ////console.log(...)
         }
       } else {
         userData = {
           email: email,
           id: 'user-' + Date.now()
         };
-        console.log('API 응답에 data가 없어 기본값 사용:', userData);
+        ////console.log(...)
       }
       
-      console.log('로그인 처리 - 사용자 데이터 준비됨:', userData);
+      ////console.log(...)
       
       login(userData);
-      console.log('AuthContext login 함수 호출 완료');
+      ////console.log(...)
       
       // 로그인 성공 후 리디렉션
-      console.log('로그인 성공 - 리디렉션 시작');
+      ////console.log(...)
       navigate('/map');
     } catch (err) {
       console.error('로그인 오류:', err);
