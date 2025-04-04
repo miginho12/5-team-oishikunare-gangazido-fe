@@ -143,10 +143,10 @@ function MapPage() {
     댕플: "/images/dangple_square.png",
     댕져러스: {
       DEFAULT: "https://cdn-icons-png.flaticon.com/512/4636/4636076.png",
-      들개: "/images/beware_dog_square.png",
-      빙판길: "/images/icy_road_square.png",
-      염화칼슘: "/images/beware_foot_square.png",
-      공사중: "/images/construction_square.png",
+      들개: "/images/dog.png",
+      빙판길: "/images/icy.png",
+      염화칼슘: "/images/foot.png",
+      공사중: "/images/construction.png",
     },
     // 이모티콘 URL 추가
     EMOJI: {
@@ -997,7 +997,7 @@ function MapPage() {
       console.log("✅ 마커 등록 완료:", serverMarker.id);
       toast.success("마커가 등록되었습니다!", {
         position: "bottom-center",
-        autoClose: 2000,
+        autoClose: 500,
         style: {
           background: "#e8f5e9", // 연한 초록
           color: "#2e7d32",      // 진한 초록 텍스트
@@ -1051,6 +1051,21 @@ function MapPage() {
         setShowModal(false);
       } else if (message === "too_close_dangerous") {
         toast.warn("주변에 위험 정보가 이미 있어요!", {
+          position: "bottom-center",
+          autoClose: 2500,
+          style: {
+            background: "#fef2f2",
+            color: "#991b1b",
+            border: "1px solid #fecaca",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+            fontWeight: "bold",
+          },
+          icon: "⚠️",
+        });
+        setIsCenterMode(false);
+        setShowModal(false);
+      } else if (message === "too_close_mixed") {
+        toast.warn("댕플과 댕져러스는 너무 가까이 찍을 수 없어요 !", {
           position: "bottom-center",
           autoClose: 2500,
           style: {
@@ -1127,7 +1142,6 @@ function MapPage() {
     [map]
   );
 
-  const triedLocationRef = useRef(false); 
   const moveToCurrentLocation = useCallback(() => { 
     if (!map) {
       toast.error("지도가 아직 초기화되지 않았습니다!", {
@@ -1161,29 +1175,30 @@ function MapPage() {
         console.log("📍 현재 위치로 이동 완료:", latitude, longitude);
       },
       (error) => {
-        if (!triedLocationRef.current) {
-          triedLocationRef.current = true;
-
-          switch (error.code) {
-            case error.PERMISSION_DENIED:
-              toast.error("⛔ 위치 접근이 차단되었습니다.\n브라우저 설정에서 위치 권한을 허용해주세요.", {
-                position: "bottom-center",
-                autoClose: 2500,
-              });
-              break;
-            case error.POSITION_UNAVAILABLE:
-              toast.error("현재 위치 정보를 사용할 수 없습니다.", {
-                position: "bottom-center",
-                autoClose: 2500,
-              });
-              break;
-            case error.TIMEOUT:
-              toast.error("위치 정보를 가져오는 데 시간이 초과되었습니다.", {
-                position: "bottom-center",
-                autoClose: 2500,
-              });
-              break;
-          }
+        switch (error.code) {
+          case error.PERMISSION_DENIED:
+            toast.error("브라우저 위치 권한을 허용해주세요!", {
+              position: "bottom-center",
+              autoClose: 1500,
+            });
+            break;
+          case error.POSITION_UNAVAILABLE:
+            toast.error("현재 위치 정보를 사용할 수 없습니다.", {
+              position: "bottom-center",
+              autoClose: 1500,
+            });
+            break;
+          case error.TIMEOUT:
+            toast.error("위치 정보를 가져오는 데 시간이 초과되었습니다.", {
+              position: "bottom-center",
+              autoClose: 1500,
+            });
+            break;
+          default:
+            toast.error("위치 정보를 가져오는 중 알 수 없는 오류가 발생했습니다.", {
+              position: "bottom-center",
+              autoClose: 1500,
+            });
         }
       },
       {
@@ -1220,13 +1235,35 @@ function MapPage() {
 
   // 제리 추가 마커 관련 요청
   const fetchMarkersFromBackend = useCallback(async () => {
-    if (!map) return;
+    console.log("🚀 제리추가 fetchMarkersFromBackend() called!");
+
+    if (!window.kakao || !window.kakao.maps) {
+      console.warn("⚠️ 카카오맵이 아직 로드되지 않았습니다. 마커 로딩 중단");
+      return;
+    }
+    
+    // ✅ map이 없어도 기본 좌표로 fetch 시도
+    const fallbackLat = 33.48717138746649; // 제주도 구름스퀘어
+    const fallbackLng = 126.53171329989748;
+    
+    let centerLat = fallbackLat;
+    let centerLng = fallbackLng;
+    if (map) {
+      try {
+        const center = map.getCenter();
+        centerLat = center.getLat();
+        centerLng = center.getLng();
+      } catch (e) {
+        console.warn("❗️ map.getCenter() 실패, 기본 좌표 사용:", e);
+      }
+    } else {
+      console.warn("❗️ map이 아직 없지만 기본 좌표로 마커 요청");
+    }
 
     try {
-      const center = map.getCenter();
       const params = {
-        latitude: center.getLat(),
-        longitude: center.getLng(),
+        latitude: centerLat,
+        longitude: centerLng,
         radius: 10000,
       };
 
@@ -1496,17 +1533,13 @@ function MapPage() {
 
   const hasFetchedMarkers = useRef(false); // 딱 한 번만 실행되게 플래그
 
-  useEffect(() => { // user 정보가 로딩되지 않은 상태에서 마커 불러오는 것 방지
-    if (map && !hasFetchedMarkers.current) {
-      console.log("🛰 마커 요청 딱 한 번 보내기!");
-      fetchMarkersFromBackend();
-      hasFetchedMarkers.current = true;
-    } else if (!hasFetchedMarkers.current) {
-      console.log("🔁 사용자 정보 업데이트 감지, 마커 다시 불러오기!");
+  useEffect(() => {
+    if (!hasFetchedMarkers.current && map && kakaoMapLoaded) {
+      console.log("✅ 맵과 카카오맵 모두 준비됨, 마커 요청 시작");
       fetchMarkersFromBackend();
       hasFetchedMarkers.current = true;
     }
-  }, [map, user]);
+  }, [map, kakaoMapLoaded]);
 
   // 마커 타입 필터링 함수
   const filterMarkersByType = useCallback(
@@ -1813,10 +1846,10 @@ function MapPage() {
           {showSubTypeButtons && (
             <div className="absolute top-full right-0 mt-2 flex flex-col gap-3 animate-fade-slide-down">
               {[
-                { label: "들개", icon: "/images/beware_dog_square.png", bg: "bg-rose-100", text: "text-rose-700", border: "border-rose-300" },
-                { label: "빙판길", icon: "/images/icy_road_square.png", bg: "bg-blue-100", text: "text-blue-700", border: "border-blue-300" },
-                { label: "염화칼슘", icon: "/images/beware_foot_square.png", bg: "bg-green-100", text: "text-green-700", border: "border-green-300" },
-                { label: "공사중", icon: "/images/construction_square.png", bg: "bg-gray-100", text: "text-gray-700", border: "border-gray-300" },
+                { label: "들개", icon: "/images/dog.png", bg: "bg-rose-100", text: "text-rose-700", border: "border-rose-300" },
+                { label: "빙판길", icon: "/images/icy.png", bg: "bg-blue-100", text: "text-blue-700", border: "border-blue-300" },
+                { label: "염화칼슘", icon: "/images/foot.png", bg: "bg-green-100", text: "text-green-700", border: "border-green-300" },
+                { label: "공사중", icon: "/images/construction.png", bg: "bg-gray-100", text: "text-gray-700", border: "border-gray-300" },
               ].map(({ label, icon, bg, text, border }) => (
                 <button
                   key={label}
