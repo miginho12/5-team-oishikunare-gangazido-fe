@@ -1658,7 +1658,7 @@ function MapPage() {
         <p className="text-center text-amber-800 text-sm font-medium">
           {isCenterMode
             ? "지도를 움직여 중앙에 마커를 위치시키고 '확정' 버튼을 누르세요"
-            : "우측 버튼을 눌러 마커를 추가하세요"}
+            : "댕플, 댕져러스 버튼을 눌러 마커를 추가하세요"}
         </p>
       </div>
       
