@@ -16,6 +16,7 @@ function MapPage() {
   const [isMapLoaded, setIsMapLoaded] = useState(false);
   const [isCenterMode, setIsCenterMode] = useState(false);
   const [currentZoomLevel, setCurrentZoomLevel] = useState(3);
+  // eslint-disable-next-line no-unused-vars
   const [visibleMarkers, setVisibleMarkers] = useState([]);
   const mapBoundsRef = useRef(null);
   const clusterRef = useRef(null);
