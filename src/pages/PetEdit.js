@@ -64,7 +64,7 @@ function PetEdit() {
           // 🔥 CloudFront 미리보기 설정
           if (data.profileImage && typeof data.profileImage === 'string') {
             setProfileImage(data.profileImage);               
-            setProfileImagePreview(`${data.profileImage}?t=${Date.now()}`); // ✅ 캐시 무력화
+            setProfileImagePreview(data.profileImage);        
             setIsImageRemoved(false); // 추가해줘야 취소 처리도 정확히 반응
             
             console.log("🖼 수정 페이지 최초 미리보기 이미지 URL:", data.profileImage);
@@ -106,25 +106,27 @@ function PetEdit() {
       fileInputRef.current.value = '';
     }
 
-    // 클릭만 했을 때는 아무 것도 하지 말고, 선택 결과를 onChange에서 처리
+    // 현재 상태 모두 초기화 → '취소'든 '재선택'이든 동일 처리
+    setProfileImage(null);
+    setProfileImagePreview(null);
+    setIsImageRemoved(true);
   };
 
   const handleProfileImageChange = (e) => {
     const file = e.target.files?.[0];
 
-    if (!file) {
-      // 선택 안 하고 '취소' 눌렀을 때
-      console.log('❌ 파일 선택 취소됨 → 이미지 제거됨');
+    if (file) {
+      setProfileImage(file);
+      setProfileImagePreview(URL.createObjectURL(file));
+      setIsImageRemoved(false);
+      console.log('새 이미지 선택됨');
+    } else {
+      // ⭐️ '취소'를 누른 경우 → 미리보기와 이미지 모두 삭제
       setProfileImage(null);
       setProfileImagePreview(null);
       setIsImageRemoved(true);
-      return;
+      console.log('파일 선택 취소됨 → 이미지 제거됨');
     }
-  
-    console.log('✅ 새 이미지 선택됨');
-    setProfileImage(file);
-    setProfileImagePreview(URL.createObjectURL(file));
-    setIsImageRemoved(false);
   };
 
   const handleUpdatePet = async () => {
@@ -147,26 +149,22 @@ function PetEdit() {
       profileImageToSend = undefined;
     }
 
-    const payload = {
-      name,
-      age,
-      gender: gender === 'male',
-      breed,
-      weight,
-      profileImage: profileImageToSend,
-    };
-  
-    if (profileImageToSend === undefined) {
-      delete payload.profileImage; // 기존 이미지 유지
-    }
-  
     try {
-      await updatePetInfo(payload); // ⬅ 기존 코드 이 위치 유지!
+      await updatePetInfo({
+        name,
+        age,
+        gender: gender === 'male',
+        breed,
+        weight,
+        profileImage: profileImageToSend,
+      });
+
+
       setShowToast(true);
       setTimeout(() => navigate('/pets'), 2000);
     } catch (error) {
       const errorMsg = error.response?.data?.message;
-      handleRegisterError(errorMsg);
+      handleRegisterError(errorMsg); // 3. 백엔드 에러 메시지 처리
     }
   };
 
