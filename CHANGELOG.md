@@ -1,5 +1,21 @@
 # CHANGELOG
 
+## [1.1.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.1.0...v1.1.1) (2025-04-04)
+
+### 🐛 BUG FIXES
+
+* 버전 표기 ([0d9ea97](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/0d9ea97448a233031a307f19c452e22d812a394b))
+
+## [1.1.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.0.0...v1.1.0) (2025-04-04)
+
+### 🚀 NEW FEATURES
+
+* Viewport 추가 ([d37853b](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/d37853bd3d54ffb8940057ac7a39b06e05338a41))
+
+### 🐛 BUG FIXES
+
+* Eslint 수정 ([56fbc7e](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/56fbc7ed861573a3f24bcb461bb8debdcc956b71))
+
 ## 1.0.0 (2025-04-04)
 
 ### 📚 DOCUMENTATION
