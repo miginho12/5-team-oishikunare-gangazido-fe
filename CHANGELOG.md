@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.3.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.3.1...v1.3.2) (2025-04-04)
+
+### 🐛 BUG FIXES
+
+* eslint at PetInfo.js ([f9f0ccd](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/f9f0ccd6293af0c7c7c2e6e2514c7d90925c76ca))
+
 ## [1.3.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.3.0...v1.3.1) (2025-04-04)
 
 ### 🐛 BUG FIXES
