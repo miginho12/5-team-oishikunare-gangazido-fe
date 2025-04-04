@@ -29,6 +29,10 @@ function PetEdit() {
     weight: false,
   });
 
+  const fileInputRef = useRef(); // 👈 input ref 선언
+  const prevImageRef = useRef(null); // profileImage 백업용
+  const prevPreviewRef = useRef(null); // preview 백업용
+
   const breedOptions = [
     '푸들',
     '비숑 프리제',
@@ -97,29 +101,40 @@ function PetEdit() {
     setShowConfirm(false);
   };
 
-  const fileInputRef = useRef(); // 👈 input ref 선언
+  const handleClickFileInput = () => {
+    // 파일 선택 전 상태 백업
+    prevImageRef.current = profileImage;
+    prevPreviewRef.current = profileImagePreview;
+  };
 
   const handleProfileImageChange = (e) => {
     const file = e.target.files?.[0];
   
-    // 👉 파일 선택했을 경우
     if (file) {
+      // 새 파일 선택 시
       setProfileImage(file);
       setProfileImagePreview(URL.createObjectURL(file));
       setIsImageRemoved(false);
     } else {
-      // 👉 파일 선택 창을 열고 취소한 경우
-      console.log("파일 선택 취소됨 → 이미지 삭제 처리");
-
-      // 이미지 삭제 처리
-      setProfileImage(null);
-      setIsImageRemoved(true);
-      setProfileImagePreview(null); // 핵심! 미리보기도 명확히 제거
-
-      // input 초기화 (재선택 가능하게)
-      if (fileInputRef.current) {
-        fileInputRef.current.value = '';
+      // 취소한 경우: 기존 값이 있었으면 삭제 처리
+      const hadPrevImage = prevImageRef.current || prevPreviewRef.current;
+  
+      if (hadPrevImage) {
+        console.log("파일 선택 취소됨 → 이미지 삭제 처리");
+        setProfileImage(null);
+        setProfileImagePreview(null);
+        setIsImageRemoved(true);
+      } else {
+        console.log("파일 선택 취소됨 → 원래 상태 복원");
+        setProfileImage(prevImageRef.current);
+        setProfileImagePreview(prevPreviewRef.current);
+        setIsImageRemoved(false);
       }
+    }
+  
+    // input 초기화 (재선택 가능하게)
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
     }
   };
 
@@ -377,6 +392,7 @@ function PetEdit() {
                 type="file"
                 accept="image/*"
                 ref={fileInputRef} // 👈 연결
+                onClick={handleClickFileInput}
                 onChange={handleProfileImageChange}
                 className="hidden"
               />
