@@ -113,11 +113,11 @@ function PetEdit() {
       setProfileImage(null);
       setProfileImagePreview(null);
       setIsImageRemoved(true);
-    }
 
-    // ✅ 항상 초기화해서 onChange가 다시 작동하도록
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
+      // ✅ 항상 초기화해서 onChange가 다시 작동하도록
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
     }
   };
 
