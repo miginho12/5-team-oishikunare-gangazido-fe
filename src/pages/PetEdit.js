@@ -15,6 +15,7 @@ function PetEdit() {
   const [profileImage, setProfileImage] = useState(null);
   const [profileImagePreview, setProfileImagePreview] = useState(null);
   const [originalProfileImageKey, setOriginalProfileImageKey] = useState(null);
+  const [isImageRemoved, setIsImageRemoved] = useState(false);
 
   const [nameError, setNameError] = useState('');
   const [ageError, setAgeError] = useState('');
@@ -104,11 +105,13 @@ function PetEdit() {
       // ✅ 사용자가 새 파일 선택했을 경우
       setProfileImage(file);
       setProfileImagePreview(URL.createObjectURL(file));
+      setIsImageRemoved(false); // ✅ 이미지 제거 아님
     } else {
       // ✅ 사용자가 파일 선택창에서 '취소' 누른 경우 (선택 안함)
       setProfileImage(null); // 🌟 S3에 안 보내기 위해 null 처리
       setProfileImagePreview(null); // 🌟 미리보기도 초기화
       setOriginalProfileImageKey(null); // 🌟 기존 이미지도 제거 의도로 간주
+      setIsImageRemoved(true); // ✅ 사용자가 이미지 제거한 것으로 간주
     }
   };
 
@@ -118,10 +121,9 @@ function PetEdit() {
 
     let profileImageKeyToSend = originalProfileImageKey;
 
-    // ✅ 이미지 제거 의도가 명확한 경우만 null 전송
-    if (profileImage === null && !profileImagePreview && !originalProfileImageKey) {
-      profileImageKeyToSend = null;
-    }
+    if (isImageRemoved) {
+      profileImageKeyToSend = null; // ✅ 진짜로 제거한 경우만 null 전송
+    }    
 
     if (profileImage instanceof File) {
       // ✅ 새 파일이면 S3에 업로드 후 key 획득
