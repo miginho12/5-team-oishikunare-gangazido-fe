@@ -1612,6 +1612,15 @@ function MapPage() {
         clusterRef.current.clear();
         clusterRef.current.setMap(null);
       }
+
+
+      // 클러스터 추가 전에 모든 마커 숨기기 모바일위해 추가
+      markersRef.current.forEach((markerInfo) => {
+        if (markerInfo.marker) {
+          markerInfo.marker.setMap(null);
+        }
+      });
+
       clusterRef.current = createClustererWithStyle(map, type);
 
       setTimeout(() => {
