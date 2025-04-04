@@ -16,7 +16,7 @@ function ProfilePage() {
   console.log(logoutError);
   const [showPrivacyModal, setShowPrivacyModal] = useState(false);
   const [showTermsModal, setShowTermsModal] = useState(false);
-  const [version, setVersion] = useState < string > "";
+  const [version, setVersion] = useState("");
 
   useEffect(() => {
     fetch("/version.json")
