@@ -6,6 +6,10 @@ import { useAuth } from "../contexts/AuthContext";
 function PetInfo() {
   const navigate = useNavigate();
   const { isAuthenticated, loading: authLoading } = useAuth();
+  console.log(isAuthenticated);
+  console.log(authLoading);
+
+
   const [pet, setPet] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

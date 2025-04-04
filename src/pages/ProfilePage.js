@@ -10,6 +10,8 @@ function ProfilePage() {
   const [userInfo, setUserInfo] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  console.log(error);
+
   const [showToast, setShowToast] = useState(false);
   console.log(showToast);
   const [logoutError, setLogoutError] = useState(null);

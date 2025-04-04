@@ -1,5 +1,36 @@
 # CHANGELOG
 
+## [1.4.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.3.2...v1.4.0) (2025-04-04)
+
+### 🚀 NEW FEATURES
+
+* 모바일 클러스터링 setMap 변경 ([e6d7ec4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/e6d7ec4703d493c4000cb135229b847d9ef93a18))
+
+## [1.3.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.3.1...v1.3.2) (2025-04-04)
+
+### 🐛 BUG FIXES
+
+* eslint at PetInfo.js ([f9f0ccd](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/f9f0ccd6293af0c7c7c2e6e2514c7d90925c76ca))
+
+## [1.3.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.3.0...v1.3.1) (2025-04-04)
+
+### 🐛 BUG FIXES
+
+* eslint at PetInfo.js ([fc97802](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/fc97802a5d0f850faa16e8fff39892d12d53ada1))
+* 수정시 기존 이미지 날아감 재오류 & 파일 진짜 삭제 ([de1947c](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/de1947cda134d226e8b87cb32452e7c6b6ef2923))
+
+## [1.3.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.2.0...v1.3.0) (2025-04-04)
+
+### 🚀 NEW FEATURES
+
+* 모바일 클러스터링 위해 클러스터링 함수 변경 ([c887fb2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/c887fb26c00606cc185a14356df622e87c43bd26))
+
+### 🐛 BUG FIXES
+
+* redirect to login page on user info fetch error ([21e7886](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/21e78863affcb8c20ea619551c05f34f3f11565f))
+* 버전 표기 수정 ([d5728c3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/d5728c3a71ad069b5a14943ea45771289bf8fb87))
+* 수정 이미지 삭제시 진짜 파일 null ([ffa03bf](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/ffa03bf2cfeeb4d53d923582e8de906d21c9a888))
+
 ## [1.2.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.2.0...v1.2.1) (2025-04-04)
 
 ### 🐛 BUG FIXES
