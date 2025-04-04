@@ -1029,6 +1029,36 @@ function MapPage() {
         });
         setIsCenterMode(false);
         setShowModal(false);
+      } else if (message === "too_close_dangple") {
+        toast.warn("댕플 주변에 너무 가깝게 찍을 수 없어요!", {
+          position: "bottom-center",
+          autoClose: 2500,
+          style: {
+            background: "#fff7ed",
+            color: "#b45309",
+            border: "1px solid #fcd34d",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+            fontWeight: "bold",
+          },
+          icon: "🐶",
+        });
+        setIsCenterMode(false);
+        setShowModal(false);
+      } else if (message === "too_close_dangerous") {
+        toast.warn("주변에 위험 정보가 이미 있어요!", {
+          position: "bottom-center",
+          autoClose: 2500,
+          style: {
+            background: "#fef2f2",
+            color: "#991b1b",
+            border: "1px solid #fecaca",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+            fontWeight: "bold",
+          },
+          icon: "⚠️",
+        });
+        setIsCenterMode(false);
+        setShowModal(false);
       } else if (message === "limit_exceeded") {
         toast.warn("마커는 1시간에 최대 30개까지 등록돼요!", {
           position: "bottom-center",
