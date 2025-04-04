@@ -408,6 +408,7 @@ function PetEdit() {
                 placeholder="나이"
                 className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
                 required
+                min="1"
               />
               {touched.age && ageError && (
                 <p className="text-sm text-red-500 mt-1">{ageError}</p>
@@ -425,6 +426,7 @@ function PetEdit() {
                 className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
                 required
                 step="0.1"
+                min="0.1"
               />
               {touched.weight && weightError && (
                 <p className="text-sm text-red-500 mt-1">{weightError}</p>
