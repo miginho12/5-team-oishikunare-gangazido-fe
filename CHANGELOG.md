@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## [1.3.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.3.0...v1.3.1) (2025-04-04)
+
+### 🐛 BUG FIXES
+
+* eslint at PetInfo.js ([fc97802](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/fc97802a5d0f850faa16e8fff39892d12d53ada1))
+* 수정시 기존 이미지 날아감 재오류 & 파일 진짜 삭제 ([de1947c](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/de1947cda134d226e8b87cb32452e7c6b6ef2923))
+
 ## [1.3.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.2.0...v1.3.0) (2025-04-04)
 
 ### 🚀 NEW FEATURES
