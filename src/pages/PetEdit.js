@@ -14,6 +14,7 @@ function PetEdit() {
   const [weight, setWeight] = useState('');
   const [profileImage, setProfileImage] = useState(null);
   const [profileImagePreview, setProfileImagePreview] = useState(null);
+  const [originalProfileImageKey, setOriginalProfileImageKey] = useState(null);
   const [isImageRemoved, setIsImageRemoved] = useState(false);
 
   const [nameError, setNameError] = useState('');
@@ -28,8 +29,6 @@ function PetEdit() {
     gender: false,
     weight: false,
   });
-
-  const fileInputRef = useRef(); // 👈 input ref 선언
 
   const breedOptions = [
     '푸들',
@@ -64,8 +63,8 @@ function PetEdit() {
           // 🔥 CloudFront 미리보기 설정
           if (data.profileImage && typeof data.profileImage === 'string') {
             setProfileImage(data.profileImage);               
+            setOriginalProfileImageKey(data.profileImage);    
             setProfileImagePreview(data.profileImage);        
-            setIsImageRemoved(false); // 추가해줘야 취소 처리도 정확히 반응
             
             console.log("🖼 수정 페이지 최초 미리보기 이미지 URL:", data.profileImage);
           }
@@ -99,33 +98,30 @@ function PetEdit() {
     setShowConfirm(false);
   };
 
-  // input 클릭 시 강제로 상태 제거하는 핸들러 추가
-  const handleFileInputClick = () => {
-    // 클릭 시점에 input 초기화 → 다음 파일 선택 때 무조건 onChange 발생
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-    }
-
-    // 현재 상태 모두 초기화 → '취소'든 '재선택'이든 동일 처리
-    setProfileImage(null);
-    setProfileImagePreview(null);
-    setIsImageRemoved(true);
-  };
+  const fileInputRef = useRef(); // 👈 input ref 선언
 
   const handleProfileImageChange = (e) => {
-    const file = e.target.files?.[0];
+    const fileList = e.target.files;
 
-    if (file) {
+    if (fileList && fileList.length > 0) {
+      // ✅ 새 파일 선택한 경우
+      const file = fileList[0];
       setProfileImage(file);
       setProfileImagePreview(URL.createObjectURL(file));
-      setIsImageRemoved(false);
-      console.log('새 이미지 선택됨');
+      setIsImageRemoved(false); // 삭제 아님
     } else {
-      // ⭐️ '취소'를 누른 경우 → 미리보기와 이미지 모두 삭제
-      setProfileImage(null);
-      setProfileImagePreview(null);
-      setIsImageRemoved(true);
-      console.log('파일 선택 취소됨 → 이미지 제거됨');
+      // 파일 선택창을 열고 아무 것도 선택하지 않은 경우
+    if (fileInputRef.current?.files?.length === 0) {
+      console.log('파일 선택 취소 감지됨');
+      setProfileImage(undefined); // ❗ undefined로 유지해야 기존 이미지 유지됨
+      setProfileImagePreview(originalProfileImageKey ? originalProfileImageKey : null); // ❗ 원래 이미지 복원
+      setIsImageRemoved(false); // ❌ 삭제 아님
+      }
+    }
+
+    // ✅ 항상 초기화해서 onChange가 다시 작동하도록
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
     }
   };
 
@@ -133,42 +129,34 @@ function PetEdit() {
     const isValid = validateFields(); // 1. 프론트 유효성 검사 먼저
     if (!isValid) return;
 
-    let profileImageToSend;
+    let profileImageKeyToSend;
 
     if (profileImage instanceof File) {
-      // 1. 새 이미지 업로드
-      profileImageToSend = await uploadPetImage(profileImage);
+      profileImageKeyToSend = await uploadPetImage(profileImage);
     } else if (isImageRemoved) {
-      // 2. 삭제 요청
-      profileImageToSend = null;
-    } else if (typeof profileImage === "string") {
-      // 3. 기존 이미지 유지
-      profileImageToSend = profileImage;
+      profileImageKeyToSend = null; // ❗ 실제 삭제
+    } else if (typeof profileImage === 'string') {
+      profileImageKeyToSend = profileImage; // 유지
     } else {
-      // 4. 완전 무시 (undefined)
-      profileImageToSend = undefined;
-    }
-
-    const payload = {
-      name,
-      age,
-      gender: gender === 'male',
-      breed,
-      weight,
-      profileImage: profileImageToSend,
-    };
-
-    if (profileImageToSend === undefined) {
-      delete payload.profileImage; // 🔥 핵심 처리
+      profileImageKeyToSend = undefined; // ❗ 진짜 "아무것도 안 건드림"
     }
 
     try {
-      await updatePetInfo(payload);
+      await updatePetInfo({
+        name,
+        age,
+        gender: gender === 'male',
+        breed,
+        weight,
+        profileImage: profileImageKeyToSend,
+      });
+
+
       setShowToast(true);
       setTimeout(() => navigate('/pets'), 2000);
     } catch (error) {
       const errorMsg = error.response?.data?.message;
-      handleRegisterError(errorMsg);
+      handleRegisterError(errorMsg); // 3. 백엔드 에러 메시지 처리
     }
   };
 
@@ -207,7 +195,7 @@ function PetEdit() {
       setAgeError('반려견의 나이는 1살 이상이어야 해요.');
       isValid = false;
     } else if (ageNum >= 51) {
-      setAgeError('반려견 나이는 1부터 50사이의 숫자만 입력 가능합니다.');
+      setAgeError('입력값이 너무 큽니다. 올바른 나이를 입력해주세요.');
       isValid = false;
     }
 
@@ -329,16 +317,8 @@ function PetEdit() {
     }
   }, [showToast]);
 
-  useEffect(() => {
-    if (isImageRemoved) {
-      if (fileInputRef.current) {
-        fileInputRef.current.value = ''; // 💡 실제 input 내부 값까지 초기화
-      }
-    }
-  }, [isImageRemoved]);
-
   return (
-    <div className="flex flex-col h-full bg-amber-50">
+    <div className="flex flex-col h-full bg-gray-50">
       {/* 헤더 */}
       <header className="bg-white pt-2 pb-0 px-4 shadow-md flex items-center relative">
         <button onClick={() => navigate('/pets')} className="absolute left-4">
@@ -360,14 +340,14 @@ function PetEdit() {
         <div className="bg-white rounded-xl shadow-md p-4 mb-4">
           <div className="flex flex-col items-center mb-6">
             <div className="w-24 h-24 rounded-full bg-amber-100 flex items-center justify-center mb-3 overflow-hidden">
-            {profileImagePreview ? (
+              {profileImagePreview ? (
                 <img
                   src={profileImagePreview}
                   alt="프로필 미리보기"
                   className="w-full h-full object-cover"
                   onError={() => {
                     console.warn("🐛 이미지 로딩 실패! fallback 아이콘 표시");
-                    setProfileImagePreview(null);
+                    setProfileImagePreview(null); // fallback svg로 대체되게
                   }}
                 />
               ) : (
@@ -395,9 +375,8 @@ function PetEdit() {
                 type="file"
                 accept="image/*"
                 ref={fileInputRef} // 👈 연결
-                onClick={handleFileInputClick}
                 onChange={handleProfileImageChange}
-                className="hidden "
+                className="hidden"
               />
             </label>
           </div>
