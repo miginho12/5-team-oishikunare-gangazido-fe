@@ -50,10 +50,10 @@ export const uploadImageToS3 = async (presignedUrl, file, contentType) => {
 export const getUserInfo = () => {
   return api.get(`/v1/users/me`)
     .then(response => {
-      // 응답에 프로필 이미지 URL이 있으면 CloudFront URL로 변환
-      // if (response.data && response.data.data && response.data.data.profileImage) {
-      //   response.data.data.profileImage = convertToCloudFrontUrl(response.data.data.profileImage);
-      // }
+      //응답에 프로필 이미지 URL이 있으면 CloudFront URL로 변환
+      if (response.data && response.data.data && response.data.data.profileImage) {
+        response.data.data.profileImage = convertToCloudFrontUrl(response.data.data.profileImage);
+      }
       return response;
     });
 };
@@ -102,9 +102,9 @@ export const updateUserInfo = async (userData) => {
     console.log('서버 응답:', response.data);
     
     // 응답에 프로필 이미지 URL이 있으면 CloudFront URL로 변환
-    // if (response.data && response.data.data && response.data.data.profileImage) {
-    //   response.data.data.profileImage = convertToCloudFrontUrl(response.data.data.profileImage);
-    // }
+    if (response.data && response.data.data && response.data.data.profileImage) {
+      response.data.data.profileImage = convertToCloudFrontUrl(response.data.data.profileImage);
+    }
     
     return response;
   } catch (error) {
