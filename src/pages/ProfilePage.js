@@ -396,7 +396,7 @@ function ProfilePage() {
                   </svg>
                   <span className="text-gray-700">앱 버전</span>
                 </div>
-                <span className="text-gray-500">{version || "0.0.1"}</span>
+                <span className="text-gray-500">{version || "0.0.0"}</span>
               </button>
             </li>
 
