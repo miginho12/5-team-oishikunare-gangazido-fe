@@ -100,7 +100,7 @@ function PetEdit() {
 
   const handleProfileImageChange = (e) => {
     const file = e.target.files?.[0];
-
+  
     if (file) {
       // ✅ 새 파일 선택 시
       setProfileImage(file);
@@ -109,15 +109,14 @@ function PetEdit() {
     } else {
       // ✅ 파일 선택 취소 시
       console.log("파일 선택 취소됨 → 이미지 삭제 처리");
-      // 원본 이미지 키도 제거해야 함!
       setProfileImage(null);
-      setProfileImagePreview(null);
+      setProfileImagePreview(null); // 💥 요게 핵심!!!
       setIsImageRemoved(true);
-
-      // ✅ 항상 초기화해서 onChange가 다시 작동하도록
-      if (fileInputRef.current) {
-        fileInputRef.current.value = "";
-      }
+    }
+  
+    // ✅ 항상 초기화해서 onChange가 다시 작동하도록
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
     }
   };
 
