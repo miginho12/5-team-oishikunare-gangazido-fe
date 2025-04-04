@@ -37,6 +37,10 @@ jobs:
           sed -i "s|REPLACE_KAKAO_MAP_API_KEY|${{ secrets.KAKAO_MAP_API_KEY }}|" ./public/env.js
           sed -i "s|REPLACE_API_BASE_URL|${{ secrets.API_BASE_URL }}|" ./public/env.js
 
+      - name: Create version.json
+        run: |
+          echo "{\"version\": \"${RELEASE_VERSION}\"}" > public/version.json
+
       - name: Build # 4 - 빌드
         run: npm run build
         env:
