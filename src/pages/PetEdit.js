@@ -18,7 +18,7 @@ function PetEdit() {
 
   const [nameError, setNameError] = useState('');
   const [ageError, setAgeError] = useState('');
-  const [weightError, setWeightError] = useState('');
+  const [weightError, set WeightError] = useState('');
   const [genderError, setGenderError] = useState('');
   const [breedError, setBreedError] = useState('');
   const [touched, setTouched] = useState({
@@ -376,9 +376,8 @@ function PetEdit() {
                 type="file"
                 accept="image/*"
                 ref={fileInputRef} // 👈 연결
-                onClick={handleClickFileInput}
                 onChange={handleProfileImageChange}
-                className="hidden"
+                className="hidden "
               />
             </label>
           </div>
