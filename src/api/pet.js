@@ -71,8 +71,12 @@ export const updatePetInfo = async(petData) => {
     formData.append("profileImage", fileKey); // 업로드한 키 전송
   }
 
-  // 상황 3: 기존 이미지 그대로 유지 -> 아무 것도 안 보냄 (undefined 상태)
-  // 👉 append 안 하면 됨
+  // 상황 3. 기존 S3 키 그대로 유지 (수정 안 했을 경우)
+  else if (typeof petData.profileImage === "string") {
+    formData.append("profileImage", petData.profileImage);
+  }
+
+  // 상황 4. undefined면 아무 것도 안 보냄 (기존 백엔드 유지 전략)
 
   return api.patch("/v1/pets/me", formData);
 };

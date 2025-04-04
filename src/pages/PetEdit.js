@@ -125,14 +125,20 @@ function PetEdit() {
     const isValid = validateFields(); // 1. 프론트 유효성 검사 먼저
     if (!isValid) return;
 
-    let profileImageKeyToSend;
+    let profileImageToSend;
 
     if (profileImage instanceof File) {
-      profileImageKeyToSend = await uploadPetImage(profileImage); // 새 이미지 업로드
+      // 1. 새 이미지 업로드
+      profileImageToSend = await uploadPetImage(profileImage);
     } else if (isImageRemoved) {
-      profileImageKeyToSend = null; // 이미지 삭제 요청
+      // 2. 삭제 요청
+      profileImageToSend = null;
+    } else if (typeof profileImage === "string") {
+      // 3. 기존 이미지 유지
+      profileImageToSend = profileImage;
     } else {
-      profileImageKeyToSend = undefined; // 기존 이미지 유지
+      // 4. 완전 무시 (undefined)
+      profileImageToSend = undefined;
     }
 
     try {
@@ -142,7 +148,7 @@ function PetEdit() {
         gender: gender === 'male',
         breed,
         weight,
-        profileImage: profileImageKeyToSend,
+        profileImage: profileImageToSend,
       });
 
 
