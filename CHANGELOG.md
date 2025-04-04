@@ -1,5 +1,30 @@
 # CHANGELOG
 
+## [1.1.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.0.0...v1.1.0) (2025-04-04)
+
+### 🚀 NEW FEATURES
+
+* 위의 마커생성안내 삭제 ([1399aae](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/1399aaeea84ad73054464348e8ad85616b87dfed))
+* 첫 페이지 안내 모달창 추가 ([dfac1b0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/dfac1b0ab1fffcd98724fc328863ed63f6e085d3))
+
+### 🐛 BUG FIXES
+
+* 릴리즈 트리거 ([654370e](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/654370e1423907ec20b794ed3e2adb07ae387ab9))
+* 릴리즈 트리거 ([ab3adf1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/ab3adf10da8176556622720c38478a78e9b3a35d))
+
+## [1.0.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.0.0...v1.0.1) (2025-04-04)
+
+### 🐛 BUG FIXES
+
+* 릴리즈 트리거 ([654370e](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/654370e1423907ec20b794ed3e2adb07ae387ab9))
+* 릴리즈 트리거 ([ab3adf1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/ab3adf10da8176556622720c38478a78e9b3a35d))
+
+## [1.0.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.0.0...v1.0.1) (2025-04-04)
+
+### 🐛 BUG FIXES
+
+* 릴리즈 트리거 ([ab3adf1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/ab3adf10da8176556622720c38478a78e9b3a35d))
+
 ## 1.0.0 (2025-04-04)
 
 ### 📚 DOCUMENTATION
