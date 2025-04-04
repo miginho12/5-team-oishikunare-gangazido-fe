@@ -52,6 +52,7 @@ jobs:
         with:
           environment: production
           sourcemaps: ./build/static/js
+          ignore_missing: true
 
       - name: Configure AWS Credentials # 5 - AWS 인증
         uses: aws-actions/configure-aws-credentials@v2
