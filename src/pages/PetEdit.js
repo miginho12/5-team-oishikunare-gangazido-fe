@@ -15,6 +15,7 @@ function PetEdit() {
   const [profileImage, setProfileImage] = useState(null);
   const [profileImagePreview, setProfileImagePreview] = useState(null);
   const [originalProfileImageKey, setOriginalProfileImageKey] = useState(null);
+  const [isImageRemoved, setIsImageRemoved] = useState(false);
 
   const [nameError, setNameError] = useState('');
   const [ageError, setAgeError] = useState('');
@@ -58,14 +59,13 @@ function PetEdit() {
           setAge(data.age);
           setGender(data.gender ? 'male' : 'female');
           setWeight(data.weight);
-          setProfileImage(data.profileImage); // 이미지 키
 
           // 🔥 CloudFront 미리보기 설정
           if (data.profileImage && typeof data.profileImage === 'string') {
-            setProfileImage(data.profileImage);         // key 저장용 (수정 시 사용됨)
-            setOriginalProfileImageKey(data.profileImage);
-            setProfileImagePreview(data.profileImage);  // full URL (백에서 줌)
-
+            setProfileImage(data.profileImage);               
+            setOriginalProfileImageKey(data.profileImage);    
+            setProfileImagePreview(data.profileImage);        
+            
             console.log("🖼 수정 페이지 최초 미리보기 이미지 URL:", data.profileImage);
           }
         }
@@ -98,15 +98,45 @@ function PetEdit() {
     setShowConfirm(false);
   };
 
+  const handleProfileImageChange = (e) => {
+    const fileList = e.target.files;
+
+  if (fileList && fileList.length > 0) {
+    // ✅ 새 파일 선택한 경우
+    const file = fileList[0];
+    setProfileImage(file);
+    setProfileImagePreview(URL.createObjectURL(file));
+    setIsImageRemoved(false); // 삭제 아님
+    } else {
+      // ✅ 사용자가 "기존에 업로드된 이미지 제거"를 원해서 빈 파일 입력을 강제로 만든 경우에만 삭제로 간주
+      // 👉 이 케이스는 input 값을 초기화해서 만든 사용자 액션이 필요함
+      if (profileImagePreview) {
+        // 👉 프리뷰가 있던 상태에서 비워진 경우만 제거로 간주
+        setProfileImage(null);
+        setProfileImagePreview(null);
+        setOriginalProfileImageKey(null);
+        setIsImageRemoved(true); // ✅ 실제 삭제 처리
+      }
+    }
+  };
+
   const handleUpdatePet = async () => {
     const isValid = validateFields(); // 1. 프론트 유효성 검사 먼저
     if (!isValid) return;
 
-    let profileImageKeyToSend = originalProfileImageKey;
+    let profileImageKeyToSend = null;
 
+    // ✅ 새 이미지 업로드
     if (profileImage instanceof File) {
-      // ✅ 새 파일이면 S3에 업로드 후 key 획득
       profileImageKeyToSend = await uploadPetImage(profileImage);
+    }
+    // ✅ 이미지 제거
+    else if (isImageRemoved) {
+      profileImageKeyToSend = null;
+    }
+    // ✅ 기존 이미지 유지
+    else if (typeof originalProfileImageKey === 'string') {
+      profileImageKeyToSend = originalProfileImageKey;
     }
 
     try {
@@ -125,17 +155,6 @@ function PetEdit() {
     } catch (error) {
       const errorMsg = error.response?.data?.message;
       handleRegisterError(errorMsg); // 3. 백엔드 에러 메시지 처리
-    }
-  };
-
-  const handleProfileImageChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      setProfileImage(file);
-      setProfileImagePreview(URL.createObjectURL(file));
-    } else {
-      // 파일 선택 안 했을 때 기존 이미지 유지
-      setProfileImage(originalProfileImageKey);
     }
   };
 

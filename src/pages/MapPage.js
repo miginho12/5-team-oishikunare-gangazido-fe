@@ -1008,12 +1008,28 @@ function MapPage() {
         icon: "📍",
       });
       return markerInfo;
-    } catch (error) {
-      const status = error.response?.status;
-      const message = error.response?.data?.message;
+      } catch (error) {
+        const status = error.response?.status;
+        const message = error.response?.data?.message;
 
       if (status === 401 || message === "required_authorization") {
         alert("로그인 후 이용해주세요");
+      } else if (message === "limit_exceeded") {
+        toast.warn("마커는 1시간에 최대 30개까지 등록돼요!", {
+          position: "bottom-center",
+          autoClose: 2500,
+          style: {
+            background: "#fffbea",
+            color: "#92400e",
+            border: "1px solid #fde68a",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+            fontWeight: "bold",
+          },
+          icon: "⚠️",
+        });
+        // 마커 등록모드 해제
+        setIsCenterMode(false);
+        setShowModal(false);
       } else {
         console.error("❌ 마커 등록 중 오류:", error);
         setIsCenterMode(false);
@@ -1063,19 +1079,21 @@ function MapPage() {
     [map]
   );
 
-  const triedLocationRef = useRef(false); // ✅ 한 번만 알림 띄우기 위한 ref
-
-  // 현재 위치로 이동하기 (경고 제거를 위해 사용되는 함수로 표시)
-  // eslint-disable-next-line no-unused-vars
-  // 일단 주석처리 제리.. HTTPS 이후 ..?
+  const triedLocationRef = useRef(false); 
   const moveToCurrentLocation = useCallback(() => { 
     if (!map) {
-      alert("지도가 아직 초기화되지 않았습니다.");
+      toast.error("지도가 아직 초기화되지 않았습니다!", {
+        position: "bottom-center",
+        autoClose: 2000,
+      });
       return;
     }
 
     if (!navigator.geolocation) {
-      alert("이 브라우저는 위치 정보를 지원하지 않아요.");
+      toast.error("이 브라우저는 위치 정보를 지원하지 않아요.", {
+        position: "bottom-center",
+        autoClose: 2000,
+      });
       return;
     }
 
@@ -1433,7 +1451,10 @@ function MapPage() {
         alert("로그인 후 이용해주세요!");
       } else {
         console.error("📛 마커 불러오기 실패:", error);
-        alert("마커를 불러오는 중 오류가 발생했습니다.");
+        toast.error("마커를 불러오는 중 오류가 발생했습니다!", {
+          position: "bottom-center",
+          autoClose: 2000,
+        });
       }
     }
   }, [map, markerImages, mapMarkers]);
@@ -1445,10 +1466,10 @@ function MapPage() {
       console.log("🛰 마커 요청 딱 한 번 보내기!");
       fetchMarkersFromBackend();
       hasFetchedMarkers.current = true;
-    } else {
-      // 재로그인 이후 user 정보가 생기면 다시 마커를 불러오기
+    } else if (!hasFetchedMarkers.current) {
       console.log("🔁 사용자 정보 업데이트 감지, 마커 다시 불러오기!");
       fetchMarkersFromBackend();
+      hasFetchedMarkers.current = true;
     }
   }, [map, user]);
 
@@ -1658,7 +1679,7 @@ function MapPage() {
         <p className="text-center text-amber-800 text-sm font-medium">
           {isCenterMode
             ? "지도를 움직여 중앙에 마커를 위치시키고 '확정' 버튼을 누르세요"
-            : "우측 버튼을 눌러 마커를 추가하세요"}
+            : "댕플, 댕져러스 버튼을 눌러 마커를 추가하세요"}
         </p>
       </div>
       

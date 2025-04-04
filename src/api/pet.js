@@ -68,8 +68,10 @@ export const updatePetInfo = async(petData) => {
   formData.append("gender", petData.gender);
   formData.append("breed", petData.breed);
   formData.append("weight", petData.weight);
-  if (profileImageKey) {
-    formData.append("profileImage", profileImageKey); // 문자열로 전달
+  if (petData.profileImage === null) {
+    formData.append("profileImage", ""); // 이미지 제거 의도 명시
+  } else if (profileImageKey) {
+    formData.append("profileImage", profileImageKey); // 기존 또는 새 이미지
   }
 
   return api.patch("/v1/pets/me", formData);

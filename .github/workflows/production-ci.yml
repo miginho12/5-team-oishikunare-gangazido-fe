@@ -70,10 +70,12 @@ jobs:
         run: |
           mkdir temp-build
           rsync -a \
-            --exclude uploads/user \
-            --exclude /pet \
+            --exclude 'pet/' \
+            --exclude 'uploads/user/' \
             ./build/ temp-build/
-          aws s3 sync temp-build/ s3://${{ secrets.AWS_BUCKET_NAME }} --delete
+          aws s3 sync temp-build/ s3://${{ secrets.AWS_BUCKET_NAME }} --delete \
+            --exclude 'pet/*' \
+            --exclude 'uploads/user/*'
 
       - name: Invalidate CloudFront Cache # 8 - CloudFront 캐시 무효화
         run: aws cloudfront create-invalidation --distribution-id ${{ secrets.AWS_DISTRIBUTION_ID }} --paths "/*"
