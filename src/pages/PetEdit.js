@@ -115,18 +115,19 @@ function PetEdit() {
   const handleProfileImageChange = (e) => {
     const file = e.target.files?.[0];
 
-    if (file) {
-      setProfileImage(file);
-      setProfileImagePreview(URL.createObjectURL(file));
-      setIsImageRemoved(false);
-      console.log('새 이미지 선택됨');
-    } else {
-      // ⭐️ '취소'를 누른 경우 → 미리보기와 이미지 모두 삭제
+    if (!file) {
+      // 선택 안 하고 '취소' 눌렀을 때
+      console.log('❌ 파일 선택 취소됨 → 이미지 제거됨');
       setProfileImage(null);
       setProfileImagePreview(null);
       setIsImageRemoved(true);
-      console.log('파일 선택 취소됨 → 이미지 제거됨');
+      return;
     }
+  
+    console.log('✅ 새 이미지 선택됨');
+    setProfileImage(file);
+    setProfileImagePreview(URL.createObjectURL(file));
+    setIsImageRemoved(false);
   };
 
   const handleUpdatePet = async () => {
