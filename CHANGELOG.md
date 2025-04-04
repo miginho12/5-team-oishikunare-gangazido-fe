@@ -4,6 +4,13 @@
 
 ### 🐛 BUG FIXES
 
+* 릴리즈 트리거 ([654370e](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/654370e1423907ec20b794ed3e2adb07ae387ab9))
+* 릴리즈 트리거 ([ab3adf1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/ab3adf10da8176556622720c38478a78e9b3a35d))
+
+## [1.0.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.0.0...v1.0.1) (2025-04-04)
+
+### 🐛 BUG FIXES
+
 * 릴리즈 트리거 ([ab3adf1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/ab3adf10da8176556622720c38478a78e9b3a35d))
 
 ## 1.0.0 (2025-04-04)
