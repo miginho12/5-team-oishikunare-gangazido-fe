@@ -1079,11 +1079,7 @@ function MapPage() {
     [map]
   );
 
-  const triedLocationRef = useRef(false); // ✅ 한 번만 알림 띄우기 위한 ref
-
-  // 현재 위치로 이동하기 (경고 제거를 위해 사용되는 함수로 표시)
-  // eslint-disable-next-line no-unused-vars
-  // 일단 주석처리 제리.. HTTPS 이후 ..?
+  const triedLocationRef = useRef(false); 
   const moveToCurrentLocation = useCallback(() => { 
     if (!map) {
       toast.error("지도가 아직 초기화되지 않았습니다!", {

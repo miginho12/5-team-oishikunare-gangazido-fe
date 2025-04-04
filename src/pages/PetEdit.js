@@ -381,7 +381,11 @@ function PetEdit() {
               <input
                 type="text"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  const onlyKoreanEnglish = value.replace(/[^가-힣a-zA-Z]/g, ''); // 한글, 영어만 허용
+                  setName(onlyKoreanEnglish);
+                }}
                 onBlur={() => handleBlur('name')}
                 placeholder="이름"
                 className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
@@ -420,7 +424,11 @@ function PetEdit() {
                 <input
                   type="number"
                   value={age}
-                  onChange={(e) => setAge(e.target.value)}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    const onlyNumbers = value.replace(/[^0-9]/g, ''); // 숫자만 허용
+                    setAge(onlyNumbers);
+                  }}
                   onBlur={() => handleBlur('age')}
                   placeholder="나이"
                   className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
@@ -458,8 +466,8 @@ function PetEdit() {
                   value={weight}
                   onChange={(e) => {
                     const value = e.target.value;
-                    const formatted = value.match(/^\d*\.?\d{0,1}/);
-                    setWeight(formatted ? formatted[0] : '');
+                    const matched = value.match(/^\d*\.?\d{0,1}/); // 숫자.숫자 (소수점 1자리)
+                    setWeight(matched ? matched[0] : '');
                   }}
                   onBlur={() => handleBlur('weight')}
                   placeholder="몸무게 (kg)"
