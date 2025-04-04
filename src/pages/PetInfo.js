@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getPetInfo } from "../api/pet";
-import { useAuth } from "../contexts/AuthContext"; // AuthContext 불러오기
+import { useAuth } from "../contexts/AuthContext";
 
 function PetInfo() {
   const navigate = useNavigate();
-  const { isAuthenticated, loading: authLoading } = useAuth(); // 인증 상태 가져오기
+  const { isAuthenticated, loading: authLoading } = useAuth();
   const [pet, setPet] = useState(null);
-  const [loading, setLoading] = useState(true); // 로딩 상태 추가
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const goToMap = () => navigate("/map");
   const goToChat = () => navigate("/chat");
@@ -20,6 +21,7 @@ function PetInfo() {
     }
   }, [authLoading, isAuthenticated, navigate]);
 
+  // 반려견 기본 정보 가져오기
   useEffect(() => {
     if (!authLoading && isAuthenticated) {
       const fetchPetInfo = async () => {
@@ -35,8 +37,7 @@ function PetInfo() {
           if (message === "not_found_pet") {
             navigate("/pets/register");
           } else {
-            // 다른 에러 처리: 예를 들어 에러 페이지로 보내거나, 토스트 보여주기
-            alert("반려견 정보를 불러오는 중 문제가 발생했습니다.");
+            setError("반려견 정보를 불러오는 중 문제가 발생했습니다.");
             setLoading(false);
           }
         }
@@ -46,12 +47,28 @@ function PetInfo() {
     }
   }, [authLoading, isAuthenticated, navigate]);
 
+  // 로딩 중이면 로딩 표시
   if (loading || !pet) {
     return (
       <div className="flex items-center justify-center h-full">
-        <p className="text-gray-500 text-sm">
-          반려견 정보를 불러오는 중입니다...
-        </p>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-800"></div>
+        <p className="mt-4 text-gray-600">반려견 정보를 불러오는 중...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center h-full p-4">
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+          <p>{error}</p>
+        </div>
+        <button 
+          onClick={() => navigate('/map')} 
+          className="px-4 py-2 bg-amber-800 text-white rounded-md"
+        >
+          지도로 돌아가기
+        </button>
       </div>
     );
   }
@@ -59,22 +76,27 @@ function PetInfo() {
   return (
     <div className="flex flex-col h-full bg-gray-50">
       {/* 헤더 */}
-      <header className="bg-white pt-2 pb-0 px-4 shadow-md flex items-center justify-center">
-        <div className="flex items-center h-full gap-2">
+      <header className="bg-white pt-2 pb-0 px-4 shadow-md flex items-center relative">
+        <button onClick={() => navigate('/map')} className="absolute left-4">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+        <div className="flex-grow flex justify-center">
           <img
             src="/gangazido-logo-header.png"
             alt="Gangazido Logo Header"
-            className="h-14 w-28 object-cover self-center"
+            className="h-14 w-28 object-cover"
           />
         </div>
       </header>
 
       {/* 메인 컨텐츠 */}
       <div className="flex-1 p-4 overflow-y-auto">
-        {/* 반려견 프로필 카드 */}
-        <div className="bg-white rounded-xl shadow-md p-6 mb-4">
-          <div className="flex items-center mb-6">
-            <div className="w-20 h-20 bg-amber-100 rounded-full overflow-hidden flex items-center justify-center mr-4">
+        <div className="bg-white rounded-xl shadow-md p-4 mb-4">
+          <div className="flex flex-col items-center mb-6">
+            {/* 프로필 이미지 */}
+            <div className="w-32 h-32 bg-amber-100 rounded-full overflow-hidden flex items-center justify-center mb-4">
               {pet.profileImage ? (
                 <img
                   src={pet.profileImage}
@@ -88,7 +110,7 @@ function PetInfo() {
               ) : (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-12 w-12 text-amber-800"
+                  className="h-16 w-16 text-amber-800"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -102,280 +124,61 @@ function PetInfo() {
                 </svg>
               )}
             </div>
-            <div>
-              <h2 className="text-xl font-bold text-gray-800">{pet.name}</h2>
-              <p className="text-gray-600">
-                {pet.breed} · {pet.age}세 · {pet.gender ? "수컷" : "암컷"}
-              </p>
-              <div className="flex mt-2">
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 mr-2">
-                  건강
-                </span>
+            
+            {/* 반려견 이름 */}
+            <h2 className="text-xl font-bold text-gray-800 mb-2">{pet.name}</h2>
+            
+            {/* 태그 정보 */}
+            <div className="flex justify-center space-x-2 mb-4">
+              {pet.neutered && (
                 <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800">
                   중성화 완료
                 </span>
-              </div>
-            </div>
-            <button
-              onClick={goToPetEdit}
-              className="ml-auto p-2 rounded-full bg-amber-100 text-amber-800 hover:bg-amber-200 transition-colors"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-                />
-              </svg>
-            </button>
-          </div>
-
-          <div className="grid grid-cols-3 gap-4 mb-4">
-            <div className="text-center">
-              <p className="text-gray-500 text-sm">몸무게</p>
-              <p className="font-bold text-gray-800">{pet?.weight}kg</p>
-            </div>
-            <div className="text-center">
-              <p className="text-gray-500 text-sm">생일</p>
-              <p className="font-bold text-gray-800">2020.05.15</p>
-            </div>
-            <div className="text-center">
-              <p className="text-gray-500 text-sm">입양일</p>
-              <p className="font-bold text-gray-800">2020.07.10</p>
+              )}
+              {pet.vaccinated && (
+                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                  예방접종 완료
+                </span>
+              )}
             </div>
           </div>
 
-          <div className="flex justify-between">
-            <button className="flex flex-col items-center justify-center w-1/4 p-3 rounded-md hover:bg-gray-50">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6 text-amber-800 mb-1"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
-                />
-              </svg>
-              <span className="text-xs text-gray-700">건강수첩</span>
-            </button>
-            <button className="flex flex-col items-center justify-center w-1/4 p-3 rounded-md hover:bg-gray-50">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6 text-amber-800 mb-1"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                />
-              </svg>
-              <span className="text-xs text-gray-700">일정</span>
-            </button>
-            <button className="flex flex-col items-center justify-center w-1/4 p-3 rounded-md hover:bg-gray-50">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6 text-amber-800 mb-1"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
-                />
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
-                />
-              </svg>
-              <span className="text-xs text-gray-700">사진첩</span>
-            </button>
-            <button className="flex flex-col items-center justify-center w-1/4 p-3 rounded-md hover:bg-gray-50">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6 text-amber-800 mb-1"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                />
-              </svg>
-              <span className="text-xs text-gray-700">메모</span>
-            </button>
-          </div>
-        </div>
-
-        {/* 건강 정보 카드 */}
-        <div className="bg-white rounded-xl shadow-md p-6 mb-4">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-md font-semibold text-gray-700">건강 정보</h3>
-            <button className="text-sm text-amber-800 font-medium flex items-center">
-              더보기
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-4 w-4 ml-1"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
-            </button>
-          </div>
-
+          {/* 반려견 정보 리스트 */}
           <div className="space-y-4">
-            <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-              <div>
-                <h4 className="font-medium text-gray-800">종합 예방접종</h4>
-                <p className="text-xs text-gray-500">2023.05.15</p>
+            <div className="relative">
+              <label className="block text-sm font-medium text-gray-700 mb-1">몸무게</label>
+              <div className="w-full p-3 border border-gray-300 rounded-md bg-gray-100 flex justify-between items-center">
+                <span className="text-gray-800">{pet.weight} kg</span>
               </div>
-              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                완료
-              </span>
             </div>
-            <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-              <div>
-                <h4 className="font-medium text-gray-800">심장사상충 예방</h4>
-                <p className="text-xs text-gray-500">2023.06.10</p>
+            
+            <div className="relative">
+              <label className="block text-sm font-medium text-gray-700 mb-1">나이</label>
+              <div className="w-full p-3 border border-gray-300 rounded-md bg-gray-100 flex justify-between items-center">
+                <span className="text-gray-800">{pet.age}살</span>
               </div>
-              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                완료
-              </span>
             </div>
-            <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-              <div>
-                <h4 className="font-medium text-gray-800">건강검진</h4>
-                <p className="text-xs text-gray-500">2023.07.20</p>
+            
+            <div className="relative">
+              <label className="block text-sm font-medium text-gray-700 mb-1">품종</label>
+              <div className="w-full p-3 border border-gray-300 rounded-md bg-gray-100 flex justify-between items-center">
+                <span className="text-gray-800">{pet.breed || '믹스견'}</span>
               </div>
-              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                완료
-              </span>
             </div>
-          </div>
-        </div>
-
-        {/* 산책 기록 카드 */}
-        <div className="bg-white rounded-xl shadow-md p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-md font-semibold text-gray-700">
-              이번 주 산책 기록
-            </h3>
-            <button className="text-sm text-amber-800 font-medium flex items-center">
-              더보기
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-4 w-4 ml-1"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
+            
+            <div className="relative">
+              <label className="block text-sm font-medium text-gray-700 mb-1">성별</label>
+              <div className="w-full p-3 border border-gray-300 rounded-md bg-gray-100 flex justify-between items-center">
+                <span className="text-gray-800">{pet.gender ? "수컷" : "암컷"}</span>
+              </div>
+            </div>
+            
+            <button 
+              onClick={goToPetEdit}
+              className="w-full bg-amber-800 text-white p-3 rounded-md text-center font-medium mt-6"
+            >
+              반려견 정보 수정
             </button>
-          </div>
-
-          <div className="flex justify-between mb-4">
-            <div className="text-center">
-              <div className="w-8 h-8 mx-auto mb-1 rounded-full flex items-center justify-center bg-amber-800 text-white text-xs">
-                월
-              </div>
-              <div className="w-2 h-2 mx-auto rounded-full bg-amber-800"></div>
-            </div>
-            <div className="text-center">
-              <div className="w-8 h-8 mx-auto mb-1 rounded-full flex items-center justify-center bg-amber-800 text-white text-xs">
-                화
-              </div>
-              <div className="w-2 h-2 mx-auto rounded-full bg-amber-800"></div>
-            </div>
-            <div className="text-center">
-              <div className="w-8 h-8 mx-auto mb-1 rounded-full flex items-center justify-center bg-gray-200 text-gray-500 text-xs">
-                수
-              </div>
-              <div className="w-2 h-2 mx-auto rounded-full bg-gray-200"></div>
-            </div>
-            <div className="text-center">
-              <div className="w-8 h-8 mx-auto mb-1 rounded-full flex items-center justify-center bg-amber-800 text-white text-xs">
-                목
-              </div>
-              <div className="w-2 h-2 mx-auto rounded-full bg-amber-800"></div>
-            </div>
-            <div className="text-center">
-              <div className="w-8 h-8 mx-auto mb-1 rounded-full flex items-center justify-center bg-gray-200 text-gray-500 text-xs">
-                금
-              </div>
-              <div className="w-2 h-2 mx-auto rounded-full bg-gray-200"></div>
-            </div>
-            <div className="text-center">
-              <div className="w-8 h-8 mx-auto mb-1 rounded-full flex items-center justify-center bg-amber-800 text-white text-xs">
-                토
-              </div>
-              <div className="w-2 h-2 mx-auto rounded-full bg-amber-800"></div>
-            </div>
-            <div className="text-center">
-              <div className="w-8 h-8 mx-auto mb-1 rounded-full flex items-center justify-center bg-gray-200 text-gray-500 text-xs">
-                일
-              </div>
-              <div className="w-2 h-2 mx-auto rounded-full bg-gray-200"></div>
-            </div>
-          </div>
-
-          <div className="bg-gray-50 p-4 rounded-lg">
-            <div className="flex justify-between items-center mb-2">
-              <h4 className="font-medium text-gray-800">이번 주 산책 요약</h4>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <p className="text-gray-500 text-sm">총 산책 횟수</p>
-                <p className="font-bold text-gray-800">4회</p>
-              </div>
-              <div>
-                <p className="text-gray-500 text-sm">총 산책 시간</p>
-                <p className="font-bold text-gray-800">2시간 30분</p>
-              </div>
-              <div>
-                <p className="text-gray-500 text-sm">총 산책 거리</p>
-                <p className="font-bold text-gray-800">5.2km</p>
-              </div>
-              <div>
-                <p className="text-gray-500 text-sm">평균 산책 시간</p>
-                <p className="font-bold text-gray-800">37분</p>
-              </div>
-            </div>
           </div>
         </div>
       </div>
