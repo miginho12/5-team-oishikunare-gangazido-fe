@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## [1.5.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.4.0...v1.5.0) (2025-04-04)
+
+### 🚀 NEW FEATURES
+
+* 닉네임, 비밀번호 수정 유효성 수정 ([2a700c6](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/2a700c6b2054fd54e4e38dfc4f32104d76b6df36))
+* 닉네임, 비밀번호 유효성 변경, 프로필 이미지 취소 기능 추가 ([837bfea](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/837bfeac63b793f178df73b5b7e1ba443b3b00ee))
+* 사용자 프로필 기본 이미지 추가, 파일 업로드 취소 시 기본 이미지 설정 기능 추가(서버 코드 수정 필요) ([d9cde39](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/d9cde3942ab3d8a68db58056fe3f488409d5d180))
+* 프로필 수정 취소 시 기본 이미지 변경 구현 ([1d6f19a](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/1d6f19a26a9c8f244c24f6b55bd78af72732b757))
+* 프로필 이미지 등록 취소 기능 구현중... ([54106b3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/54106b3bd49960fec05e1553213ac4e07a571f9f))
+
+### 🐛 BUG FIXES
+
+* 수정 페이지 닉네임, 비밀번호 유효성 수정 ([bff2a34](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/bff2a342672b366d950b2aa2b9547ac38a46bd31))
+
 ## [1.4.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.3.2...v1.4.0) (2025-04-04)
 
 ### 🚀 NEW FEATURES
