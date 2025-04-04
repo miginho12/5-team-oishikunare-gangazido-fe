@@ -43,6 +43,7 @@ export const getPetInfo = () => {
 export const updatePetInfo = async(petData) => {
   let profileImageKey = null;
 
+  // 🟡 새 파일 업로드 시 presigned URL 사용
   if (petData.profileImage instanceof File) {
     const extension = petData.profileImage?.name?.split('.')?.pop() || 'png';
     const res = await api.post("/v1/pets/me/presigned", {
@@ -59,6 +60,7 @@ export const updatePetInfo = async(petData) => {
 
     profileImageKey = fileKey;
   } else if (typeof petData.profileImage === "string") {
+    // 🟡 기존 이미지 키 유지
     profileImageKey = petData.profileImage;
   }
 
@@ -68,11 +70,14 @@ export const updatePetInfo = async(petData) => {
   formData.append("gender", petData.gender);
   formData.append("breed", petData.breed);
   formData.append("weight", petData.weight);
+
+  // ✅ 이미지 관련 조건 처리
   if (petData.profileImage === null) {
-    formData.append("profileImage", ""); // 이미지 제거 의도 명시
+    formData.append("profileImage", "");  // 삭제 명시
   } else if (profileImageKey) {
-    formData.append("profileImage", profileImageKey); // 기존 또는 새 이미지
+    formData.append("profileImage", profileImageKey);  // 새 이미지 또는 기존 이미지 유지
   }
+  // ✅ profileImage가 undefined인 경우에는 아무 것도 append 하지 않음 (변경 없음 의미)
 
   return api.patch("/v1/pets/me", formData);
 };
