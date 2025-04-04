@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## [1.2.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.2.0...v1.2.1) (2025-04-04)
+
+### 🐛 BUG FIXES
+
+* redirect to login page on user info fetch error ([21e7886](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/21e78863affcb8c20ea619551c05f34f3f11565f))
+* 버전 표기 수정 ([d5728c3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/d5728c3a71ad069b5a14943ea45771289bf8fb87))
+* 수정 이미지 삭제시 진짜 파일 null ([ffa03bf](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/ffa03bf2cfeeb4d53d923582e8de906d21c9a888))
+
 ## [1.2.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.1.1...v1.2.0) (2025-04-04)
 
 ### 🚀 NEW FEATURES
