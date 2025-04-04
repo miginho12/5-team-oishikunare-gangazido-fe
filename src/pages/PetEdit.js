@@ -101,22 +101,26 @@ function PetEdit() {
   const handleProfileImageChange = (e) => {
     const file = e.target.files?.[0];
   
+    // 👉 파일 선택했을 경우
     if (file) {
-      // ✅ 새 파일 선택 시
       setProfileImage(file);
       setProfileImagePreview(URL.createObjectURL(file));
       setIsImageRemoved(false);
     } else {
-      // ✅ 파일 선택 취소 시
+      // 👉 파일 선택 창을 열고 취소한 경우
       console.log("파일 선택 취소됨 → 이미지 삭제 처리");
+
+      // 이미지 삭제 처리
       setProfileImage(null);
-      setProfileImagePreview(null); // 💥 요게 핵심!!!
       setIsImageRemoved(true);
-    }
-  
-    // ✅ 항상 초기화해서 onChange가 다시 작동하도록
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
+
+      // 핵심! 미리보기도 명확히 제거
+      setProfileImagePreview(null);
+
+      // input 초기화 (재선택 가능하게)
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
     }
   };
 
@@ -339,14 +343,14 @@ function PetEdit() {
         <div className="bg-white rounded-xl shadow-md p-4 mb-4">
           <div className="flex flex-col items-center mb-6">
             <div className="w-24 h-24 rounded-full bg-amber-100 flex items-center justify-center mb-3 overflow-hidden">
-              {profileImagePreview ? (
+            {profileImagePreview !== null && profileImagePreview !== '' ? (
                 <img
                   src={profileImagePreview}
                   alt="프로필 미리보기"
                   className="w-full h-full object-cover"
                   onError={() => {
                     console.warn("🐛 이미지 로딩 실패! fallback 아이콘 표시");
-                    setProfileImagePreview(null); // fallback svg로 대체되게
+                    setProfileImagePreview(null);
                   }}
                 />
               ) : (
