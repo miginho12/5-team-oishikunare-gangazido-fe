@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.5.3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.5.2...v1.5.3) (2025-04-04)
+
+### 🐛 BUG FIXES
+
+* eslint 수정 ([021f3ba](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/021f3ba64efd0a78a5c79b71c787924b178e91e3))
+
 ## [1.5.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.5.1...v1.5.2) (2025-04-04)
 
 ### 🐛 BUG FIXES
