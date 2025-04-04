@@ -64,7 +64,7 @@ function PetEdit() {
           // 🔥 CloudFront 미리보기 설정
           if (data.profileImage && typeof data.profileImage === 'string') {
             setProfileImage(data.profileImage);               
-            setProfileImagePreview(data.profileImage);        
+            setProfileImagePreview(`${data.profileImage}?t=${Date.now()}`); // ✅ 캐시 무력화
             setIsImageRemoved(false); // 추가해줘야 취소 처리도 정확히 반응
             
             console.log("🖼 수정 페이지 최초 미리보기 이미지 URL:", data.profileImage);
@@ -106,10 +106,7 @@ function PetEdit() {
       fileInputRef.current.value = '';
     }
 
-    // 현재 상태 모두 초기화 → '취소'든 '재선택'이든 동일 처리
-    setProfileImage(null);
-    setProfileImagePreview(null);
-    setIsImageRemoved(true);
+    // 클릭만 했을 때는 아무 것도 하지 말고, 선택 결과를 onChange에서 처리
   };
 
   const handleProfileImageChange = (e) => {
