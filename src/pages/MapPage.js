@@ -4,6 +4,7 @@ import { getMapMarkers, registerMarker, deleteMarker } from '../api/map'; // axi
 import { useAuth } from '../contexts/AuthContext'; // 기존 getUserInfo 대신 useAuth 훅 사용
 import { ToastContainer, toast } from 'react-toastify'; // 토스트 메시지 
 import 'react-toastify/dist/ReactToastify.css';
+<meta name="viewport" content="width=device-width, initial-scale=1.0" /> // 모바일 렌더링 필수 ?
 
 function MapPage() {
   const currentFilterTypeRef = useRef("all"); // 필터 유지 위해
