@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.4.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.3.2...v1.4.0) (2025-04-04)
+
+### 🚀 NEW FEATURES
+
+* 모바일 클러스터링 setMap 변경 ([e6d7ec4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/e6d7ec4703d493c4000cb135229b847d9ef93a18))
+
 ## [1.3.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.3.1...v1.3.2) (2025-04-04)
 
 ### 🐛 BUG FIXES
