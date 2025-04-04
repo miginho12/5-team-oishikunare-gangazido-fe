@@ -88,9 +88,9 @@ function ProfilePage() {
   // 로딩 중이면 로딩 표시
   if (loading) {
     return (
-      <div className="flex flex-col h-full items-center justify-center bg-gray-50">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-800"></div>
-        <p className="mt-4 text-gray-600">사용자 정보를 불러오는 중...</p>
+      <div className="flex flex-col h-full items-center justify-center bg-amber-50">
+        <div className="animate-spin rounded-full h-14 w-14 border-4 border-amber-800 border-t-transparent"></div>
+        <p className="mt-4 text-amber-800 font-medium">사용자 정보를 불러오는 중...</p>
       </div>
     );
   }
@@ -98,14 +98,17 @@ function ProfilePage() {
   // 에러가 있으면 에러 메시지 표시
   if (error) {
     return (
-      <div className="flex flex-col h-full items-center justify-center bg-gray-50">
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative max-w-md">
-          <span className="block sm:inline">{error}</span>
+      <div className="flex flex-col h-full items-center justify-center bg-amber-50">
+        <div className="bg-red-100 border border-red-400 text-red-700 px-6 py-4 rounded-lg shadow-md mb-4 w-full max-w-md">
+          <span className="block sm:inline font-medium">{error}</span>
         </div>
         <button
           onClick={() => navigate("/login")}
-          className="mt-4 px-4 py-2 bg-amber-800 text-white rounded hover:bg-amber-700"
+          className="mt-4 px-6 py-3 bg-amber-800 text-white rounded-full shadow-md hover:bg-amber-700 transition-all duration-300 flex items-center"
         >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
           로그인 페이지로 이동
         </button>
       </div>
@@ -113,7 +116,7 @@ function ProfilePage() {
   }
 
   return (
-    <div className="flex flex-col h-full bg-gray-50">
+    <div className="flex flex-col h-full bg-amber-50">
       {/* 헤더 */}
       <header className="bg-white pt-2 pb-0 px-4 shadow-md flex items-center justify-center">
         <div className="flex items-center h-full gap-2">
