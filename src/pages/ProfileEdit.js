@@ -158,20 +158,20 @@ function ProfileEdit() {
   };
 
   // 닉네임 입력 변경 핸들러 추가
-  const handleNicknameChange = (e) => {
-    const value = e.target.value;
+  // const handleNicknameChange = (e) => {
+  //   const value = e.target.value;
     
-    // 띄어쓰기 확인 및 제거
-    if (value.includes(' ')) {
-      setToastMessage("닉네임에는 띄어쓰기를 사용할 수 없습니다.");
-      setShowToast(true);
-      // 띄어쓰기 제거한 값으로 설정
-      setNickname(value.replace(/\s/g, ''));
-      return;
-    }
+  //   // 띄어쓰기 확인 및 제거
+  //   if (value.includes(' ')) {
+  //     setToastMessage("닉네임에는 띄어쓰기를 사용할 수 없습니다.");
+  //     setShowToast(true);
+  //     // 띄어쓰기 제거한 값으로 설정
+  //     setNickname(value.replace(/\s/g, ''));
+  //     return;
+  //   }
     
-    setNickname(value);
-  };
+  //   setNickname(value);
+  // };
 
   // 그리고 handleUpdateProfile 함수에도 검증 로직 추가
   if (nickname.includes(' ')) {

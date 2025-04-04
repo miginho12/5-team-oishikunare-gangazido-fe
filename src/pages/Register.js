@@ -19,7 +19,6 @@ function Register() {
 
   // 파일 입력 요소에 대한 ref 추가 (component 시작 부분에)
   const fileInputRef = useRef(null);
-  const [fileInputClicked, setFileInputClicked] = useState(false);
 
   // 이메일 변경 핸들러
   const handleEmailChange = (e) => {
