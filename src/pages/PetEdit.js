@@ -18,7 +18,7 @@ function PetEdit() {
 
   const [nameError, setNameError] = useState('');
   const [ageError, setAgeError] = useState('');
-  const [weightError, set WeightError] = useState('');
+  const [weightError, setWeightError] = useState('');
   const [genderError, setGenderError] = useState('');
   const [breedError, setBreedError] = useState('');
   const [touched, setTouched] = useState({
