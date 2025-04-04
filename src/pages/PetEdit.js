@@ -381,11 +381,7 @@ function PetEdit() {
               <input
                 type="text"
                 value={name}
-                onChange={(e) => {
-                  const value = e.target.value;
-                  const onlyKoreanEnglish = value.replace(/[^가-힣a-zA-Z]/g, ''); // 한글, 영어만 허용
-                  setName(onlyKoreanEnglish);
-                }}
+                onChange={(e) => setName(e.target.value)}
                 onBlur={() => handleBlur('name')}
                 placeholder="이름"
                 className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
