@@ -156,6 +156,29 @@ function ProfileEdit() {
     }
   };
 
+  // 닉네임 입력 변경 핸들러 추가
+  const handleNicknameChange = (e) => {
+    const value = e.target.value;
+    
+    // 띄어쓰기 확인 및 제거
+    if (value.includes(' ')) {
+      setToastMessage("닉네임에는 띄어쓰기를 사용할 수 없습니다.");
+      setShowToast(true);
+      // 띄어쓰기 제거한 값으로 설정
+      setNickname(value.replace(/\s/g, ''));
+      return;
+    }
+    
+    setNickname(value);
+  };
+
+  // 그리고 handleUpdateProfile 함수에도 검증 로직 추가
+  if (nickname.includes(' ')) {
+    setToastMessage("닉네임에는 띄어쓰기를 사용할 수 없습니다.");
+    setShowToast(true);
+    return;
+  }
+
   const handleUpdateProfile = () => {
     // 폼 유효성 검사
     if (!nickname.trim()) {
@@ -165,8 +188,8 @@ function ProfileEdit() {
     }
     
     // 닉네임 길이 체크
-    if (nickname.length < 2 || nickname.length > 20) {
-      setToastMessage("닉네임은 2~20자 이내로 입력해주세요.");
+    if (nickname.length > 10) {
+      setToastMessage("닉네임은 10자 이내로 입력해주세요.");
       setShowToast(true);
       return;
     }

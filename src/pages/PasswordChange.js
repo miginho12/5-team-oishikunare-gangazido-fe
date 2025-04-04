@@ -56,8 +56,9 @@ function PasswordChange() {
     const value = e.target.value;
     setNewPassword(value);
     
-    const error = validateNewPassword(value);
-    if (error) {
+    // 값이 비어있지 않을 때만 유효성 검사 실행
+    if (value) {
+      const error = validateNewPassword(value);
       setPasswordError(error);
     } else {
       setPasswordError(null);
