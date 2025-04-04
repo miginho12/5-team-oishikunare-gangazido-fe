@@ -63,6 +63,7 @@ function PetEdit() {
           if (data.profileImage && typeof data.profileImage === 'string') {
             setProfileImage(data.profileImage);               
             setProfileImagePreview(data.profileImage);        
+            setIsImageRemoved(false); // 추가해줘야 취소 처리도 정확히 반응
             
             console.log("🖼 수정 페이지 최초 미리보기 이미지 URL:", data.profileImage);
           }
@@ -113,9 +114,7 @@ function PetEdit() {
       // 이미지 삭제 처리
       setProfileImage(null);
       setIsImageRemoved(true);
-
-      // 핵심! 미리보기도 명확히 제거
-      setProfileImagePreview(null);
+      setProfileImagePreview(null); // 핵심! 미리보기도 명확히 제거
 
       // input 초기화 (재선택 가능하게)
       if (fileInputRef.current) {
@@ -343,7 +342,7 @@ function PetEdit() {
         <div className="bg-white rounded-xl shadow-md p-4 mb-4">
           <div className="flex flex-col items-center mb-6">
             <div className="w-24 h-24 rounded-full bg-amber-100 flex items-center justify-center mb-3 overflow-hidden">
-            {profileImagePreview && !isImageRemoved ? (
+            {profileImagePreview ? (
                 <img
                   src={profileImagePreview}
                   alt="프로필 미리보기"
