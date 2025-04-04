@@ -117,13 +117,13 @@ function PetRegister() {
       setAgeError('반려견의 나이를 입력해주세요.');
       isValid = false;
     } else if (isNaN(ageNum)) {
-      setAgeError('반려견의 나이는 숫자로 입력해주세요.');
+      setAgeError('반려견 나이는 1부터 50사이의 숫자만 입력 가능합니다.');
       isValid = false;
     } else if (ageNum < 1) {
-      setAgeError('반려견의 나이는 1살 이상이어야 해요.');
+      setAgeError('반려견 나이는 1부터 50사이의 숫자만 입력 가능합니다.');
       isValid = false;
     } else if (ageNum >= 51) {
-      setAgeError('입력값이 너무 큽니다. 올바른 나이를 입력해주세요.');
+      setAgeError('반려견 나이는 1부터 50사이의 숫자만 입력 가능합니다.');
       isValid = false;
     }
   
@@ -138,10 +138,10 @@ function PetRegister() {
       setWeightError('올바른 몸무게 형식을 입력해주세요. (예: 5 또는 5.2)');
       isValid = false;
     } else if (weightNum <= 0) {
-      setWeightError('반려견의 몸무게는 0kg 이상이어야 해요.');
+      setWeightError('반려견 몸무게는 1부터 200사이의 숫자만 입력 가능합니다.');
       isValid = false;
     } else if (weightNum >= 200) {
-      setWeightError('입력값이 너무 큽니다. 올바른 몸무게를 입력해주세요.');
+      setWeightError('반려견 몸무게는 1부터 200사이의 숫자만 입력 가능합니다.');
       isValid = false;
     } else {
       setWeightError('');
