@@ -375,7 +375,10 @@ function ProfilePage() {
             </li>
 
             <li>
-              <button className="w-full flex items-center justify-between p-3 rounded-md hover:bg-gray-50">
+              <button 
+                className="w-full flex items-center justify-between p-3 rounded-md hover:bg-gray-50"
+                onClick={() => window.open('https://github.com/orgs/100-hours-a-week/teams/jeju-2nd-5?query=', '_blank')}
+              >
                 <div className="flex items-center">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -403,6 +406,42 @@ function ProfilePage() {
                 </svg>
               </button>
             </li>
+
+            {/* <li>
+              <button className="w-full flex items-center justify-between p-3 rounded-md hover:bg-gray-50">
+                <div className="flex items-center">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5 text-gray-500 mr-3"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                    />
+                  </svg>
+                  <span className="text-gray-700">개발자 정보</span>
+                </div>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5 text-gray-400"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              </button>
+            </li> */}
 
             <li>
               <button className="w-full flex items-center justify-between p-3 rounded-md hover:bg-gray-50">
