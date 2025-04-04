@@ -98,25 +98,29 @@ function PetEdit() {
     setShowConfirm(false);
   };
 
+  const fileInputRef = useRef(); // 👈 input ref 선언
+
   const handleProfileImageChange = (e) => {
     const fileList = e.target.files;
 
-  if (fileList && fileList.length > 0) {
-    // ✅ 새 파일 선택한 경우
-    const file = fileList[0];
-    setProfileImage(file);
-    setProfileImagePreview(URL.createObjectURL(file));
-    setIsImageRemoved(false); // 삭제 아님
+    if (fileList && fileList.length > 0) {
+      // ✅ 새 파일 선택한 경우
+      const file = fileList[0];
+      setProfileImage(file);
+      setProfileImagePreview(URL.createObjectURL(file));
+      setIsImageRemoved(false); // 삭제 아님
     } else {
-      // ✅ 사용자가 "기존에 업로드된 이미지 제거"를 원해서 빈 파일 입력을 강제로 만든 경우에만 삭제로 간주
-      // 👉 이 케이스는 input 값을 초기화해서 만든 사용자 액션이 필요함
+      /// ✅ 파일 선택창 열고 '취소' 누른 경우
       if (profileImagePreview) {
-        // 👉 프리뷰가 있던 상태에서 비워진 경우만 제거로 간주
         setProfileImage(null);
         setProfileImagePreview(null);
-        setOriginalProfileImageKey(null);
-        setIsImageRemoved(true); // ✅ 실제 삭제 처리
+        setIsImageRemoved(true); // 이건 있어야 백엔드에 삭제 요청함
       }
+    }
+
+    // ✅ 항상 초기화해서 onChange가 다시 작동하도록
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
     }
   };
 
@@ -131,7 +135,7 @@ function PetEdit() {
       profileImageKeyToSend = await uploadPetImage(profileImage);   // ✅ 새 이미지 업로드
     } else if (isImageRemoved) {
       profileImageKeyToSend = null;   // ✅ 이미지 제거
-    } else if (typeof originalProfileImageKey === 'string') {
+    } else if (typeof originalProfileImageKey === "string") {
       profileImageKeyToSend = originalProfileImageKey;    // ✅ 기존 이미지 유지
     } else {
       profileImageKeyToSend = undefined; // 아무 조작도 안 했을 때는 undefined
@@ -370,6 +374,7 @@ function PetEdit() {
                 id="pet-profile-upload"
                 type="file"
                 accept="image/*"
+                ref={fileInputRef} // 👈 연결
                 onChange={handleProfileImageChange}
                 className="hidden"
               />
