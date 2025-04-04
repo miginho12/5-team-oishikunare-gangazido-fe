@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## [1.1.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.1.0...v1.1.1) (2025-04-04)
+
+### 🐛 BUG FIXES
+
+* 수정 이미지 삭제 및 미리보기 로직 수정 ([bd7bf65](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/bd7bf65e47b34fe6bbf3149e4a5836a57f256dc0))
+* 수정 이미지 삭제 시 진짜 파일 삭제까지 구현 ([03acf5d](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/03acf5d675d3ea535582618850a4147e6076efac))
+
 ## [1.1.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.0.0...v1.1.0) (2025-04-04)
 
 ### 🚀 NEW FEATURES
