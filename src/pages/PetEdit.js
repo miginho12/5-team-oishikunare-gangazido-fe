@@ -15,6 +15,7 @@ function PetEdit() {
   const [profileImage, setProfileImage] = useState(null);
   const [profileImagePreview, setProfileImagePreview] = useState(null);
   const [isImageRemoved, setIsImageRemoved] = useState(false);
+  const [_, setOriginalProfileImageKey] = useState(null);
 
   const [nameError, setNameError] = useState('');
   const [ageError, setAgeError] = useState('');
