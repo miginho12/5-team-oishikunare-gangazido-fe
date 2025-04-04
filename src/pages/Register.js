@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 import { registerUser, checkEmailDuplicate, checkNicknameDuplicate } from '../api/auth';
@@ -16,6 +16,10 @@ function Register() {
   const [passwordError, setPasswordError] = useState(null);
   const [nicknameError, setNicknameError] = useState(null);
   const [removeProfileImage, setRemoveProfileImage] = useState(false);
+
+  // 파일 입력 요소에 대한 ref 추가 (component 시작 부분에)
+  const fileInputRef = useRef(null);
+  const [fileInputClicked, setFileInputClicked] = useState(false);
 
   // 이메일 변경 핸들러
   const handleEmailChange = (e) => {
@@ -144,85 +148,66 @@ function Register() {
 
   // 프로필 이미지 변경 핸들러 수정
   const handleProfileImageChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
+    const file = e.target.files?.[0];
+  
+    if (file) {
+      // ✅ 새 파일 선택 시
       // 파일 크기 체크 (5MB)
-      if (e.target.files[0].size > 5 * 1024 * 1024) {
+      if (file.size > 5 * 1024 * 1024) {
         setError('프로필 이미지 크기는 5MB 이하여야 합니다.');
         return;
       }
       
-      setProfileImage(e.target.files[0]);
-      setProfileImagePreview(URL.createObjectURL(e.target.files[0]));
+      // 파일 타입 체크 (필요하다면 추가)
+      const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg'];
+      if (!validTypes.includes(file.type)) {
+        setError("지원하지 않는 파일 형식입니다. (jpg, jpeg, png, gif만 가능)");
+        return;
+      }
+      
+      setProfileImage(file);
+      setProfileImagePreview(URL.createObjectURL(file));
       setRemoveProfileImage(false);
     } else {
-      // 파일 선택 취소한 경우 - 기본 이미지로 설정
+      // ✅ 파일 선택 취소 시
+      console.log("파일 선택 취소됨 → 이미지 삭제 처리");
       setProfileImage(null);
       setProfileImagePreview(null);
       setRemoveProfileImage(true);
     }
+  
+    // ✅ 항상 초기화해서 onChange가 다시 작동하도록
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
   };
+  
 
-  // 파일 입력 요소 클릭 시 값 초기화 함수
+  // 파일 입력 요소 클릭 시 처리 - 단순화
   const handleProfileImageClick = (e) => {
-    e.target.value = null;
+    // 이미 input의 value는 빈 값으로 재설정됨 (onChange 핸들러에서)
+    console.log("프로필 이미지 선택 창 열림");
   };
 
 
   // 추가: 컴포넌트 상태 추가
   const [profileImagePreview, setProfileImagePreview] = useState(null);
 
-  // 파일 선택 취소 감지 함수
+  // 상태 로깅용 useEffect만 유지 (디버깅용)
   useEffect(() => {
-    let fileInputClicked = false;
-    
-    const handleFileInputClick = () => {
-      fileInputClicked = true;
-      
-      // 짧은 지연 후 클릭 상태 초기화
-      setTimeout(() => {
-        fileInputClicked = false;
-      }, 100);
-    };
-  
-  const handleWindowFocus = () => {
-    // 파일 입력을 클릭한 후 포커스가 돌아오면 다이얼로그가 닫힌 것으로 간주
-    if (fileInputClicked) {
-      setTimeout(() => {
-        // 파일이 없으면 취소한 것으로 간주
-        const fileInput = document.getElementById('profile-upload');
-        if (fileInput && fileInput.files.length === 0) {
-          setProfileImage(null);
-          setProfileImagePreview(null);
-          setRemoveProfileImage(true);
-        }
-        fileInputClicked = false;
-      }, 300);
-    }
-  };
-  
-  // 이벤트 리스너 등록
-  const fileInput = document.getElementById('profile-upload');
-  if (fileInput) {
-    fileInput.addEventListener('click', handleFileInputClick);
-  }
-  
-  window.addEventListener('focus', handleWindowFocus);
-  
-  // 컴포넌트 언마운트 시 이벤트 리스너 제거
-  return () => {
-    if (fileInput) {
-      fileInput.removeEventListener('click', handleFileInputClick);
-    }
-    window.removeEventListener('focus', handleWindowFocus);
-  };
-}, []);
+    console.log('프로필 이미지 상태 변경:', {
+      hasProfileImage: !!profileImage,
+      hasProfileImagePreview: !!profileImagePreview,
+      removeProfileImage
+    });
+  }, [profileImage, profileImagePreview, removeProfileImage]);
 
-  // 회원가입 폼 제출 핸들러
-  const handleRegister = async (e) => {
-    e.preventDefault();
-    
-    setLoading(true);
-    setError(null);
+    // 회원가입 폼 제출 핸들러
+    const handleRegister = async (e) => {
+      e.preventDefault();
+      
+      setLoading(true);
+      setError(null);
     
     try {
       console.log('회원가입 요청 시작 ============================');
@@ -368,7 +353,7 @@ function Register() {
           <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center mb-3 overflow-hidden">
             {profileImagePreview ? (
               <img
-                src={URL.createObjectURL(profileImage)}
+                src={profileImagePreview}
                 alt="프로필 미리보기"
                 className="w-full h-full object-cover"
               />
@@ -386,6 +371,7 @@ function Register() {
                 accept="image/*"
                 onChange={handleProfileImageChange}
                 onClick={handleProfileImageClick}
+                ref={fileInputRef}
                 className="hidden"
               />
             </label>

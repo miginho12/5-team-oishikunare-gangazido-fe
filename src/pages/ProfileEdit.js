@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getUserInfo, updateUserInfo, deleteUser } from '../api/user';
 
@@ -44,6 +44,11 @@ function ProfileEdit() {
   const [defaultProfileImage, setDefaultProfileImage] = useState(null);
   const [isDefaultSvg, setIsDefaultSvg] = useState(false);
   const [removeProfileImage, setRemoveProfileImage] = useState(false);
+
+  // 파일 입력 요소에 대한 ref 추가 
+  const fileInputRef = useRef(null);
+
+
 
   // 컴포넌트 마운트 시 사용자 정보 로드
   useEffect(() => {
@@ -104,9 +109,11 @@ function ProfileEdit() {
 
   // 프로필 이미지 변경 핸들러
   const handleProfileImageChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      
+    console.log("handleProfileImageChange !!");
+    const file = e.target.files?.[0];
+  
+    if (file) {
+      // ✅ 새 파일 선택 시
       // 파일 크기 체크 (5MB)
       if (file.size > 5 * 1024 * 1024) {
         setToastMessage("프로필 이미지 크기는 5MB 이하여야 합니다.");
@@ -126,10 +133,16 @@ function ProfileEdit() {
       setProfileImagePreview(URL.createObjectURL(file));
       setRemoveProfileImage(false);
     } else {
-      // 파일 선택 취소했을 때 이미지 제거하고 기본 이미지로 설정
+      // ✅ 파일 선택 취소 시
+      console.log("파일 선택 취소됨 → 이미지 삭제 처리");
       setProfileImage(null);
       setProfileImagePreview(null);
       setRemoveProfileImage(true);
+    }
+  
+    // ✅ 항상 초기화해서 onChange가 다시 작동하도록
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
     }
   };
 
@@ -264,54 +277,20 @@ function ProfileEdit() {
     }
   };
 
-  // 파일 입력 요소 클릭 시 값 초기화
-const handleProfileImageClick = (e) => {
-  e.target.value = null;
-};
+  // 파일 입력 요소 클릭 시 처리 
+  const handleProfileImageClick = (e) => {
+    // 이미 input의 value는 빈 값으로 재설정됨 (onChange 핸들러에서)
+    console.log("프로필 이미지 선택 창 열림");
+  };
 
-// 파일 선택 취소 감지 함수
-useEffect(() => {
-  let fileInputClicked = false;
-  
-  const handleFileInputClick = () => {
-    fileInputClicked = true;
-    setTimeout(() => {
-      fileInputClicked = false;
-    }, 100);
-  };
-  
-  const handleWindowFocus = () => {
-    if (fileInputClicked) {
-      setTimeout(() => {
-        const fileInput = document.getElementById('profile-upload');
-        if (fileInput && fileInput.files.length === 0) {
-          // 파일 선택 취소 시 이미지 제거 플래그 설정
-          setProfileImage(null);
-          setProfileImagePreview(null);
-          setRemoveProfileImage(true);
-          console.log('파일 선택 취소: removeProfileImage = true');
-        }
-        fileInputClicked = false;
-      }, 300);
-    }
-  };
-  
-  // 이벤트 리스너 등록
-  const fileInput = document.getElementById('profile-upload');
-  if (fileInput) {
-    fileInput.addEventListener('click', handleFileInputClick);
-  }
-  
-  window.addEventListener('focus', handleWindowFocus);
-  
-  // 컴포넌트 언마운트 시 이벤트 리스너 제거
-  return () => {
-    if (fileInput) {
-      fileInput.removeEventListener('click', handleFileInputClick);
-    }
-    window.removeEventListener('focus', handleWindowFocus);
-  };
-}, []);
+  // 상태 로깅용 useEffect만 유지 (디버깅용)
+  useEffect(() => {
+    console.log('프로필 이미지 상태 변경:', {
+      hasProfileImage: !!profileImage,
+      hasProfileImagePreview: !!profileImagePreview,
+      removeProfileImage
+    });
+  }, [profileImage, profileImagePreview, removeProfileImage]);
 
   // 토스트 메시지가 표시되면 3초 후에 자동으로 사라지도록 설정
   useEffect(() => {
@@ -400,6 +379,7 @@ useEffect(() => {
                 accept="image/*"
                 onChange={handleProfileImageChange}
                 onClick={handleProfileImageClick}
+                ref={fileInputRef}
                 className="hidden"
               />
             </label>
