@@ -30,6 +30,8 @@ function PetEdit() {
   });
 
   const fileInputRef = useRef(); // 👈 input ref 선언
+  const prevImageRef = useRef(null); // 🔥 마지막 이미지 백업 저장용
+
 
   const breedOptions = [
     '푸들',
@@ -99,21 +101,28 @@ function PetEdit() {
     setShowConfirm(false);
   };
 
+  // 파일 선택 열기 전에 백업
+  const handleClickFileInput = () => {
+    prevImageRef.current = {
+      profileImage,
+      profileImagePreview,
+    };
+  };
+
   const handleProfileImageChange = (e) => {
     const file = e.target.files?.[0];
-  
+
     if (file) {
-      // 새 파일 선택 시
+      // ✅ 새 파일 선택
       setProfileImage(file);
       setProfileImagePreview(URL.createObjectURL(file));
       setIsImageRemoved(false);
     } else {
-      // 파일 선택 창 열고 취소 누른 경우
-      console.log("파일 선택 취소됨 → 이미지 제거");
-
+      // ✅ 선택 취소: 새 이미지든 기존 이미지든 제거
       setProfileImage(null);
       setProfileImagePreview(null);
       setIsImageRemoved(true);
+      console.log('파일 선택 취소됨 → 이미지 제거됨');
     }
   
     // input 초기화 (재선택 가능하게)
