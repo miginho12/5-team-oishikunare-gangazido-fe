@@ -15,7 +15,6 @@ function PetEdit() {
   const [profileImage, setProfileImage] = useState(null);
   const [profileImagePreview, setProfileImagePreview] = useState(null);
   const [isImageRemoved, setIsImageRemoved] = useState(false);
-  const [_, setOriginalProfileImageKey] = useState(null);
 
   const [nameError, setNameError] = useState('');
   const [ageError, setAgeError] = useState('');
@@ -63,7 +62,6 @@ function PetEdit() {
           // 🔥 CloudFront 미리보기 설정
           if (data.profileImage && typeof data.profileImage === 'string') {
             setProfileImage(data.profileImage);               
-            setOriginalProfileImageKey(data.profileImage);    
             setProfileImagePreview(data.profileImage);        
             
             console.log("🖼 수정 페이지 최초 미리보기 이미지 URL:", data.profileImage);
@@ -108,14 +106,12 @@ function PetEdit() {
       setProfileImage(file);
       setProfileImagePreview(URL.createObjectURL(file));
       setIsImageRemoved(false);
-      setOriginalProfileImageKey(null); // 새로 바꾸면 원래 이미지도 무시
     } else {
       // ✅ 파일 선택 취소 시
       console.log("파일 선택 취소됨 → 이미지 삭제 처리");
       // 원본 이미지 키도 제거해야 함!
       setProfileImage(null);
       setProfileImagePreview(null);
-      setOriginalProfileImageKey(null);  // 원래 이미지도 안 보내짐
       setIsImageRemoved(true);
     }
 
