@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.5.12](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.5.11...v1.5.12) (2025-04-04)
+
+### 🐛 BUG FIXES
+
+* eslint & comment out the console.log before production ([e53fcfe](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/e53fcfe6eb2d4c4a7d2e13551d13d05019e6c0f3))
+
 ## [1.5.11](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.5.10...v1.5.11) (2025-04-04)
 
 ### 🐛 BUG FIXES
