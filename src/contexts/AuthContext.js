@@ -18,22 +18,19 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const checkAuthStatus = async () => {
       try {
-        console.log('인증 상태 확인 시작');
         // 사용자 정보 요청
         const response = await getUserInfo();
-        console.log('사용자 정보 응답:', response.data);
-        setUser(response.data.data); // 인증된 사용자 정보 설정
-        console.log('사용자 정보 설정 완료, 인증됨');
+        // 사용자 정보가 있으면 인증 상태로 설정
+        if (response.data?.data) {
+          setUser(response.data.data);
+        } else {
+          setUser(null);
+        }
       } catch (err) {
-        // 인증되지 않은 상태
-        console.error('사용자 정보 요청 실패:', err);
-        console.log('오류 상태 코드:', err.response?.status);
-        console.log('오류 메시지:', err.response?.data?.message);
+        // 오류 발생 시 인증되지 않은 상태로 설정
         setUser(null);
-        console.log('사용자 정보 초기화, 인증되지 않음');
       } finally {
         setLoading(false); // 로딩 완료
-        console.log('인증 상태 확인 완료, 로딩 상태 변경:', false);
       }
     };
 
@@ -42,50 +39,34 @@ export const AuthProvider = ({ children }) => {
 
   // 로그인 함수
   const login = (userData) => {
-    // console.log('로그인 함수 호출, 사용자 데이터:', userData);
     if (!userData) {
-      console.error('로그인 함수가 유효하지 않은 사용자 데이터로 호출됨:', userData);
       return;
     }
     setUser(userData);
-    console.log('사용자 상태 업데이트됨');
   };
 
   // 로그아웃 함수
   const logout = () => {
-    console.log('로그아웃 함수 호출');
     setUser(null);
-    console.log('사용자 상태가 null로 설정됨');
   };
 
   // 인증 상태 새로고침 함수
   const refreshAuthStatus = async () => {
-    console.log('인증 상태 새로고침 시작');
     setLoading(true);
     try {
       const response = await getUserInfo();
-      console.log('인증 상태 새로고침 응답:', response.data);
       setUser(response.data.data);
-      console.log('사용자 정보 업데이트 완료');
     } catch (err) {
-      console.error('인증 상태 새로고침 실패:', err);
       setUser(null);
-      console.log('사용자 정보 초기화');
     } finally {
       setLoading(false);
-      console.log('인증 상태 새로고침 완료, 로딩 상태 변경:', false);
     }
   };
 
   // user 상태 변경 모니터링
   useEffect(() => {
-    console.log('사용자 상태 변경 감지:', user);
-    console.log('현재 인증 상태:', !!user);
+    // User 상태 변경 시 실행되는 효과
   }, [user]);
-
-  // 현재 인증 상태 로깅
-  console.log('현재 인증 상태:', !!user, '사용자 정보:', user);
-  console.log('현재 로딩 상태:', loading);
 
   // 컨텍스트 값
   const value = {

@@ -15,37 +15,29 @@ function PetInfo() {
   const goToProfile = () => navigate("/profile");
   const goToPetEdit = () => navigate("/pets/edit");
 
-  useEffect(() => {
-    if (!authLoading && !isAuthenticated) {
-      navigate("/login");
-    }
-  }, [authLoading, isAuthenticated, navigate]);
-
   // 반려견 기본 정보 가져오기
   useEffect(() => {
-    if (!authLoading && isAuthenticated) {
-      const fetchPetInfo = async () => {
-        try {
-          const response = await getPetInfo();
-          const data = response.data.data;
+    const fetchPetInfo = async () => {
+      try {
+        const response = await getPetInfo();
+        const data = response.data.data;
 
-          setPet(data);
+        setPet(data);
+        setLoading(false);
+      } catch (error) {
+        console.error("반려견 정보 가져오기 실패:", error);
+        const message = error?.response?.data?.message;
+        if (message === "not_found_pet") {
+          navigate("/pets/register");
+        } else {
+          setError("반려견 정보를 불러오는 중 문제가 발생했습니다.");
           setLoading(false);
-        } catch (error) {
-          console.error("반려견 정보 가져오기 실패:", error);
-          const message = error?.response?.data?.message;
-          if (message === "not_found_pet") {
-            navigate("/pets/register");
-          } else {
-            setError("반려견 정보를 불러오는 중 문제가 발생했습니다.");
-            setLoading(false);
-          }
         }
-      };
+      }
+    };
 
-      fetchPetInfo();
-    }
-  }, [authLoading, isAuthenticated, navigate]);
+    fetchPetInfo();
+  }, [navigate]);
 
   // 로딩 중이면 로딩 표시
   if (loading || !pet) {
