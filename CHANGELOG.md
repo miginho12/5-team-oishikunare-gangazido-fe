@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.5.20](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.5.19...v1.5.20) (2025-04-05)
+
+### 🐛 BUG FIXES
+
+* kakaomap ([22ab0cc](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/22ab0ccd5ee4be87cad8a331237aaa55df46747d))
+
 ## [1.5.19](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.5.18...v1.5.19) (2025-04-05)
 
 ### 🐛 BUG FIXES
