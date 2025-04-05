@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.5.15](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.5.14...v1.5.15) (2025-04-05)
+
+### 🐛 BUG FIXES
+
+* ref_version update ([3169001](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/31690019916ff2e8d6f8bc812cebba8c78f17970))
+
 ## [1.5.14](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.5.13...v1.5.14) (2025-04-05)
 
 ### 🐛 BUG FIXES
