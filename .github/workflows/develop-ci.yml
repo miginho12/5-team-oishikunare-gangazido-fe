@@ -1,0 +1,74 @@
+name: DEVELOP CI
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  Deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Cache node modules
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.OS }}-build-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.OS }}-build-
+            ${{ runner.OS }}-
+
+      - name: Install Dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm ci
+
+      - name: Set Kakao API Key in env.js (DEV)
+        run: |
+          echo "🛠️ 카카오맵 API 키를 env.js에 주입 중..."
+          sed -i "s|REPLACE_KAKAO_MAP_API_KEY|${{ secrets.KAKAO_MAP_API_KEY_DEV }}|" ./public/env.js
+          sed -i "s|REPLACE_API_BASE_URL|${{ secrets.API_BASE_URL_DEV }}|" ./public/env.js
+
+      - name: Create version.json
+        run: |
+          echo "{\"version\": \"develop-${{ github.sha }}\"}" > public/version.json
+
+      - name: Debug version.json
+        run: |
+          cat public/version.json
+
+      - name: Build
+        run: npm run build
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN_DEV }}
+
+      - name: Upload Sentry Release & Sourcemaps
+        uses: getsentry/action-release@v1
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN_DEV }}
+          SENTRY_ORG: kakao-tech-bootcamp
+          SENTRY_PROJECT: gangazido-dev
+          SENTRY_RELEASE: ${{ github.sha }}
+        with:
+          environment: development
+          sourcemaps: ./build/static/js
+          ignore_missing: true
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Deploy to dev S3
+        run: |
+          aws s3 sync ./build s3://${{ secrets.AWS_BUCKET_NAME_DEV }} --delete
+
+      - name: Invalidate dev CloudFront Cache
+        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.AWS_DISTRIBUTION_ID_DEV }} --paths "/*"
