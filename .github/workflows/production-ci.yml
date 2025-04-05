@@ -3,8 +3,11 @@ name:
   # develop 브랜치에 push가 될 때마다 이 action이 실행됩니다.
 on:
   push:
+    branches:
+      - main
     tags:
       - "v*"
+      - "production-**"
 
 jobs:
   Deploy:
@@ -35,11 +38,19 @@ jobs:
           sed -i "s|REPLACE_KAKAO_MAP_API_KEY|${{ secrets.KAKAO_MAP_API_KEY }}|" ./public/env.js
           sed -i "s|REPLACE_API_BASE_URL|${{ secrets.API_BASE_URL }}|" ./public/env.js
 
+      - name: Fetch tags
+        run: git fetch --tags
+
+      - name: Get latest tag
+        run: |
+          VERSION=$(git describe --tags --abbrev=0 || echo "v0.0.0")
+          echo "RELEASE_VERSION=$VERSION" >> $GITHUB_ENV
+
       - name: Create version.json
         run: |
           echo "{\"version\": \"${RELEASE_VERSION}\"}" > public/version.json
         env:
-          RELEASE_VERSION: ${{ github.ref_name }}
+          RELEASE_VERSION: ${{ env.RELEASE_VERSION }}
 
       - name: Debug version.json
         run: |
@@ -49,7 +60,7 @@ jobs:
         run: |
           echo "✅ RELEASE_VERSION is: $RELEASE_VERSION"
         env:
-          RELEASE_VERSION: ${{ github.ref_name }}
+          RELEASE_VERSION: ${{ env.RELEASE_VERSION }}
 
       - name: Build # 4 - 빌드
         run: npm run build
