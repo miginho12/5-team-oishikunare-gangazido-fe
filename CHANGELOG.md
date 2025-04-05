@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.5.19](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.5.18...v1.5.19) (2025-04-05)
+
+### 🐛 BUG FIXES
+
+* sentry main&develop update ([8619055](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/8619055487c4214a3e2150a164ed23680609f405))
+
 ## [1.5.18](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.5.17...v1.5.18) (2025-04-05)
 
 ### 🐛 BUG FIXES
