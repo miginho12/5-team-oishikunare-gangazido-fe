@@ -4,6 +4,14 @@
 
 ### 🐛 BUG FIXES
 
+* delete release ([1b9f73e](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/1b9f73e2130528834430c6f0b9a787746175b106))
+* 릴리즈 ENV 적용 ([eedb7b5](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/eedb7b56c2df360d8fdcce4e1197241c8c9a6c59))
+* 릴리즈 버전 head -n 1 ([7652ad2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/7652ad26531b46df913a1a9e57a85b36a2e02c2a))
+
+## [1.5.14](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.5.13...v1.5.14) (2025-04-05)
+
+### 🐛 BUG FIXES
+
 * 릴리즈 ENV 적용 ([eedb7b5](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/eedb7b56c2df360d8fdcce4e1197241c8c9a6c59))
 * 릴리즈 버전 head -n 1 ([7652ad2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/7652ad26531b46df913a1a9e57a85b36a2e02c2a))
 
