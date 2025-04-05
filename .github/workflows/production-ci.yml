@@ -40,6 +40,8 @@ jobs:
       - name: Create version.json
         run: |
           echo "{\"version\": \"${RELEASE_VERSION}\"}" > public/version.json
+        env:
+          RELEASE_VERSION: ${{ env.RELEASE_VERSION }}
 
       - name: Debug version.json
         run: |
