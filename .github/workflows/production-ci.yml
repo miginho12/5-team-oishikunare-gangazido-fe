@@ -41,6 +41,14 @@ jobs:
         run: |
           echo "{\"version\": \"${RELEASE_VERSION}\"}" > public/version.json
 
+      - name: Debug version.json
+        run: |
+          cat public/version.json
+
+      - name: Check version in env
+        run: |
+          echo "✅ RELEASE_VERSION is: $RELEASE_VERSION"
+
       - name: Build # 4 - 빌드
         run: npm run build
         env:

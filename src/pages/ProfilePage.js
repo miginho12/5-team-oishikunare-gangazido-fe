@@ -13,9 +13,9 @@ function ProfilePage() {
   console.log(error);
 
   const [showToast, setShowToast] = useState(false);
-  console.log(showToast)
+  console.log(showToast);
   const [logoutError, setLogoutError] = useState(null);
-  console.log(logoutError)
+  console.log(logoutError);
   const [showPrivacyModal, setShowPrivacyModal] = useState(false);
   const [showTermsModal, setShowTermsModal] = useState(false);
   const [version, setVersion] = useState("");
@@ -103,8 +103,6 @@ function ProfilePage() {
     );
   }
 
-  
-
   return (
     <div className="flex flex-col h-full bg-amber-50">
       {/* 헤더 */}
@@ -123,41 +121,41 @@ function ProfilePage() {
         {/* 프로필 카드 */}
         <div className="bg-white rounded-xl shadow-md p-6 mb-4">
           <div className="flex items-center mb-6">
-          <div className="w-20 h-20 bg-amber-100 rounded-full flex items-center justify-center mr-4 overflow-hidden">
-                {userInfo?.profileImage && userInfo.profileImage !== "null" ? (
-                  <img
-                    src={userInfo.profileImage}
-                    alt="프로필 이미지"
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                      // 이미지 로드 실패 시 기본 이미지로 대체
-                      e.target.style.display = 'none';
-                      // SVG 아이콘 표시 (class 사용)
-                      e.target.parentNode.innerHTML = `
+            <div className="w-20 h-20 bg-amber-100 rounded-full flex items-center justify-center mr-4 overflow-hidden">
+              {userInfo?.profileImage && userInfo.profileImage !== "null" ? (
+                <img
+                  src={userInfo.profileImage}
+                  alt="프로필 이미지"
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    // 이미지 로드 실패 시 기본 이미지로 대체
+                    e.target.style.display = "none";
+                    // SVG 아이콘 표시 (class 사용)
+                    e.target.parentNode.innerHTML = `
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-amber-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                         </svg>   
                       `;
-                    }}
+                  }}
+                />
+              ) : (
+                // 기본 이미지로 하트 아이콘 사용
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-12 w-12 text-amber-800"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
                   />
-                ) : (
-                  // 기본 이미지로 하트 아이콘 사용
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-12 w-12 text-amber-800"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                    />
-                  </svg>
-                )}
-              </div>
+                </svg>
+              )}
+            </div>
             <div>
               <h2 className="text-xl font-bold text-gray-800">
                 {userInfo?.nickname || "사용자"}
@@ -367,7 +365,7 @@ function ProfilePage() {
                   </svg>
                   <span className="text-gray-700">앱 버전</span>
                 </div>
-                <span className="text-gray-500">{version || "0.0.0"}</span>
+                <span className="text-gray-500">{version || "0.0.1"}</span>
               </button>
             </li>
 

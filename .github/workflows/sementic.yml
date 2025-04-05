@@ -41,5 +41,5 @@ jobs:
       - name: Get latest release version
         id: get_release
         run: |
-          VERSION=$(git describe --tags --abbrev=0)
+          VERSION=$(git describe --tags --abbrev=0 || echo "0.0.1")
           echo "RELEASE_VERSION=${VERSION}" >> $GITHUB_ENV
