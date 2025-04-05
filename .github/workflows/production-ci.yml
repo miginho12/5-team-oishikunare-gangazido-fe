@@ -6,6 +6,7 @@ on:
     branches:
       - main
     tags:
+      - "v*"
       - "production-**"
 
 jobs:
@@ -41,7 +42,7 @@ jobs:
         run: |
           echo "{\"version\": \"${RELEASE_VERSION}\"}" > public/version.json
         env:
-          RELEASE_VERSION: ${{ env.RELEASE_VERSION }}
+          RELEASE_VERSION: ${{ github.ref_name }}
 
       - name: Debug version.json
         run: |
@@ -50,6 +51,8 @@ jobs:
       - name: Check version in env
         run: |
           echo "✅ RELEASE_VERSION is: $RELEASE_VERSION"
+        env:
+          RELEASE_VERSION: ${{ github.ref_name }}
 
       - name: Build # 4 - 빌드
         run: npm run build
