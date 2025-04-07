@@ -6,37 +6,27 @@ import axios from "axios";
 function ChatPage() {
   const navigate = useNavigate();
   const [message, setMessage] = useState("");
-  const [chatMessages, setChatMessages] = useState([
-    {
-      id: 1,
-      text: "안녕하세요! 산책에 관한 질문이 있으신가요?",
-      isUser: false,
-    },
-  ]);
+  const [chatMessages, setChatMessages] = useState(() => {
+    const saved = localStorage.getItem("chatHistory");
+    return saved
+      ? JSON.parse(saved)
+      : [
+          {
+            id: 1,
+            text: "안녕하세요! 산책에 관한 질문이 있으신가요?",
+            isUser: false,
+          },
+        ];
+  });
 
   const [isLoading, setIsLoading] = useState(false);
 
   const chatEndRef = useRef(null);
-  // ✅ 저장된 채팅 불러오기
-  useEffect(() => {
-    const saved = localStorage.getItem("chatHistory");
-    if (saved) {
-      setChatMessages(JSON.parse(saved));
-    } else {
-      // 저장된 게 없으면 기본 메시지
-      setChatMessages([
-        {
-          id: 1,
-          text: "안녕하세요! 산책에 관한 질문이 있으신가요?",
-          isUser: false,
-        },
-      ]);
-    }
-  }, []);
 
+  
   // ✅ 채팅 내역이 바뀔 때마다 저장
   useEffect(() => {
-    if (chatMessages.length > 0) {
+    if (chatMessages && chatMessages.length > 0) {
       localStorage.setItem("chatHistory", JSON.stringify(chatMessages));
     }
   }, [chatMessages]);
@@ -86,11 +76,7 @@ function ChatPage() {
       return;
     }
 
-    if (typeof userInput !== "string") {
-      console.warn("userInput is not a string:", userInput);
-      alert("메시지를 입력해주세요!");
-      return;
-    }
+  
     setIsLoading(true);
 
     const newUserMessage = {
@@ -207,6 +193,8 @@ function ChatPage() {
   const handleSuggestedQuestion = (question) => {
     handleSendMessage(question); // 바로 전송
   };
+
+  //if (chatMessages === null) return null;
 
   return (
     <div className="flex flex-col h-full bg-gray-50 max-w-full overflow-hidden">
