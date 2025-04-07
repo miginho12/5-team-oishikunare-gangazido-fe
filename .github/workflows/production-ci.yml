@@ -37,6 +37,7 @@ jobs:
           echo "🛠️ 카카오맵 API 키를 env.js에 주입 중..."
           sed -i "s|REPLACE_KAKAO_MAP_API_KEY|${{ secrets.KAKAO_MAP_API_KEY }}|" ./public/env.js
           sed -i "s|REPLACE_API_BASE_URL|${{ secrets.API_BASE_URL }}|" ./public/env.js
+          sed -i "s|REPLACE_CLOUDFRONT_URL|${{ secrets.CLOUDFRONT_URL_DEV }}|" ./public/env.js
 
       - name: Fetch tags
         run: git fetch --tags
