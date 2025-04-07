@@ -65,6 +65,7 @@ jobs:
       - name: Build # 4 - 빌드
         run: npm run build
         env:
+          NODE_ENV: production
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
 
       - name: Upload Sentry Release & Sourcemaps
