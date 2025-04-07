@@ -16,7 +16,7 @@ const Login = () => {
   const handleSubmit = async (values) => {
     try {
       const response = await axios.post('/api/auth/login', values);
-      console.log('로그인 성공:', response.data);
+      ////console.log(...)
       // 로그인 성공 후 처리 (예: 토큰 저장, 리다이렉트 등)
     } catch (error) {
       console.error('로그인 실패:', error);
