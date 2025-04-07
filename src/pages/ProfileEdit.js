@@ -158,20 +158,20 @@ function ProfileEdit() {
   };
 
   // 닉네임 입력 변경 핸들러 추가
-  const handleNicknameChange = (e) => {
-    const value = e.target.value;
+  // const handleNicknameChange = (e) => {
+  //   const value = e.target.value;
     
-    // 띄어쓰기 확인 및 제거
-    if (value.includes(' ')) {
-      setToastMessage("닉네임에는 띄어쓰기를 사용할 수 없습니다.");
-      setShowToast(true);
-      // 띄어쓰기 제거한 값으로 설정
-      setNickname(value.replace(/\s/g, ''));
-      return;
-    }
+  //   // 띄어쓰기 확인 및 제거
+  //   if (value.includes(' ')) {
+  //     setToastMessage("닉네임에는 띄어쓰기를 사용할 수 없습니다.");
+  //     setShowToast(true);
+  //     // 띄어쓰기 제거한 값으로 설정
+  //     setNickname(value.replace(/\s/g, ''));
+  //     return;
+  //   }
     
-    setNickname(value);
-  };
+  //   setNickname(value);
+  // };
 
   // 그리고 handleUpdateProfile 함수에도 검증 로직 추가
   if (nickname.includes(' ')) {
@@ -339,7 +339,7 @@ function ProfileEdit() {
       <div className="flex-1 p-4 overflow-y-auto">
         <div className="bg-white rounded-xl shadow-md p-4 mb-4">
           <div className="flex flex-col items-center mb-6">
-            <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center mb-3 overflow-hidden">
+            <div className="w-24 h-24 rounded-full bg-amber-100 flex items-center justify-center mb-3 overflow-hidden">
               {profileImagePreview ? (
                 <img 
                   src={profileImagePreview} 
@@ -347,9 +347,9 @@ function ProfileEdit() {
                   className="w-full h-full object-cover"
                 />
               ) : (
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-full h-full text-gray-400">
-                  <path fillRule="evenodd" d="M18.685 19.097A9.723 9.723 0 0021.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 003.065 7.097A9.716 9.716 0 0012 21.75a9.716 9.716 0 006.685-2.653zm-12.54-1.285A7.486 7.486 0 0112 15a7.486 7.486 0 015.855 2.812A8.224 8.224 0 0112 20.25a8.224 8.224 0 01-5.855-2.438zM15.75 9a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" clipRule="evenodd" />
-                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-amber-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>    
               )}
             </div>
             <label htmlFor="profile-upload" className="text-sm text-amber-800 font-medium cursor-pointer">

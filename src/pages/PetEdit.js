@@ -14,6 +14,7 @@ function PetEdit() {
   const [weight, setWeight] = useState('');
   const [profileImage, setProfileImage] = useState(null);
   const [profileImagePreview, setProfileImagePreview] = useState(null);
+  const [originalProfileImageKey, setOriginalProfileImageKey] = useState(null);
   const [isImageRemoved, setIsImageRemoved] = useState(false);
 
   const [nameError, setNameError] = useState('');
@@ -28,8 +29,6 @@ function PetEdit() {
     gender: false,
     weight: false,
   });
-
-  const fileInputRef = useRef(); // 👈 input ref 선언
 
   const breedOptions = [
     '푸들',
@@ -64,8 +63,8 @@ function PetEdit() {
           // 🔥 CloudFront 미리보기 설정
           if (data.profileImage && typeof data.profileImage === 'string') {
             setProfileImage(data.profileImage);               
-            setProfileImagePreview(`${data.profileImage}?t=${Date.now()}`); // ✅ 캐시 무력화
-            setIsImageRemoved(false); // 추가해줘야 취소 처리도 정확히 반응
+            setOriginalProfileImageKey(data.profileImage);    
+            setProfileImagePreview(data.profileImage);        
             
             console.log("🖼 수정 페이지 최초 미리보기 이미지 URL:", data.profileImage);
           }
@@ -99,52 +98,42 @@ function PetEdit() {
     setShowConfirm(false);
   };
 
-  // input 클릭 시 강제로 상태 제거하는 핸들러 추가
-  const handleFileInputClick = () => {
-    // 클릭 시점에 input 초기화 → 다음 파일 선택 때 무조건 onChange 발생
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-    }
-
-    // 클릭만 했을 때는 아무 것도 하지 말고, 선택 결과를 onChange에서 처리
-  };
+  const fileInputRef = useRef(); // 👈 input ref 선언
 
   const handleProfileImageChange = (e) => {
     const file = e.target.files?.[0];
 
-    if (!file) {
-      // 선택 안 하고 '취소' 눌렀을 때
-      console.log('❌ 파일 선택 취소됨 → 이미지 제거됨');
+    if (file) {
+      // ✅ 새 파일 선택 시
+      setProfileImage(file);
+      setProfileImagePreview(URL.createObjectURL(file));
+      setIsImageRemoved(false);
+    } else {
+      // ✅ 파일 선택 취소 시
+      console.log("파일 선택 취소됨 → 이미지 삭제 처리");
       setProfileImage(null);
       setProfileImagePreview(null);
       setIsImageRemoved(true);
-      return;
     }
-  
-    console.log('✅ 새 이미지 선택됨');
-    setProfileImage(file);
-    setProfileImagePreview(URL.createObjectURL(file));
-    setIsImageRemoved(false);
+
+    // ✅ 항상 초기화해서 onChange가 다시 작동하도록
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
   };
 
   const handleUpdatePet = async () => {
     const isValid = validateFields(); // 1. 프론트 유효성 검사 먼저
     if (!isValid) return;
 
-    let profileImageToSend;
+    let profileImageKeyToSend;
 
     if (profileImage instanceof File) {
-      // 1. 새 이미지 업로드
-      profileImageToSend = await uploadPetImage(profileImage);
+      profileImageKeyToSend = await uploadPetImage(profileImage); // 새 이미지 업로드
     } else if (isImageRemoved) {
-      // 2. 삭제 요청
-      profileImageToSend = null;
-    } else if (typeof profileImage === "string") {
-      // 3. 기존 이미지 유지
-      profileImageToSend = profileImage;
-    } else {
-      // 4. 완전 무시 (undefined)
-      profileImageToSend = undefined;
+      profileImageKeyToSend = null; // 이미지 삭제 요청
+    } else if (typeof originalProfileImageKey === 'string') {
+      profileImageKeyToSend = undefined; // 기존 이미지 유지 → append 안 함
     }
 
     try {
@@ -154,7 +143,7 @@ function PetEdit() {
         gender: gender === 'male',
         breed,
         weight,
-        profileImage: profileImageToSend,
+        profileImage: profileImageKeyToSend,
       });
 
 
@@ -201,7 +190,7 @@ function PetEdit() {
       setAgeError('반려견의 나이는 1살 이상이어야 해요.');
       isValid = false;
     } else if (ageNum >= 51) {
-      setAgeError('반려견 나이는 1부터 50사이의 숫자만 입력 가능합니다.');
+      setAgeError('입력값이 너무 큽니다. 올바른 나이를 입력해주세요.');
       isValid = false;
     }
 
@@ -323,16 +312,8 @@ function PetEdit() {
     }
   }, [showToast]);
 
-  useEffect(() => {
-    if (isImageRemoved) {
-      if (fileInputRef.current) {
-        fileInputRef.current.value = ''; // 💡 실제 input 내부 값까지 초기화
-      }
-    }
-  }, [isImageRemoved]);
-
   return (
-    <div className="flex flex-col h-full bg-amber-50">
+    <div className="flex flex-col h-full bg-gray-50">
       {/* 헤더 */}
       <header className="bg-white pt-2 pb-0 px-4 shadow-md flex items-center relative">
         <button onClick={() => navigate('/pets')} className="absolute left-4">
@@ -354,14 +335,14 @@ function PetEdit() {
         <div className="bg-white rounded-xl shadow-md p-4 mb-4">
           <div className="flex flex-col items-center mb-6">
             <div className="w-24 h-24 rounded-full bg-amber-100 flex items-center justify-center mb-3 overflow-hidden">
-            {profileImagePreview ? (
+              {profileImagePreview ? (
                 <img
                   src={profileImagePreview}
                   alt="프로필 미리보기"
                   className="w-full h-full object-cover"
                   onError={() => {
                     console.warn("🐛 이미지 로딩 실패! fallback 아이콘 표시");
-                    setProfileImagePreview(null);
+                    setProfileImagePreview(null); // fallback svg로 대체되게
                   }}
                 />
               ) : (
@@ -389,9 +370,8 @@ function PetEdit() {
                 type="file"
                 accept="image/*"
                 ref={fileInputRef} // 👈 연결
-                onClick={handleFileInputClick}
                 onChange={handleProfileImageChange}
-                className="hidden "
+                className="hidden"
               />
             </label>
           </div>

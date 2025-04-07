@@ -1,5 +1,59 @@
 # CHANGELOG
 
+## [1.5.10](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.5.9...v1.5.10) (2025-04-04)
+
+### 🐛 BUG FIXES
+
+* 수정 시 이미지 유지로 돌리기2 ([1f97349](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/1f97349fed6b88bcf9b73e5264c0fe90c3b62bad))
+
+## [1.5.9](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.5.8...v1.5.9) (2025-04-04)
+
+### 🐛 BUG FIXES
+
+* 수정 시 이미지 유지로 돌리기 ([7838b36](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/7838b3685e1f691baeb9cc94460a56af2d0a7b15))
+
+## [1.5.8](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.5.7...v1.5.8) (2025-04-04)
+
+### 🐛 BUG FIXES
+
+* 프로필 이미지 기본 이미지 수정 ([faef638](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/faef6386d8c38a9e5b726ede0f146d8ee6fa87f1))
+
+## [1.5.7](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.5.6...v1.5.7) (2025-04-04)
+
+### 🐛 BUG FIXES
+
+* 수정 이미지 안건드렸을떄 유지 ([d715e21](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/d715e218fbff38b162b0ae1ade23db6e97cfd082))
+
+## [1.5.6](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.5.5...v1.5.6) (2025-04-04)
+
+### 🐛 BUG FIXES
+
+* 프로필 이미지 기본 이미지 수정 ([2ed2d6d](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/2ed2d6d4ea07680259279a7bcd703c83f796618d))
+
+## [1.5.5](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.5.4...v1.5.5) (2025-04-04)
+
+### 🐛 BUG FIXES
+
+* 프로필 이미지 기본 이미지 수정 ([47fe62c](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/47fe62c0c655774ac47b59afe28356fda7c73cdc))
+
+## [1.5.4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.5.3...v1.5.4) (2025-04-04)
+
+### 🐛 BUG FIXES
+
+* 클릭 없이 수정 시 기존 이미지 유지되던 코드 되돌리기 ([e9a8965](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/e9a8965d01faf73a7a72dd5744c8efb3f0fb478a))
+
+## [1.5.3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.5.2...v1.5.3) (2025-04-04)
+
+### 🐛 BUG FIXES
+
+* eslint 수정 ([021f3ba](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/021f3ba64efd0a78a5c79b71c787924b178e91e3))
+
+## [1.5.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.5.1...v1.5.2) (2025-04-04)
+
+### 🐛 BUG FIXES
+
+* 수정시 기존 이미지 유지 ([aa58e6e](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/aa58e6e58bba6cbdd49981e44bf37a98cb0d2dd7))
+
 ## [1.5.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.5.0...v1.5.1) (2025-04-04)
 
 ### 🐛 BUG FIXES
