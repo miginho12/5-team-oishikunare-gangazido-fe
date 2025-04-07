@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.8.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.7.0...v1.8.0) (2025-04-07)
+
+### 🚀 NEW FEATURES
+
+* 세션 스토리지를 활용한 채팅 초기화 로직 추가 ([425bda9](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/425bda982cfcd590730190a4aa636a00a59a601d))
+
 ## [1.7.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.6.0...v1.7.0) (2025-04-07)
 
 ### 🚀 NEW FEATURES
