@@ -35,11 +35,15 @@ jobs:
           sed -i "s|REPLACE_API_BASE_URL|${{ secrets.API_BASE_URL_DEV }}|" ./public/env.js
           sed -i "s|REPLACE_CLOUDFRONT_URL|${{ secrets.CLOUDFRONT_URL_DEV }}|" ./public/env.js
 
+      - name: Get latest version tag
+        id: get_version
+        run: |
+          VERSION=$(git describe --tags --abbrev=0)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
       - name: Create version.json
         run: |
-          echo "{\"version\": \"${RELEASE_VERSION}\"}" > public/version.json
-        env:
-          RELEASE_VERSION: ${{ env.RELEASE_VERSION }}
+          echo "{\"version\": \"${{ steps.get_version.outputs.version }}\"}" > public/version.json
 
       - name: Debug version.json
         run: |
