@@ -37,7 +37,9 @@ jobs:
 
       - name: Create version.json
         run: |
-          echo "{\"version\": \"develop-${{ github.sha }}\"}" > public/version.json
+          echo "{\"version\": \"${RELEASE_VERSION}\"}" > public/version.json
+        env:
+          RELEASE_VERSION: ${{ env.RELEASE_VERSION }}
 
       - name: Debug version.json
         run: |
