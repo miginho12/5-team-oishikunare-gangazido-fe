@@ -597,7 +597,7 @@ function MapPage() {
       }
 
       console.log("현재 줌 레벨: ", map.getLevel()); // 📌 디버깅용
-      const MIN_MARKER_ZOOM_LEVEL = 4;
+      const MIN_MARKER_ZOOM_LEVEL = 5;
       // ✅ 줌 레벨 검사
       if (map.getLevel() > MIN_MARKER_ZOOM_LEVEL) {
         toast.warn("지도를 확대하여 정확한 위치에 마커를 찍어주세요!", {
@@ -800,7 +800,6 @@ function MapPage() {
 
       // 상태 업데이트
       setMarkers((prev) => [...prev, markerInfo]);
-      setMapMarkers((prev) => [...prev, marker]);
 
       // 클러스터에 추가
       if (
@@ -1036,30 +1035,6 @@ function MapPage() {
     );
   }, [map]);
 
-  // 현재 지도 범위와 줌 레벨 정보 가져오기
-  const getCurrentMapBounds = useCallback(() => {
-    if (!map) return null;
-
-    const bounds = map.getBounds();
-    const sw = bounds.getSouthWest();
-    const ne = bounds.getNorthEast();
-
-    return {
-      bounds: {
-        sw: { lat: sw.getLat(), lng: sw.getLng() },
-        ne: { lat: ne.getLat(), lng: ne.getLng() },
-      },
-      center: {
-        lat: map.getCenter().getLat(),
-        lng: map.getCenter().getLng(),
-      },
-      zoomLevel: map.getLevel(),
-    };
-  }, [map]);
-
-  // useState 선언 추가 제리추가
-  const [mapMarkers, setMapMarkers] = useState([]);
-
   // 제리 추가 마커 관련 요청
   const fetchMarkersFromBackend = useCallback(async () => {
     console.log("🚀 제리추가 fetchMarkersFromBackend() called!");
@@ -1098,10 +1073,6 @@ function MapPage() {
       console.log("📡 마커 응답:", res.data);
 
       const markersData = res.data.data.markers;
-
-      // 기존 마커 제거
-      mapMarkers.forEach((m) => m.setMap(null));
-      setMapMarkers([]);
 
       const newMarkers = [];
 
@@ -1345,7 +1316,6 @@ function MapPage() {
       });
 
       setMarkers(newMarkers);
-      setMapMarkers(newMarkers.map((m) => m.marker));
 
       // 바로 필터 적용
       filterMarkersByType(currentFilterTypeRef.current);
@@ -1362,7 +1332,7 @@ function MapPage() {
         });
       }
     }
-  }, [map, markerImages, mapMarkers]);
+  }, [map, markerImages]);
 
   const hasFetchedMarkers = useRef(false); // 딱 한 번만 실행되게 플래그
 
@@ -1526,7 +1496,6 @@ function MapPage() {
   }, [
     removeMarker,
     addMarker,
-    getCurrentMapBounds,
   ]);
 
   // 모달 뜰 때 모든 오버레이 닫기
