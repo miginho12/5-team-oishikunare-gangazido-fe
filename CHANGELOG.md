@@ -7,6 +7,17 @@
 * cloudfront url ([97358b3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/97358b35fa695739003727942f4499afc051910d))
 * fix base-url ([eae357c](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/eae357c7430c42a714c6fcf51cce73f9fb584b40))
 * kakaomap ([22ab0cc](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/22ab0ccd5ee4be87cad8a331237aaa55df46747d))
+* version ([6d12563](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/6d1256305f200ef64ad2b29c4f95030035cbfcca))
+* yml update ([a9fddd0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/a9fddd0ed4b5951da83153dec2f0e9bd7f750d0b))
+* yml update ([dbd17ea](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/dbd17eac09166224624ff91eb35c1a152c75e5e6))
+
+## [1.5.20](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.5.19...v1.5.20) (2025-04-07)
+
+### 🐛 BUG FIXES
+
+* cloudfront url ([97358b3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/97358b35fa695739003727942f4499afc051910d))
+* fix base-url ([eae357c](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/eae357c7430c42a714c6fcf51cce73f9fb584b40))
+* kakaomap ([22ab0cc](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/22ab0ccd5ee4be87cad8a331237aaa55df46747d))
 * yml update ([a9fddd0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/a9fddd0ed4b5951da83153dec2f0e9bd7f750d0b))
 * yml update ([dbd17ea](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/dbd17eac09166224624ff91eb35c1a152c75e5e6))
 
