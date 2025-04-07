@@ -19,6 +19,24 @@ function ChatPage() {
         ];
   });
 
+  // 👇 이 자리에 넣어!
+  useEffect(() => {
+    if (!sessionStorage.getItem("sessionActive")) {
+      sessionStorage.setItem("sessionActive", "true");
+
+      const initial = [
+        {
+          id: 1,
+          text: "안녕하세요! 산책에 관한 질문이 있으신가요?",
+          isUser: false,
+        },
+      ];
+      localStorage.setItem("chatHistory", JSON.stringify(initial));
+      setChatMessages(initial);
+    }
+  }, []);
+
+
   const [isLoading, setIsLoading] = useState(false);
 
   const chatEndRef = useRef(null);
