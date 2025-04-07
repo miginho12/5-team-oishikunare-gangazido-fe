@@ -1819,6 +1819,15 @@ function MapPage() {
               </p>
             </div>
             {/* 다시 보지 않기 */}
+            <p className="text-[10px] text-gray-400 mt-2 leading-snug">
+              ※ 마커는 너무 많이 찍으면 다른 이용자에게 불편을 줄 수 있어요. <br />
+              꼭 필요한 장소만 등록해주세요!
+            </p>
+            <br></br>
+            <p className="text-red-400 text-[10px] font-medium tracking-tight">
+              ⛔ 마커는 1시간에 최대 10개까지만 등록할 수 있어요!
+            </p>
+            <br></br>
             <button
               onClick={handleDoNotShowAgain}
               className="text-sm text-gray-500 hover:text-gray-700 underline"
