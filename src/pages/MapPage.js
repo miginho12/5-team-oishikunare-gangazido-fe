@@ -4,7 +4,6 @@ import { getMapMarkers, registerMarker, deleteMarker } from "../api/map"; // axi
 import { useAuth } from "../contexts/AuthContext"; // 기존 getUserInfo 대신 useAuth 훅 사용
 import { ToastContainer, toast } from "react-toastify"; // 토스트 메시지
 import "react-toastify/dist/ReactToastify.css";
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />; // 모바일 렌더링 필수 ?
 
 function MapPage() {
   const currentFilterTypeRef = useRef("all"); // 필터 유지 위해
@@ -368,20 +367,6 @@ function MapPage() {
         // 마커 이미지 초기화
         initMarkerImages();
 
-        // 이벤트 리스너 등록 - 클릭 (중앙 모드가 아닐 때)
-        const clickListener = window.kakao.maps.event.addListener(
-          kakaoMapInstance,
-          "click",
-          (mouseEvent) => {
-            // 중앙 모드가 아닐 때만 실행하고,
-            // 직접 지도를 클릭했을 때는 모달과 중앙 모드를 활성화하지 않고 마커를 바로 생성
-            if (!isCenterMode && addMarkerRef.current) {
-              // 지도 클릭 시에는 마커를 바로 생성하도록 수정된 함수 호출
-              createMarkerFromPosition(mouseEvent.latLng);
-            }
-          }
-        );
-
         // 드래그 종료 이벤트 등록 - 지도 중심 위치 업데이트만 담당
         const dragendListener = window.kakao.maps.event.addListener(
           kakaoMapInstance,
@@ -485,7 +470,6 @@ function MapPage() {
         return () => {
           try {
             if (window.kakao && window.kakao.maps && window.kakao.maps.event) {
-              window.kakao.maps.event.removeListener(clickListener);
               window.kakao.maps.event.removeListener(dragendListener);
               window.kakao.maps.event.removeListener(zoomChangedListener);
             }
@@ -585,210 +569,6 @@ function MapPage() {
     setIsCenterMode(true);
   };
 
-  // 지도 클릭 시 직접 마커를 생성하는 함수 추가
-  const createMarkerFromPosition = useCallback(
-    (position) => {
-      if (!map) return null;
-
-      try {
-        // 기본 마커 타입 설정 (지도 클릭 시 생성되는 마커는 기본적으로 댕플 타입)
-        const markerType = "댕플";
-        const markerSubType = null;
-
-        // 마커 이미지 가져오기
-        let markerImage =
-          markerImages.current[0] && markerImages.current[0].image;
-
-        if (!markerImage) {
-          // 마커 이미지가 초기화되지 않은 경우 초기화 시도
-          initMarkerImages();
-          markerImage =
-            markerImages.current[0] && markerImages.current[0].image;
-        }
-
-        // 마커 생성
-        let marker;
-        try {
-          marker = new window.kakao.maps.Marker({
-            position: position,
-            map, // 항상 지도에 표시
-            image: markerImage,
-          });
-        } catch (markerError) {
-          console.error("카카오맵 마커 객체 생성 중 오류 발생:", markerError);
-          return null;
-        }
-
-        // 마커 정보 객체
-        const markerInfo = {
-          id:
-            Date.now().toString() + Math.random().toString(36).substring(2, 10),
-          marker,
-          position: {
-            lat: position.getLat(),
-            lng: position.getLng(),
-          },
-          type: markerType,
-          subType: markerSubType,
-        };
-
-        // 클릭 이벤트 등록
-        try {
-          window.kakao.maps.event.addListener(mapMarkers, "click", () => {
-            try {
-              // 기존 인포윈도우 모두 닫기 (성능 최적화)
-              markersRef.current.forEach((m) => {
-                if (m.overlay) {
-                  try {
-                    if (typeof m.overlay.setMap(null) === "function") {
-                      m.overlay.close(); // InfoWindow일 경우
-                    } else if (typeof m.overlay.setMap === "function") {
-                      m.overlay.setMap(null); // CustomOverlay일 경우
-                    }
-                    m.overlay = null;
-                  } catch (err) {
-                    console.warn("🔍 overlay 닫기 실패:", err);
-                  }
-                }
-              });
-
-              // 인포윈도우 생성
-              let infoContent = "";
-
-              if (markerType === "댕져러스" && markerSubType) {
-                // 댕져러스 마커 클릭 시
-                let emoji = "";
-                switch (markerSubType) {
-                  case "들개":
-                    emoji = "🐕";
-                    break;
-                  case "빙판길":
-                    emoji = "🧊";
-                    break;
-                  case "염화칼슘":
-                    emoji = "🧂";
-                    break;
-                  case "공사중":
-                    emoji = "🚧";
-                    break;
-                  default:
-                    emoji = "⚠️";
-                }
-
-                infoContent = `<div style="padding:5px;font-size:12px;">
-                <div class="custom-overlay-animate" style="margin-bottom:4px;">${emoji} ${markerType}${
-                  markerSubType ? ` - ${markerSubType}` : ""
-                }</div>
-                <button id="delete-marker-${
-                  markerInfo.id
-                }" style="padding:2px 5px;background:#ff5555;color:white;border:none;border-radius:3px;">삭제</button>
-              </div>`;
-              } else {
-                // 일반 마커 클릭 시
-                infoContent = `<div class="custom-overlay-animate" style="padding:5px;font-size:12px;">${markerType}<br><button id="delete-marker-${markerInfo.id}" style="padding:2px 5px;margin-top:5px;background:#ff5555;color:white;border:none;border-radius:3px;">삭제</button></div>`;
-              }
-
-              const overlay = new window.kakao.maps.CustomOverlay({
-                content: infoContent, // 너가 만든 HTML
-                position: marker.getPosition(),
-                xAnchor: 0.5,
-                yAnchor: 1.3, // 창뜨는 위치
-                removable: true,
-                zIndex: 9999, // ✅ 마커보다 높은 z-index 설정
-              });
-
-              // 인포윈도우 열기
-              // overlay.open(map, marker);
-              overlay.setMap(map);
-
-              // 마커 정보에 인포윈도우 추가
-              markerInfo.overlay = overlay;
-
-              // 인포윈도우 내부의 삭제 버튼에 이벤트 리스너 추가
-              setTimeout(() => {
-                const deleteBtn = document.getElementById(
-                  `delete-marker-${markerInfo.id}`
-                );
-                if (deleteBtn) {
-                  deleteBtn.onclick = () => {
-                    // removeMarker 함수 ref 사용
-                    if (removeMarkerRef.current) {
-                      removeMarkerRef.current(markerInfo.id);
-                    }
-                    overlay.setMap(null); // ✅ 커스텀 오버레이 닫기
-                  };
-                }
-              }, 100);
-
-              // 선택된 마커 업데이트
-              setSelectedMarker(markerInfo);
-            } catch (clickError) {
-              console.error("마커 클릭 처리 중 오류 발생:", clickError);
-            }
-          });
-        } catch (eventError) {
-          console.error("마커 이벤트 등록 중 오류 발생:", eventError);
-        }
-
-        // 마커 배열에 추가
-        try {
-          setMarkers((prev) => {
-            const updatedMarkers = [...prev, markerInfo];
-
-            // 새 마커가 현재 화면에 보이는지 확인하고 클러스터에만 추가
-            try {
-              if (
-                mapBoundsRef.current &&
-                mapBoundsRef.current.contain(position)
-              ) {
-                // 수정: 개별 상태 업데이트 대신 일괄 업데이트 작업 스케줄링
-                setTimeout(() => {
-                  setVisibleMarkers((current) => [...current, markerInfo]);
-
-                  // 클러스터에 마커 추가
-                  if (clusterRef.current) {
-                    try {
-                      clusterRef.current.addMarker(marker);
-                    } catch (clusterError) {
-                      console.warn(
-                        "클러스터에 마커 추가 중 오류:",
-                        clusterError
-                      );
-                    }
-                  }
-                }, 10);
-              }
-            } catch (visibleError) {
-              console.warn("보이는 마커 업데이트 중 오류:", visibleError);
-            }
-
-            return updatedMarkers;
-          });
-        } catch (setMarkersError) {
-          console.error("마커 상태 업데이트 중 오류:", setMarkersError);
-          // 상태 업데이트에 실패하면 맵에서 마커 제거
-          try {
-            marker.setMap(null);
-          } catch (e) {
-            /* 마커 제거 실패는 무시 */
-          }
-          return null;
-        }
-
-        // 마커 생성 완료 후 중앙 모드 비활성화
-        setIsCenterMode(false);
-
-        ////console.log(...)
-        return markerInfo;
-      } catch (error) {
-        console.error("마커 생성 중 예상치 못한 오류 발생:", error);
-        setIsCenterMode(false); // 오류 발생 시에도 중앙 모드 비활성화
-        return null;
-      }
-    },
-    [map, initMarkerImages, markerImages, mapBoundsRef]
-  );
-
   // 모달에서 확정 버튼 클릭 시 실제 마커 생성 함수 제리 수정
   const createMarkerFromModal = useCallback(async () => {
     if (!map) return;
@@ -813,6 +593,29 @@ function MapPage() {
         return;
       }
 
+      console.log("현재 줌 레벨: ", map.getLevel()); // 📌 디버깅용
+      const MIN_MARKER_ZOOM_LEVEL = 5;
+      // ✅ 줌 레벨 검사
+      if (map.getLevel() > MIN_MARKER_ZOOM_LEVEL) {
+        toast.warn("지도를 확대하여 정확한 위치에 마커를 찍어주세요!", {
+          position: "bottom-center",
+          autoClose: 1000,
+          style: {
+            background: "#fff5f5",
+            color: "#a94442",
+            border: "1px solid #f5c6cb",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+            fontWeight: "bold",
+            whiteSpace: "nowrap",        // 👈 한 줄로 유지
+            maxWidth: "none",            // 👈 너비 제한 제거
+            width: "fit-content",        // 👈 내용만큼 너비
+            padding: "12px 16px",        // 👈 여백 여유롭게
+            fontSize: "14px",            // 👈 텍스트 크기 조정 (선택)
+          },
+          icon: "🔍",
+        });
+        return null;
+      }
       const center = map.getCenter();
 
       // 서버에 등록 요청
@@ -994,7 +797,6 @@ function MapPage() {
 
       // 상태 업데이트
       setMarkers((prev) => [...prev, markerInfo]);
-      setMapMarkers((prev) => [...prev, marker]);
 
       // 클러스터에 추가
       if (
@@ -1099,7 +901,7 @@ function MapPage() {
         setIsCenterMode(false);
         setShowModal(false);
       } else if (message === "limit_exceeded") {
-        toast.warn("마커는 1시간에 최대 30개까지 등록돼요!", {
+        toast.warn("마커는 1시간에 최대 10개까지 등록돼요!", {
           position: "bottom-center",
           autoClose: 2500,
           style: {
@@ -1190,8 +992,7 @@ function MapPage() {
         setCenterPosition({ lat: latitude, lng: longitude });
 
         // 이동한 위치 기준으로 마커 다시 불러오기!
-        fetchMarkersFromBackendRef.current?.();
-        ////console.log(...)
+        console.log("📍 현재 위치로 이동 완료:", latitude, longitude);
       },
       (error) => {
         switch (error.code) {
@@ -1231,30 +1032,6 @@ function MapPage() {
     );
   }, [map]);
 
-  // 현재 지도 범위와 줌 레벨 정보 가져오기
-  const getCurrentMapBounds = useCallback(() => {
-    if (!map) return null;
-
-    const bounds = map.getBounds();
-    const sw = bounds.getSouthWest();
-    const ne = bounds.getNorthEast();
-
-    return {
-      bounds: {
-        sw: { lat: sw.getLat(), lng: sw.getLng() },
-        ne: { lat: ne.getLat(), lng: ne.getLng() },
-      },
-      center: {
-        lat: map.getCenter().getLat(),
-        lng: map.getCenter().getLng(),
-      },
-      zoomLevel: map.getLevel(),
-    };
-  }, [map]);
-
-  // useState 선언 추가 제리추가
-  const [mapMarkers, setMapMarkers] = useState([]);
-
   // 제리 추가 마커 관련 요청
   const fetchMarkersFromBackend = useCallback(async () => {
     ////console.log(...)
@@ -1293,10 +1070,6 @@ function MapPage() {
       ////console.log(...)
 
       const markersData = res.data.data.markers;
-
-      // 기존 마커 제거
-      mapMarkers.forEach((m) => m.setMap(null));
-      setMapMarkers([]);
 
       const newMarkers = [];
 
@@ -1536,7 +1309,6 @@ function MapPage() {
       });
 
       setMarkers(newMarkers);
-      setMapMarkers(newMarkers.map((m) => m.marker));
 
       // 바로 필터 적용
       filterMarkersByType(currentFilterTypeRef.current);
@@ -1553,7 +1325,7 @@ function MapPage() {
         });
       }
     }
-  }, [map, markerImages, mapMarkers]);
+  }, [map, markerImages]);
 
   const hasFetchedMarkers = useRef(false); // 딱 한 번만 실행되게 플래그
 
@@ -1706,26 +1478,17 @@ function MapPage() {
   const [showSubTypeButtons, setShowSubTypeButtons] = useState(false);
 
   // 함수 ref 추가
-  const getCurrentMapBoundsRef = useRef(null);
-  const fetchMarkersFromBackendRef = useRef(null);
-  const markerImagesRef = useRef(null);
+  // const getCurrentMapBoundsRef = useRef(null);
+  // const fetchMarkersFromBackendRef = useRef(null);
+  // const markerImagesRef = useRef(null);
 
   // 순환 참조를 방지하기 위한 함수 ref 업데이트
   useEffect(() => {
     removeMarkerRef.current = removeMarker;
     addMarkerRef.current = addMarker;
-    // loadMarkersFromLocalStorageRef.current = loadMarkersFromLocalStorage;
-    // saveMarkersToLocalStorageRef.current = saveMarkersToLocalStorage;
-    getCurrentMapBoundsRef.current = getCurrentMapBounds;
-    fetchMarkersFromBackendRef.current = fetchMarkersFromBackend;
-    markerImagesRef.current = markerImages.current;
   }, [
     removeMarker,
     addMarker,
-    // loadMarkersFromLocalStorage,
-    // saveMarkersToLocalStorage,
-    getCurrentMapBounds,
-    // fetchMarkersFromBackend
   ]);
 
   // 모달 뜰 때 모든 오버레이 닫기
@@ -1812,6 +1575,15 @@ function MapPage() {
               </p>
             </div>
             {/* 다시 보지 않기 */}
+            <p className="text-[10px] text-gray-400 mt-2 leading-snug">
+              ※ 마커는 너무 많이 찍으면 다른 이용자에게 불편을 줄 수 있어요. <br />
+              꼭 필요한 장소만 등록해주세요!
+            </p>
+            <br></br>
+            <p className="text-red-400 text-[10px] font-medium tracking-tight">
+              ⛔ 마커는 1시간에 최대 10개까지만 등록할 수 있어요!
+            </p>
+            <br></br>
             <button
               onClick={handleDoNotShowAgain}
               className="text-sm text-gray-500 hover:text-gray-700 underline"
@@ -2175,9 +1947,11 @@ function MapPage() {
 
             {/* 확정 버튼 */}
             <button
-              onClick={() => {
-                createMarkerFromModal();
-                setShowModal(false);
+              onClick={async () => {
+                const result = await createMarkerFromModal();
+                if (result) {
+                  setShowModal(false);
+                }
               }}
               className="w-32 bg-black text-white py-2 rounded-full hover:bg-gray-900 font-semibold text-sm shadow-md transition"
             >
