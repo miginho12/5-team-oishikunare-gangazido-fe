@@ -83,23 +83,16 @@ export const updateUserInfo = async (userData) => {
       // 2. S3에 직접 업로드
       await uploadImageToS3(presignedUrl, file, contentType);
       
+      // 새 이미지 키 설정
       updateData.profile_image_key = fileKey;
     } else if (userData.removeProfileImage === true) {
-      // 이미지 제거 요청 - null을 명시적으로 설정
-      // null 값을 보내는 것이 중요함
+      // 이미지 제거 요청 - 명시적으로 null 설정
       updateData.profile_image_key = null;
-      
-      ////console.log(...)
     }
-    
-    // 디버깅을 위해 요청 데이터 로깅
-    ////console.log(...)
+    // 이미지 변경이 없는 경우 profile_image_key 필드를 포함하지 않음
     
     // Content-Type이 application/json으로 변경됨
     const response = await api.patch("/v1/users/me", updateData);
-    
-    // 응답 디버깅
-    ////console.log(...)
     
     // 응답에 프로필 이미지 URL이 있으면 CloudFront URL로 변환
     if (response.data && response.data.data && response.data.data.profileImage) {
@@ -109,11 +102,6 @@ export const updateUserInfo = async (userData) => {
     return response;
   } catch (error) {
     console.error('사용자 정보 업데이트 실패:', error);
-    // 에러 응답 디버깅
-    if (error.response) {
-      console.error('에러 응답 데이터:', error.response.data);
-      console.error('에러 응답 상태:', error.response.status);
-    }
     throw error;
   }
 };
