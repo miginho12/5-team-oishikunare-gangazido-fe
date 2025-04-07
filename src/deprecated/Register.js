@@ -22,7 +22,7 @@ const Register = () => {
   const handleSubmit = async (values) => {
     try {
       const response = await axios.post('/api/auth/register', values);
-      console.log('회원가입 성공:', response.data);
+      ////console.log(...)
       // 회원가입 성공 후 처리 (예: 로그인 페이지로 리다이렉트)
     } catch (error) {
       console.error('회원가입 실패:', error);

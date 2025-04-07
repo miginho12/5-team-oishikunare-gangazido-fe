@@ -24,11 +24,11 @@ function Login() {
     setLoading(true);
     setError('');
 
-    console.log('로그인 시도 - 이메일:', email);
+    ////console.log(...)
     
     try {
       const response = await loginUser({ email, password });
-      console.log('로그인 API 응답:', JSON.stringify(response.data, null, 2));
+      ////console.log(...)
       
       // 응답 구조 확인
       let userData = null;
@@ -38,12 +38,12 @@ function Login() {
         // data 필드가 있으면 사용
         if (response.data.data) {
           userData = response.data.data;
-          console.log('API 응답에서 user 데이터 추출:', userData);
+          ////console.log(...)
         } 
         // user 필드가 있으면 사용
         else if (response.data.user) {
           userData = response.data.user;
-          console.log('API 응답에서 user 필드 추출:', userData);
+          ////console.log(...)
         }
         // 응답 자체를 사용
         else {
@@ -51,23 +51,23 @@ function Login() {
             email: email,
             id: 'user-' + Date.now()
           };
-          console.log('API 응답에서 사용자 데이터를 찾을 수 없어 기본값 사용:', userData);
+          ////console.log(...)
         }
       } else {
         userData = {
           email: email,
           id: 'user-' + Date.now()
         };
-        console.log('API 응답에 data가 없어 기본값 사용:', userData);
+        ////console.log(...)
       }
       
-      console.log('로그인 처리 - 사용자 데이터 준비됨:', userData);
+      ////console.log(...)
       
       login(userData);
-      console.log('AuthContext login 함수 호출 완료');
+      ////console.log(...)
       
       // 로그인 성공 후 리디렉션
-      console.log('로그인 성공 - 리디렉션 시작');
+      ////console.log(...)
       navigate('/map');
     } catch (err) {
       console.error('로그인 오류:', err);
@@ -97,15 +97,21 @@ function Login() {
   };
 
   return (
-    <div className="flex flex-col h-full bg-gray-50">
+    <div className="flex flex-col h-full bg-amber-50">
       {/* 헤더 - 뒤로가기 버튼 추가 */}
-      <header className="bg-white p-4 shadow-md flex items-center">
-        <button onClick={goToMap} className="mr-2">
+      <header className="bg-white pt-2 pb-0 px-4 shadow-md flex items-center relative">
+        <button onClick={goToMap} className="absolute left-4">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
         </button>
-        <h1 className="text-xl font-bold text-gray-800">강아지도</h1>
+        <div className="flex-grow flex justify-center">
+          <img
+            src="/gangazido-logo-header.png"
+            alt="Gangazido Logo Header"
+            className="h-14 w-28 object-cover"
+          />
+        </div>
       </header>
 
       <div className="flex-1 p-4 flex flex-col">
