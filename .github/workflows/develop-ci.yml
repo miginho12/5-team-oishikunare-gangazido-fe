@@ -58,4 +58,4 @@ jobs:
 
       - name: Invalidate dev CloudFront Cache
         run: aws cloudfront create-invalidation --distribution-id ${{ secrets.AWS_DISTRIBUTION_ID_DEV }} --paths "/*"
-### 센트리 삭제
+### 센트리 삭제 & base-url 수정

@@ -1,9 +1,24 @@
 # CHANGELOG
 
-## [1.5.20](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.5.19...v1.5.20) (2025-04-05)
+## [1.6.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.5.19...v1.6.0) (2025-04-07)
+
+### 🚀 NEW FEATURES
+
+* **chat:** localStorage 기반 채팅 히스토리 유지 기능 추가 및 리팩토링 ([881b60d](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/881b60dc256b3bf10944103ded192c01e2ead161))
+* 로컬스토리지 기반 채팅 내역 저장 및 복원 기능 추가 ([c56e737](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/c56e7377f5175068ecd2ab2b9c1989bba4c226bd))
+* 로컬스토리지 기반 채팅 내역 저장 및 복원 기능 추가 ([6076af2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/6076af2e206d1aee4f8306e429a929a82d922783))
+* 브랜치 전환을 위한 임시 커밋 ([a88877f](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/a88877f15eba397783aa11a7a5e0b3f9eb3fd2c4))
 
 ### 🐛 BUG FIXES
 
+* fix base-url ([eae357c](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/eae357c7430c42a714c6fcf51cce73f9fb584b40))
+* kakaomap ([22ab0cc](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/22ab0ccd5ee4be87cad8a331237aaa55df46747d))
+
+## [1.5.20](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.5.19...v1.5.20) (2025-04-07)
+
+### 🐛 BUG FIXES
+
+* fix base-url ([eae357c](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/eae357c7430c42a714c6fcf51cce73f9fb584b40))
 * kakaomap ([22ab0cc](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/22ab0ccd5ee4be87cad8a331237aaa55df46747d))
 
 ## [1.5.19](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.5.18...v1.5.19) (2025-04-05)
