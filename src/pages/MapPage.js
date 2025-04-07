@@ -1102,7 +1102,7 @@ function MapPage() {
         setIsCenterMode(false);
         setShowModal(false);
       } else if (message === "limit_exceeded") {
-        toast.warn("마커는 1시간에 최대 30개까지 등록돼요!", {
+        toast.warn("마커는 1시간에 최대 10개까지 등록돼요!", {
           position: "bottom-center",
           autoClose: 2500,
           style: {
