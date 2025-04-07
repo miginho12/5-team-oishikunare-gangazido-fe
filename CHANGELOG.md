@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## [1.7.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.6.0...v1.7.0) (2025-04-07)
+
+### 🚀 NEW FEATURES
+
+* 마커 등록 줌레벨 제한 느슨하게, 필요없는 코드 제거 mapMarkers부분 ([fe19359](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/fe19359874a59c32ac512c8e8ace9e5fa1aab8a2))
+* 마커 생성 제한 1시간 10개로 수정 ([8d9e14d](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/8d9e14d9f5bb9163d23f84fecf7fd73f969f29e1))
+* 불필요 코드 제거(터치해서 마커 등록함수), 일정 확대 수준에서만 마커 등록 가능 ([11d29b8](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/11d29b848a69083428b5e7f85ee42eefd38b54f2))
+* 사용안내 모달에 마커 등록갯수 제한 안내추가 ([7631e44](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/7631e44af787483a5622d67e6c0ecf80e7c5317b))
+
 ## [1.6.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.5.19...v1.6.0) (2025-04-07)
 
 ### 🚀 NEW FEATURES
