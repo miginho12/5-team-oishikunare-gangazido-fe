@@ -17,7 +17,31 @@ function ChatPage() {
   const [isLoading, setIsLoading] = useState(false);
 
   const chatEndRef = useRef(null);
+  // ✅ 저장된 채팅 불러오기
+  useEffect(() => {
+    const saved = localStorage.getItem("chatHistory");
+    if (saved) {
+      setChatMessages(JSON.parse(saved));
+    } else {
+      // 저장된 게 없으면 기본 메시지
+      setChatMessages([
+        {
+          id: 1,
+          text: "안녕하세요! 산책에 관한 질문이 있으신가요?",
+          isUser: false,
+        },
+      ]);
+    }
+  }, []);
 
+  // ✅ 채팅 내역이 바뀔 때마다 저장
+  useEffect(() => {
+    if (chatMessages.length > 0) {
+      localStorage.setItem("chatHistory", JSON.stringify(chatMessages));
+    }
+  }, [chatMessages]);
+
+  // ✅ 스크롤 맨 아래로
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [chatMessages]);
