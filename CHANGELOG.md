@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## [1.11.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.10.6...v1.11.0) (2025-04-08)
+
+### 🚀 NEW FEATURES
+
+* 회원가입, 프로필 이미지 저장 방식 변경 ([a768dbf](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/a768dbf68231680a4ff3dc97ad4ba368157c41b4))
+
+### 🐛 BUG FIXES
+
+* 이미지 업로드 관련 로그 추가 ([bc8c1bd](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/bc8c1bd81536b57fe09504a07272386b9f42733a))
+
 ## [1.10.6](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.10.5...v1.10.6) (2025-04-08)
 
 ### 🐛 BUG FIXES
