@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.11.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.11.0...v1.11.1) (2025-04-08)
+
+### 🐛 BUG FIXES
+
+* 수정 페이지 이미지 삭제 시 미리보기도 사라지게 구현 ([e91bf68](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/e91bf68ac3ce95b4a53a835458775ee41835457c))
+
 ## [1.11.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.10.6...v1.11.0) (2025-04-08)
 
 ### 🚀 NEW FEATURES
