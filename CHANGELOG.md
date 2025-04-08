@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## [1.10.3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.10.2...v1.10.3) (2025-04-08)
+
+### 🐛 BUG FIXES
+
+* 반려견 등록/ 수정 몸무게 최대 세자리숫자만 입력 가능하도록 수정 ([5e3c14c](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/5e3c14c0bab8a95242dc45d256ed2613041cf3a0))
+* 반려견정보 등록/수정 이름 헬퍼텍스트 공백 알림 추가 ([7848179](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/784817998e1bca3a2affa2ef3016b22d0ca8ef12))
+
 ## [1.10.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.10.1...v1.10.2) (2025-04-08)
 
 ### 🐛 BUG FIXES
