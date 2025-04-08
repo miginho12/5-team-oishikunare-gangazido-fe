@@ -118,7 +118,7 @@ function PetRegister() {
       setNameError('반려견의 이름을 입력하세요.');
       isValid = false;
     } else if (!nameRegex.test(name)) {
-      setNameError('반려견의 이름은 한글 또는 영문만 입력 가능합니다.');
+      setNameError('반려견의 이름은 공백없이 한글 또는 영문만 입력 가능합니다.');
       isValid = false;
     } else if (name.length > 10) {
       setNameError('반려견의 이름은 최대 10자까지 입력 가능합니다.');
@@ -194,7 +194,7 @@ function PetRegister() {
         setNameError('반려견의 이름을 입력해주세요.');
         break;
       case 'invalid_pet_name_format':
-        setNameError('반려견의 이름은 한글 또는 영문만 입력 가능합니다.');
+        setNameError('반려견의 이름은 공백없이 한글 또는 영문만 입력 가능합니다.');
         break;
       case 'invalid_pet_name_length':
         setNameError('반려견의 이름은 최대 10자까지 입력 가능합니다.');
