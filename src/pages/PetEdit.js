@@ -114,6 +114,7 @@ function PetEdit() {
       setProfileImage(null);
       setProfileImagePreview(null);
       setIsImageRemoved(true);
+      setOriginalProfileImageKey(null);  // 원래 이미지도 없앤다!
     }
 
     // ✅ 항상 초기화해서 onChange가 다시 작동하도록
