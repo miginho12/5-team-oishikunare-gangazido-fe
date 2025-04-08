@@ -65,8 +65,7 @@ function PetEdit() {
             setProfileImage(data.profileImage);               
             setOriginalProfileImageKey(data.profileImage);    
             setProfileImagePreview(data.profileImage);        
-            
-            ////console.log(...)
+            setIsImageRemoved(false); // 이 부분 명시적으로
           }
         }
       } catch (err) {
@@ -103,25 +102,24 @@ function PetEdit() {
   const handleProfileImageChange = (e) => {
     const file = e.target.files?.[0];
   
-    if (file && file.size > 0) {
-      // ✅ 새 파일 선택한 경우
+    if (file) {
+      // ✅ 새 이미지 선택한 경우
       setProfileImage(file);
       setProfileImagePreview(URL.createObjectURL(file));
+      setOriginalProfileImageKey(null); // 기존 이미지 키 제거
       setIsImageRemoved(false);
     } else {
-      // ✅ 선택 취소했거나, 빈 파일 선택한 경우
-      setProfileImage(null);
+      // ✅ 파일 선택 창 열었지만 취소한 경우
+      setProfileImage(null); // 완전 삭제
       setProfileImagePreview(null);
-      setIsImageRemoved(true);
       setOriginalProfileImageKey(null);
+      setIsImageRemoved(true);
     }
   
-    // ✅ input 초기화 (같은 파일 또 선택하거나 onChange 반복되도록)
-    setTimeout(() => {
-      if (fileInputRef.current) {
-        fileInputRef.current.value = "";
-      }
-    }, 0);
+    // ✅ input 초기화 (같은 파일 선택 가능하도록)
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
   };
 
   const handleUpdatePet = async () => {
@@ -130,12 +128,14 @@ function PetEdit() {
 
     let profileImageKeyToSend;
 
-    if (profileImage instanceof File) {
-      profileImageKeyToSend = await uploadPetImage(profileImage); // 새 이미지 업로드
-    } else if (isImageRemoved) {
-      profileImageKeyToSend = null; // 이미지 삭제 요청
-    } else if (typeof originalProfileImageKey === 'string') {
-      profileImageKeyToSend = undefined; // 기존 이미지 유지 → append 안 함
+    if (isImageRemoved) {
+      profileImageKeyToSend = null; // 삭제
+    } else if (profileImage instanceof File) {
+      profileImageKeyToSend = await uploadPetImage(profileImage); // 새로 업로드
+    } else if (typeof profileImage === 'string') {
+      profileImageKeyToSend = profileImage; // 기존 유지
+    } else {
+      profileImageKeyToSend = undefined; // 아무것도 안 보냄
     }
 
     try {
