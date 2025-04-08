@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.10.5](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.10.4...v1.10.5) (2025-04-08)
+
+### 🐛 BUG FIXES
+
+* 수정 삭제 처리 로직 꼬임 해결 ([1bfa7c8](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/1bfa7c8abe45c8bd914782ecb8f56042d7812358))
+
 ## [1.10.4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.10.3...v1.10.4) (2025-04-08)
 
 ### 🐛 BUG FIXES
