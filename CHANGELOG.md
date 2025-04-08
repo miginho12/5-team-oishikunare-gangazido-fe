@@ -1,5 +1,18 @@
 # CHANGELOG
 
+## [1.10.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.9.1...v1.10.0) (2025-04-08)
+
+### 🚀 NEW FEATURES
+
+* 몸무게 소숫점 두 자리 이상 입력 방지 기능 추가 ([6c1e3dd](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/6c1e3dd0e401f20cc6adfbbad58861d83d8156e5))
+* 소숫점 둘째자리 이상 입력 방지 ([b2ed193](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/b2ed193294c01b879f88b34e7c1a839593878d42))
+* 소숫점 둘째자리 이상 입력 방지 ([42368af](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/42368af012ebae3be18dd9448584b08c6d09bea8))
+
+### 🐛 BUG FIXES
+
+* 반려견 나이 두자리 숫자만 입력 가능하도록 수정 ([a68b1f5](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/a68b1f5138bd2c7be2613ab7bc0f2ed181e9f75c))
+* 반려견정보 수정, 등록 헬퍼텍스트 수정 ([978350b](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/978350b2d7c73ebd73afb45848cd7c2f0fad563c))
+
 ## [1.9.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.9.0...v1.9.1) (2025-04-08)
 
 ### 🐛 BUG FIXES
