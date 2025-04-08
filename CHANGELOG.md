@@ -1,5 +1,21 @@
 # CHANGELOG
 
+## [1.8.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.8.0...v1.8.1) (2025-04-08)
+
+### 🐛 BUG FIXES
+
+* cloudfront url ([97358b3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/97358b35fa695739003727942f4499afc051910d))
+* Decoding ([6db7b42](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/6db7b4264f0d49828b3fa2ffcb5df2188ba2271d))
+* Decoding ([9329379](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/932937920df7fe3ef4893b27e0747b551dace52f))
+* Develop ([54e2bd8](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/54e2bd8c3e308eb823552543f7ebab997b453870))
+* Develop ([97e9318](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/97e9318c93a4a23bab78e4091d2173fdf30c6918))
+* version ([ccdd936](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/ccdd9368894435e72e87b0d917e1f1628efaf7ca))
+* version ([6d12563](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/6d1256305f200ef64ad2b29c4f95030035cbfcca))
+* yml update ([a9fddd0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/a9fddd0ed4b5951da83153dec2f0e9bd7f750d0b))
+* yml update ([dbd17ea](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/dbd17eac09166224624ff91eb35c1a152c75e5e6))
+* 프로필 이미지 경로 수정 ([0380a44](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/0380a44c18966ee985e7d4cf0d8cb601e1526ceb))
+* 프로필 이미지 경로 수정 ([e8179ae](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/e8179ae427bc9f42a4a9efde49601b82c18843cf))
+
 ## [1.5.20](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.5.19...v1.5.20) (2025-04-07)
 
 ### 🐛 BUG FIXES
