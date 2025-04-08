@@ -49,7 +49,7 @@ function Register() {
     
     try {
       const response = await checkEmailDuplicate(email);
-      console.log('이메일 중복 체크 응답:', response);
+      ////console.log(...)
       
       // API 응답 구조 확인
       if (response.data && response.data.data) {
@@ -124,7 +124,7 @@ function Register() {
     
     try {
       const response = await checkNicknameDuplicate(nickname);
-      console.log('닉네임 중복 체크 응답:', response);
+      ////console.log(...)
       
       // API 응답 구조 확인
       if (response.data && response.data.data) {
@@ -169,7 +169,7 @@ function Register() {
       setRemoveProfileImage(false);
     } else {
       // ✅ 파일 선택 취소 시
-      console.log("파일 선택 취소됨 → 이미지 삭제 처리");
+      ////console.log(...)
       setProfileImage(null);
       setProfileImagePreview(null);
       setRemoveProfileImage(true);
@@ -185,7 +185,7 @@ function Register() {
   // 파일 입력 요소 클릭 시 처리 - 단순화
   const handleProfileImageClick = (e) => {
     // 이미 input의 value는 빈 값으로 재설정됨 (onChange 핸들러에서)
-    console.log("프로필 이미지 선택 창 열림");
+    ////console.log(...)
   };
 
 
@@ -194,11 +194,7 @@ function Register() {
 
   // 상태 로깅용 useEffect만 유지 (디버깅용)
   useEffect(() => {
-    console.log('프로필 이미지 상태 변경:', {
-      hasProfileImage: !!profileImage,
-      hasProfileImagePreview: !!profileImagePreview,
-      removeProfileImage
-    });
+    //console.log(...)
   }, [profileImage, profileImagePreview, removeProfileImage]);
 
     // 회원가입 폼 제출 핸들러
@@ -209,10 +205,10 @@ function Register() {
       setError(null);
     
     try {
-      console.log('회원가입 요청 시작 ============================');
-      console.log('- 이메일:', email);
-      console.log('- 닉네임:', nickname);
-      console.log('- 프로필 이미지:', profileImage ? profileImage.name : '없음');
+      ////console.log(...)
+      ////console.log(...)
+      ////console.log(...)
+      ////console.log(...)
       
       const userData = {
         user_email: email,
@@ -223,19 +219,12 @@ function Register() {
         removeProfileImage: removeProfileImage
       };
       
-      console.log('회원가입 FormData가 생성되기 전 userData:', 
-        JSON.stringify({
-          ...userData,
-          user_password: '(보안상 로그 생략)',
-          user_password_confirm: '(보안상 로그 생략)',
-          user_profileImage: profileImage ? '(파일 객체)' : null
-        })
-      );
+      //console.log(...)
       
       // auth API 모듈 활용
       const response = await registerUser(userData);
-      
-      console.log('회원가입 성공 응답:', response.data);
+
+      console.log(response);
       
       // 로그인 페이지로 이동하면서 성공 메시지 전달
       navigate('/login', { 
@@ -304,7 +293,7 @@ function Register() {
         setError('회원가입 요청 중 오류가 발생했습니다: ' + err.message);
       }
       
-      console.log('회원가입 오류 처리 완료 ============================');
+      ////console.log(...)
     } finally {
       setLoading(false);
     }

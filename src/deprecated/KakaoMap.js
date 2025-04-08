@@ -23,7 +23,7 @@ const KakaoMap = () => {
 
   // 카카오맵 스크립트 로드
   useEffect(() => {
-    console.log("카카오맵 초기화 시작");
+    ////console.log(...)
     // HTML에 직접 포함된 카카오맵 API를 사용
     if (window.kakao && window.kakao.maps) {
       initializeMap();
@@ -35,18 +35,18 @@ const KakaoMap = () => {
   // 지도 초기화
   const initializeMap = () => {
     try {
-      console.log("지도 초기화 함수 실행");
+      ////console.log(...)
       const kakao = window.kakao;
       const options = {
         center: new kakao.maps.LatLng(33.450701, 126.570667),
         level: 3
       };
 
-      console.log("지도 컨테이너:", mapContainer.current);
+      ////console.log(...)
       const mapInstance = new kakao.maps.Map(mapContainer.current, options);
-      console.log("지도 인스턴스 생성 완료");
+      ////console.log(...)
       setMap(mapInstance);
-      console.log("setMap 실행됨");
+      ////console.log(...)
       fetchMarkersFromBackend(mapInstance); // 👈 mapInstance 직접 넘겨주기!
 
       // 드래그 가능한 마커 생성
@@ -79,7 +79,7 @@ const KakaoMap = () => {
       // 샘플 마커 추가
       addSampleMarkers(mapInstance);
       
-      console.log("지도 초기화 완료");
+      ////console.log(...)
     } catch (error) {
       console.error("지도 초기화 중 오류 발생:", error);
     }
@@ -128,13 +128,13 @@ const KakaoMap = () => {
 
     // 제리 추가
     useEffect(() => {
-      console.log("✅ map 상태가 변경됨", map); // 여기가 실행되는지 확인
+      ////console.log(...) // 여기가 실행되는지 확인
       if (map) {
-        console.log('🛰 마커 요청 시도');
+        ////console.log(...)
         fetchMarkersFromBackend();
       }
     }, [map]);
-    console.log("✅ map 상태가 변경됨", map); // 여기가 실행되는지 확인
+    ////console.log(...) // 여기가 실행되는지 확인
     // 샘플 마커 추가
     const addSampleMarkers = (mapInstance) => {
     const kakao = window.kakao;

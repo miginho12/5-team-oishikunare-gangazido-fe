@@ -1,5 +1,50 @@
 # CHANGELOG
 
+## [1.5.17](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.5.16...v1.5.17) (2025-04-05)
+
+### 🐛 BUG FIXES
+
+* ref_version update ([f32a693](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/f32a693e276e8ebed86e215340c5f2b2006bbe99))
+
+## [1.5.16](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.5.15...v1.5.16) (2025-04-05)
+
+### 🐛 BUG FIXES
+
+* ref_version update ([7204b32](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/7204b328839bd3d84bada6766303ed4d2a0074cf))
+
+## [1.5.15](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.5.14...v1.5.15) (2025-04-05)
+
+### 🐛 BUG FIXES
+
+* ref_version update ([3169001](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/31690019916ff2e8d6f8bc812cebba8c78f17970))
+
+## [1.5.14](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.5.13...v1.5.14) (2025-04-05)
+
+### 🐛 BUG FIXES
+
+* delete release ([1b9f73e](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/1b9f73e2130528834430c6f0b9a787746175b106))
+* 릴리즈 ENV 적용 ([eedb7b5](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/eedb7b56c2df360d8fdcce4e1197241c8c9a6c59))
+* 릴리즈 버전 head -n 1 ([7652ad2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/7652ad26531b46df913a1a9e57a85b36a2e02c2a))
+
+## [1.5.14](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.5.13...v1.5.14) (2025-04-05)
+
+### 🐛 BUG FIXES
+
+* 릴리즈 ENV 적용 ([eedb7b5](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/eedb7b56c2df360d8fdcce4e1197241c8c9a6c59))
+* 릴리즈 버전 head -n 1 ([7652ad2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/7652ad26531b46df913a1a9e57a85b36a2e02c2a))
+
+## [1.5.13](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.5.12...v1.5.13) (2025-04-05)
+
+### 🐛 BUG FIXES
+
+* 버저닝 업데이트 ([12834ba](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/12834ba24b05a375263c4c6be7a4b965946f8985))
+
+## [1.5.12](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.5.11...v1.5.12) (2025-04-04)
+
+### 🐛 BUG FIXES
+
+* eslint & comment out the console.log before production ([e53fcfe](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/e53fcfe6eb2d4c4a7d2e13551d13d05019e6c0f3))
+
 ## [1.5.11](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.5.10...v1.5.11) (2025-04-04)
 
 ### 🐛 BUG FIXES

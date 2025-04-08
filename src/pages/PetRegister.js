@@ -59,7 +59,7 @@ function PetRegister() {
         profileImageKey = await uploadPetImage(profileImage);
         const imageUrl = `https://d3jeniacjnodv5.cloudfront.net/${profileImageKey}?t=${Date.now()}`;
         setProfileImagePreview(imageUrl);
-        console.log("✅ 등록 후 미리보기용 이미지 URL:", imageUrl);
+        ////console.log(...)
       }
 
       const petData = {
@@ -71,7 +71,7 @@ function PetRegister() {
         profileImage: profileImageKey,
       };
 
-      console.log("📦 최종 전송 데이터:", petData);
+      ////console.log(...)
       await registerPet(petData);
 
       setShowToast(true);
@@ -92,7 +92,7 @@ function PetRegister() {
       setProfileImage(file);
       const tempUrl = URL.createObjectURL(file);
       setProfileImagePreview(tempUrl);
-      console.log("🖼 선택한 로컬 이미지 preview URL:", tempUrl);
+      ////console.log(...)
     } else {
       // ✅ 사용자가 '파일 선택' 창에서 취소를 누른 경우
       setProfileImage(null); // S3 업로드 대상 제거

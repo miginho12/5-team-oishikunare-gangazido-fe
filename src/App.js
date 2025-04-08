@@ -42,9 +42,7 @@ function App() {
       }
 
       // 콘솔에 뷰포트 정보 출력 (디버깅용)
-      console.log(
-        `Viewport set: ${window.innerWidth}x${window.innerHeight}, vh=${vh}`
-      );
+      //console.log(...)
     }
 
     // debounce 함수

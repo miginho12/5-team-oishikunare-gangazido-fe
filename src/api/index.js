@@ -17,13 +17,10 @@ const apiClient = axios.create({
 // 요청 인터셉터 추가
 apiClient.interceptors.request.use(
   (config) => {
-    console.log("API 요청 시작:", config.method.toUpperCase(), config.url);
-    console.log("요청 헤더:", config.headers);
+    ////console.log(...)
+    ////console.log(...)
     if (config.data) {
-      console.log(
-        "요청 데이터:",
-        config.data instanceof FormData ? "(FormData 객체)" : config.data
-      );
+      //console.log(...)
     }
     return config;
   },
@@ -36,7 +33,7 @@ apiClient.interceptors.request.use(
 // 응답 인터셉터 추가
 apiClient.interceptors.response.use(
   (response) => {
-    console.log("API 응답 성공:", response.status, response.config.url);
+    ////console.log(...)
     return response;
   },
   (error) => {

@@ -48,7 +48,7 @@ export const uploadImageToS3 = async (presignedUrl, file, contentType) => {
 // registerUser 함수 수정
 // registerUser 함수 수정
 export const registerUser = async (userData) => {
-  console.log('회원가입 요청 데이터:', userData);
+  ////console.log(...)
   
   try {
     // 이미지가 있으면 S3에 업로드
@@ -66,12 +66,12 @@ export const registerUser = async (userData) => {
       });
       
       const { presignedUrl, fileKey } = presignedResponse.data.data;
-      console.log('획득한 presigned URL:', presignedUrl);
-      console.log('파일 키:', fileKey);
+      ////console.log(...)
+      ////console.log(...)
       
       // 2. S3에 직접 업로드
       await uploadImageToS3(presignedUrl, file, contentType);
-      console.log('S3 업로드 완료');
+      ////console.log(...)
       
       profileImageKey = fileKey;
     } else if (userData.removeProfileImage === true) {
@@ -92,11 +92,7 @@ export const registerUser = async (userData) => {
       signupData.profile_image_key = profileImageKey;
     }
     
-    console.log('회원가입 요청 데이터:', {
-      ...signupData,
-      user_password: '(보안상 로그 생략)',
-      user_password_confirm: '(보안상 로그 생략)'
-    });
+    //console.log(...)
     
     // 회원가입 API 호출 - Content-Type이 application/json으로 변경됨
     const response = await api.post("/v1/users/signup", signupData);
@@ -115,7 +111,7 @@ export const registerUser = async (userData) => {
 
 // 로그인
 export const loginUser = (credentials) => {
-  console.log("로그인 API 호출 시작");
+  ////console.log(...)
 
   // 백엔드 API가 예상하는 필드명으로 변환
   const requestData = {
@@ -123,46 +119,40 @@ export const loginUser = (credentials) => {
     user_password: credentials.password,
   };
 
-  console.log("로그인 요청 데이터 구조:", {
-    user_email: requestData.user_email,
-    user_password: "(보안상 로그 생략)",
-  });
+  //console.log(...)
 
   return api
     .post(`/v1/users/login`, requestData)
     .then((response) => {
-      console.log("로그인 API 응답 성공 상태코드:", response.status);
+      ////console.log(...)
 
       // 헤더 정보 상세 로깅
       const headers = response.headers;
-      console.log("로그인 API 응답 헤더:");
+      ////console.log(...)
       for (let key in headers) {
         if (typeof headers[key] === "string") {
-          console.log(`  ${key}: ${headers[key]}`);
+          ////console.log(...)
         }
       }
 
       // 쿠키 헤더 확인
-      console.log("Set-Cookie 헤더:", headers["set-cookie"]);
+      ////console.log(...)
 
-      console.log(
-        "로그인 API 응답 데이터 구조:",
-        JSON.stringify(response.data, null, 2)
-      );
+      //console.log(...)
 
       // 사용자 정보 추출 시도
-      let userData = null;
-      if (response.data) {
-        if (response.data.data) {
-          userData = response.data.data;
-        } else if (response.data.user) {
-          userData = response.data.user;
-        }
-        console.log("추출된 사용자 데이터:", userData);
-      }
+      // let userData = null;
+      // if (response.data) {
+      //   if (response.data.data) {
+      //     userData = response.data.data;
+      //   } else if (response.data.user) {
+      //     userData = response.data.user;
+      //   }
+      //   console.log(userData);
+      // }
 
       // 쿠키 확인
-      console.log("로그인 후 document.cookie:", document.cookie);
+      ////console.log(...)
       return response;
     })
     .catch((error) => {
@@ -174,11 +164,11 @@ export const loginUser = (credentials) => {
 
 // 로그아웃
 export const logoutUser = () => {
-  console.log("로그아웃 API 호출 시작");
+  ////console.log(...)
   return api
     .post(`/v1/users/logout`)
     .then((response) => {
-      console.log("로그아웃 API 응답 성공:", response.data);
+      ////console.log(...)
       return response;
     })
     .catch((error) => {
@@ -189,7 +179,7 @@ export const logoutUser = () => {
 
 // 이메일 중복 확인
 export const checkEmailDuplicate = (email) => {
-  console.log("이메일 중복 확인 요청:", email);
+  ////console.log(...)
   return api.get(
     `/v1/users/check-email?email=${encodeURIComponent(email)}`
   );
@@ -197,7 +187,7 @@ export const checkEmailDuplicate = (email) => {
 
 // 닉네임 중복 확인
 export const checkNicknameDuplicate = (nickname) => {
-  console.log("닉네임 중복 확인 요청:", nickname);
+  ////console.log(...)
   return api.get(
     `/v1/users/check-nickname?nickname=${encodeURIComponent(nickname)}`
   );

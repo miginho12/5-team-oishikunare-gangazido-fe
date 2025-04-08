@@ -6,6 +6,7 @@ on:
     branches:
       - main
     tags:
+      - "v*"
       - "production-**"
 
 jobs:
@@ -37,9 +38,29 @@ jobs:
           sed -i "s|REPLACE_KAKAO_MAP_API_KEY|${{ secrets.KAKAO_MAP_API_KEY }}|" ./public/env.js
           sed -i "s|REPLACE_API_BASE_URL|${{ secrets.API_BASE_URL }}|" ./public/env.js
 
+      - name: Fetch tags
+        run: git fetch --tags
+
+      - name: Get latest tag
+        run: |
+          VERSION=$(git describe --tags --abbrev=0 || echo "v0.0.0")
+          echo "RELEASE_VERSION=$VERSION" >> $GITHUB_ENV
+
       - name: Create version.json
         run: |
           echo "{\"version\": \"${RELEASE_VERSION}\"}" > public/version.json
+        env:
+          RELEASE_VERSION: ${{ env.RELEASE_VERSION }}
+
+      - name: Debug version.json
+        run: |
+          cat public/version.json
+
+      - name: Check version in env
+        run: |
+          echo "✅ RELEASE_VERSION is: $RELEASE_VERSION"
+        env:
+          RELEASE_VERSION: ${{ env.RELEASE_VERSION }}
 
       - name: Build # 4 - 빌드
         run: npm run build
@@ -84,3 +105,4 @@ jobs:
 
       - name: Invalidate CloudFront Cache # 8 - CloudFront 캐시 무효화
         run: aws cloudfront create-invalidation --distribution-id ${{ secrets.AWS_DISTRIBUTION_ID }} --paths "/*"
+#relese중복
