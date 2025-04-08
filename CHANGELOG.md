@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.10.6](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.10.5...v1.10.6) (2025-04-08)
+
+### 🐛 BUG FIXES
+
+* OriginalProfileImageKey 삭제 ([205805f](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/205805f5ced7438a144a7bf266ad1662c497d9eb))
+
 ## [1.10.5](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.10.4...v1.10.5) (2025-04-08)
 
 ### 🐛 BUG FIXES
