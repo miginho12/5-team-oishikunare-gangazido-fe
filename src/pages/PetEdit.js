@@ -14,7 +14,6 @@ function PetEdit() {
   const [weight, setWeight] = useState('');
   const [profileImage, setProfileImage] = useState(null);
   const [profileImagePreview, setProfileImagePreview] = useState(null);
-  const [originalProfileImageKey, setOriginalProfileImageKey] = useState(null);
   const [isImageRemoved, setIsImageRemoved] = useState(false);
 
   const [nameError, setNameError] = useState('');
@@ -63,7 +62,6 @@ function PetEdit() {
           // 🔥 CloudFront 미리보기 설정
           if (data.profileImage && typeof data.profileImage === 'string') {
             setProfileImage(data.profileImage);               
-            setOriginalProfileImageKey(data.profileImage);    
             setProfileImagePreview(data.profileImage);        
             setIsImageRemoved(false); // 이 부분 명시적으로
           }
@@ -106,13 +104,11 @@ function PetEdit() {
       // ✅ 새 이미지 선택한 경우
       setProfileImage(file);
       setProfileImagePreview(URL.createObjectURL(file));
-      setOriginalProfileImageKey(null); // 기존 이미지 키 제거
       setIsImageRemoved(false);
     } else {
       // ✅ 파일 선택 창 열었지만 취소한 경우
       setProfileImage(null); // 완전 삭제
       setProfileImagePreview(null);
-      setOriginalProfileImageKey(null);
       setIsImageRemoved(true);
     }
   
