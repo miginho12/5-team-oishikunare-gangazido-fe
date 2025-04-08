@@ -102,25 +102,26 @@ function PetEdit() {
 
   const handleProfileImageChange = (e) => {
     const file = e.target.files?.[0];
-
-    if (file) {
-      // ✅ 새 파일 선택 시
+  
+    if (file && file.size > 0) {
+      // ✅ 새 파일 선택한 경우
       setProfileImage(file);
       setProfileImagePreview(URL.createObjectURL(file));
       setIsImageRemoved(false);
     } else {
-      // ✅ 파일 선택 취소 시
-      ////console.log(...)
+      // ✅ 선택 취소했거나, 빈 파일 선택한 경우
       setProfileImage(null);
       setProfileImagePreview(null);
       setIsImageRemoved(true);
-      setOriginalProfileImageKey(null);  // 원래 이미지도 없앤다!
+      setOriginalProfileImageKey(null);
     }
-
-    // ✅ 항상 초기화해서 onChange가 다시 작동하도록
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
+  
+    // ✅ input 초기화 (같은 파일 또 선택하거나 onChange 반복되도록)
+    setTimeout(() => {
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    }, 0);
   };
 
   const handleUpdatePet = async () => {
