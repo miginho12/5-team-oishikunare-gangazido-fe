@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.12.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.11.2...v1.12.0) (2025-04-08)
+
+### 🚀 NEW FEATURES
+
+* 프로필 이미지 클릭 시 초기화 후 파일 선택창 열리는 기능 추가 ([032dae2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/032dae260d808393df493e4f4623773677ef1452))
+
 ## [1.11.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.11.1...v1.11.2) (2025-04-08)
 
 ### 🐛 BUG FIXES
