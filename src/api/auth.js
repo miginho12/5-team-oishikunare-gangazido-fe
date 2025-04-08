@@ -1,22 +1,5 @@
 import api from "./index";
 
-// S3 URL을 CloudFront URL로 변환하는 함수
-const convertToCloudFrontUrl = (url) => {
-  if (!url) return url;
-  
-  // S3 URL 패턴 확인 (https://bucket-name.s3.region.amazonaws.com/path)
-  const s3Pattern = /https:\/\/(.+?)\.s3\.(.+?)\.amazonaws\.com\/(.+)/;
-  
-  if (s3Pattern.test(url)) {
-    // S3 URL에서 키(경로) 부분만 추출
-    const key = url.match(s3Pattern)[3];
-    // CloudFront 도메인으로 URL 생성
-    return `https://d2zi61xwrfrt4q.cloudfront.net/${key}`;
-  }
-  
-  return url; // S3 URL이 아닌 경우 원래 URL 반환
-};
-
 // 추가할 함수: 회원가입용 presigned URL 획득
 export const getSignupProfileImageUploadUrl = (fileInfo) => {
   return api.post("/v1/users/signup/profile-image-upload-url", fileInfo);
@@ -45,11 +28,7 @@ export const uploadImageToS3 = async (presignedUrl, file, contentType) => {
   }
 };
 
-// registerUser 함수 수정
-// registerUser 함수 수정
 export const registerUser = async (userData) => {
-  console.log('회원가입 요청 데이터:', userData);
-  
   try {
     // 이미지가 있으면 S3에 업로드
     let profileImageKey = null;
@@ -66,12 +45,9 @@ export const registerUser = async (userData) => {
       });
       
       const { presignedUrl, fileKey } = presignedResponse.data.data;
-      console.log('획득한 presigned URL:', presignedUrl);
-      console.log('파일 키:', fileKey);
       
       // 2. S3에 직접 업로드
       await uploadImageToS3(presignedUrl, file, contentType);
-      console.log('S3 업로드 완료');
       
       profileImageKey = fileKey;
     } else if (userData.removeProfileImage === true) {
@@ -92,20 +68,10 @@ export const registerUser = async (userData) => {
       signupData.profile_image_key = profileImageKey;
     }
     
-    console.log('회원가입 요청 데이터:', {
-      ...signupData,
-      user_password: '(보안상 로그 생략)',
-      user_password_confirm: '(보안상 로그 생략)'
-    });
-    
-    // 회원가입 API 호출 - Content-Type이 application/json으로 변경됨
+    // 회원가입 API 호출
     const response = await api.post("/v1/users/signup", signupData);
     
-    // 응답에 프로필 이미지 URL이 있으면 CloudFront URL로 변환
-    if (response.data && response.data.data && response.data.data.profileImage) {
-      response.data.data.profileImage = convertToCloudFrontUrl(response.data.data.profileImage);
-    }
-    
+    // 백엔드에서 이미 CloudFront URL로 변환해서 반환하므로 추가 처리 불필요
     return response;
   } catch (error) {
     console.error('회원가입 처리 중 오류:', error);

@@ -33,6 +33,7 @@ function ProfilePage() {
       try {
         setLoading(true);
         const response = await getUserInfo();
+        
         setUserInfo(response.data.data);
       } catch (err) {
         console.error("사용자 정보 로드 실패:", err);
@@ -44,6 +45,13 @@ function ProfilePage() {
 
     fetchUserInfo();
   }, []);
+
+  // 상태가 업데이트된 후 실행되는 useEffect
+useEffect(() => {
+  if (userInfo) {
+    console.log("업데이트된 userInfo:", userInfo);
+  }
+}, [userInfo]);
 
   const goToMap = () => {
     navigate("/map");
