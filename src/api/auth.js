@@ -6,13 +6,12 @@ const convertToCloudFrontUrl = (url) => {
   
   // S3 URL 패턴 확인 (https://bucket-name.s3.region.amazonaws.com/path)
   const s3Pattern = /https:\/\/(.+?)\.s3\.(.+?)\.amazonaws\.com\/(.+)/;
-  const cloudfrontUrl = window.env?.REACT_APP_CLOUDFRONT_URL;
   
   if (s3Pattern.test(url)) {
     // S3 URL에서 키(경로) 부분만 추출
     const key = url.match(s3Pattern)[3];
     // CloudFront 도메인으로 URL 생성
-    return `${cloudfrontUrl}/${key}`;
+    return `https://d2zi61xwrfrt4q.cloudfront.net/${key}`;
   }
   
   return url; // S3 URL이 아닌 경우 원래 URL 반환
