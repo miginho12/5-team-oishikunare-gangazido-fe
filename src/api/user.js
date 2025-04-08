@@ -1,22 +1,5 @@
 import api from './index';
 
-// S3 URL을 CloudFront URL로 변환하는 함수
-const convertToCloudFrontUrl = (url) => {
-  if (!url) return url;
-  
-  // S3 URL 패턴 확인 (https://bucket-name.s3.region.amazonaws.com/path)
-  const s3Pattern = /https:\/\/(.+?)\.s3\.(.+?)\.amazonaws\.com\/(.+)/;
-  
-  if (s3Pattern.test(url)) {
-    // S3 URL에서 키(경로) 부분만 추출
-    const key = url.match(s3Pattern)[3];
-    // CloudFront 도메인으로 URL 생성
-    return `https://d3jeniacjnodv5.cloudfront.net/${key}`;
-  }
-  
-  return url; // S3 URL이 아닌 경우 원래 URL 반환
-};
-
 // 추가할 함수: 프로필 이미지 업로드 URL 획득
 export const getProfileImageUploadUrl = (fileInfo) => {
   return api.post("/v1/users/profile-image-upload-url", fileInfo);
@@ -48,14 +31,7 @@ export const uploadImageToS3 = async (presignedUrl, file, contentType) => {
 
 // 내 정보 조회
 export const getUserInfo = () => {
-  return api.get(`/v1/users/me`)
-    .then(response => {
-      //응답에 프로필 이미지 URL이 있으면 CloudFront URL로 변환
-      if (response.data && response.data.data && response.data.data.profileImage) {
-        response.data.data.profileImage = convertToCloudFrontUrl(response.data.data.profileImage);
-      }
-      return response;
-    });
+  return api.get(`/v1/users/me`);
 };
 
 export const updateUserInfo = async (userData) => {
@@ -89,16 +65,11 @@ export const updateUserInfo = async (userData) => {
       // 이미지 제거 요청 - 명시적으로 null 설정
       updateData.profile_image_key = null;
     }
-    // 이미지 변경이 없는 경우 profile_image_key 필드를 포함하지 않음
     
-    // Content-Type이 application/json으로 변경됨
+    // API 호출
     const response = await api.patch("/v1/users/me", updateData);
     
-    // 응답에 프로필 이미지 URL이 있으면 CloudFront URL로 변환
-    if (response.data && response.data.data && response.data.data.profileImage) {
-      response.data.data.profileImage = convertToCloudFrontUrl(response.data.data.profileImage);
-    }
-    
+    // 백엔드에서 이미 CloudFront URL로 변환해서 반환하므로 추가 처리 불필요
     return response;
   } catch (error) {
     console.error('사용자 정보 업데이트 실패:', error);
