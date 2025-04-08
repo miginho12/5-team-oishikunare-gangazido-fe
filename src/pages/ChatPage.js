@@ -19,7 +19,6 @@ function ChatPage() {
         ];
   });
 
-  // 👇 이 자리에 넣어!
   useEffect(() => {
     if (!sessionStorage.getItem("sessionActive")) {
       sessionStorage.setItem("sessionActive", "true");
