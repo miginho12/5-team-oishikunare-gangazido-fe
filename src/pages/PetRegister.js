@@ -392,8 +392,8 @@ function PetRegister() {
                 onChange={(e) => {
                   const value = e.target.value;
                 
-                  // 소수점 둘째자리 이상 입력 방지
-                  if (/^\d*\.?\d{0,1}$/.test(value)) {
+                  // 정수 1~3자리 + 선택적으로 소숫점 1자리까지 허용
+                  if (/^\d{0,3}(\.\d{0,1})?$/.test(value)) {
                     setWeight(value);
                   }
                 }}
