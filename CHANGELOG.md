@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.8.3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.8.2...v1.8.3) (2025-04-08)
+
+### 🐛 BUG FIXES
+
+* CloudFront URL 환경변수 적용 ([4ee689d](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/4ee689d47ba53127df9373339baf08c24e2e0a3e))
+
 ## [1.8.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.8.1...v1.8.2) (2025-04-08)
 
 ### 🐛 BUG FIXES
