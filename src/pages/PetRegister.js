@@ -363,7 +363,14 @@ function PetRegister() {
               <input
                 type="number"
                 value={age}
-                onChange={(e) => setAge(e.target.value)}
+                onChange={(e) => {
+                  const value = e.target.value;
+              
+                  // 정수만 입력 허용 + 2자리까지만
+                  if (/^\d{0,2}$/.test(value)) {
+                    setAge(value);
+                  }
+                }}
                 onBlur={() => handleBlur('age')}
                 placeholder="나이"
                 className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
