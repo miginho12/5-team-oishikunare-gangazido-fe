@@ -42,6 +42,8 @@ function PetRegister() {
     '기타',
   ];
 
+  const cloudFrontUrl = window._env_.REACT_APP_CLOUDFRONT_URL;
+
   const goToMap = () => navigate('/map');
   const goToChat = () => navigate('/chat');
   const goToProfile = () => navigate('/profile');
@@ -57,7 +59,7 @@ function PetRegister() {
       // ✅ 이미지 파일이 있다면 먼저 업로드 후 key 확보
       if (profileImage instanceof File) {
         profileImageKey = await uploadPetImage(profileImage);
-        const imageUrl = `https://d3jeniacjnodv5.cloudfront.net/${profileImageKey}?t=${Date.now()}`;
+        const imageUrl = `${cloudFrontUrl}/${profileImageKey}?t=${Date.now()}`;
         setProfileImagePreview(imageUrl);
         ////console.log(...)
       }
