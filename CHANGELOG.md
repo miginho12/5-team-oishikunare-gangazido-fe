@@ -1,40 +1,37 @@
 # CHANGELOG
 
-## [1.8.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.7.0...v1.8.0) (2025-04-07)
-
-### 🚀 NEW FEATURES
-
-* 세션 스토리지를 활용한 채팅 초기화 로직 추가 ([425bda9](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/425bda982cfcd590730190a4aa636a00a59a601d))
-
-## [1.7.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.6.0...v1.7.0) (2025-04-07)
-
-### 🚀 NEW FEATURES
-
-* 마커 등록 줌레벨 제한 느슨하게, 필요없는 코드 제거 mapMarkers부분 ([fe19359](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/fe19359874a59c32ac512c8e8ace9e5fa1aab8a2))
-* 마커 생성 제한 1시간 10개로 수정 ([8d9e14d](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/8d9e14d9f5bb9163d23f84fecf7fd73f969f29e1))
-* 불필요 코드 제거(터치해서 마커 등록함수), 일정 확대 수준에서만 마커 등록 가능 ([11d29b8](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/11d29b848a69083428b5e7f85ee42eefd38b54f2))
-* 사용안내 모달에 마커 등록갯수 제한 안내추가 ([7631e44](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/7631e44af787483a5622d67e6c0ecf80e7c5317b))
-
-## [1.6.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.5.19...v1.6.0) (2025-04-07)
-
-### 🚀 NEW FEATURES
-
-* **chat:** localStorage 기반 채팅 히스토리 유지 기능 추가 및 리팩토링 ([881b60d](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/881b60dc256b3bf10944103ded192c01e2ead161))
-* 로컬스토리지 기반 채팅 내역 저장 및 복원 기능 추가 ([c56e737](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/c56e7377f5175068ecd2ab2b9c1989bba4c226bd))
-* 로컬스토리지 기반 채팅 내역 저장 및 복원 기능 추가 ([6076af2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/6076af2e206d1aee4f8306e429a929a82d922783))
-* 브랜치 전환을 위한 임시 커밋 ([a88877f](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/a88877f15eba397783aa11a7a5e0b3f9eb3fd2c4))
+## [1.5.20](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.5.19...v1.5.20) (2025-04-07)
 
 ### 🐛 BUG FIXES
 
+* cloudfront url ([97358b3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/97358b35fa695739003727942f4499afc051910d))
 * fix base-url ([eae357c](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/eae357c7430c42a714c6fcf51cce73f9fb584b40))
 * kakaomap ([22ab0cc](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/22ab0ccd5ee4be87cad8a331237aaa55df46747d))
+* version ([ccdd936](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/ccdd9368894435e72e87b0d917e1f1628efaf7ca))
+* version ([6d12563](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/6d1256305f200ef64ad2b29c4f95030035cbfcca))
+* yml update ([a9fddd0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/a9fddd0ed4b5951da83153dec2f0e9bd7f750d0b))
+* yml update ([dbd17ea](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/dbd17eac09166224624ff91eb35c1a152c75e5e6))
 
 ## [1.5.20](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.5.19...v1.5.20) (2025-04-07)
 
 ### 🐛 BUG FIXES
 
+* cloudfront url ([97358b3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/97358b35fa695739003727942f4499afc051910d))
 * fix base-url ([eae357c](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/eae357c7430c42a714c6fcf51cce73f9fb584b40))
 * kakaomap ([22ab0cc](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/22ab0ccd5ee4be87cad8a331237aaa55df46747d))
+* version ([6d12563](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/6d1256305f200ef64ad2b29c4f95030035cbfcca))
+* yml update ([a9fddd0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/a9fddd0ed4b5951da83153dec2f0e9bd7f750d0b))
+* yml update ([dbd17ea](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/dbd17eac09166224624ff91eb35c1a152c75e5e6))
+
+## [1.5.20](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.5.19...v1.5.20) (2025-04-07)
+
+### 🐛 BUG FIXES
+
+* cloudfront url ([97358b3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/97358b35fa695739003727942f4499afc051910d))
+* fix base-url ([eae357c](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/eae357c7430c42a714c6fcf51cce73f9fb584b40))
+* kakaomap ([22ab0cc](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/22ab0ccd5ee4be87cad8a331237aaa55df46747d))
+* yml update ([a9fddd0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/a9fddd0ed4b5951da83153dec2f0e9bd7f750d0b))
+* yml update ([dbd17ea](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/dbd17eac09166224624ff91eb35c1a152c75e5e6))
 
 ## [1.5.19](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.5.18...v1.5.19) (2025-04-05)
 
