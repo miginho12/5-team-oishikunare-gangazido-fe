@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## [1.9.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.8.3...v1.9.0) (2025-04-08)
+
+### 🚀 NEW FEATURES
+
+* 몸무게 소숫점 두 자리 이상 입력 방지 기능 추가 ([af8f495](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/af8f495ac91bf4aa9d2fc9acdab19cd2b79b87f1))
+* 소숫점 둘째자리 이상 입력 방지 ([6b681d6](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/6b681d628b66a3fe10c1fbef1fe16a9a101c8dc7))
+* 소숫점 둘째자리 이상 입력 방지 ([1f96f85](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/1f96f85128bd380182cbf2d40e4b5fb25471634b))
+
 ## [1.8.3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.8.2...v1.8.3) (2025-04-08)
 
 ### 🐛 BUG FIXES
