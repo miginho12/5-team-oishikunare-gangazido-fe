@@ -105,10 +105,10 @@ function PetEdit() {
       setProfileImage(file);
       setProfileImagePreview(URL.createObjectURL(file));
       setIsImageRemoved(false);
-    } else {
-      // ✅ 파일 선택 창 열었지만 취소한 경우
-      setProfileImage(null); // 완전 삭제
-      setProfileImagePreview(null);
+    } else if (fileInputRef.current && fileInputRef.current.files.length === 0) {
+      // ✅ 파일 선택창 열었지만 '취소' 눌렀을 때
+      setProfileImage(null);
+      setProfileImagePreview(null); // 🔥 이게 동작 안 했던 이유는 string이었기 때문
       setIsImageRemoved(true);
     }
   
