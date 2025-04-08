@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.11.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.11.1...v1.11.2) (2025-04-08)
+
+### 🐛 BUG FIXES
+
+* s3 url이라 수정 페이지 미리보기, 파일 삭제 안되는 오류 ([e225054](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/e225054295e2658e93449e188e0a4603116e384b))
+
 ## [1.11.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.11.0...v1.11.1) (2025-04-08)
 
 ### 🐛 BUG FIXES
