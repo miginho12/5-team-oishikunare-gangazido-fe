@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.10.4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.10.3...v1.10.4) (2025-04-08)
+
+### 🐛 BUG FIXES
+
+* 수정 파일 선택 취소 시 미리보기, 상태 초기화 누락 문제 ([481d5e6](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/481d5e6e3cf5706848ca428868b8cbaa6e15193e))
+
 ## [1.10.3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.10.2...v1.10.3) (2025-04-08)
 
 ### 🐛 BUG FIXES
