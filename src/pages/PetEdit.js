@@ -14,7 +14,6 @@ function PetEdit() {
   const [weight, setWeight] = useState('');
   const [profileImage, setProfileImage] = useState(null);
   const [profileImagePreview, setProfileImagePreview] = useState(null);
-  const [originalProfileImageKey, setOriginalProfileImageKey] = useState(null);
   const [isImageRemoved, setIsImageRemoved] = useState(false);
 
   const [nameError, setNameError] = useState('');
@@ -63,7 +62,6 @@ function PetEdit() {
           // 🔥 CloudFront 미리보기 설정
           if (data.profileImage && typeof data.profileImage === 'string') {
             setProfileImage(data.profileImage);               
-            setOriginalProfileImageKey(data.profileImage);    
             setProfileImagePreview(data.profileImage);        
             setIsImageRemoved(false); // 이 부분 명시적으로
           }
@@ -106,13 +104,11 @@ function PetEdit() {
       // ✅ 새 이미지 선택한 경우
       setProfileImage(file);
       setProfileImagePreview(URL.createObjectURL(file));
-      setOriginalProfileImageKey(null); // 기존 이미지 키 제거
       setIsImageRemoved(false);
     } else {
       // ✅ 파일 선택 창 열었지만 취소한 경우
       setProfileImage(null); // 완전 삭제
       setProfileImagePreview(null);
-      setOriginalProfileImageKey(null);
       setIsImageRemoved(true);
     }
   
@@ -173,7 +169,7 @@ function PetEdit() {
       setNameError('반려견의 이름을 입력하세요.');
       isValid = false;
     } else if (!nameRegex.test(name)) {
-      setNameError('반려견의 이름은 한글 또는 영문만 입력 가능합니다.');
+      setNameError('반려견의 이름은 공백없이 한글 또는 영문만 입력 가능합니다.');
       isValid = false;
     } else if (name.length > 10) {
       setNameError('반려견의 이름은 최대 10자까지 입력 가능합니다.');
@@ -186,13 +182,13 @@ function PetEdit() {
       setAgeError('반려견의 나이를 입력하세요.');
       isValid = false;
     } else if (isNaN(ageNum)) {
-      setAgeError('반려견의 나이는 숫자로 입력해주세요.');
+      setAgeError('반려견 나이는 1부터 50사이의 숫자만 입력 가능합니다.');
       isValid = false;
     } else if (ageNum <= 0) {
-      setAgeError('반려견의 나이는 1살 이상이어야 해요.');
+      setAgeError('반려견 나이는 1부터 50사이의 숫자만 입력 가능합니다.');
       isValid = false;
     } else if (ageNum >= 51) {
-      setAgeError('입력값이 너무 큽니다. 올바른 나이를 입력해주세요.');
+      setAgeError('반려견 나이는 1부터 50사이의 숫자만 입력 가능합니다.');
       isValid = false;
     }
 
@@ -206,10 +202,10 @@ function PetEdit() {
       setWeightError('올바른 몸무게 형식을 입력해주세요. (예: 5 또는 5.2)');
       isValid = false;
     } else if (weightNum <= 0) {
-      setWeightError('반려견의 몸무게는 0kg 이상이어야 해요.');
+      setWeightError('반려견 나이는 1부터 200사이의 숫자만 입력 가능합니다.');
       isValid = false;
     } else if (weightNum >= 200) {
-      setWeightError('입력값이 너무 큽니다. 올바른 몸무게를 입력해주세요.');
+      setWeightError('반려견 나이는 1부터 200사이의 숫자만 입력 가능합니다.');
       isValid = false;
     } else {
       setWeightError('');
@@ -247,7 +243,7 @@ function PetEdit() {
         setNameError('반려견의 이름을 입력하세요.');
         break;
       case 'invalid_pet_name_format':
-        setNameError('반려견의 이름은 한글 또는 영문만 입력 가능합니다.');
+        setNameError('반려견의 이름은 공백없이 한글 또는 영문만 입력 가능합니다.');
         break;
       case 'invalid_pet_name_length':
         setNameError('반려견의 이름은 최대 10자까지 입력 가능합니다.');
@@ -422,7 +418,14 @@ function PetEdit() {
               <input
                 type="number"
                 value={age}
-                onChange={(e) => setAge(e.target.value)}
+                onChange={(e) => {
+                  const value = e.target.value;
+              
+                  // 정수만 입력 허용 + 2자리까지만
+                  if (/^\d{0,2}$/.test(value)) {
+                    setAge(value);
+                  }
+                }}
                 onBlur={() => handleBlur('age')}
                 placeholder="나이"
                 className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
@@ -439,7 +442,14 @@ function PetEdit() {
               <input
                 type="number"
                 value={weight}
-                onChange={(e) => setWeight(e.target.value)}
+                onChange={(e) => {
+                  const value = e.target.value;
+                
+                  // 정수 1~3자리 + 선택적으로 소숫점 1자리까지 허용
+                  if (/^\d{0,3}(\.\d{0,1})?$/.test(value)) {
+                    setWeight(value);
+                  }
+                }}
                 onBlur={() => handleBlur('weight')}
                 placeholder="kg 단위로 입력해주세요"
                 className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
