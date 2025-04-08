@@ -437,7 +437,14 @@ function PetEdit() {
               <input
                 type="number"
                 value={weight}
-                onChange={(e) => setWeight(e.target.value)}
+                onChange={(e) => {
+                  const value = e.target.value;
+                
+                  // 소수점 둘째자리 이상 입력 방지
+                  if (/^\d*\.?\d{0,1}$/.test(value)) {
+                    setWeight(value);
+                  }
+                }}
                 onBlur={() => handleBlur('weight')}
                 placeholder="kg 단위로 입력해주세요"
                 className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
