@@ -97,6 +97,19 @@ function PetEdit() {
 
   const fileInputRef = useRef(); // 👈 input ref 선언
 
+  const handleClickProfileImage = () => {
+    // 이미지 상태 초기화
+    setProfileImage(null);
+    setProfileImagePreview(null);
+    setIsImageRemoved(true);
+  
+    // input 초기화 후 강제 클릭
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+      fileInputRef.current.click();
+    }
+  };
+
   const handleProfileImageChange = (e) => {
     const file = e.target.files?.[0];
   
@@ -361,7 +374,11 @@ function PetEdit() {
               )}
             </div>
 
-            <label htmlFor="pet-profile-upload" className="text-sm text-amber-800 font-medium cursor-pointer">
+            <label
+              htmlFor="pet-profile-upload"
+              className="text-sm text-amber-800 font-medium cursor-pointer"
+              onClick={handleClickProfileImage} // ✅ 여기 추가!!
+            >
               프로필 사진 변경
               <input
                 id="pet-profile-upload"
