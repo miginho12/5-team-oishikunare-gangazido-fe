@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.10.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.10.0...v1.10.1) (2025-04-08)
+
+### 🐛 BUG FIXES
+
+* 수정 페이지 이미지 삭제 구현 ([041df8e](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/041df8e83bc785a8c8238b8abe20eaf43ced9d4a))
+
 ## [1.10.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.9.1...v1.10.0) (2025-04-08)
 
 ### 🚀 NEW FEATURES
