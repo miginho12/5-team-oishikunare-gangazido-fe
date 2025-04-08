@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.9.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.9.0...v1.9.1) (2025-04-08)
+
+### 🐛 BUG FIXES
+
+* 반려견 나이 두자리 숫자만 입력 가능하도록 수정 ([77fdca2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/77fdca246ae483830b2446447f00f3730155414d))
+
 ## [1.9.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.8.3...v1.9.0) (2025-04-08)
 
 ### 🚀 NEW FEATURES
