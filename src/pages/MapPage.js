@@ -923,6 +923,26 @@ function MapPage() {
         });
         setIsCenterMode(false);
         setShowModal(false);
+      } else if (message?.includes("요청 횟수가 제한을 초과했습니다")) {
+        toast.error("마커는 너무 자주 찍을 수 없어요! 잠시 후 다시 시도해주세요.", {
+          position: "bottom-center",
+          autoClose: 2500,
+          style: {
+            background: "#fef2f2",
+            color: "#991b1b",
+            border: "1px solid #fecaca",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+            fontWeight: "bold",
+            whiteSpace: "nowrap",       // 한 줄로 유지
+            maxWidth: "none",           // 너비 제한 없앰
+            width: "fit-content",       // 내용만큼만 너비 설정
+            padding: "12px 16px",       // 여유 있는 패딩
+            fontSize: "14px",           // 텍스트 크기
+          },
+          icon: "⛔",
+        });
+        setIsCenterMode(false);
+        setShowModal(false);
       } else {
         console.error("❌ 마커 등록 중 오류:", error);
         setIsCenterMode(false);
