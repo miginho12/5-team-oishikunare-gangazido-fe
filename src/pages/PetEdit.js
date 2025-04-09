@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { uploadPetImage, updatePetInfo, deletePet, getPetInfo } from '../api/pet';
 
@@ -95,6 +95,8 @@ function PetEdit() {
     setShowConfirm(false);
   };
 
+  const fileInputRef = useRef(); // 👈 input ref 선언
+
   const handleProfileImageChange = (e) => {
     const file = e.target.files?.[0];
   
@@ -103,15 +105,17 @@ function PetEdit() {
       setProfileImage(file);
       setProfileImagePreview(URL.createObjectURL(file));
       setIsImageRemoved(false);
-    } else {
-      // ✅ '취소' 누른 경우
+    } else if (fileInputRef.current && fileInputRef.current.files.length === 0) {
+      // ✅ 파일 선택창 열었지만 '취소' 눌렀을 때
       setProfileImage(null);
-      setProfileImagePreview(null);
+      setProfileImagePreview(null); // 🔥 이게 동작 안 했던 이유는 string이었기 때문
       setIsImageRemoved(true);
     }
   
-    // ✅ 같은 파일 다시 선택 가능하도록 초기화
-    e.target.value = '';
+    // ✅ input 초기화 (같은 파일 선택 가능하도록)
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
   };
 
   const handleUpdatePet = async () => {
@@ -357,22 +361,17 @@ function PetEdit() {
               )}
             </div>
 
-            {/* ✅ 변경: label 클릭만으로 파일 선택 */}
-            <label
-              htmlFor="pet-profile-upload"
-              className="text-sm text-amber-800 font-medium cursor-pointer"
-            >
+            <label htmlFor="pet-profile-upload" className="text-sm text-amber-800 font-medium cursor-pointer">
               프로필 사진 변경
+              <input
+                id="pet-profile-upload"
+                type="file"
+                accept="image/*"
+                ref={fileInputRef} // 👈 연결
+                onChange={handleProfileImageChange}
+                className="hidden"
+              />
             </label>
-
-            {/* ✅ 변경: input에 ref 제거하고 직접 처리 */}
-            <input
-              id="pet-profile-upload"
-              type="file"
-              accept="image/*"
-              onChange={handleProfileImageChange} // ✅ 변경
-              className="hidden"
-            />
           </div>
 
           <div className="space-y-4">
