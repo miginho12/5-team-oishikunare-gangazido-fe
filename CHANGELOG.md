@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.12.3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.12.2...v1.12.3) (2025-04-09)
+
+### 🐛 BUG FIXES
+
+* 회원가입 닉네임 길이 헬퍼텍스트 수정 ([b685824](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/b6858246a5e6a58583f70e576dba10d1aa886b0f))
+
 ## [1.12.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.12.1...v1.12.2) (2025-04-09)
 
 ### 🐛 BUG FIXES
