@@ -214,7 +214,7 @@ function ChatPage() {
   //if (chatMessages === null) return null;
 
   return (
-    <div className="flex flex-col h-full bg-gray-50 max-w-full overflow-hidden">
+    <div className="flex flex-col h-full bg-yellow-50 max-w-full overflow-hidden">
       {/* 헤더 */}
       <header className="bg-white pt-2 pb-0 px-4 shadow-md flex items-center justify-center w-full">
         <div className="flex items-center h-full gap-2">
