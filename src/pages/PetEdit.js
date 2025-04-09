@@ -54,7 +54,6 @@ function PetEdit() {
         const res = await getPetInfo();
         if (res?.data?.message === 'get_pet_success') {
           const data = res.data.data;
-        
           setName(data.name);
           setBreed(data.breed);
           setAge(data.age);
@@ -63,13 +62,12 @@ function PetEdit() {
 
           // ✅ CloudFront URL로 미리보기 세팅 (S3 Key는 profileImage에 저장)
           if (data.profileImage && typeof data.profileImage === 'string') {
-            setProfileImage(data.profileImage); // S3 key
-            setProfileImagePreview(`${cloudFrontUrl}/${data.profileImage}?t=${Date.now()}`);
-            setIsImageRemoved(false); // ✅ 중요
-          } else {
-            setProfileImage(null);
-            setProfileImagePreview(null);
+            setProfileImage(data.profileImage); // 🔄 S3 Key만 저장
+            const previewUrl = `${cloudFrontUrl}/${data.profileImage}?t=${Date.now()}`;
+            setProfileImagePreview(previewUrl);
             setIsImageRemoved(false);
+
+            console.log('✅ 기존 이미지 로드됨:', previewUrl); // ✅ 디버깅용
           }
         }
       } catch (err) {
@@ -105,18 +103,22 @@ function PetEdit() {
     const file = e.target.files?.[0];
   
     if (file) {
-      // 새 이미지 선택한 경우
+      const tempUrl = URL.createObjectURL(file);
       setProfileImage(file);
-      setProfileImagePreview(URL.createObjectURL(file));
+      setProfileImagePreview(tempUrl);
       setIsImageRemoved(false);
+      console.log('✅ 새 이미지 선택됨');
     } else {
-      // 파일 선택창에서 '취소' 누른 경우 (기존 이미지 삭제)
-      setProfileImage(null);
-      setProfileImagePreview(null);
-      setIsImageRemoved(true);
+      // 파일 선택 취소 (기존이 있었다면 삭제로 간주)
+      if (profileImage || profileImagePreview) {
+        setProfileImage(null);
+        setProfileImagePreview(null);
+        setIsImageRemoved(true);
+        console.log('🗑 이미지 선택 취소 → 삭제됨');
+      }
     }
-  
-    // input 초기화 (동일 파일 재선택 허용)
+
+    // ✅ 동일 파일 재선택 위해 input 초기화
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
@@ -341,10 +343,12 @@ function PetEdit() {
                   alt="프로필 미리보기"
                   className="w-full h-full object-cover"
                   onError={() => {
-                    console.warn("🐛 이미지 로딩 실패! fallback 아이콘 표시");
-                    setProfileImage(null);
-                    setProfileImagePreview(null);
-                    setIsImageRemoved(true);
+                    if (!isImageRemoved) {
+                      console.warn('❗️ 이미지 로딩 실패');
+                      setProfileImage(null);
+                      setProfileImagePreview(null);
+                      setIsImageRemoved(true);
+                    }
                   }}
                 />
               ) : (
