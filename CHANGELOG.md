@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.13.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.12.3...v1.13.0) (2025-04-09)
+
+### 🚀 NEW FEATURES
+
+* 같은사용자, 같은종류 마커 거리 제한30m ([93d468c](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/93d468c44ba505c626d85a5b4d21d51ac88e3dc6))
+
 ## [1.12.3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.12.2...v1.12.3) (2025-04-09)
 
 ### 🐛 BUG FIXES
