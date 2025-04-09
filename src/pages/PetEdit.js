@@ -51,19 +51,18 @@ function PetEdit() {
         const res = await getPetInfo();
         if (res?.data?.message === 'get_pet_success') {
           const data = res.data.data;
-          ////console.log(...) // 추가 로그
-
+        
           setName(data.name);
           setBreed(data.breed);
           setAge(data.age);
           setGender(data.gender ? 'male' : 'female');
           setWeight(data.weight);
 
-          // 🔥 CloudFront 미리보기 설정
+          // ✅ CloudFront URL로 미리보기 세팅 (S3 Key는 profileImage에 저장)
           if (data.profileImage && typeof data.profileImage === 'string') {
-            setProfileImage(data.profileImage);               
-            setProfileImagePreview(data.profileImage);        
-            setIsImageRemoved(false); // 이 부분 명시적으로
+            setProfileImage(data.profileImage); // S3 key
+            setProfileImagePreview(`${cloudFrontUrl}/${data.profileImage}?t=${Date.now()}`);
+            setIsImageRemoved(false);
           }
         }
       } catch (err) {
@@ -95,24 +94,22 @@ function PetEdit() {
     setShowConfirm(false);
   };
 
-  const fileInputRef = useRef(); // 👈 input ref 선언
-
   const handleProfileImageChange = (e) => {
     const file = e.target.files?.[0];
   
     if (file) {
-      // ✅ 새 이미지 선택한 경우
+      // 새 이미지 선택한 경우
       setProfileImage(file);
       setProfileImagePreview(URL.createObjectURL(file));
       setIsImageRemoved(false);
-    } else if (fileInputRef.current && fileInputRef.current.files.length === 0) {
-      // ✅ 파일 선택창 열었지만 '취소' 눌렀을 때
+    } else {
+      // 파일 선택창에서 '취소' 누른 경우 (기존 이미지 삭제)
       setProfileImage(null);
-      setProfileImagePreview(null); // 🔥 이게 동작 안 했던 이유는 string이었기 때문
+      setProfileImagePreview(null);
       setIsImageRemoved(true);
     }
   
-    // ✅ input 초기화 (같은 파일 선택 가능하도록)
+    // input 초기화 (동일 파일 재선택 허용)
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
@@ -340,7 +337,9 @@ function PetEdit() {
                   className="w-full h-full object-cover"
                   onError={() => {
                     console.warn("🐛 이미지 로딩 실패! fallback 아이콘 표시");
-                    setProfileImagePreview(null); // fallback svg로 대체되게
+                    setProfileImage(null);
+                    setProfileImagePreview(null);
+                    setIsImageRemoved(true);
                   }}
                 />
               ) : (
