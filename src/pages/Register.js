@@ -117,8 +117,8 @@ function Register() {
       return;
     }
     
-    if (nickname.length < 2 || nickname.length > 20) {
-      setNicknameError('닉네임은 2~20자 사이여야 합니다.');
+    if (nickname.length > 10) {
+      setNicknameError('닉네임은 10자 이내여야 합니다.');
       return;
     }
     
@@ -259,7 +259,7 @@ function Register() {
           } else if (errorCode === 'required_nickname') {
             setError('닉네임은 필수 입력 항목입니다.');
           } else if (errorCode === 'invalid_nickname_length') {
-            setError('닉네임은 2자 이상 20자 이하여야 합니다.');
+            setError('닉네임은 10자 이내여야 합니다.');
           } else if (errorCode === 'duplicate_email') {
             setError('이미 사용 중인 이메일입니다.');
           } else if (errorCode === 'duplicate_nickname') {
@@ -409,7 +409,7 @@ function Register() {
               <label className="block text-sm font-medium text-gray-700 mb-1">닉네임</label>
               <input
                 type="text"
-                placeholder="닉네임을 입력하세요 (2~20자)"
+                placeholder="닉네임을 입력하세요 (10자 이내)"
                 className={`w-full p-3 border ${nicknameError ? 'border-red-300' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent`}
                 required
                 value={nickname}
