@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.15.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.15.0...v1.15.1) (2025-04-09)
+
+### 🐛 BUG FIXES
+
+* 반려견 수정 페이지 이미지 처리 로직 개선 ([0b5ebd5](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/0b5ebd550d2ac9b9f5422624f9fa662879bebbc2))
+
 ## [1.15.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.14.0...v1.15.0) (2025-04-09)
 
 ### 🚀 NEW FEATURES
