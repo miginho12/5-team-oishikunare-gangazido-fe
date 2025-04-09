@@ -6,28 +6,26 @@ import { ToastContainer, toast } from "react-toastify"; // 토스트 메시지
 import "react-toastify/dist/ReactToastify.css";
 
 function MapPage() {
-  const currentFilterTypeRef = useRef("all"); // 필터 유지 위해
+  const currentFilterTypeRef = useRef("all"); // 마커 필터 타입 저장
   const navigate = useNavigate();
-  const mapContainer = useRef(null);
-  const [map, setMap] = useState(null);
-  const [markers, setMarkers] = useState([]);
+  const mapContainer = useRef(null);  // 지도 DOM 참조
+  const [map, setMap] = useState(null); // 카카오맵 객체
+  const [markers, setMarkers] = useState([]); // 마커 목록 상태
   const markersRef = useRef([]);
   const [selectedMarker, setSelectedMarker] = useState(null);
-  const [isMapLoaded, setIsMapLoaded] = useState(false);
+  const [isMapLoaded, setIsMapLoaded] = useState(false);  // 맵 로딩 완료 여부
   const [isCenterMode, setIsCenterMode] = useState(false);
   const [currentZoomLevel, setCurrentZoomLevel] = useState(3);
   // eslint-disable-next-line no-unused-vars
   const [visibleMarkers, setVisibleMarkers] = useState([]);
   const mapBoundsRef = useRef(null);
-  const clusterRef = useRef(null);
+  const clusterRef = useRef(null);  // 클러스터 객체
   // 첫 페이지 모달
   const [showGuideModal, setShowGuideModal] = useState(true); // 실제로 보일지 여부
 
-  // AuthContext에서 인증 상태 가져오기
-  const { isAuthenticated, user } = useAuth();
-  // console.log("어쓰", user);
-
-  const userRef = useRef(null);
+  // 사용자 인증 상태
+  const { isAuthenticated, user } = useAuth(); // AuthContext에서 인증 상태 가져오기
+  const userRef = useRef(null); // user 최신 값 유지용
 
   // 첫 페이지 모달 창
   useEffect(() => {
@@ -59,7 +57,7 @@ function MapPage() {
   // 순환 참조를 막기 위한 removeMarker 함수 ref
   const removeMarkerRef = useRef(null);
 
-  // 구름스퀘어 좌표
+  // 기본값 좌표
   const [centerPosition, setCenterPosition] = useState({
     lat: 33.48717138746649, // 제주도 구름스퀘어 위도
     lng: 126.53171329989748, // 제주도 구름스퀘어 경도
@@ -141,13 +139,7 @@ function MapPage() {
   // 마커 타입 코드 상수
   const MARKER_TYPES = {
     댕플: 0,
-    댕져러스: {
-      DEFAULT: 1,
-      들개: 1,
-      빙판길: 2,
-      염화칼슘: 3,
-      공사중: 4,
-    },
+    댕져러스: { DEFAULT: 1, 들개: 1, 빙판길: 2, 염화칼슘: 3, 공사중: 4 },
   };
 
   // 마커 이미지 URL 상수
@@ -919,6 +911,21 @@ function MapPage() {
         // 마커 등록모드 해제
         setIsCenterMode(false);
         setShowModal(false);
+      } else if (message === "same_marker_too_close") {
+        toast.warn("같은 종류의 마커가 너무 가까이 있어요!", {
+          position: "bottom-center",
+          autoClose: 2500,
+          style: {
+            background: "#fef2f2",
+            color: "#991b1b",
+            border: "1px solid #fecaca",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+            fontWeight: "bold",
+          },
+          icon: "⚠️",
+        });
+        setIsCenterMode(false);
+        setShowModal(false);
       } else {
         console.error("❌ 마커 등록 중 오류:", error);
         setIsCenterMode(false);
@@ -1035,7 +1042,7 @@ function MapPage() {
     );
   }, [map]);
 
-  // 제리 추가 마커 관련 요청
+  // 마커 불러오기 (API > 카카오맵 Marker 생성)
   const fetchMarkersFromBackend = useCallback(async () => {
     console.log("🚀 제리추가 fetchMarkersFromBackend() called!");
 
