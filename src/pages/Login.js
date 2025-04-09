@@ -11,7 +11,6 @@ function Login() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [message, setMessage] = useState(location.state?.message || null);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -23,12 +22,9 @@ function Login() {
     e.preventDefault();
     setLoading(true);
     setError('');
-
-    ////console.log(...)
     
     try {
       const response = await loginUser({ email, password });
-      ////console.log(...)
       
       // 응답 구조 확인
       let userData = null;
@@ -38,12 +34,10 @@ function Login() {
         // data 필드가 있으면 사용
         if (response.data.data) {
           userData = response.data.data;
-          ////console.log(...)
         } 
         // user 필드가 있으면 사용
         else if (response.data.user) {
           userData = response.data.user;
-          ////console.log(...)
         }
         // 응답 자체를 사용
         else {
@@ -51,23 +45,17 @@ function Login() {
             email: email,
             id: 'user-' + Date.now()
           };
-          ////console.log(...)
         }
       } else {
         userData = {
           email: email,
           id: 'user-' + Date.now()
         };
-        ////console.log(...)
       }
       
-      ////console.log(...)
-      
       login(userData);
-      ////console.log(...)
       
       // 로그인 성공 후 리디렉션
-      ////console.log(...)
       navigate('/map');
     } catch (err) {
       console.error('로그인 오류:', err);
@@ -116,22 +104,6 @@ function Login() {
 
       <div className="flex-1 p-4 flex flex-col">
         <h1 className="text-xl font-bold text-center my-8 text-gray-800">로그인</h1>
-
-        {/* 성공 메시지 */}
-        {message && (
-          <div className="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative">
-            <span className="block sm:inline">{message}</span>
-            <span 
-              className="absolute top-0 bottom-0 right-0 px-4 py-3"
-              onClick={() => setMessage(null)}
-            >
-              <svg className="fill-current h-6 w-6 text-green-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                <title>닫기</title>
-                <path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/>
-              </svg>
-            </span>
-          </div>
-        )}
 
         {/* 오류 메시지 */}
         {error && (
