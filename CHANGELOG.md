@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.14.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.13.3...v1.14.0) (2025-04-09)
+
+### 🚀 NEW FEATURES
+
+* 회원가입, 로그인, 회원정보수정 api too many request 429 에러 예외처리 추가 ([b8b7a57](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/b8b7a57333ac0b9b7e4f2c166d27ecc1f6da8172))
+
 ## [1.13.3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.13.2...v1.13.3) (2025-04-09)
 
 ### 🐛 BUG FIXES
