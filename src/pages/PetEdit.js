@@ -65,6 +65,10 @@ function PetEdit() {
           if (data.profileImage && typeof data.profileImage === 'string') {
             setProfileImage(data.profileImage); // S3 key
             setProfileImagePreview(`${cloudFrontUrl}/${data.profileImage}?t=${Date.now()}`);
+            setIsImageRemoved(false); // ✅ 중요
+          } else {
+            setProfileImage(null);
+            setProfileImagePreview(null);
             setIsImageRemoved(false);
           }
         }
@@ -130,9 +134,7 @@ function PetEdit() {
       profileImageKeyToSend = await uploadPetImage(profileImage); // 새로 업로드
     } else if (typeof profileImage === 'string') {
       profileImageKeyToSend = profileImage; // 기존 유지
-    } else {
-      profileImageKeyToSend = undefined; // 아무것도 안 보냄
-    }
+    } 
 
     try {
       await updatePetInfo({
