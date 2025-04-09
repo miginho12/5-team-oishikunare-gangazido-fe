@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.13.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.13.0...v1.13.1) (2025-04-09)
+
+### 🐛 BUG FIXES
+
+* 채팅페이지 배경색상 변경 ([9c6ce74](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/9c6ce74ebeac8803735ef578dbc193835a5077f8))
+
 ## [1.13.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.12.3...v1.13.0) (2025-04-09)
 
 ### 🚀 NEW FEATURES
