@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.12.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.12.1...v1.12.2) (2025-04-09)
+
+### 🐛 BUG FIXES
+
+* 반려견 수정시 이미지 유지 및 삭제 로직 안정화 ([5e66637](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/5e666371251d9e3bb4706946364fc7fb5560ad49))
+
 ## [1.12.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.12.0...v1.12.1) (2025-04-08)
 
 ### 🐛 BUG FIXES
