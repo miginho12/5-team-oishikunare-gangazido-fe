@@ -62,12 +62,11 @@ function PetEdit() {
 
           // ✅ CloudFront URL로 미리보기 세팅 (S3 Key는 profileImage에 저장)
           if (data.profileImage && typeof data.profileImage === 'string') {
-            setProfileImage(data.profileImage); // 🔄 S3 Key만 저장
-            const previewUrl = `${cloudFrontUrl}/${data.profileImage}?t=${Date.now()}`;
-            setProfileImagePreview(previewUrl);
+            setProfileImage(data.profileImage); // 전체 URL이 들어옴!
+            setProfileImagePreview(data.profileImage); // ✅ CloudFront URL 그대로 미리보기로 사용
             setIsImageRemoved(false);
 
-            console.log('✅ 기존 이미지 로드됨:', previewUrl); // ✅ 디버깅용
+            console.log('✅ 기존 이미지 로드됨:', data.profileImage); // ✅ 디버깅용
           }
         }
       } catch (err) {
@@ -107,15 +106,15 @@ function PetEdit() {
       setProfileImage(file);
       setProfileImagePreview(tempUrl);
       setIsImageRemoved(false);
-      console.log('✅ 새 이미지 선택됨');
+
+      console.log('✅ 새 이미지 선택됨:', file);
     } else {
-      // 파일 선택 취소 (기존이 있었다면 삭제로 간주)
-      if (profileImage || profileImagePreview) {
-        setProfileImage(null);
-        setProfileImagePreview(null);
-        setIsImageRemoved(true);
-        console.log('🗑 이미지 선택 취소 → 삭제됨');
-      }
+      // 🔥 파일 선택 "취소" 시에 확실히 모든 상태 삭제
+      setProfileImage(null);
+      setProfileImagePreview(null);
+      setIsImageRemoved(true);
+      
+      console.log('🗑 이미지 선택 취소 → 삭제됨');
     }
 
     // ✅ 동일 파일 재선택 위해 input 초기화
