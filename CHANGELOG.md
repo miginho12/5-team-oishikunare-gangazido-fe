@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.15.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.14.0...v1.15.0) (2025-04-09)
+
+### 🚀 NEW FEATURES
+
+* 마커 등록 RateLimit 1분 15회 추가 ([60d5c6f](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/60d5c6f295c9a1203a1a7b1d1b9244b370020a8d))
+
 ## [1.14.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.13.3...v1.14.0) (2025-04-09)
 
 ### 🚀 NEW FEATURES
