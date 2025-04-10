@@ -65,6 +65,12 @@ function Register() {
       }
     } catch (err) {
       console.error('이메일 중복 체크 오류:', err);
+
+      // 429 에러(요청 제한) 처리 추가
+      if (err.response && err.response.status === 429) {
+        setEmailError('요청 횟수가 제한을 초과했습니다. 잠시 후 다시 시도해주세요.');
+        return;
+      }
       // 오류 발생 시 사용자 경험을 위해 일단 진행 가능하도록 허용
       setEmailError(null);
     }
@@ -117,8 +123,8 @@ function Register() {
       return;
     }
     
-    if (nickname.length < 2 || nickname.length > 20) {
-      setNicknameError('닉네임은 2~20자 사이여야 합니다.');
+    if (nickname.length > 10) {
+      setNicknameError('닉네임은 10자 이내여야 합니다.');
       return;
     }
     
@@ -140,6 +146,12 @@ function Register() {
       }
     } catch (err) {
       console.error('닉네임 중복 체크 오류:', err);
+
+      // 429 에러(요청 제한) 처리 추가
+      if (err.response && err.response.status === 429) {
+        setNicknameError('요청 횟수가 제한을 초과했습니다. 잠시 후 다시 시도해주세요.');
+        return;
+      }
       // 오류 발생 시 사용자 경험을 위해 일단 진행 가능하도록 허용
       setNicknameError(null);
     }
@@ -194,7 +206,6 @@ function Register() {
 
   // 상태 로깅용 useEffect만 유지 (디버깅용)
   useEffect(() => {
-    //console.log(...)
   }, [profileImage, profileImagePreview, removeProfileImage]);
 
     // 회원가입 폼 제출 핸들러
@@ -205,11 +216,6 @@ function Register() {
       setError(null);
     
     try {
-      ////console.log(...)
-      ////console.log(...)
-      ////console.log(...)
-      ////console.log(...)
-      
       const userData = {
         user_email: email,
         user_password: password,
@@ -218,8 +224,6 @@ function Register() {
         user_profileImage: profileImage,
         removeProfileImage: removeProfileImage
       };
-      
-      //console.log(...)
       
       // auth API 모듈 활용
       const response = await registerUser(userData);
@@ -259,7 +263,7 @@ function Register() {
           } else if (errorCode === 'required_nickname') {
             setError('닉네임은 필수 입력 항목입니다.');
           } else if (errorCode === 'invalid_nickname_length') {
-            setError('닉네임은 2자 이상 20자 이하여야 합니다.');
+            setError('닉네임은 10자 이내여야 합니다.');
           } else if (errorCode === 'duplicate_email') {
             setError('이미 사용 중인 이메일입니다.');
           } else if (errorCode === 'duplicate_nickname') {
@@ -280,6 +284,8 @@ function Register() {
           setError('입력 정보가 유효하지 않습니다. 다시 확인해주세요.');
         } else if (err.response.status === 409) {
           setError('이미 등록된 이메일 또는 닉네임입니다.');
+        } else if (err.response.status === 429) {
+          setError('요청 횟수가 제한을 초과했습니다. 잠시 후 다시 시도해주세요.');
         } else if (err.response.status === 500) {
           setError('서버 내부 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
         } else {
@@ -409,7 +415,7 @@ function Register() {
               <label className="block text-sm font-medium text-gray-700 mb-1">닉네임</label>
               <input
                 type="text"
-                placeholder="닉네임을 입력하세요 (2~20자)"
+                placeholder="닉네임을 입력하세요 (10자 이내)"
                 className={`w-full p-3 border ${nicknameError ? 'border-red-300' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent`}
                 required
                 value={nickname}

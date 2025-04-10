@@ -14,7 +14,6 @@ function PetEdit() {
   const [weight, setWeight] = useState('');
   const [profileImage, setProfileImage] = useState(null);
   const [profileImagePreview, setProfileImagePreview] = useState(null);
-  const [originalProfileImageKey, setOriginalProfileImageKey] = useState(null);
   const [isImageRemoved, setIsImageRemoved] = useState(false);
 
   const [nameError, setNameError] = useState('');
@@ -44,6 +43,7 @@ function PetEdit() {
     '믹스견',
     '기타',
   ];
+  const fileInputRef = useRef(null);
 
   // 최초 로딩 시 기존 반려견 정보 불러오기
   useEffect(() => {
@@ -52,21 +52,19 @@ function PetEdit() {
         const res = await getPetInfo();
         if (res?.data?.message === 'get_pet_success') {
           const data = res.data.data;
-          ////console.log(...) // 추가 로그
-
           setName(data.name);
           setBreed(data.breed);
           setAge(data.age);
           setGender(data.gender ? 'male' : 'female');
           setWeight(data.weight);
 
-          // 🔥 CloudFront 미리보기 설정
+          // ✅ CloudFront URL로 미리보기 세팅 (S3 Key는 profileImage에 저장)
           if (data.profileImage && typeof data.profileImage === 'string') {
-            setProfileImage(data.profileImage);               
-            setOriginalProfileImageKey(data.profileImage);    
-            setProfileImagePreview(data.profileImage);        
-            
-            ////console.log(...)
+            setProfileImage(data.profileImage); // 🔄 S3 Key만 저장
+            setProfileImagePreview(data.profileImage);
+            setIsImageRemoved(false);
+
+            console.log('✅ 기존 이미지 로드됨:', data.profileImage); // ✅ 디버깅용
           }
         }
       } catch (err) {
@@ -98,27 +96,26 @@ function PetEdit() {
     setShowConfirm(false);
   };
 
-  const fileInputRef = useRef(); // 👈 input ref 선언
-
   const handleProfileImageChange = (e) => {
     const file = e.target.files?.[0];
-
+  
     if (file) {
-      // ✅ 새 파일 선택 시
+      const tempUrl = URL.createObjectURL(file);
       setProfileImage(file);
-      setProfileImagePreview(URL.createObjectURL(file));
+      setProfileImagePreview(tempUrl);
       setIsImageRemoved(false);
+      console.log('✅ 새 이미지 선택됨');
     } else {
-      // ✅ 파일 선택 취소 시
-      ////console.log(...)
+      // 🔥 파일 선택 "취소" 시에 확실히 모든 상태 삭제
       setProfileImage(null);
       setProfileImagePreview(null);
       setIsImageRemoved(true);
+      console.log('🗑 이미지 선택 취소 → 삭제됨');
     }
 
-    // ✅ 항상 초기화해서 onChange가 다시 작동하도록
+    // ✅ 동일 파일 재선택 위해 input 초기화
     if (fileInputRef.current) {
-      fileInputRef.current.value = "";
+      fileInputRef.current.value = '';
     }
   };
 
@@ -128,13 +125,13 @@ function PetEdit() {
 
     let profileImageKeyToSend;
 
-    if (profileImage instanceof File) {
-      profileImageKeyToSend = await uploadPetImage(profileImage); // 새 이미지 업로드
-    } else if (isImageRemoved) {
-      profileImageKeyToSend = null; // 이미지 삭제 요청
-    } else if (typeof originalProfileImageKey === 'string') {
-      profileImageKeyToSend = undefined; // 기존 이미지 유지 → append 안 함
-    }
+    if (isImageRemoved) {
+      profileImageKeyToSend = null; // 삭제
+    } else if (profileImage instanceof File) {
+      profileImageKeyToSend = await uploadPetImage(profileImage); // 새로 업로드
+    } else if (typeof profileImage === 'string') {
+      profileImageKeyToSend = profileImage; // 기존 유지
+    } 
 
     try {
       await updatePetInfo({
@@ -171,7 +168,7 @@ function PetEdit() {
       setNameError('반려견의 이름을 입력하세요.');
       isValid = false;
     } else if (!nameRegex.test(name)) {
-      setNameError('반려견의 이름은 한글 또는 영문만 입력 가능합니다.');
+      setNameError('반려견의 이름은 공백없이 한글 또는 영문만 입력 가능합니다.');
       isValid = false;
     } else if (name.length > 10) {
       setNameError('반려견의 이름은 최대 10자까지 입력 가능합니다.');
@@ -184,13 +181,13 @@ function PetEdit() {
       setAgeError('반려견의 나이를 입력하세요.');
       isValid = false;
     } else if (isNaN(ageNum)) {
-      setAgeError('반려견의 나이는 숫자로 입력해주세요.');
+      setAgeError('반려견 나이는 1부터 50사이의 숫자만 입력 가능합니다.');
       isValid = false;
     } else if (ageNum <= 0) {
-      setAgeError('반려견의 나이는 1살 이상이어야 해요.');
+      setAgeError('반려견 나이는 1부터 50사이의 숫자만 입력 가능합니다.');
       isValid = false;
     } else if (ageNum >= 51) {
-      setAgeError('입력값이 너무 큽니다. 올바른 나이를 입력해주세요.');
+      setAgeError('반려견 나이는 1부터 50사이의 숫자만 입력 가능합니다.');
       isValid = false;
     }
 
@@ -204,10 +201,10 @@ function PetEdit() {
       setWeightError('올바른 몸무게 형식을 입력해주세요. (예: 5 또는 5.2)');
       isValid = false;
     } else if (weightNum <= 0) {
-      setWeightError('반려견의 몸무게는 0kg 이상이어야 해요.');
+      setWeightError('반려견 나이는 1부터 200사이의 숫자만 입력 가능합니다.');
       isValid = false;
     } else if (weightNum >= 200) {
-      setWeightError('입력값이 너무 큽니다. 올바른 몸무게를 입력해주세요.');
+      setWeightError('반려견 나이는 1부터 200사이의 숫자만 입력 가능합니다.');
       isValid = false;
     } else {
       setWeightError('');
@@ -245,7 +242,7 @@ function PetEdit() {
         setNameError('반려견의 이름을 입력하세요.');
         break;
       case 'invalid_pet_name_format':
-        setNameError('반려견의 이름은 한글 또는 영문만 입력 가능합니다.');
+        setNameError('반려견의 이름은 공백없이 한글 또는 영문만 입력 가능합니다.');
         break;
       case 'invalid_pet_name_length':
         setNameError('반려견의 이름은 최대 10자까지 입력 가능합니다.');
@@ -335,14 +332,18 @@ function PetEdit() {
         <div className="bg-white rounded-xl shadow-md p-4 mb-4">
           <div className="flex flex-col items-center mb-6">
             <div className="w-24 h-24 rounded-full bg-amber-100 flex items-center justify-center mb-3 overflow-hidden">
-              {profileImagePreview ? (
+              {profileImagePreview && !isImageRemoved ? (
                 <img
                   src={profileImagePreview}
                   alt="프로필 미리보기"
                   className="w-full h-full object-cover"
                   onError={() => {
-                    console.warn("🐛 이미지 로딩 실패! fallback 아이콘 표시");
-                    setProfileImagePreview(null); // fallback svg로 대체되게
+                    if (!isImageRemoved) {
+                      console.warn('❗️ 이미지 로딩 실패');
+                      setProfileImage(null);
+                      setProfileImagePreview(null);
+                      setIsImageRemoved(true);
+                    }
                   }}
                 />
               ) : (
@@ -420,7 +421,14 @@ function PetEdit() {
               <input
                 type="number"
                 value={age}
-                onChange={(e) => setAge(e.target.value)}
+                onChange={(e) => {
+                  const value = e.target.value;
+              
+                  // 정수만 입력 허용 + 2자리까지만
+                  if (/^\d{0,2}$/.test(value)) {
+                    setAge(value);
+                  }
+                }}
                 onBlur={() => handleBlur('age')}
                 placeholder="나이"
                 className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
@@ -437,7 +445,14 @@ function PetEdit() {
               <input
                 type="number"
                 value={weight}
-                onChange={(e) => setWeight(e.target.value)}
+                onChange={(e) => {
+                  const value = e.target.value;
+                
+                  // 정수 1~3자리 + 선택적으로 소숫점 1자리까지 허용
+                  if (/^\d{0,3}(\.\d{0,1})?$/.test(value)) {
+                    setWeight(value);
+                  }
+                }}
                 onBlur={() => handleBlur('weight')}
                 placeholder="kg 단위로 입력해주세요"
                 className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
