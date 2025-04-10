@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.23.5](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.23.4...v1.23.5) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* cors 설정 추가 ([44720c5](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/44720c5dfd396b7bf92c11f5d28e211fe87d5606))
+
 ## [1.23.4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.23.3...v1.23.4) (2025-04-10)
 
 ### 🎨 STYLES
