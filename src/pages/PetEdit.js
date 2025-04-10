@@ -43,7 +43,6 @@ function PetEdit() {
     '믹스견',
     '기타',
   ];
-  const cloudFrontUrl = window._env_.REACT_APP_CLOUDFRONT_URL;
   const fileInputRef = useRef(null);
 
   // 최초 로딩 시 기존 반려견 정보 불러오기
