@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.23.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.22.7...v1.23.0) (2025-04-10)
+
+### 🚀 NEW FEATURES
+
+* 회원가입페이지 이메일 인증 기능 추가 ([207e300](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/207e3004ee9e174ef0ea33ca098d6b433b29ab68))
+
 ## [1.22.7](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.22.6...v1.22.7) (2025-04-10)
 
 ### 🐛 BUG FIXES
