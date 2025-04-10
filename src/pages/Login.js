@@ -6,6 +6,7 @@ import { useAuth } from '../contexts/AuthContext';
 function Login() {
   const navigate = useNavigate();
   const location = useLocation();
+  console.log(location);
   const { login, isAuthenticated } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

@@ -11,6 +11,7 @@ function ProfilePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   console.log(error);
+  console.log(setError);
 
   const [showToast, setShowToast] = useState(false);
   console.log(showToast);
