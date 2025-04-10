@@ -33,10 +33,17 @@ jobs:
           echo "🛠️ 카카오맵 API 키를 env.js에 주입 중..."
           sed -i "s|REPLACE_KAKAO_MAP_API_KEY|${{ secrets.KAKAO_MAP_API_KEY }}|" ./public/env.js
           sed -i "s|REPLACE_API_BASE_URL|${{ secrets.API_BASE_URL_DEV }}|" ./public/env.js
+          sed -i "s|REPLACE_CLOUDFRONT_URL|${{ secrets.CLOUDFRONT_URL_DEV }}|" ./public/env.js
+
+      - name: Get latest version tag
+        id: get_version
+        run: |
+          VERSION=$(git describe --tags --abbrev=0)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Create version.json
         run: |
-          echo "{\"version\": \"develop-${{ github.sha }}\"}" > public/version.json
+          echo "{\"version\": \"${{ steps.get_version.outputs.version }}\"}" > public/version.json
 
       - name: Debug version.json
         run: |

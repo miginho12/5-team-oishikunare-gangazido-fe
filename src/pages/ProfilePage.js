@@ -6,11 +6,12 @@ import { useAuth } from "../contexts/AuthContext";
 
 function ProfilePage() {
   const navigate = useNavigate();
-  const { logout } = useAuth();
+  const { logout, isAuthenticated, loading: authLoading } = useAuth();
   const [userInfo, setUserInfo] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   console.log(error);
+  console.log(setError);
 
   const [showToast, setShowToast] = useState(false);
   console.log(showToast);
@@ -29,21 +30,39 @@ function ProfilePage() {
 
   // 컴포넌트 마운트 시 사용자 정보 로드
   useEffect(() => {
+    // 인증 상태 확인 - 로딩이 끝나고 인증되지 않았다면 로그인 페이지로 리다이렉트
+    if (!authLoading && !isAuthenticated) {
+      navigate('/login');
+      return;
+    }
+
     const fetchUserInfo = async () => {
       try {
         setLoading(true);
         const response = await getUserInfo();
+        
         setUserInfo(response.data.data);
       } catch (err) {
         console.error("사용자 정보 로드 실패:", err);
-        setError("사용자 정보를 불러오는데 실패했습니다.");
+        
+        // 에러가 발생하면 무조건 로그인 페이지로 리다이렉트
+        if (logout) logout(); // AuthContext의 logout 함수 호출
+        navigate('/login');
+        return;
       } finally {
         setLoading(false);
       }
     };
 
     fetchUserInfo();
-  }, []);
+  }, [navigate, logout, isAuthenticated, authLoading]);
+
+  // 상태가 업데이트된 후 실행되는 useEffect
+useEffect(() => {
+  if (userInfo) {
+    console.log("업데이트된 userInfo:", userInfo);
+  }
+}, [userInfo]);
 
   const goToMap = () => {
     navigate("/map");
@@ -103,6 +122,12 @@ function ProfilePage() {
     );
   }
 
+  // 사용자 정보가 없으면 로그인 페이지로 리다이렉트
+  if (!userInfo) {
+    navigate('/login');
+    return null;
+  }
+
   return (
     <div className="flex flex-col h-full bg-amber-50">
       {/* 헤더 */}
@@ -111,7 +136,8 @@ function ProfilePage() {
           <img
             src="/gangazido-logo-header.png"
             alt="Gangazido Logo Header"
-            className="h-14 w-28 object-cover self-center"
+            className="h-14 w-28 object-cover self-center cursor-pointer"
+            onClick={goToMap}
           />
         </div>
       </header>
@@ -133,7 +159,7 @@ function ProfilePage() {
                     // SVG 아이콘 표시 (class 사용)
                     e.target.parentNode.innerHTML = `
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-amber-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
                         </svg>   
                       `;
                   }}
@@ -161,7 +187,7 @@ function ProfilePage() {
                 {userInfo?.nickname || "사용자"}
               </h2>
               <p className="text-gray-600">
-                {userInfo?.email || "email@example.com"}
+                {userInfo?.email || ""}
               </p>
               <button
                 onClick={goToProfileEdit}

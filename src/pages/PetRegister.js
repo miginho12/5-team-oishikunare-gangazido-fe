@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { uploadPetImage, registerPet } from '../api/pet';
+import Select from 'react-select';
 
 function PetRegister() {
   const navigate = useNavigate();
@@ -13,6 +14,9 @@ function PetRegister() {
   const [weight, setWeight] = useState('');
   const [profileImage, setProfileImage] = useState(null);
   const [profileImagePreview, setProfileImagePreview] = useState(null);
+  const [isImageRemoved, setIsImageRemoved] = useState(false);
+
+  const fileInputRef = useRef(null);
 
   const [nameError, setNameError] = useState('');
   const [ageError, setAgeError] = useState('');
@@ -28,18 +32,23 @@ function PetRegister() {
   });
 
   const breedOptions = [
-    '푸들',
-    '비숑 프리제',
-    '포메라니안',
-    '말티즈',
-    '웰시코기',
-    '골든 리트리버',
-    '래브라도 리트리버',
-    '보더 콜리',
-    '시베리안 허스키',
-    '진돗개',
-    '믹스견',
-    '기타',
+    { value: '푸들', label: '푸들' },
+    { value: '비숑 프리제', label: '비숑 프리제' },
+    { value: '포메라니안', label: '포메라니안' },
+    { value: '말티즈', label: '말티즈' },
+    { value: '웰시코기', label: '웰시코기' },
+    { value: '골든 리트리버', label: '골든 리트리버' },
+    { value: '래브라도 리트리버', label: '래브라도 리트리버' },
+    { value: '보더 콜리', label: '보더 콜리' },
+    { value: '시베리안 허스키', label: '시베리안 허스키' },
+    { value: '진돗개', label: '진돗개' },
+    { value: '믹스견', label: '믹스견' },
+    { value: '기타', label: '기타' },
+  ];
+  
+  const genderOptions = [
+    { value: 'male', label: '수컷' },
+    { value: 'female', label: '암컷' },
   ];
 
   const goToMap = () => navigate('/map');
@@ -54,12 +63,11 @@ function PetRegister() {
     try {
       let profileImageKey = null;
 
-      // ✅ 이미지 파일이 있다면 먼저 업로드 후 key 확보
-      if (profileImage instanceof File) {
+      // 🔁 삭제된 경우 null 유지
+      if (isImageRemoved) {
+        profileImageKey = null;
+      } else if (profileImage instanceof File) {
         profileImageKey = await uploadPetImage(profileImage);
-        const imageUrl = `https://d3jeniacjnodv5.cloudfront.net/${profileImageKey}?t=${Date.now()}`;
-        setProfileImagePreview(imageUrl);
-        ////console.log(...)
       }
 
       const petData = {
@@ -71,9 +79,7 @@ function PetRegister() {
         profileImage: profileImageKey,
       };
 
-      ////console.log(...)
       await registerPet(petData);
-
       setShowToast(true);
       setTimeout(() => {
         window.location.href = "/pets";
@@ -88,16 +94,19 @@ function PetRegister() {
     const file = e.target.files?.[0];
 
     if (file) {
-      // ✅ 사용자가 실제로 파일을 선택한 경우
       setProfileImage(file);
       const tempUrl = URL.createObjectURL(file);
       setProfileImagePreview(tempUrl);
-      ////console.log(...)
-    } else {
-      // ✅ 사용자가 '파일 선택' 창에서 취소를 누른 경우
-      setProfileImage(null); // S3 업로드 대상 제거
-      setProfileImagePreview(null); // 미리보기 초기화
+      setIsImageRemoved(false); // 🔁 삭제 아님으로 처리
+      if (fileInputRef.current) fileInputRef.current.value = ''; // 🔁 재선택 허용
     }
+  };
+
+  // X 버튼 눌렀을 때 이미지 제거 처리
+  const handleRemoveImage = () => {
+    setProfileImage(null);
+    setProfileImagePreview(null);
+    setIsImageRemoved(true);
   };
 
   // 프론트 자체 유효성 검사
@@ -259,6 +268,42 @@ function PetRegister() {
     }
   }, [showToast]);
 
+  // 커스텀 드롭박스
+  // 드롭박스 커스텀 스타일
+  const customSelectStyles = {
+    control: (provided, state) => ({
+      ...provided,
+      minHeight: '3rem',
+      borderRadius: '0.375rem',
+      borderColor: state.isFocused ? '#92400e' : '#d1d5db',
+      boxShadow: state.isFocused ? '0 0 0 2px rgba(146, 64, 14, 0.4)' : 'none',
+      '&:hover': {
+        borderColor: '#92400e',
+      },
+    }),
+    menu: (provided) => ({
+      ...provided,
+      zIndex: 50,
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      backgroundColor: state.isSelected
+        ? 'rgba(146, 64, 14, 0.2)'  // ✅ 선택된 항목 (파란 배경 방지)
+        : state.isFocused
+        ? 'rgba(146, 64, 14, 0.1)'  // ✅ 마우스 올렸을 때
+        : 'white',
+      color: '#1f2937',
+      cursor: 'pointer',
+      ':active': {
+        backgroundColor: 'rgba(146, 64, 14, 0.3)',
+      },
+    }),
+    singleValue: (provided) => ({
+      ...provided,
+      color: '#1f2937',
+    }),
+  };
+
   return (
     <div className="flex flex-col h-full bg-gray-50">
       {/* 헤더 */}
@@ -272,7 +317,8 @@ function PetRegister() {
           <img
             src="/gangazido-logo-header.png"
             alt="Gangazido Logo Header"
-            className="h-14 w-28 object-cover"
+            className="h-14 w-28 object-cover cursor-pointer"
+            onClick={() => navigate('/map')}
           />
         </div>
       </header>
@@ -281,18 +327,26 @@ function PetRegister() {
       <div className="flex-1 p-4 overflow-y-auto">
         <div className="bg-white rounded-xl shadow-md p-4 mb-4">
           <div className="flex flex-col items-center mb-6">
-            <div className="w-24 h-24 rounded-full bg-amber-100 flex items-center justify-center mb-3 overflow-hidden">
-              {profileImagePreview ? (
-                <img 
-                  src={profileImagePreview}
-                  alt="미리보기"
-                  className="w-full h-full object-cover"
-                  onError={() => {
-                    console.warn("🐛 이미지 로딩 실패! fallback 아이콘 표시");
-                    setProfileImagePreview(null); // fallback svg로 대체되게
-                  }}
-                />
-              ) : (
+            <div className="relative w-24 h-24 rounded-full bg-amber-100 flex items-center justify-center mb-3 overflow-visible">
+              {profileImagePreview && !isImageRemoved ? (
+                  <>
+                    <img
+                      src={profileImagePreview}
+                      alt="프로필 미리보기"
+                      className="w-full h-full object-cover rounded-full"
+                      onError={handleRemoveImage}
+                    />
+                    {/* 🔼 이미지 삭제 버튼 */}
+                    <button
+                      type="button"
+                      onClick={handleRemoveImage}
+                      className="absolute top-0 right-0 transform translate-x-1/4 -translate-y-1/4 bg-white bg-opacity-100 text-red-600 text-xl font-bold rounded-full w-8 h-8 flex items-center justify-center shadow hover:bg-opacity-100 z-50"
+                      aria-label="이미지 삭제"
+                    >
+                      x
+                    </button>
+                  </>
+                ) : (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-12 w-12 text-amber-800"
@@ -317,6 +371,7 @@ function PetRegister() {
                 accept="image/*"
                 onChange={handleProfileImageChange}
                 className="hidden"
+                ref={fileInputRef}
               />
             </label>
           </div>
@@ -339,20 +394,14 @@ function PetRegister() {
 
             <div className="relative">
               <label className="block text-sm font-medium text-gray-700 mb-1">품종</label>
-              <select
-                value={breed}
-                onChange={(e) => setBreed(e.target.value)}
-                onBlur={() => handleBlur('breed')}
-                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
-                required
-              >
-                <option value="">선택하세요</option>
-                {breedOptions.map((option, index) => (
-                  <option key={index} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </select>
+              <Select
+                options={breedOptions}
+                value={breedOptions.find((option) => option.value === breed)}
+                onChange={(selectedOption) => setBreed(selectedOption.value)}
+                placeholder="품종 선택"
+                styles={customSelectStyles}
+                isSearchable={false}
+              />
               {touched.breed && breedError && (
                 <p className="text-sm text-red-500 mt-1">{breedError}</p>
               )}
@@ -409,17 +458,14 @@ function PetRegister() {
 
             <div className="relative">
               <label className="block text-sm font-medium text-gray-700 mb-1">성별</label>
-              <select
-                value={gender}
-                onChange={(e) => setGender(e.target.value)}
-                onBlur={() => handleBlur('gender')}
-                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
-                required
-              >
-                <option value="">선택하세요</option>
-                <option value="male">수컷</option>
-                <option value="female">암컷</option>
-              </select>
+              <Select
+                options={genderOptions}
+                value={genderOptions.find((option) => option.value === gender)}
+                onChange={(selectedOption) => setGender(selectedOption.value)}
+                placeholder="성별 선택"
+                styles={customSelectStyles}
+                isSearchable={false}
+              />
               {touched.gender && genderError && (
                 <p className="text-sm text-red-500 mt-1">{genderError}</p>
               )}
@@ -437,8 +483,15 @@ function PetRegister() {
 
       {/* 토스트 메시지 */}
       {showToast && (
-        <div className="fixed bottom-24 left-0 right-0 mx-auto w-3/5 max-w-xs bg-white bg-opacity-80 border border-amber-800 text-amber-800 p-3 rounded-md shadow-lg text-center z-50 animate-fade-in-up">
-          등록을 완료하였습니다.
+        <div
+          className="fixed bottom-24 inset-x-0 flex justify-center z-50"
+        >
+          <div
+            className="w-full max-w-sm bg-white bg-opacity-80 border border-amber-800 
+                      text-amber-800 p-3 rounded-md shadow-lg text-center animate-fade-in-up mx-4"
+          >
+            등록을 완료하였습니다.
+          </div>
         </div>
       )}
 

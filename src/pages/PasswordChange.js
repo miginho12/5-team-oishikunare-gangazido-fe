@@ -189,7 +189,8 @@ function PasswordChange() {
           <img
             src="/gangazido-logo-header.png"
             alt="Gangazido Logo Header"
-            className="h-14 w-28 object-cover"
+            className="h-14 w-28 object-cover cursor-pointer"
+            onClick={() => navigate('/map')}
           />
         </div>
       </header>
