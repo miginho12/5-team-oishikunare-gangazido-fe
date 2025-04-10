@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.20.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.20.0...v1.20.1) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* 마커 등록시 user.userId 수정 ([498484c](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/498484cd92bf49c6b35807626d1aafff2b71bfbd))
+
 ## [1.20.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.19.2...v1.20.0) (2025-04-10)
 
 ### 🚀 NEW FEATURES
