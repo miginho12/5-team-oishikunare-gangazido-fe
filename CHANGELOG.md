@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.22.4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.22.3...v1.22.4) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* user.js 오타 수정 ([b3bbc18](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/b3bbc18d7c70ec44b242bacba9f9f897a4816f99))
+
 ## [1.22.3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.22.2...v1.22.3) (2025-04-10)
 
 ### 🐛 BUG FIXES
