@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## [1.17.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.16.0...v1.17.0) (2025-04-10)
+
+### 🚀 NEW FEATURES
+
+* Fix unexpected page display on session expiration ([3d46b0c](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/3d46b0c9a277d7b149fce364364afa4e10bebbf9))
+* **header:** navigate to map view on logo click ([bbfa5e8](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/bbfa5e85d78e430345b44e4b97c51bfee7189b73))
+
+### 🐛 BUG FIXES
+
+* add file tree to README.md ([f09c9e6](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/f09c9e60a5d16bd1d034332805cb453b9d330a50))
+
 ## [1.16.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.15.1...v1.16.0) (2025-04-10)
 
 ### 🚀 NEW FEATURES
