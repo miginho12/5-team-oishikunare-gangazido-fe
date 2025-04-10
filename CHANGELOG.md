@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.22.7](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.22.6...v1.22.7) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* 방금 등록한 마커도 클릭 시 지도 이동 및 확대 ([21d1531](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/21d15313ea4bcc8fc16cfaa265219302a1dfd4b8))
+
 ## [1.22.6](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.22.5...v1.22.6) (2025-04-10)
 
 ### 🐛 BUG FIXES
