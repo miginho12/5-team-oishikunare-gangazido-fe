@@ -1,5 +1,23 @@
 # CHANGELOG
 
+## [1.23.11](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.23.10...v1.23.11) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* Axios 대신 api 인스턴스를 사용하는 방식으로 코드 리팩터링 ([f5e35d8](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/f5e35d8c8641619259fb95aac005fc0578666abb))
+
+## [1.23.10](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.23.9...v1.23.10) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* 이메일 전송 오류 해결 ([fcb7838](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/fcb78380fbac6762a0baed3e87376ce10b1b392b))
+
+## [1.23.9](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.23.8...v1.23.9) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* Register.js  안쓰는 코드 제거 ([fa44df4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/fa44df4645aea20c7b9370419f7105a3d5473c23))
+
 ## [1.23.8](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.23.7...v1.23.8) (2025-04-10)
 
 ### 🐛 BUG FIXES
