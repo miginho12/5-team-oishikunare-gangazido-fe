@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.19.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.19.1...v1.19.2) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* README.md ([7c55e24](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/7c55e24bb552ae37512fa814323bccbc6d5f7a71))
+
 ## [1.19.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.19.0...v1.19.1) (2025-04-10)
 
 ### 🐛 BUG FIXES
