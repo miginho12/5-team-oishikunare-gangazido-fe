@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.22.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.22.0...v1.22.1) (2025-04-10)
+
+### ♻️ REFACTORING
+
+* 이미지 삭제 파일 선택 취소 대신 x버튼 도입 ([4739848](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/4739848e577d6c69dcb8131a511707209f7ac614))
+
 ## [1.22.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.21.2...v1.22.0) (2025-04-10)
 
 ### 🚀 NEW FEATURES
