@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.17.4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.17.3...v1.17.4) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* 반려견 정보 조회 실패 시 무한 로딩 문제 수정 ([70ba9ef](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/70ba9ef24403d55b002a63ebeebc3aff708b910d))
+
 ## [1.17.3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.17.2...v1.17.3) (2025-04-10)
 
 ### 🐛 BUG FIXES
