@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.17.5](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.17.4...v1.17.5) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* 파일 선택창 취소 시 이미지 삭제 처리 ([b957846](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/b957846dd517d4f4690fa7d20b9f45cd629f160b))
+
 ## [1.17.4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.17.3...v1.17.4) (2025-04-10)
 
 ### 🐛 BUG FIXES
