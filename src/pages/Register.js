@@ -12,6 +12,7 @@ function Register() {
   const [profileImage, setProfileImage] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  
   const [emailError, setEmailError] = useState(null);
   const [passwordError, setPasswordError] = useState(null);
   const [nicknameError, setNicknameError] = useState(null);
