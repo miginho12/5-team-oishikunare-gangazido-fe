@@ -168,3 +168,33 @@ export const checkNicknameDuplicate = (nickname) => {
     `/v1/users/check-nickname?nickname=${encodeURIComponent(nickname)}`
   );
 };
+
+// 📁 api/auth.js 또는 api/user.js 중 한 곳에 추가
+
+import axios from 'axios';
+
+// 이메일 인증 코드 요청 (인증메일 발송)
+export const sendEmailVerificationCode = async (email) => {
+  try {
+    const response = await axios.post('/api/email/send', {
+      email: email
+    });
+    return response;
+  } catch (error) {
+    //throw error;
+  }
+};
+
+// 인증 코드 확인
+export const verifyEmailCode = async (email, code) => {
+  try {
+    const response = await axios.post('/api/email/verify', {
+      email: email,
+      code: code
+    });
+    return response;
+  } catch (error) {
+    //throw error;
+  }
+};
+

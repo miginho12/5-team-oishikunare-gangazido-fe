@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 
 import { useNavigate } from 'react-router-dom';
-import { registerUser, checkEmailDuplicate, checkNicknameDuplicate } from '../api/auth';
+import { registerUser, checkEmailDuplicate, checkNicknameDuplicate, sendEmailVerificationCode, verifyEmailCode } from '../api/auth';
 
 function Register() {
   const navigate = useNavigate();
@@ -15,6 +15,11 @@ function Register() {
   const [emailError, setEmailError] = useState(null);
   const [passwordError, setPasswordError] = useState(null);
   const [nicknameError, setNicknameError] = useState(null);
+  //이메일 인증 관련
+  const [isEmailVerified, setIsEmailVerified] = useState(false);
+  const [showVerificationModal, setShowVerificationModal] = useState(false);
+  const [verificationCode, setVerificationCode] = useState('');
+  const [serverVerificationCode, setServerVerificationCode] = useState('');
 
   // 파일 입력 요소에 대한 ref 추가 (component 시작 부분에)
   const fileInputRef = useRef(null);
@@ -74,6 +79,44 @@ function Register() {
       setEmailError(null);
     }
   };
+
+  const verifyCode = async () => {
+    try {
+      const response = await verifyEmailCode(email, verificationCode); // 백엔드에 인증 요청
+      if (response.data && response.data.message === 'verify_email_success') {
+        setIsEmailVerified(true);
+        setShowVerificationModal(false);
+        alert('이메일 인증이 완료되었습니다.');
+      } else {
+        alert('인증에 실패했습니다. 다시 시도해주세요.');
+      }
+    } catch (err) {
+      console.error("이메일 인증 오류:", err);
+      alert('인증 코드가 일치하지 않습니다.');
+    }
+  };
+
+  const handleSendVerificationCode = async () => {
+    if (emailError || !email) {
+      setEmailError('먼저 유효한 이메일을 입력해 주세요.');
+      return;
+    }
+  
+    try {
+      const response = await sendEmailVerificationCode(email); // 이건 axios 요청으로 되어 있어야 함
+      const data = response.data;
+      if (data && data.code) {
+        setServerVerificationCode(data.code);
+        setShowVerificationModal(true);
+      } else {
+        setError('인증 메일 전송에 실패했습니다.');
+      }
+    } catch (err) {
+      console.error('이메일 인증 오류:', err);
+      setError('이메일 인증 요청 중 오류가 발생했습니다.');
+    }
+  };
+  
 
   // 비밀번호 변경 핸들러
   // 비밀번호 변경 핸들러
@@ -207,7 +250,14 @@ function Register() {
     // 회원가입 폼 제출 핸들러
     const handleRegister = async (e) => {
       e.preventDefault();
-      
+
+      // 🔐 이메일 인증 여부 확인
+      if (!isEmailVerified) {
+        setError('이메일 인증을 먼저 완료해주세요.');
+        setLoading(false);
+        return;
+      }
+
       setLoading(true);
       setError(null);
     
@@ -346,7 +396,44 @@ function Register() {
             <span className="block sm:inline">{error}</span>
           </div>
         )}
-        
+
+        {showVerificationModal && (
+          
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white rounded-xl shadow-lg p-6 w-80">
+              <h2 className="text-lg font-bold mb-4 text-center text-amber-800">이메일 인증</h2>
+              <p className="text-sm mb-3">이메일로 전송된 인증 코드를 입력해 주세요.</p>
+              <input
+                type="text"
+                value={verificationCode}
+                onChange={(e) => setVerificationCode(e.target.value)}
+                placeholder="인증 코드 입력"
+                className="w-full p-2 border border-gray-300 rounded-md mb-4"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    verifyCode();
+                  }
+                }}
+              />
+              <button onClick={handleSendVerificationCode}>인증</button>
+              <div className="flex justify-between">
+                <button
+                  onClick={() => setShowVerificationModal(false)}
+                  className="text-gray-600 px-3 py-1 hover:underline"
+                >
+                  닫기
+                </button>
+                <button
+                  onClick={verifyCode}
+                  className="bg-amber-800 text-white px-4 py-1 rounded-md"
+                >
+                  확인
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+                
         {/* 입력 폼 */}
         <div className="bg-white rounded-xl shadow-md p-4 mb-4">
           <div className="flex flex-col items-center mb-6">
@@ -390,19 +477,34 @@ function Register() {
           </div>
 
           <form onSubmit={handleRegister} className="space-y-4">
-            <div className="relative">
-              <label className="block text-sm font-medium text-gray-700 mb-1">이메일</label>
-              <input
-                type="email"
-                placeholder="이메일을 입력하세요"
-                className={`w-full p-3 border ${emailError ? 'border-red-300' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent`}
-                required
-                value={email}
-                onChange={handleEmailChange}
-                onBlur={handleEmailBlur}
-              />
+          <div className="relative">
+  <label className="block text-sm font-medium text-gray-700 mb-1">이메일</label>
+              <div className="flex gap-2">
+                <input
+                  type="email"
+                  placeholder="이메일을 입력하세요"
+                  className={`flex-1 p-3 border ${emailError ? 'border-red-300' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent`}
+                  required
+                  value={email}
+                  onChange={handleEmailChange}
+                  onBlur={handleEmailBlur}
+                  disabled={isEmailVerified}
+                />
+                {!isEmailVerified && (
+                  <button
+                    type="button"
+                    onClick={handleSendVerificationCode}
+                    className="whitespace-nowrap bg-amber-800 text-white px-3 py-2 rounded-md text-sm"
+                  >
+                    인증
+                  </button>
+                )}
+              </div>
               {emailError && <p className="text-xs text-red-500 mt-1">{emailError}</p>}
+              {isEmailVerified && <p className="text-xs text-green-600 mt-1">✔ 이메일 인증 완료</p>}
             </div>
+
+                                
 
             <div className="relative">
               <label className="block text-sm font-medium text-gray-700 mb-1">비밀번호</label>
