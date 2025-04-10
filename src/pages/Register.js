@@ -107,8 +107,8 @@ function Register() {
       const response = await sendEmailVerificationCode(email); // 이건 axios 요청으로 되어 있어야 함
       const data = response.data;
       if (data && data.code) {
-        setServerVerificationCode(data.code);
-        //setShowVerificationModal(true);
+        //setServerVerificationCode(data.code);
+        setShowVerificationModal(true);
       } else {
         setError('인증 메일 전송에 실패했습니다.');
       }
