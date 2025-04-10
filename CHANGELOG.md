@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.23.7](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.23.6...v1.23.7) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* 모바일에서 펫 수정,등록 드롭박스 클릭 시 입력필드(키보드 올라오는 것)방지 ([3e0ea30](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/3e0ea30e352de6964a083ccda034abc190f0abe1))
+
 ## [1.23.6](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.23.5...v1.23.6) (2025-04-10)
 
 ### 🎨 STYLES
