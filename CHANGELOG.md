@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.17.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.17.0...v1.17.1) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* eslint error ([d91131e](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/d91131e9e6c7dc13927ed9dc5582e8c7beaf584b))
+
 ## [1.17.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.16.0...v1.17.0) (2025-04-10)
 
 ### 🚀 NEW FEATURES
