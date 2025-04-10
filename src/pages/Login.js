@@ -97,7 +97,8 @@ function Login() {
           <img
             src="/gangazido-logo-header.png"
             alt="Gangazido Logo Header"
-            className="h-14 w-28 object-cover"
+            className="h-14 w-28 object-cover cursor-pointer"
+            onClick={goToMap}
           />
         </div>
       </header>
@@ -159,6 +160,15 @@ function Login() {
               </button>
             </p>
           </div>
+        </div>
+
+        <div className="flex justify-center mb-8">
+          <img
+            src="/gangazido-logo.png"
+            alt="Gangazido Logo"
+            className="h-20 cursor-pointer"
+            onClick={goToMap}
+          />
         </div>
       </div>
     </div>

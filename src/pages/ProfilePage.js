@@ -127,7 +127,8 @@ function ProfilePage() {
           <img
             src="/gangazido-logo-header.png"
             alt="Gangazido Logo Header"
-            className="h-14 w-28 object-cover self-center"
+            className="h-14 w-28 object-cover self-center cursor-pointer"
+            onClick={goToMap}
           />
         </div>
       </header>
