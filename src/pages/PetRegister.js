@@ -118,7 +118,7 @@ function PetRegister() {
       setNameError('반려견의 이름을 입력하세요.');
       isValid = false;
     } else if (!nameRegex.test(name)) {
-      setNameError('반려견의 이름은 한글 또는 영문만 입력 가능합니다.');
+      setNameError('반려견의 이름은 공백없이 한글 또는 영문만 입력 가능합니다.');
       isValid = false;
     } else if (name.length > 10) {
       setNameError('반려견의 이름은 최대 10자까지 입력 가능합니다.');
@@ -194,7 +194,7 @@ function PetRegister() {
         setNameError('반려견의 이름을 입력해주세요.');
         break;
       case 'invalid_pet_name_format':
-        setNameError('반려견의 이름은 한글 또는 영문만 입력 가능합니다.');
+        setNameError('반려견의 이름은 공백없이 한글 또는 영문만 입력 가능합니다.');
         break;
       case 'invalid_pet_name_length':
         setNameError('반려견의 이름은 최대 10자까지 입력 가능합니다.');
@@ -274,7 +274,8 @@ function PetRegister() {
           <img
             src="/gangazido-logo-header.png"
             alt="Gangazido Logo Header"
-            className="h-14 w-28 object-cover"
+            className="h-14 w-28 object-cover cursor-pointer"
+            onClick={() => navigate('/map')}
           />
         </div>
       </header>
@@ -365,7 +366,14 @@ function PetRegister() {
               <input
                 type="number"
                 value={age}
-                onChange={(e) => setAge(e.target.value)}
+                onChange={(e) => {
+                  const value = e.target.value;
+              
+                  // 정수만 입력 허용 + 2자리까지만
+                  if (/^\d{0,2}$/.test(value)) {
+                    setAge(value);
+                  }
+                }}
                 onBlur={() => handleBlur('age')}
                 placeholder="나이"
                 className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
@@ -382,7 +390,14 @@ function PetRegister() {
               <input
                 type="number"
                 value={weight}
-                onChange={(e) => setWeight(e.target.value)}
+                onChange={(e) => {
+                  const value = e.target.value;
+                
+                  // 정수 1~3자리 + 선택적으로 소숫점 1자리까지 허용
+                  if (/^\d{0,3}(\.\d{0,1})?$/.test(value)) {
+                    setWeight(value);
+                  }
+                }}
                 onBlur={() => handleBlur('weight')}
                 placeholder="kg 단위로 입력해주세요"
                 className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"

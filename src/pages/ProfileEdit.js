@@ -23,6 +23,8 @@ const ERROR_MESSAGES = {
   'internal_server_error': '서버 내부 오류가 발생했습니다. 잠시 후 다시 시도해주세요.',
   'required_profile_update_data': '변경할 정보를 입력해주세요.',
   'update_user_data_failed': '프로필 수정에 실패했습니다.',
+  'too_many_requests': '요청 횟수가 제한을 초과했습니다. 잠시 후 다시 시도해주세요.'
+
 };
 
 // 에러 코드를 한글 메시지로 변환하는 함수
@@ -57,6 +59,13 @@ function ProfileEdit() {
         }
       } catch (err) {
         console.error('사용자 정보 로드 실패:', err);
+        
+        // 요청 제한 (429) 에러 처리 추가
+        if (err.response && err.response.status === 429) {
+          setError('요청 횟수가 제한을 초과했습니다. 잠시 후 다시 시도해주세요.');
+          return;
+        }
+        
         if (err.response && err.response.status === 401) {
           // 인증되지 않은 사용자는 로그인 페이지로 리다이렉트
           navigate('/login');
@@ -120,9 +129,7 @@ function ProfileEdit() {
 
   const handleWithdrawal = async () => {
     try {
-      ////console.log(...)
       await deleteUser();
-      ////console.log(...)
       
       setShowWithdrawalModal(false);
       setToastMessage("회원 탈퇴가 완료되었습니다.");
@@ -134,6 +141,15 @@ function ProfileEdit() {
       }, 2000);
     } catch (error) {
       console.error('회원탈퇴 API 오류:', error);
+
+      // 요청 제한 (429) 에러 처리 추가
+      if (error.response && error.response.status === 429) {
+        setToastMessage("요청 횟수가 제한을 초과했습니다. 잠시 후 다시 시도해주세요.");
+        setShowWithdrawalModal(false);
+        setShowToast(true);
+        return;
+      }
+
       if (error.response) {
         console.error('오류 상태:', error.response.status);
         console.error('오류 데이터:', error.response.data);
@@ -225,6 +241,13 @@ function ProfileEdit() {
     } catch (err) {
       console.error('프로필 수정 실패:', err);
       setShowProfileModal(false);
+
+      // 요청 제한 (429) 에러 처리 추가
+      if (err.response && err.response.status === 429) {
+        setToastMessage("요청 횟수가 제한을 초과했습니다. 잠시 후 다시 시도해주세요.");
+        setShowToast(true);
+        return;
+      }
       
       // 에러 응답에 따른 구체적인 메시지 표시
       if (err.response) {
@@ -330,7 +353,8 @@ function ProfileEdit() {
           <img
             src="/gangazido-logo-header.png"
             alt="Gangazido Logo Header"
-            className="h-14 w-28 object-cover"
+            className="h-14 w-28 object-cover cursor-pointer"
+            onClick={() => navigate('/map')}
           />
         </div>
       </header>

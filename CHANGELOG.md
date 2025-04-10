@@ -1,5 +1,192 @@
 # CHANGELOG
 
+## [1.17.3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.17.2...v1.17.3) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* 기존 이미지 유지/삭제 로직 안정화 및 미리보기 연동 개선(S3 키 추출) ([15bef85](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/15bef8545f034e9c74bf73989e7e3da0913b5b3b))
+
+## [1.17.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.17.1...v1.17.2) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* github logo  error in ProfilePage.js ([693289b](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/693289bcd6022f6bb34b2bccb2d058b07dc1beac))
+
+## [1.17.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.17.0...v1.17.1) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* eslint error ([d91131e](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/d91131e9e6c7dc13927ed9dc5582e8c7beaf584b))
+
+## [1.17.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.16.0...v1.17.0) (2025-04-10)
+
+### 🚀 NEW FEATURES
+
+* Fix unexpected page display on session expiration ([3d46b0c](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/3d46b0c9a277d7b149fce364364afa4e10bebbf9))
+* **header:** navigate to map view on logo click ([bbfa5e8](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/bbfa5e85d78e430345b44e4b97c51bfee7189b73))
+
+### 🐛 BUG FIXES
+
+* add file tree to README.md ([f09c9e6](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/f09c9e60a5d16bd1d034332805cb453b9d330a50))
+
+## [1.16.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.15.1...v1.16.0) (2025-04-10)
+
+### 🚀 NEW FEATURES
+
+* 지도 범위 벗어날 시 현재위치or구름스퀘어로 강제 이동 ([4a1456b](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/4a1456be97d8fbacdcf84abd1a2cd2a51bafc483))
+
+## [1.15.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.15.0...v1.15.1) (2025-04-09)
+
+### 🐛 BUG FIXES
+
+* 반려견 수정 페이지 이미지 처리 로직 개선 ([0b5ebd5](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/0b5ebd550d2ac9b9f5422624f9fa662879bebbc2))
+
+## [1.15.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.14.0...v1.15.0) (2025-04-09)
+
+### 🚀 NEW FEATURES
+
+* 마커 등록 RateLimit 1분 15회 추가 ([60d5c6f](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/60d5c6f295c9a1203a1a7b1d1b9244b370020a8d))
+
+## [1.14.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.13.3...v1.14.0) (2025-04-09)
+
+### 🚀 NEW FEATURES
+
+* 회원가입, 로그인, 회원정보수정 api too many request 429 에러 예외처리 추가 ([b8b7a57](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/b8b7a57333ac0b9b7e4f2c166d27ecc1f6da8172))
+
+## [1.13.3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.13.2...v1.13.3) (2025-04-09)
+
+### 🐛 BUG FIXES
+
+* 반려견 수정 페이지 이미지 미리보기 및 삭제 로직 변경 ([2728b5c](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/2728b5ce2726da629e63b1cfac5157618f9a0b2b))
+
+## [1.13.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.13.1...v1.13.2) (2025-04-09)
+
+### 🐛 BUG FIXES
+
+* 반려견 수정 페이지 이미지 미리보기 및 삭제 로직 안정화 ([45ba4be](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/45ba4be1507efc44d0ed7d44f5ec9e954a4932f0))
+
+## [1.13.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.13.0...v1.13.1) (2025-04-09)
+
+### 🐛 BUG FIXES
+
+* 채팅페이지 배경색상 변경 ([9c6ce74](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/9c6ce74ebeac8803735ef578dbc193835a5077f8))
+
+## [1.13.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.12.3...v1.13.0) (2025-04-09)
+
+### 🚀 NEW FEATURES
+
+* 같은사용자, 같은종류 마커 거리 제한30m ([93d468c](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/93d468c44ba505c626d85a5b4d21d51ac88e3dc6))
+
+## [1.12.3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.12.2...v1.12.3) (2025-04-09)
+
+### 🐛 BUG FIXES
+
+* 회원가입 닉네임 길이 헬퍼텍스트 수정 ([b685824](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/b6858246a5e6a58583f70e576dba10d1aa886b0f))
+
+## [1.12.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.12.1...v1.12.2) (2025-04-09)
+
+### 🐛 BUG FIXES
+
+* 반려견 수정시 이미지 유지 및 삭제 로직 안정화 ([5e66637](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/5e666371251d9e3bb4706946364fc7fb5560ad49))
+
+## [1.12.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.12.0...v1.12.1) (2025-04-08)
+
+### 🐛 BUG FIXES
+
+* 파일창 2번 오류 해결 ([4090bc0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/4090bc009c31b4ddee90e0a0d9e138558091d8e1))
+
+## [1.12.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.11.2...v1.12.0) (2025-04-08)
+
+### 🚀 NEW FEATURES
+
+* 프로필 이미지 클릭 시 초기화 후 파일 선택창 열리는 기능 추가 ([032dae2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/032dae260d808393df493e4f4623773677ef1452))
+
+## [1.11.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.11.1...v1.11.2) (2025-04-08)
+
+### 🐛 BUG FIXES
+
+* s3 url이라 수정 페이지 미리보기, 파일 삭제 안되는 오류 ([e225054](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/e225054295e2658e93449e188e0a4603116e384b))
+
+## [1.11.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.11.0...v1.11.1) (2025-04-08)
+
+### 🐛 BUG FIXES
+
+* 수정 페이지 이미지 삭제 시 미리보기도 사라지게 구현 ([e91bf68](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/e91bf68ac3ce95b4a53a835458775ee41835457c))
+
+## [1.11.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.10.6...v1.11.0) (2025-04-08)
+
+### 🚀 NEW FEATURES
+
+* 회원가입, 프로필 이미지 저장 방식 변경 ([a768dbf](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/a768dbf68231680a4ff3dc97ad4ba368157c41b4))
+
+### 🐛 BUG FIXES
+
+* 이미지 업로드 관련 로그 추가 ([bc8c1bd](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/bc8c1bd81536b57fe09504a07272386b9f42733a))
+
+## [1.10.6](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.10.5...v1.10.6) (2025-04-08)
+
+### 🐛 BUG FIXES
+
+* OriginalProfileImageKey 삭제 ([205805f](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/205805f5ced7438a144a7bf266ad1662c497d9eb))
+
+## [1.10.5](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.10.4...v1.10.5) (2025-04-08)
+
+### 🐛 BUG FIXES
+
+* 수정 삭제 처리 로직 꼬임 해결 ([1bfa7c8](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/1bfa7c8abe45c8bd914782ecb8f56042d7812358))
+
+## [1.10.4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.10.3...v1.10.4) (2025-04-08)
+
+### 🐛 BUG FIXES
+
+* 수정 파일 선택 취소 시 미리보기, 상태 초기화 누락 문제 ([481d5e6](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/481d5e6e3cf5706848ca428868b8cbaa6e15193e))
+
+## [1.10.3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.10.2...v1.10.3) (2025-04-08)
+
+### 🐛 BUG FIXES
+
+* 반려견 등록/ 수정 몸무게 최대 세자리숫자만 입력 가능하도록 수정 ([5e3c14c](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/5e3c14c0bab8a95242dc45d256ed2613041cf3a0))
+* 반려견정보 등록/수정 이름 헬퍼텍스트 공백 알림 추가 ([7848179](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/784817998e1bca3a2affa2ef3016b22d0ca8ef12))
+
+## [1.10.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.10.1...v1.10.2) (2025-04-08)
+
+### 🐛 BUG FIXES
+
+* 반려견 등록/ 수정 몸무게 최대 세자리숫자만 입력 가능하도록 수정 ([67aaf29](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/67aaf293a94d06587ec3b433a845d63ee4a64ed9))
+
+## [1.10.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.10.0...v1.10.1) (2025-04-08)
+
+### 🐛 BUG FIXES
+
+* 수정 페이지 이미지 삭제 구현 ([041df8e](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/041df8e83bc785a8c8238b8abe20eaf43ced9d4a))
+
+## [1.10.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.9.1...v1.10.0) (2025-04-08)
+
+### 🚀 NEW FEATURES
+
+* 몸무게 소숫점 두 자리 이상 입력 방지 기능 추가 ([6c1e3dd](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/6c1e3dd0e401f20cc6adfbbad58861d83d8156e5))
+* 소숫점 둘째자리 이상 입력 방지 ([b2ed193](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/b2ed193294c01b879f88b34e7c1a839593878d42))
+* 소숫점 둘째자리 이상 입력 방지 ([42368af](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/42368af012ebae3be18dd9448584b08c6d09bea8))
+
+### 🐛 BUG FIXES
+
+* 반려견 나이 두자리 숫자만 입력 가능하도록 수정 ([a68b1f5](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/a68b1f5138bd2c7be2613ab7bc0f2ed181e9f75c))
+* 반려견정보 수정, 등록 헬퍼텍스트 수정 ([978350b](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/978350b2d7c73ebd73afb45848cd7c2f0fad563c))
+
+## [1.9.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.9.0...v1.9.1) (2025-04-08)
+
+### 🐛 BUG FIXES
+
+* 반려견 나이 두자리 숫자만 입력 가능하도록 수정 ([77fdca2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/77fdca246ae483830b2446447f00f3730155414d))
+
+## [1.9.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.8.3...v1.9.0) (2025-04-08)
+
+### 🚀 NEW FEATURES
+
+* 몸무게 소숫점 두 자리 이상 입력 방지 기능 추가 ([af8f495](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/af8f495ac91bf4aa9d2fc9acdab19cd2b79b87f1))
+* 소숫점 둘째자리 이상 입력 방지 ([6b681d6](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/6b681d628b66a3fe10c1fbef1fe16a9a101c8dc7))
+* 소숫점 둘째자리 이상 입력 방지 ([1f96f85](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/1f96f85128bd380182cbf2d40e4b5fb25471634b))
+
 ## [1.8.3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.8.2...v1.8.3) (2025-04-08)
 
 ### 🐛 BUG FIXES

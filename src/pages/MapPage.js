@@ -6,28 +6,26 @@ import { ToastContainer, toast } from "react-toastify"; // 토스트 메시지
 import "react-toastify/dist/ReactToastify.css";
 
 function MapPage() {
-  const currentFilterTypeRef = useRef("all"); // 필터 유지 위해
+  const currentFilterTypeRef = useRef("all"); // 마커 필터 타입 저장
   const navigate = useNavigate();
-  const mapContainer = useRef(null);
-  const [map, setMap] = useState(null);
-  const [markers, setMarkers] = useState([]);
+  const mapContainer = useRef(null);  // 지도 DOM 참조
+  const [map, setMap] = useState(null); // 카카오맵 객체
+  const [markers, setMarkers] = useState([]); // 마커 목록 상태
   const markersRef = useRef([]);
   const [selectedMarker, setSelectedMarker] = useState(null);
-  const [isMapLoaded, setIsMapLoaded] = useState(false);
+  const [isMapLoaded, setIsMapLoaded] = useState(false);  // 맵 로딩 완료 여부
   const [isCenterMode, setIsCenterMode] = useState(false);
   const [currentZoomLevel, setCurrentZoomLevel] = useState(3);
   // eslint-disable-next-line no-unused-vars
   const [visibleMarkers, setVisibleMarkers] = useState([]);
   const mapBoundsRef = useRef(null);
-  const clusterRef = useRef(null);
+  const clusterRef = useRef(null);  // 클러스터 객체
   // 첫 페이지 모달
   const [showGuideModal, setShowGuideModal] = useState(true); // 실제로 보일지 여부
 
-  // AuthContext에서 인증 상태 가져오기
-  const { isAuthenticated, user } = useAuth();
-  // //console.log(...)
-
-  const userRef = useRef(null);
+  // 사용자 인증 상태
+  const { isAuthenticated, user } = useAuth(); // AuthContext에서 인증 상태 가져오기
+  const userRef = useRef(null); // user 최신 값 유지용
 
   // 첫 페이지 모달 창
   useEffect(() => {
@@ -59,7 +57,7 @@ function MapPage() {
   // 순환 참조를 막기 위한 removeMarker 함수 ref
   const removeMarkerRef = useRef(null);
 
-  // 구름스퀘어 좌표
+  // 기본값 좌표
   const [centerPosition, setCenterPosition] = useState({
     lat: 33.48717138746649, // 제주도 구름스퀘어 위도
     lng: 126.53171329989748, // 제주도 구름스퀘어 경도
@@ -141,13 +139,7 @@ function MapPage() {
   // 마커 타입 코드 상수
   const MARKER_TYPES = {
     댕플: 0,
-    댕져러스: {
-      DEFAULT: 1,
-      들개: 1,
-      빙판길: 2,
-      염화칼슘: 3,
-      공사중: 4,
-    },
+    댕져러스: { DEFAULT: 1, 들개: 1, 빙판길: 2, 염화칼슘: 3, 공사중: 4 },
   };
 
   // 마커 이미지 URL 상수
@@ -367,25 +359,82 @@ function MapPage() {
         // 마커 이미지 초기화
         initMarkerImages();
 
-        // 드래그 종료 이벤트 등록 - 지도 중심 위치 업데이트만 담당
         const dragendListener = window.kakao.maps.event.addListener(
           kakaoMapInstance,
           "dragend",
           () => {
             if (!kakaoMapInstance) return;
-
-            // 위치 및 줌 레벨 업데이트
+        
             const center = kakaoMapInstance.getCenter();
             const level = kakaoMapInstance.getLevel();
-
+        
             // 상태 업데이트
             setCurrentZoomLevel(level);
             setCenterPosition({
               lat: center.getLat(),
               lng: center.getLng(),
             });
-
-            // 보이는 영역 업데이트
+        
+            // ✅ 바다 벗어났는지 확인할 범위
+            const bounds = new window.kakao.maps.LatLngBounds(
+              new window.kakao.maps.LatLng(30.0, 122.0),
+              new window.kakao.maps.LatLng(40.5, 136.5)
+            );
+        
+            const fallbackPosition = new window.kakao.maps.LatLng(33.487171, 126.531713); // 구름스퀘어
+        
+            if (!bounds.contain(center)) {
+              toast.warn("지도를 벗어났어요! 현재 위치로 이동합니다", {
+                position: "bottom-center",
+                autoClose: 2500,
+                style: {
+                  background: "#fff7ed",
+                  color: "#b45309",
+                  border: "1px solid #fcd34d",
+                  boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+                  fontWeight: "bold",
+                  whiteSpace: "nowrap",  
+                  maxWidth: "none",         
+                  width: "fit-content",    
+                  padding: "12px 16px",      
+                  fontSize: "14px",         
+                },
+                icon: "🌊",
+              });
+        
+              if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                  (pos) => {
+                    const { latitude, longitude } = pos.coords;
+                    const currentPos = new window.kakao.maps.LatLng(latitude, longitude);
+                    kakaoMapInstance.setCenter(currentPos);
+                    if (kakaoMapInstance.getLevel() > 5) {
+                      kakaoMapInstance.setLevel(4);
+                    }
+                  },
+                  (error) => {
+                    kakaoMapInstance.setCenter(fallbackPosition);
+                    if (kakaoMapInstance.getLevel() > 5) {
+                      kakaoMapInstance.setLevel(4);
+                    }
+                  },
+                  {
+                    enableHighAccuracy: true,
+                    timeout: 10000,
+                    maximumAge: 0,
+                  }
+                );
+              } else {
+                kakaoMapInstance.setCenter(fallbackPosition);
+                if (kakaoMapInstance.getLevel() > 5) {
+                  kakaoMapInstance.setLevel(4);
+                }
+              }
+        
+              return;
+            }
+        
+            // 보이는 마커 업데이트는 그 이후에 진행
             updateVisibleMarkers(kakaoMapInstance);
           }
         );
@@ -916,6 +965,41 @@ function MapPage() {
         // 마커 등록모드 해제
         setIsCenterMode(false);
         setShowModal(false);
+      } else if (message === "same_marker_too_close") {
+        toast.warn("같은 종류의 마커가 너무 가까이 있어요!", {
+          position: "bottom-center",
+          autoClose: 2500,
+          style: {
+            background: "#fef2f2",
+            color: "#991b1b",
+            border: "1px solid #fecaca",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+            fontWeight: "bold",
+          },
+          icon: "⚠️",
+        });
+        setIsCenterMode(false);
+        setShowModal(false);
+      } else if (message?.includes("요청 횟수가 제한을 초과했습니다")) {
+        toast.error("마커는 너무 자주 찍을 수 없어요! 잠시 후 다시 시도해주세요.", {
+          position: "bottom-center",
+          autoClose: 2500,
+          style: {
+            background: "#fef2f2",
+            color: "#991b1b",
+            border: "1px solid #fecaca",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+            fontWeight: "bold",
+            whiteSpace: "nowrap",       // 한 줄로 유지
+            maxWidth: "none",           // 너비 제한 없앰
+            width: "fit-content",       // 내용만큼만 너비 설정
+            padding: "12px 16px",       // 여유 있는 패딩
+            fontSize: "14px",           // 텍스트 크기
+          },
+          icon: "⛔",
+        });
+        setIsCenterMode(false);
+        setShowModal(false);
       } else {
         console.error("❌ 마커 등록 중 오류:", error);
         setIsCenterMode(false);
@@ -1019,7 +1103,14 @@ function MapPage() {
               "위치 정보를 가져오는 중 알 수 없는 오류가 발생했습니다.",
               {
                 position: "bottom-center",
-                autoClose: 1500,
+                autoClose: 1000,
+                style: {
+                  whiteSpace: "nowrap",        // ✅ 한 줄로 유지
+                  maxWidth: "none",            // ✅ 너비 제한 없앰
+                  width: "fit-content",        // ✅ 내용 길이만큼만
+                  padding: "12px 16px",
+                  fontSize: "14px",
+                },
               }
             );
         }
@@ -1032,7 +1123,7 @@ function MapPage() {
     );
   }, [map]);
 
-  // 제리 추가 마커 관련 요청
+  // 마커 불러오기 (API > 카카오맵 Marker 생성)
   const fetchMarkersFromBackend = useCallback(async () => {
     ////console.log(...)
 

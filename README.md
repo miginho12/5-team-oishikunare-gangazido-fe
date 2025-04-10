@@ -135,3 +135,102 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+```
+my-tailwind-app
+├─ .eslintrc.js
+├─ .husky
+│  ├─ commit-msg
+│  ├─ pre-commit
+│  └─ pre-push
+├─ .releaserc.json
+├─ CHANGELOG.md
+├─ README.md
+├─ build
+│  ├─ asset-manifest.json
+│  ├─ favicon.ico
+│  ├─ index.html
+│  ├─ logo192.png
+│  ├─ logo512.png
+│  ├─ manifest.json
+│  ├─ markers
+│  ├─ robots.txt
+│  └─ static
+│     ├─ css
+│     │  ├─ main.8b31005b.css
+│     │  └─ main.8b31005b.css.map
+│     └─ js
+│        ├─ 453.a14782d0.chunk.js
+│        ├─ 453.a14782d0.chunk.js.map
+│        ├─ main.ba3cfae4.js
+│        ├─ main.ba3cfae4.js.LICENSE.txt
+│        └─ main.ba3cfae4.js.map
+├─ commitlint.config.cjs
+├─ eslint.config.cjs
+├─ package-lock.json
+├─ package.json
+├─ postcss.config.js
+├─ public
+│  ├─ env.js
+│  ├─ favicon.ico
+│  ├─ images
+│  │  ├─ beware-dog.png
+│  │  ├─ beware-foot.png
+│  │  ├─ beware_dog_square.png
+│  │  ├─ beware_foot_square.png
+│  │  ├─ construction.png
+│  │  ├─ construction_square.png
+│  │  ├─ cross-mark.png
+│  │  ├─ dangple.png
+│  │  ├─ dangple_square.png
+│  │  ├─ icy-road.png
+│  │  └─ icy_road_square.png
+│  ├─ index.html
+│  ├─ logo192.png
+│  ├─ logo512.png
+│  ├─ manifest.json
+│  └─ robots.txt
+├─ src
+│  ├─ App.css
+│  ├─ App.js
+│  ├─ App.test.js
+│  ├─ api
+│  │  ├─ auth.js
+│  │  ├─ chat.js
+│  │  ├─ index.js
+│  │  ├─ location.js
+│  │  ├─ map.js
+│  │  ├─ pet.js
+│  │  └─ user.js
+│  ├─ components
+│  │  └─ ProtectedRoute.js
+│  ├─ contexts
+│  │  └─ AuthContext.js
+│  ├─ deprecated
+│  │  ├─ ChatDetail.js
+│  │  ├─ ChatMain.js
+│  │  ├─ ChatService.js
+│  │  ├─ KakaoMap.js
+│  │  ├─ Login.js
+│  │  ├─ Main.js
+│  │  ├─ MarkerManager.js
+│  │  └─ Register.js
+│  ├─ index.css
+│  ├─ index.js
+│  ├─ logo.svg
+│  ├─ pages
+│  │  ├─ ChatPage.js
+│  │  ├─ Login.js
+│  │  ├─ MapPage.js
+│  │  ├─ PasswordChange.js
+│  │  ├─ PetEdit.js
+│  │  ├─ PetInfo.js
+│  │  ├─ PetRegister.js
+│  │  ├─ ProfileEdit.js
+│  │  ├─ ProfilePage.js
+│  │  └─ Register.js
+│  ├─ reportWebVitals.js
+│  └─ setupTests.js
+└─ tailwind.config.js
+
+```
