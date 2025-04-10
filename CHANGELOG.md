@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.17.6](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.17.5...v1.17.6) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* s3 이미지가 없어졌을 때 사용자 프로필 이미지 예외처리 수정 ([2f12ec1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/2f12ec1953f0609844d0c392160d3ae04352d5d0))
+
 ## [1.17.5](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.17.4...v1.17.5) (2025-04-10)
 
 ### 🐛 BUG FIXES
