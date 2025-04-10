@@ -58,13 +58,18 @@ function PetEdit() {
           setGender(data.gender ? 'male' : 'female');
           setWeight(data.weight);
 
-          // ✅ CloudFront URL로 미리보기 세팅 (S3 Key는 profileImage에 저장)
+          // ✅ CloudFront 전체 URL로 온 경우 → key 추출
           if (data.profileImage && typeof data.profileImage === 'string') {
-            setProfileImage(data.profileImage); // 🔄 S3 Key만 저장
-            setProfileImagePreview(data.profileImage);
+            const isFullUrl = data.profileImage.includes('cloudfront.net');
+            const s3Key = isFullUrl
+              ? data.profileImage.split('.net/')[1].split('?')[0] // 키만 추출
+              : data.profileImage;
+
+            setProfileImage(s3Key); // 🔄 key만 저장
+            setProfileImagePreview(data.profileImage); // 🔄 전체 URL은 preview 용도
             setIsImageRemoved(false);
 
-            console.log('✅ 기존 이미지 로드됨:', data.profileImage); // ✅ 디버깅용
+            console.log('✅ 기존 이미지 로드됨:', s3Key);
           }
         }
       } catch (err) {
@@ -97,21 +102,23 @@ function PetEdit() {
   };
 
   const handleProfileImageChange = (e) => {
-    const file = e.target.files?.[0];
-  
-    if (file) {
-      const tempUrl = URL.createObjectURL(file);
-      setProfileImage(file);
-      setProfileImagePreview(tempUrl);
-      setIsImageRemoved(false);
-      console.log('✅ 새 이미지 선택됨');
-    } else {
-      // 🔥 파일 선택 "취소" 시에 확실히 모든 상태 삭제
+    // 파일 선택창에서 아무것도 선택 안 하고 "취소" 눌렀을 때
+    if (!e.target.files || e.target.files.length === 0) {
+      // 👉 기존 이미지가 있어도 무조건 제거
       setProfileImage(null);
       setProfileImagePreview(null);
       setIsImageRemoved(true);
-      console.log('🗑 이미지 선택 취소 → 삭제됨');
+      console.log('🗑 파일 선택 취소 감지 → 이미지 제거됨');
+      return;
     }
+
+    // ✅ 새 이미지 선택한 경우
+    const file = e.target.files[0];
+    const tempUrl = URL.createObjectURL(file);
+    setProfileImage(file);
+    setProfileImagePreview(tempUrl);
+    setIsImageRemoved(false);
+    console.log('✅ 새 이미지 선택됨');
 
     // ✅ 동일 파일 재선택 위해 input 초기화
     if (fileInputRef.current) {
@@ -322,7 +329,8 @@ function PetEdit() {
           <img
             src="/gangazido-logo-header.png"
             alt="Gangazido Logo Header"
-            className="h-14 w-28 object-cover"
+            className="h-14 w-28 object-cover cursor-pointer"
+            onClick={() => navigate('/map')}
           />
         </div>
       </header>

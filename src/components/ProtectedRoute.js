@@ -1,16 +1,26 @@
-import React from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Navigate, Outlet, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
 // 인증이 필요한 라우트를 위한 컴포넌트
 function ProtectedRoute() {
   const { isAuthenticated, loading } = useAuth();
+  const navigate = useNavigate();
 
-  // 로딩 중인 경우 간단한 로딩 상태 표시
+  // 컴포넌트 마운트 시 인증 상태 확인 (추가적인 검증)
+  useEffect(() => {
+    // 이미 인증 상태가 아니라면 즉시 리다이렉트
+    if (!loading && !isAuthenticated) {
+      navigate('/login');
+    }
+  }, [isAuthenticated, loading, navigate]);
+
+  // 로딩 중인 경우 스피너 표시
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-amber-800"></div>
+      <div className="flex flex-col items-center justify-center h-screen bg-amber-50">
+        <div className="animate-spin rounded-full h-14 w-14 border-4 border-amber-800 border-t-transparent"></div>
+        <p className="mt-4 text-amber-800 font-medium">사용자 인증 확인 중...</p>
       </div>
     );
   }

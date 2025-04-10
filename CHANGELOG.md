@@ -1,5 +1,58 @@
 # CHANGELOG
 
+## [1.17.6](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.17.5...v1.17.6) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* s3 이미지가 없어졌을 때 사용자 프로필 이미지 예외처리 수정 ([2f12ec1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/2f12ec1953f0609844d0c392160d3ae04352d5d0))
+
+## [1.17.5](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.17.4...v1.17.5) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* 파일 선택창 취소 시 이미지 삭제 처리 ([b957846](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/b957846dd517d4f4690fa7d20b9f45cd629f160b))
+
+## [1.17.4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.17.3...v1.17.4) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* 반려견 정보 조회 실패 시 무한 로딩 문제 수정 ([70ba9ef](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/70ba9ef24403d55b002a63ebeebc3aff708b910d))
+
+## [1.17.3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.17.2...v1.17.3) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* 기존 이미지 유지/삭제 로직 안정화 및 미리보기 연동 개선(S3 키 추출) ([15bef85](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/15bef8545f034e9c74bf73989e7e3da0913b5b3b))
+
+## [1.17.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.17.1...v1.17.2) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* github logo  error in ProfilePage.js ([693289b](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/693289bcd6022f6bb34b2bccb2d058b07dc1beac))
+
+## [1.17.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.17.0...v1.17.1) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* eslint error ([d91131e](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/d91131e9e6c7dc13927ed9dc5582e8c7beaf584b))
+
+## [1.17.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.16.0...v1.17.0) (2025-04-10)
+
+### 🚀 NEW FEATURES
+
+* Fix unexpected page display on session expiration ([3d46b0c](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/3d46b0c9a277d7b149fce364364afa4e10bebbf9))
+* **header:** navigate to map view on logo click ([bbfa5e8](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/bbfa5e85d78e430345b44e4b97c51bfee7189b73))
+
+### 🐛 BUG FIXES
+
+* add file tree to README.md ([f09c9e6](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/f09c9e60a5d16bd1d034332805cb453b9d330a50))
+
+## [1.16.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.15.1...v1.16.0) (2025-04-10)
+
+### 🚀 NEW FEATURES
+
+* 지도 범위 벗어날 시 현재위치or구름스퀘어로 강제 이동 ([4a1456b](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/4a1456be97d8fbacdcf84abd1a2cd2a51bafc483))
+
 ## [1.15.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.15.0...v1.15.1) (2025-04-09)
 
 ### 🐛 BUG FIXES

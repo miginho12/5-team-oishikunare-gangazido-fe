@@ -217,11 +217,12 @@ function ChatPage() {
     <div className="flex flex-col h-full bg-yellow-50 max-w-full overflow-hidden">
       {/* 헤더 */}
       <header className="bg-white pt-2 pb-0 px-4 shadow-md flex items-center justify-center w-full">
-        <div className="flex items-center h-full gap-2">
+        <div className="flex-grow flex justify-center">
           <img
             src="/gangazido-logo-header.png"
             alt="Gangazido Logo Header"
-            className="h-14 w-28 object-cover self-center"
+            className="h-14 w-28 object-cover cursor-pointer"
+            onClick={() => navigate('/map')}
           />
         </div>
       </header>
