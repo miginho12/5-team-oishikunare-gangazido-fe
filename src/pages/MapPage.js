@@ -1420,7 +1420,12 @@ function MapPage() {
           });
 
           // 마커 클릭 시 줌 확대 + 중앙 이동
-          map.panTo(marker.getPosition()); // 먼저 위치 이동
+          const position = marker.getPosition();
+          const adjustedLat = position.getLat() + 0.0015; // 숫자는 조절 가능
+          const adjustedPosition = new window.kakao.maps.LatLng(adjustedLat, position.getLng());
+
+          map.panTo(adjustedPosition);
+
           setTimeout(() => {
             if (map.getLevel() > 4) {
               map.setLevel(3); // 줌인 약간 나중에
