@@ -400,6 +400,7 @@ function PetRegister() {
                 onChange={(selectedOption) => setBreed(selectedOption.value)}
                 placeholder="품종 선택"
                 styles={customSelectStyles}
+                isSearchable={false}
               />
               {touched.breed && breedError && (
                 <p className="text-sm text-red-500 mt-1">{breedError}</p>
@@ -463,6 +464,7 @@ function PetRegister() {
                 onChange={(selectedOption) => setGender(selectedOption.value)}
                 placeholder="성별 선택"
                 styles={customSelectStyles}
+                isSearchable={false}
               />
               {touched.gender && genderError && (
                 <p className="text-sm text-red-500 mt-1">{genderError}</p>
