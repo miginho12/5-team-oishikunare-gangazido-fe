@@ -177,13 +177,10 @@ function Register() {
       
       setProfileImage(file);
       setProfileImagePreview(URL.createObjectURL(file));
-      setRemoveProfileImage(false);
     } else {
       // ✅ 파일 선택 취소 시
-      ////console.log(...)
       setProfileImage(null);
       setProfileImagePreview(null);
-      setRemoveProfileImage(true);
     }
   
     // ✅ 항상 초기화해서 onChange가 다시 작동하도록
