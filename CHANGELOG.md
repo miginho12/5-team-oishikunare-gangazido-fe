@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.19.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.19.0...v1.19.1) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* 프론트 반려견 정보 요청 경로 수정 ([8e2ed74](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/8e2ed7460fcffe90a5a9bcfa39e9f5ba3ab30321))
+
 ## [1.19.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.18.1...v1.19.0) (2025-04-10)
 
 ### 🚀 NEW FEATURES
