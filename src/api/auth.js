@@ -178,9 +178,11 @@ import axios from 'axios';
 // 이메일 인증 코드 요청 (인증메일 발송)
 export const sendEmailVerificationCode = async (email) => {
   try {
-    const response = await axios.post('/api/email/send', {
-      email: email
-    });
+    const response = await axios.post(
+      '/api/email/send',
+      { email },
+      { withCredentials: true } // ⬅ 쿠키 전달
+      );
     return response;
   } catch (error) {
     //throw error;
@@ -190,13 +192,14 @@ export const sendEmailVerificationCode = async (email) => {
 // 인증 코드 확인
 export const verifyEmailCode = async (email, code) => {
   try {
-    const response = await axios.post('/api/email/verify', {
-      email: email,
-      code: code
-    });
+    const response = await axios.post(
+      '/api/email/verify',
+      { email, code },
+      { withCredentials: true } // 이쪽도 필요함!
+    );
     return response;
   } catch (error) {
-    //throw error;
+    console.error("인증 코드 확인 오류:", error);
+    throw error;
   }
 };
-
