@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.17.3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.17.2...v1.17.3) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* 기존 이미지 유지/삭제 로직 안정화 및 미리보기 연동 개선(S3 키 추출) ([15bef85](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/15bef8545f034e9c74bf73989e7e3da0913b5b3b))
+
 ## [1.17.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.17.1...v1.17.2) (2025-04-10)
 
 ### 🐛 BUG FIXES
