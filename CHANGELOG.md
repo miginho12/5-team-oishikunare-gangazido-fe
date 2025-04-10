@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.23.8](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.23.7...v1.23.8) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* 인증 이메일 전송 응답확인  로그 추가 ([150779a](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/150779a6f1d727c7af4745c925bb2c0cc137d342))
+
 ## [1.23.7](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.23.6...v1.23.7) (2025-04-10)
 
 ### 🐛 BUG FIXES
