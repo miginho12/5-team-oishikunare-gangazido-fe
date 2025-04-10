@@ -98,25 +98,35 @@ function Register() {
   };
 
   const handleSendVerificationCode = async () => {
-    if (emailError || !email) {
-      setEmailError('먼저 유효한 이메일을 입력해 주세요.');
+    if (!email) {
+      setEmailError('이메일을 입력해주세요.');
       return;
     }
   
+    // 이메일 유효성 체크 먼저 수행
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    if (!emailRegex.test(email)) {
+      setEmailError('example@email.com 형식의 올바른 이메일을 입력해주세요.');
+      return;
+    }
+  
+    // 중복 체크도 한번 해줘야 확실함
+    const res = await checkEmailDuplicate(email);
+    if (res.data?.data?.isDuplicate) {
+      setEmailError('이미 사용 중인 이메일입니다.');
+      return;
+    }
+  
+    // 중복 아니고 형식도 OK → 코드 전송
     try {
-      const response = await sendEmailVerificationCode(email); // 이건 axios 요청으로 되어 있어야 함
-      const data = response.data;
-      if (data && data.code) {
-        //setServerVerificationCode(data.code);
-        setShowVerificationModal(true);
-      } else {
-        setError('인증 메일 전송에 실패했습니다.');
-      }
+      const response = await sendEmailVerificationCode(email);
+      setShowVerificationModal(true);
     } catch (err) {
-      console.error('이메일 인증 오류:', err);
-      setError('이메일 인증 요청 중 오류가 발생했습니다.');
+      console.error('이메일 인증 요청 오류:', err);
+      setError('인증 메일 전송 중 문제가 발생했습니다.');
     }
   };
+  
   
 
   // 비밀번호 변경 핸들러
@@ -243,6 +253,7 @@ function Register() {
 
   // 추가: 컴포넌트 상태 추가
   const [profileImagePreview, setProfileImagePreview] = useState(null);
+  
 
   // 상태 로깅용 useEffect만 유지 (디버깅용)
   useEffect(() => {
@@ -251,13 +262,12 @@ function Register() {
     // 회원가입 폼 제출 핸들러
     const handleRegister = async (e) => {
       e.preventDefault();
-
-      // 🔐 이메일 인증 여부 확인
+      
       if (!isEmailVerified) {
         setError('이메일 인증을 먼저 완료해주세요.');
         setLoading(false);
         return;
-      }
+      }      
 
       setLoading(true);
       setError(null);
@@ -416,7 +426,12 @@ function Register() {
                   }
                 }}
               />
-              <button onClick={handleSendVerificationCode}>인증</button>
+              <button
+                onClick={handleSendVerificationCode}
+                className="text-sm text-amber-600 underline mb-2"
+              >
+                인증 코드 재전송
+              </button>
               <div className="flex justify-between">
                 <button
                   onClick={() => setShowVerificationModal(false)}
@@ -496,6 +511,7 @@ function Register() {
                     type="button"
                     onClick={handleSendVerificationCode}
                     className="whitespace-nowrap bg-amber-800 text-white px-3 py-2 rounded-md text-sm"
+                    disabled={isEmailVerified || loading}
                   >
                     인증
                   </button>
