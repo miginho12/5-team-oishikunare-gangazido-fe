@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.17.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.17.1...v1.17.2) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* github logo  error in ProfilePage.js ([693289b](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/693289bcd6022f6bb34b2bccb2d058b07dc1beac))
+
 ## [1.17.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.17.0...v1.17.1) (2025-04-10)
 
 ### 🐛 BUG FIXES
