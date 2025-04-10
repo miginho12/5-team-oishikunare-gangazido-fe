@@ -607,8 +607,15 @@ function PetEdit() {
 
       {/* 토스트 메시지 */}
       {showToast && (
-        <div className="fixed bottom-24 left-0 right-0 mx-auto w-3/5 max-w-xs bg-white bg-opacity-80 border border-amber-800 text-amber-800 p-3 rounded-md shadow-lg text-center z-50 animate-fade-in-up">
-          수정을 완료하였습니다.
+        <div
+          className="fixed bottom-24 inset-x-0 flex justify-center z-50"
+        >
+          <div
+            className="w-full max-w-sm bg-white bg-opacity-80 border border-amber-800 
+                      text-amber-800 p-3 rounded-md shadow-lg text-center animate-fade-in-up mx-4"
+          >
+            수정을 완료하였습니다.
+          </div>
         </div>
       )}
 
