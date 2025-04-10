@@ -5,6 +5,7 @@ import { useAuth } from "../contexts/AuthContext"; // 기존 getUserInfo 대신 
 import { ToastContainer, toast } from "react-toastify"; // 토스트 메시지
 import "react-toastify/dist/ReactToastify.css";
 import { getNicknameByUserId } from "../api/user"; // 유저 닉네임 가져오기
+import { getPetInfoByUserId } from "../api/pet"; // 강아지 정보 가져오기
 
 function MapPage() {
   const currentFilterTypeRef = useRef("all"); // 마커 필터 타입 저장
@@ -710,6 +711,9 @@ function MapPage() {
       // 서버에서 닉네임 받아오기
       const nicknameRes = await getNicknameByUserId(user.userId);
       const nickname = nicknameRes.data.data.nickname;
+      // 서버에서 강아지 정보 받아오기
+      const petRes = await getPetInfoByUserId(markerInfo.user_id);
+      const { name: petName, profileImage: petImage } = petRes.data;
       
       const markerInfo = {
         id: serverMarker.id, // 서버에서 받은 ID
@@ -780,6 +784,10 @@ function MapPage() {
             </div>
             <div style="margin-bottom: 10px; font-size: 13px; color: #555;">
               등록자: <strong>${nickname}</strong>
+            </div>
+            <div style="margin-bottom: 10px;">
+              <img src="${petImage}" alt="${petName}" style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover;"/>
+              <div style="font-size: 13px; color: #555;">${petName}</div>
             </div>
             <button id="${deleteBtnId}" style="
               padding: 8px 12px;
@@ -1230,9 +1238,13 @@ function MapPage() {
             if (m.overlay) m.overlay.setMap(null);
           });
 
+          // 마커 등록자 닉네임 가져오기
           const res = await getNicknameByUserId(markerInfo.user_id);
           const nickname = res.data.data.nickname;
 
+          // 반려견 정보 가져오기
+          const petRes = await getPetInfoByUserId(markerInfo.user_id);
+          const { name: petName, profileImage: petImage } = petRes.data;
 
           const emoji =
             type === "댕플" ? "🐶" : MARKER_IMAGES.EMOJI[subType] || "⚠️";
@@ -1275,6 +1287,10 @@ function MapPage() {
               </div>
               <div style="margin-bottom: 10px; font-size: 13px; color: #555;">
                 등록자: <strong>${nickname}</strong>
+              </div>
+              <div style="margin-bottom: 10px;">
+                <img src="${petImage}" alt="${petName}" style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover;"/>
+                <div style="font-size: 13px; color: #555;">${petName}</div>
               </div>
               ${
                 user?.userId == markerInfo.user_id // 마커 권한 문제뜨는 것 수정
