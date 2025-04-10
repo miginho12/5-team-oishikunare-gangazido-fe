@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.22.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.22.1...v1.22.2) (2025-04-10)
+
+### 🎨 STYLES
+
+* 마커 모달창 패딩 줄임, 닫기버튼 크기 키우기 ([a5ded6a](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/a5ded6afc9f6a91bf219a866d536c510b19d1d10))
+
 ## [1.22.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.22.0...v1.22.1) (2025-04-10)
 
 ### ♻️ REFACTORING
