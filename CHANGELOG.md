@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.23.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.23.0...v1.23.1) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* register.js eslint 오류 수정 ([62b8a62](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/62b8a6233b8ca506ab9996efaba62fa60a0c74c8))
+
 ## [1.23.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.22.7...v1.23.0) (2025-04-10)
 
 ### 🚀 NEW FEATURES
