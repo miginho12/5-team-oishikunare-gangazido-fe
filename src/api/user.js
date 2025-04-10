@@ -34,7 +34,7 @@ export const getUserInfo = () => {
   return api.get(`/v1/users/me`);
 };
 
-export const ㅞ = async (userData) => {
+export const updateUserInfo = async (userData) => {
   try {
     // 업데이트 데이터 준비
     const updateData = {
