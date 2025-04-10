@@ -750,6 +750,19 @@ function MapPage() {
           if (m.overlay) m.overlay.setMap(null);
         });
 
+        // 마커 클릭 시 지도 이동 및 지도 확대
+        const position = marker.getPosition();
+        const adjustedLat = position.getLat() + 0.0015;
+        const adjustedPosition = new window.kakao.maps.LatLng(adjustedLat, position.getLng());
+
+        map.panTo(adjustedPosition);
+
+        setTimeout(() => {
+          if (map.getLevel() > 4) {
+            map.setLevel(3);
+          }
+        }, 300);
+  
         const { type, subType } = markerInfo;
 
         const emoji =
