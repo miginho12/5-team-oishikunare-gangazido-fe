@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 
 import { useNavigate } from 'react-router-dom';
-import { registerUser, checkEmailDuplicate, checkNicknameDuplicate, sendEmailVerificationCode, verifyEmailCode } from '../api/auth';
+import { registerUser, checkEmailDuplicate, checkNicknameDuplicate, verifyEmailCode } from '../api/auth';
 
 function Register() {
   const navigate = useNavigate();
@@ -119,7 +119,8 @@ function Register() {
   
     // 중복 아니고 형식도 OK → 코드 전송
     try {
-      const response = await sendEmailVerificationCode(email);
+      //const response = await sendEmailVerificationCode(email);
+      //console.log("인증 이메일 전송 응답:", response);
       setShowVerificationModal(true);
     } catch (err) {
       console.error('이메일 인증 요청 오류:', err);
