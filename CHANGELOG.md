@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## [1.18.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.18.0...v1.18.1) (2025-04-10)
+
 ## [1.18.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.17.6...v1.18.0) (2025-04-10)
 
 ### 🚀 NEW FEATURES
