@@ -125,3 +125,8 @@ export const changePassword = async (passwordData) => {
     throw error;
   }
 };
+
+// userId로 닉네임 가져오는 API 제리추가
+export const getNicknameByUserId = (userId) => {
+  return api.get(`/v1/users/${userId}/nickname`);
+};

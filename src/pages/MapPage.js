@@ -4,6 +4,7 @@ import { getMapMarkers, registerMarker, deleteMarker } from "../api/map"; // axi
 import { useAuth } from "../contexts/AuthContext"; // 기존 getUserInfo 대신 useAuth 훅 사용
 import { ToastContainer, toast } from "react-toastify"; // 토스트 메시지
 import "react-toastify/dist/ReactToastify.css";
+import { getNicknameByUserId } from "../api/user"; // 유저 닉네임 가져오기
 
 function MapPage() {
   const currentFilterTypeRef = useRef("all"); // 마커 필터 타입 저장
@@ -1214,16 +1215,20 @@ function MapPage() {
           subType,
         };
 
-        // ✅ 클릭 이벤트 + 삭제 API 연동 제리추가
-        window.kakao.maps.event.addListener(marker, "click", () => {
+        // ✅ 클릭 이벤트 + 삭제 API 연동 제리추가 (fetchMarkersFromBackend 내부)
+        window.kakao.maps.event.addListener(marker, "click", async () => {
+          // 오버레이 닫기
           markersRef.current.forEach((m) => {
             if (m.overlay) m.overlay.setMap(null);
           });
 
+          const res = await getNicknameByUserId(markerInfo.user_id);
+          const nickname = res.data.data.nickname;
+
+
           const emoji =
             type === "댕플" ? "🐶" : MARKER_IMAGES.EMOJI[subType] || "⚠️";
-          ////console.log(...)
-          //console.log(...)
+
           const infoContent = `
             <div class="custom-overlay-animate"
               style="
@@ -1259,6 +1264,9 @@ function MapPage() {
                   color: #888;
                   cursor: pointer;
                 ">&times;</button>
+              </div>
+              <div style="margin-bottom: 10px; font-size: 13px; color: #555;">
+                등록자: <strong>${nickname}</strong>
               </div>
               ${
                 user?.userId == markerInfo.user_id // 마커 권한 문제뜨는 것 수정
