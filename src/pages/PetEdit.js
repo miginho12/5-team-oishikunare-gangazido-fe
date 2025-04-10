@@ -58,13 +58,18 @@ function PetEdit() {
           setGender(data.gender ? 'male' : 'female');
           setWeight(data.weight);
 
-          // ✅ CloudFront URL로 미리보기 세팅 (S3 Key는 profileImage에 저장)
+          // ✅ CloudFront 전체 URL로 온 경우 → key 추출
           if (data.profileImage && typeof data.profileImage === 'string') {
-            setProfileImage(data.profileImage); // 🔄 S3 Key만 저장
-            setProfileImagePreview(data.profileImage);
+            const isFullUrl = data.profileImage.includes('cloudfront.net');
+            const s3Key = isFullUrl
+              ? data.profileImage.split('.net/')[1].split('?')[0] // 키만 추출
+              : data.profileImage;
+
+            setProfileImage(s3Key); // 🔄 key만 저장
+            setProfileImagePreview(data.profileImage); // 🔄 전체 URL은 preview 용도
             setIsImageRemoved(false);
 
-            console.log('✅ 기존 이미지 로드됨:', data.profileImage); // ✅ 디버깅용
+            console.log('✅ 기존 이미지 로드됨:', s3Key);
           }
         }
       } catch (err) {
