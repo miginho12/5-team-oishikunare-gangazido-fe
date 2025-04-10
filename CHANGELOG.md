@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.23.11](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.23.10...v1.23.11) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* Axios 대신 api 인스턴스를 사용하는 방식으로 코드 리팩터링 ([f5e35d8](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/f5e35d8c8641619259fb95aac005fc0578666abb))
+
 ## [1.23.10](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.23.9...v1.23.10) (2025-04-10)
 
 ### 🐛 BUG FIXES
