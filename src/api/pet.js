@@ -87,7 +87,7 @@ export const deletePet = () => {
 };
 
 export const getPetInfoByUserId = async (userId) => {
-  return api.get(`/v1/pets/public/${userId}`);
+  return api.get(`/v1/pets/me/public/${userId}`);
 };
 
 // // 반려동물 건강 정보 조회
