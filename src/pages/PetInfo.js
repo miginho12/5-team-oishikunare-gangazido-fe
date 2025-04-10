@@ -5,7 +5,7 @@ import { useAuth } from "../contexts/AuthContext";
 
 function PetInfo() {
   const navigate = useNavigate();
-  const { isAuthenticated, loading: authLoading } = useAuth();
+  const { isAuthenticated, loading: authLoading, logout } = useAuth();
   console.log(isAuthenticated);
   console.log(authLoading);
 
@@ -23,6 +23,12 @@ function PetInfo() {
   useEffect(() => {
     const fetchPetInfo = async () => {
       try {
+        // 인증 상태가 아니면 바로 로그인 페이지로 리다이렉트
+        if (!isAuthenticated && !authLoading) {
+          navigate('/login');
+          return;
+        }
+        
         const response = await getPetInfo();
         const data = response.data.data;
 
@@ -30,6 +36,14 @@ function PetInfo() {
         setLoading(false);
       } catch (error) {
         console.error("반려견 정보 가져오기 실패:", error);
+        
+        // 인증 오류(401) 처리 - 단순히 로그인 페이지로 리다이렉트
+        if (error.response && error.response.status === 401) {
+          if (logout) logout(); // AuthContext의 logout 함수 호출
+          navigate('/login');
+          return;
+        }
+        
         const message = error?.response?.data?.message;
         if (message === "not_found_pet") {
           navigate("/pets/register");
@@ -41,7 +55,7 @@ function PetInfo() {
     };
 
     fetchPetInfo();
-  }, [navigate]);
+  }, [navigate, isAuthenticated, authLoading, logout]);
 
   // 로딩 중이면 로딩 표시
   if (loading || !pet) {
@@ -93,7 +107,8 @@ function PetInfo() {
           <img
             src="/gangazido-logo-header.png"
             alt="Gangazido Logo Header"
-            className="h-14 w-28 object-cover"
+            className="h-14 w-28 object-cover cursor-pointer"
+            onClick={goToMap}
           />
         </div>
       </header>
