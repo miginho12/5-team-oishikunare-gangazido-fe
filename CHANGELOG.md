@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.22.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.21.2...v1.22.0) (2025-04-10)
+
+### 🚀 NEW FEATURES
+
+* 마커 클릭 시 기본이미지 추가, 모달창 디자인 변경 ([7786156](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/7786156b39eaa9afdde1659837110694efe5c688))
+
 ## [1.21.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.21.1...v1.21.2) (2025-04-10)
 
 ### 🐛 BUG FIXES
