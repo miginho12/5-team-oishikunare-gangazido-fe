@@ -712,7 +712,7 @@ function MapPage() {
       const nicknameRes = await getNicknameByUserId(user.userId);
       const nickname = nicknameRes.data.data.nickname;
       // 서버에서 강아지 정보 받아오기
-      const petRes = await getPetInfoByUserId(markerInfo.user_id);
+      const petRes = await getPetInfoByUserId(user.userId);
       const { name: petName, profileImage: petImage } = petRes.data;
       
       const markerInfo = {
