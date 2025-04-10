@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.23.9](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.23.8...v1.23.9) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* Register.js  안쓰는 코드 제거 ([fa44df4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/fa44df4645aea20c7b9370419f7105a3d5473c23))
+
 ## [1.23.8](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.23.7...v1.23.8) (2025-04-10)
 
 ### 🐛 BUG FIXES
