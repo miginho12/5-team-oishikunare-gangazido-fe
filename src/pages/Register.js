@@ -15,7 +15,6 @@ function Register() {
   const [emailError, setEmailError] = useState(null);
   const [passwordError, setPasswordError] = useState(null);
   const [nicknameError, setNicknameError] = useState(null);
-  const [removeProfileImage, setRemoveProfileImage] = useState(false);
 
   // 파일 입력 요소에 대한 ref 추가 (component 시작 부분에)
   const fileInputRef = useRef(null);
@@ -206,7 +205,7 @@ function Register() {
 
   // 상태 로깅용 useEffect만 유지 (디버깅용)
   useEffect(() => {
-  }, [profileImage, profileImagePreview, removeProfileImage]);
+  }, [profileImage, profileImagePreview]);
 
     // 회원가입 폼 제출 핸들러
     const handleRegister = async (e) => {
@@ -221,8 +220,7 @@ function Register() {
         user_password: password,
         user_password_confirm: passwordConfirm,
         user_nickname: nickname,
-        user_profileImage: profileImage,
-        removeProfileImage: removeProfileImage
+        profile_image_key: profileImage // null이면 서버에서 이미지 없음으로 처리
       };
       
       // auth API 모듈 활용
@@ -313,6 +311,16 @@ function Register() {
     navigate('/map');
   };
 
+  // 프로필 이미지 삭제를 위한 함수 추가
+  const handleRemoveProfileImage = () => {
+    setProfileImage(null);  // null로 설정하여 제거 요청
+    setProfileImagePreview(null);
+    
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
   return (
     <div className="flex flex-col h-full bg-amber-50">
       {/* 헤더 - 뒤로가기 버튼 추가 */}
@@ -345,19 +353,31 @@ function Register() {
         {/* 입력 폼 */}
         <div className="bg-white rounded-xl shadow-md p-4 mb-4">
           <div className="flex flex-col items-center mb-6">
-          <div className="w-24 h-24 rounded-full bg-amber-100 flex items-center justify-center mb-3 overflow-hidden">
-            {profileImagePreview ? (
-              <img
-                src={profileImagePreview}
-                alt="프로필 미리보기"
-                className="w-full h-full object-cover"
-              />
-            ) : (
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-amber-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-              </svg>
-            )}
-          </div>
+            <div className="relative">
+              {profileImagePreview && (
+                <button 
+                  type="button"
+                  onClick={handleRemoveProfileImage}
+                  className="absolute -top-2 -right-2 text-gray-700 z-10"
+                  aria-label="프로필 이미지 삭제"
+                >
+                  <span className="text-xl font-medium">×</span>
+                </button>
+              )}
+              <div className="w-24 h-24 rounded-full bg-amber-100 flex items-center justify-center mb-3 overflow-hidden">
+                {profileImagePreview ? (
+                  <img
+                    src={profileImagePreview}
+                    alt="프로필 미리보기"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-amber-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                  </svg>
+                )}
+              </div>
+            </div>
             <label htmlFor="profile-upload" className="text-sm text-amber-800 font-medium cursor-pointer">
               프로필 사진 추가
               <input
