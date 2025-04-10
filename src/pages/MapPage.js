@@ -707,6 +707,10 @@ function MapPage() {
         image: markerImage,
       });
 
+      // 서버에서 닉네임 받아오기
+      const nicknameRes = await getNicknameByUserId(user.userId);
+      const nickname = nicknameRes.data.data.nickname;
+      
       const markerInfo = {
         id: serverMarker.id, // 서버에서 받은 ID
         user_id: user.userId, // 사용자 ID
@@ -717,10 +721,11 @@ function MapPage() {
         },
         type: tempMarkerType,
         subType: tempMarkerSubType,
+        nickname,
       };
 
-      // 클릭 이벤트 (인포윈도우 + 삭제)
-      window.kakao.maps.event.addListener(marker, "click", () => {
+      // 클릭 이벤트 (인포윈도우 + 삭제) createMarkerFromModal (방금만든 마커 모달 클릭)
+      window.kakao.maps.event.addListener(marker, "click", async () => {
         markersRef.current.forEach((m) => {
           if (m.overlay) m.overlay.setMap(null);
         });
@@ -772,6 +777,9 @@ function MapPage() {
                 color: #888;
                 cursor: pointer;
               ">&times;</button>
+            </div>
+            <div style="margin-bottom: 10px; font-size: 13px; color: #555;">
+              등록자: <strong>${nickname}</strong>
             </div>
             <button id="${deleteBtnId}" style="
               padding: 8px 12px;
