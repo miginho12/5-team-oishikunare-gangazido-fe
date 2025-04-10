@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.16.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.15.1...v1.16.0) (2025-04-10)
+
+### 🚀 NEW FEATURES
+
+* 지도 범위 벗어날 시 현재위치or구름스퀘어로 강제 이동 ([4a1456b](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/4a1456be97d8fbacdcf84abd1a2cd2a51bafc483))
+
 ## [1.15.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.15.0...v1.15.1) (2025-04-09)
 
 ### 🐛 BUG FIXES
