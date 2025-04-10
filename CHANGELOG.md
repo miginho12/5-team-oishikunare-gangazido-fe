@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.20.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.20.1...v1.20.2) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* 반려견 정보 없을 시 마커 클릭 시 에러처리 추가 ([2d4c3a0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/2d4c3a08b32233619b8445c0da6ce54a713ca295))
+
 ## [1.20.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.20.0...v1.20.1) (2025-04-10)
 
 ### 🐛 BUG FIXES
