@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.18.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.17.6...v1.18.0) (2025-04-10)
+
+### 🚀 NEW FEATURES
+
+* 마커 등록자 닉네임 보이도록 추가 ([ae2c687](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/ae2c687f4a32f4158bad5ac8000823e1cd6a9d7c))
+
 ## [1.17.6](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.17.5...v1.17.6) (2025-04-10)
 
 ### 🐛 BUG FIXES
