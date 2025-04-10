@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## [1.20.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.19.2...v1.20.0) (2025-04-10)
+
+### 🚀 NEW FEATURES
+
+* 반려견  수정 페이지 이미지 삭제용 X 버튼 추가 ([d718886](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/d71888688ae1865432bb3665c8d23cd7783eae59))
+
+### 🎨 STYLES
+
+* 마커 클릭 시 모달창 내 디자인 변경 ([dd5bbcd](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/dd5bbcde9b8b56ed8d2dd1af12bc3d0342855dd5))
+
 ## [1.19.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.19.1...v1.19.2) (2025-04-10)
 
 ### 🐛 BUG FIXES
