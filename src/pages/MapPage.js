@@ -786,8 +786,43 @@ function MapPage() {
               등록자: <strong>${nickname}</strong>
             </div>
             <div style="margin-bottom: 10px;">
-              <img src="${petImage}" alt="${petName}" style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover;"/>
-              <div style="font-size: 13px; color: #555;">${petName}</div>
+            ${
+              petImage
+                ? `
+                  <img 
+                    src="${petImage}" 
+                    alt="${petName}" 
+                    style="
+                      width: 70px;
+                      height: 70px;
+                      border-radius: 12px;
+                      object-fit: cover;
+                      display: block;
+                      margin: 0 auto 6px;
+                      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+                    "
+                  />
+                  <div style="font-size: 13px; color: #555;">${petName}</div>
+                `
+                : `
+                  <div style="
+                    width: 70px;
+                    height: 70px;
+                    background-color: #f3f4f6;
+                    border-radius: 12px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    margin: 0 auto 6px;
+                    color: #9ca3af;
+                    font-size: 12px;
+                    box-shadow: inset 0 0 4px rgba(0,0,0,0.05);
+                  ">
+                    사진 없음
+                  </div>
+                  <div style="font-size: 13px; color: #bbb;">${petName || "이름 없음"}</div>
+                `
+            }
             </div>
             <button id="${deleteBtnId}" style="
               padding: 8px 12px;
@@ -1289,8 +1324,43 @@ function MapPage() {
                 등록자: <strong>${nickname}</strong>
               </div>
               <div style="margin-bottom: 10px;">
-                <img src="${petImage}" alt="${petName}" style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover;"/>
-                <div style="font-size: 13px; color: #555;">${petName}</div>
+              ${
+                petImage
+                  ? `
+                    <img 
+                      src="${petImage}" 
+                      alt="${petName}" 
+                      style="
+                        width: 70px;
+                        height: 70px;
+                        border-radius: 12px;
+                        object-fit: cover;
+                        display: block;
+                        margin: 0 auto 6px;
+                        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+                      "
+                    />
+                    <div style="font-size: 13px; color: #555;">${petName}</div>
+                  `
+                  : `
+                    <div style="
+                      width: 70px;
+                      height: 70px;
+                      background-color: #f3f4f6;
+                      border-radius: 12px;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      margin: 0 auto 6px;
+                      color: #9ca3af;
+                      font-size: 12px;
+                      box-shadow: inset 0 0 4px rgba(0,0,0,0.05);
+                    ">
+                      사진 없음
+                    </div>
+                    <div style="font-size: 13px; color: #bbb;">${petName || "이름 없음"}</div>
+                  `
+              }
               </div>
               ${
                 user?.userId == markerInfo.user_id // 마커 권한 문제뜨는 것 수정
