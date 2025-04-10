@@ -15,6 +15,7 @@ function Register() {
   const [emailError, setEmailError] = useState(null);
   const [passwordError, setPasswordError] = useState(null);
   const [nicknameError, setNicknameError] = useState(null);
+  const [profileImageKey, setProfileImageKey] = useState(null);
 
   // 파일 입력 요소에 대한 ref 추가 (component 시작 부분에)
   const fileInputRef = useRef(null);
@@ -217,7 +218,7 @@ function Register() {
         user_password: password,
         user_password_confirm: passwordConfirm,
         user_nickname: nickname,
-        profile_image_key: profileImage // null이면 서버에서 이미지 없음으로 처리
+        user_profileImage: profileImage // null이면 서버에서 이미지 없음으로 처리
       };
       
       // auth API 모듈 활용
