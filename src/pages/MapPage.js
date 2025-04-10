@@ -712,8 +712,24 @@ function MapPage() {
       const nicknameRes = await getNicknameByUserId(user.userId);
       const nickname = nicknameRes.data.data.nickname;
       // 서버에서 강아지 정보 받아오기
-      const petRes = await getPetInfoByUserId(user.userId);
-      const { name: petName, profileImage: petImage } = petRes.data;
+      let petName = null;
+      let petImage = null;
+
+      try {
+        const petRes = await getPetInfoByUserId(markerInfo.user_id);
+        petName = petRes.data.name;
+        petImage = petRes.data.profileImage;
+      } catch (error) {
+        const status = error.response?.status;
+        const message = error.response?.data?.message;
+
+        if (status === 404 && message === "not_found_pet") {
+          console.log("🐾 등록된 반려견이 없는 사용자입니다.");
+          // petName, petImage는 그대로 null
+        } else {
+          console.error("🐾 반려견 정보 조회 중 오류:", error);
+        }
+      }
       
       const markerInfo = {
         id: serverMarker.id, // 서버에서 받은 ID
@@ -1278,9 +1294,24 @@ function MapPage() {
           const nickname = res.data.data.nickname;
 
           // 반려견 정보 가져오기
-          const petRes = await getPetInfoByUserId(markerInfo.user_id);
-          const { name: petName, profileImage: petImage } = petRes.data;
+          let petName = null;
+          let petImage = null;
 
+          try {
+            const petRes = await getPetInfoByUserId(markerInfo.user_id);
+            petName = petRes.data.name;
+            petImage = petRes.data.profileImage;
+          } catch (error) {
+            const status = error.response?.status;
+            const message = error.response?.data?.message;
+
+            if (status === 404 && message === "not_found_pet") {
+              console.log("🐾 등록된 반려견이 없는 사용자입니다.");
+              // petName, petImage는 그대로 null
+            } else {
+              console.error("🐾 반려견 정보 조회 중 오류:", error);
+            }
+          }
           const emoji =
             type === "댕플" ? "🐶" : MARKER_IMAGES.EMOJI[subType] || "⚠️";
 
