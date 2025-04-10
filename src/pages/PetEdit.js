@@ -46,7 +46,6 @@ function PetEdit() {
   const cloudFrontUrl = window._env_.REACT_APP_CLOUDFRONT_URL;
   const fileInputRef = useRef(null);
 
-
   // 최초 로딩 시 기존 반려견 정보 불러오기
   useEffect(() => {
     const fetchPet = async () => {
@@ -62,8 +61,8 @@ function PetEdit() {
 
           // ✅ CloudFront URL로 미리보기 세팅 (S3 Key는 profileImage에 저장)
           if (data.profileImage && typeof data.profileImage === 'string') {
-            setProfileImage(data.profileImage); // 전체 URL이 들어옴!
-            setProfileImagePreview(data.profileImage); // ✅ CloudFront URL 그대로 미리보기로 사용
+            setProfileImage(data.profileImage); // 🔄 S3 Key만 저장
+            setProfileImagePreview(data.profileImage);
             setIsImageRemoved(false);
 
             console.log('✅ 기존 이미지 로드됨:', data.profileImage); // ✅ 디버깅용
@@ -106,14 +105,12 @@ function PetEdit() {
       setProfileImage(file);
       setProfileImagePreview(tempUrl);
       setIsImageRemoved(false);
-
-      console.log('✅ 새 이미지 선택됨:', file);
+      console.log('✅ 새 이미지 선택됨');
     } else {
       // 🔥 파일 선택 "취소" 시에 확실히 모든 상태 삭제
       setProfileImage(null);
       setProfileImagePreview(null);
       setIsImageRemoved(true);
-      
       console.log('🗑 이미지 선택 취소 → 삭제됨');
     }
 
