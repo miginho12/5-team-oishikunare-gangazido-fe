@@ -15,7 +15,7 @@ function Register() {
   const [emailError, setEmailError] = useState(null);
   const [passwordError, setPasswordError] = useState(null);
   const [nicknameError, setNicknameError] = useState(null);
-  const [profileImageKey, setProfileImageKey] = useState(null);
+  //const [profileImageKey, setProfileImageKey] = useState(null);
   //이메일 인증 관련
   const [isEmailVerified, setIsEmailVerified] = useState(false);
   const [showVerificationModal, setShowVerificationModal] = useState(false);
