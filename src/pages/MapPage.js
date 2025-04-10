@@ -765,7 +765,7 @@ function MapPage() {
         const infoContent = `
           <div class="custom-overlay-animate" style="
             position: relative;
-            padding: 16px 14px 14px;
+            padding: 12px 12px 12px;
             background: #ffffff;
             border-radius: 16px;
             box-shadow: 0 6px 16px rgba(0,0,0,0.15);
@@ -791,15 +791,15 @@ function MapPage() {
               <span>${type}${subType ? ` - ${subType}` : ""}</span>
 
               <button id="close-overlay-${markerInfo.id}" style="
-                position: absolute;
-                top: -20px;
-                right: -8px;
-                background: transparent;
-                border: none;
-                font-size: 24px;
-                color: #aaa;
-                cursor: pointer;
-              ">&times;</button>
+                  position: absolute;
+                  top: -11px;
+                  right: -3px;
+                  background: transparent;
+                  border: none;
+                  font-size: 27px;
+                  color: #aaa;
+                  cursor: pointer;
+                ">&times;</button>
             </div>
 
             <!-- 등록자 -->
@@ -1319,7 +1319,7 @@ function MapPage() {
             const infoContent = `
             <div class="custom-overlay-animate" style="
               position: relative;
-              padding: 16px 14px 14px;
+              padding: 12px 12px 12px;
               background: #ffffff;
               border-radius: 16px;
               box-shadow: 0 6px 16px rgba(0,0,0,0.15);
@@ -1346,11 +1346,11 @@ function MapPage() {
           
                 <button id="close-overlay-${markerInfo.id}" style="
                   position: absolute;
-                  top: -20px;
-                  right: -8px;
+                  top: -11px;
+                  right: -3px;
                   background: transparent;
                   border: none;
-                  font-size: 24px;
+                  font-size: 27px;
                   color: #aaa;
                   cursor: pointer;
                 ">&times;</button>
