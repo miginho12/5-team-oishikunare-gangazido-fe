@@ -315,30 +315,38 @@ function PetEdit() {
     }
   }, [showToast]);
 
+  // 드롭박스 커스텀 스타일
   const customSelectStyles = {
     control: (provided, state) => ({
       ...provided,
-      minHeight: '3rem', // 인풋 높이와 맞춤 (p-3 = 12px padding -> 약 48px)
-      borderRadius: '0.375rem', // rounded-md
-      borderColor: state.isFocused ? '#92400e' : '#d1d5db', // amber-800 / gray-300
-      boxShadow: state.isFocused ? '0 0 0 2px rgba(146, 64, 14, 0.4)' : 'none', // focus:ring-2 색상
+      minHeight: '3rem',
+      borderRadius: '0.375rem',
+      borderColor: state.isFocused ? '#92400e' : '#d1d5db',
+      boxShadow: state.isFocused ? '0 0 0 2px rgba(146, 64, 14, 0.4)' : 'none',
       '&:hover': {
         borderColor: '#92400e',
       },
     }),
     menu: (provided) => ({
       ...provided,
-      zIndex: 50, // 모달 위에 올라오게
+      zIndex: 50,
     }),
     option: (provided, state) => ({
       ...provided,
-      backgroundColor: state.isFocused ? 'rgba(146, 64, 14, 0.4)' : 'white', // hover 시 amber-200
-      color: '#1f2937', // text-gray-800
+      backgroundColor: state.isSelected
+        ? 'rgba(146, 64, 14, 0.2)'  // ✅ 선택된 항목 (파란 배경 방지)
+        : state.isFocused
+        ? 'rgba(146, 64, 14, 0.1)'  // ✅ 마우스 올렸을 때
+        : 'white',
+      color: '#1f2937',
       cursor: 'pointer',
+      ':active': {
+        backgroundColor: 'rgba(146, 64, 14, 0.3)',
+      },
     }),
     singleValue: (provided) => ({
       ...provided,
-      color: '#1f2937', // text-gray-800
+      color: '#1f2937',
     }),
   };
 
