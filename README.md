@@ -1,6 +1,58 @@
+# LEO(25.04.10.)
+## Routing
+### Main Routes
+- /map: 메인 지도 페이지
+- /lgoin, /register: 인증 관련 페이지
+- /profile, /profile/edit, /profile/password: 프로필 관련 페이지
+- /pets, /pets/edit, /pets/register: 반려견 관련 페이지
+- /chat: 채팅 페이지
+### ProtectedRoute
+- 인증이 필요한 경로를 그룹화하여 관리하는 방식 사용
+- Outlet 컴포넌트를 활용하여 중첩 라우팅 구현
+- 인증 상태에 따라 로그인 페이지로 리다이렉트하는 로직 포함
 
 
-[LEO]
+
+## AuthProvider
+### Context API
+- AuthContext를 생성하고 AuthProvider 컴포넌트를 사용하여 전역적으로 공유
+- useAuth 훅을 통해 어디서든 인증 상태에 쉽게 접근 가능
+### State
+- user: 현재 로그인한 사용자 정보
+- loading: 인증 상태 확인 중인지 여부
+- isAuthenticated: 사용자가 인증되었는지 여부
+### Function
+- login: 사용자 로그인 처리
+- logout: 사용자 로그아웃 처리
+- checkAuthStatus: 서버에 API 요청을 통해 인증 상태 확인(5분마다 자동으로 인증 상태 확인하여 세션 유지)
+- refreshAuthStatus: 인증 상태 갱신
+
+
+
+## Viewport Height Adjustment for Mobile Devices
+### useEffect Hook for Handling Mobile Viewport Issues
+- CSS 변수(--vh)를 사용하여 실제 뷰포트 높이 계산
+- 리사이즈 이벤트 처리
+- 방향 전환 처리
+
+
+
+## Sentry Integration
+### Conditional Initialization
+- 프로덕션 환경에서만 Sentry를 활성화하여 불필요한 오류 로깅 방지
+- user의 ID와 닉네임을 수집하여 특정 사용자의 오류 추적
+
+
+## Initial Page Flow & Entry Point
+### Conditional Rendering
+- 인증된 사용자: 모든 페이지 접근 가증
+- 미인증 사용자: 로그인/회원가입 페이지 및 메인 지도 페이지만 접근 가능
+
+
+==============================================================================
+
+
+# LEO(25.03.24.)
 ### 📂 /deprecated 폴더
 - 현재 사용되지 않지만, 향후 참조할 가능성이 있는 파일을 보관하는 공간입니다.
 - 일정 기간 동안 필요하지 않으면 삭제될 수 있습니다.
@@ -60,177 +112,6 @@
 - 배포 플랫폼: Nginx, Vercel, Netlify, Docker 기반 인프라 등 다양한 옵션을 활용할 수 있습니다.
 
 
-
-
-
 ==============================================================================
 
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-
-```
-my-tailwind-app
-├─ .eslintrc.js
-├─ .husky
-│  ├─ commit-msg
-│  ├─ pre-commit
-│  └─ pre-push
-├─ .releaserc.json
-├─ CHANGELOG.md
-├─ README.md
-├─ build
-│  ├─ asset-manifest.json
-│  ├─ favicon.ico
-│  ├─ index.html
-│  ├─ logo192.png
-│  ├─ logo512.png
-│  ├─ manifest.json
-│  ├─ markers
-│  ├─ robots.txt
-│  └─ static
-│     ├─ css
-│     │  ├─ main.8b31005b.css
-│     │  └─ main.8b31005b.css.map
-│     └─ js
-│        ├─ 453.a14782d0.chunk.js
-│        ├─ 453.a14782d0.chunk.js.map
-│        ├─ main.ba3cfae4.js
-│        ├─ main.ba3cfae4.js.LICENSE.txt
-│        └─ main.ba3cfae4.js.map
-├─ commitlint.config.cjs
-├─ eslint.config.cjs
-├─ package-lock.json
-├─ package.json
-├─ postcss.config.js
-├─ public
-│  ├─ env.js
-│  ├─ favicon.ico
-│  ├─ images
-│  │  ├─ beware-dog.png
-│  │  ├─ beware-foot.png
-│  │  ├─ beware_dog_square.png
-│  │  ├─ beware_foot_square.png
-│  │  ├─ construction.png
-│  │  ├─ construction_square.png
-│  │  ├─ cross-mark.png
-│  │  ├─ dangple.png
-│  │  ├─ dangple_square.png
-│  │  ├─ icy-road.png
-│  │  └─ icy_road_square.png
-│  ├─ index.html
-│  ├─ logo192.png
-│  ├─ logo512.png
-│  ├─ manifest.json
-│  └─ robots.txt
-├─ src
-│  ├─ App.css
-│  ├─ App.js
-│  ├─ App.test.js
-│  ├─ api
-│  │  ├─ auth.js
-│  │  ├─ chat.js
-│  │  ├─ index.js
-│  │  ├─ location.js
-│  │  ├─ map.js
-│  │  ├─ pet.js
-│  │  └─ user.js
-│  ├─ components
-│  │  └─ ProtectedRoute.js
-│  ├─ contexts
-│  │  └─ AuthContext.js
-│  ├─ deprecated
-│  │  ├─ ChatDetail.js
-│  │  ├─ ChatMain.js
-│  │  ├─ ChatService.js
-│  │  ├─ KakaoMap.js
-│  │  ├─ Login.js
-│  │  ├─ Main.js
-│  │  ├─ MarkerManager.js
-│  │  └─ Register.js
-│  ├─ index.css
-│  ├─ index.js
-│  ├─ logo.svg
-│  ├─ pages
-│  │  ├─ ChatPage.js
-│  │  ├─ Login.js
-│  │  ├─ MapPage.js
-│  │  ├─ PasswordChange.js
-│  │  ├─ PetEdit.js
-│  │  ├─ PetInfo.js
-│  │  ├─ PetRegister.js
-│  │  ├─ ProfileEdit.js
-│  │  ├─ ProfilePage.js
-│  │  └─ Register.js
-│  ├─ reportWebVitals.js
-│  └─ setupTests.js
-└─ tailwind.config.js
-
-```

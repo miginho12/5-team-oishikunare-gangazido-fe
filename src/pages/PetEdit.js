@@ -64,7 +64,6 @@ function PetEdit() {
             const s3Key = isFullUrl
               ? data.profileImage.split('.net/')[1].split('?')[0] // 키만 추출
               : data.profileImage;
-
             setProfileImage(s3Key); // 🔄 key만 저장
             setProfileImagePreview(data.profileImage); // 🔄 전체 URL은 preview 용도
             setIsImageRemoved(false);
@@ -102,16 +101,6 @@ function PetEdit() {
   };
 
   const handleProfileImageChange = (e) => {
-    // 파일 선택창에서 아무것도 선택 안 하고 "취소" 눌렀을 때
-    if (!e.target.files || e.target.files.length === 0) {
-      // 👉 기존 이미지가 있어도 무조건 제거
-      setProfileImage(null);
-      setProfileImagePreview(null);
-      setIsImageRemoved(true);
-      console.log('🗑 파일 선택 취소 감지 → 이미지 제거됨');
-      return;
-    }
-
     // ✅ 새 이미지 선택한 경우
     const file = e.target.files[0];
     const tempUrl = URL.createObjectURL(file);
@@ -126,12 +115,17 @@ function PetEdit() {
     }
   };
 
+  // 이미지 X 버튼 클릭 시 삭제 처리 함수
+  const handleRemoveImage = () => {
+    setProfileImage(null);
+    setProfileImagePreview(null);
+    setIsImageRemoved(true);
+  };
+
   const handleUpdatePet = async () => {
-    const isValid = validateFields(); // 1. 프론트 유효성 검사 먼저
-    if (!isValid) return;
+    if (!validateFields()) return; // 1. 프론트 유효성 검사 먼저
 
     let profileImageKeyToSend;
-
     if (isImageRemoved) {
       profileImageKeyToSend = null; // 삭제
     } else if (profileImage instanceof File) {
@@ -149,8 +143,6 @@ function PetEdit() {
         weight,
         profileImage: profileImageKeyToSend,
       });
-
-
       setShowToast(true);
       setTimeout(() => navigate('/pets'), 2000);
     } catch (error) {
@@ -339,21 +331,25 @@ function PetEdit() {
       <div className="flex-1 p-4 overflow-y-auto">
         <div className="bg-white rounded-xl shadow-md p-4 mb-4">
           <div className="flex flex-col items-center mb-6">
-            <div className="w-24 h-24 rounded-full bg-amber-100 flex items-center justify-center mb-3 overflow-hidden">
+            <div className="relative w-24 h-24 rounded-full bg-amber-100 flex items-center justify-center mb-3 overflow-visible">
               {profileImagePreview && !isImageRemoved ? (
-                <img
-                  src={profileImagePreview}
-                  alt="프로필 미리보기"
-                  className="w-full h-full object-cover"
-                  onError={() => {
-                    if (!isImageRemoved) {
-                      console.warn('❗️ 이미지 로딩 실패');
-                      setProfileImage(null);
-                      setProfileImagePreview(null);
-                      setIsImageRemoved(true);
-                    }
-                  }}
-                />
+                <>
+                  <img
+                    src={profileImagePreview}
+                    alt="프로필 미리보기"
+                    className="w-full h-full object-cover rounded-full"
+                    onError={handleRemoveImage}
+                  />
+                  {/* ✅ 이미지 위 오른쪽 상단에 X 버튼 */}
+                  <button
+                    type="button"
+                    onClick={handleRemoveImage}
+                    className="absolute top-0 right-0 transform translate-x-1/4 -translate-y-1/4 bg-white bg-opacity-100 text-red-600 text-xl font-bold rounded-full w-8 h-8 flex items-center justify-center shadow hover:bg-opacity-100 z-50"
+                    aria-label="이미지 삭제"
+                  >
+                    x
+                  </button>
+                </>
               ) : (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -371,7 +367,6 @@ function PetEdit() {
                 </svg>
               )}
             </div>
-
             <label htmlFor="pet-profile-upload" className="text-sm text-amber-800 font-medium cursor-pointer">
               프로필 사진 변경
               <input
