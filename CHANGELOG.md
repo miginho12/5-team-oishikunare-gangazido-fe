@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.23.6](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.23.5...v1.23.6) (2025-04-10)
+
+### 🎨 STYLES
+
+* 커스텀 드롭박스 option 색상 변경 파>갈 ([62c83be](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/62c83be80c7f33f28e9aa52cd3d2a637e7f891f2))
+
 ## [1.23.5](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.23.4...v1.23.5) (2025-04-10)
 
 ### 🐛 BUG FIXES
