@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { uploadPetImage, registerPet } from '../api/pet';
 
@@ -13,6 +13,9 @@ function PetRegister() {
   const [weight, setWeight] = useState('');
   const [profileImage, setProfileImage] = useState(null);
   const [profileImagePreview, setProfileImagePreview] = useState(null);
+  const [isImageRemoved, setIsImageRemoved] = useState(false);
+
+  const fileInputRef = useRef(null);
 
   const [nameError, setNameError] = useState('');
   const [ageError, setAgeError] = useState('');
@@ -42,8 +45,6 @@ function PetRegister() {
     '기타',
   ];
 
-  const cloudFrontUrl = window._env_.REACT_APP_CLOUDFRONT_URL;
-
   const goToMap = () => navigate('/map');
   const goToChat = () => navigate('/chat');
   const goToProfile = () => navigate('/profile');
@@ -56,12 +57,11 @@ function PetRegister() {
     try {
       let profileImageKey = null;
 
-      // ✅ 이미지 파일이 있다면 먼저 업로드 후 key 확보
-      if (profileImage instanceof File) {
+      // 🔁 삭제된 경우 null 유지
+      if (isImageRemoved) {
+        profileImageKey = null;
+      } else if (profileImage instanceof File) {
         profileImageKey = await uploadPetImage(profileImage);
-        const imageUrl = `${cloudFrontUrl}/${profileImageKey}?t=${Date.now()}`;
-        setProfileImagePreview(imageUrl);
-        ////console.log(...)
       }
 
       const petData = {
@@ -73,9 +73,7 @@ function PetRegister() {
         profileImage: profileImageKey,
       };
 
-      ////console.log(...)
       await registerPet(petData);
-
       setShowToast(true);
       setTimeout(() => {
         window.location.href = "/pets";
@@ -90,16 +88,19 @@ function PetRegister() {
     const file = e.target.files?.[0];
 
     if (file) {
-      // ✅ 사용자가 실제로 파일을 선택한 경우
       setProfileImage(file);
       const tempUrl = URL.createObjectURL(file);
       setProfileImagePreview(tempUrl);
-      ////console.log(...)
-    } else {
-      // ✅ 사용자가 '파일 선택' 창에서 취소를 누른 경우
-      setProfileImage(null); // S3 업로드 대상 제거
-      setProfileImagePreview(null); // 미리보기 초기화
+      setIsImageRemoved(false); // 🔁 삭제 아님으로 처리
+      if (fileInputRef.current) fileInputRef.current.value = ''; // 🔁 재선택 허용
     }
+  };
+
+  // X 버튼 눌렀을 때 이미지 제거 처리
+  const handleRemoveImage = () => {
+    setProfileImage(null);
+    setProfileImagePreview(null);
+    setIsImageRemoved(true);
   };
 
   // 프론트 자체 유효성 검사
@@ -284,18 +285,26 @@ function PetRegister() {
       <div className="flex-1 p-4 overflow-y-auto">
         <div className="bg-white rounded-xl shadow-md p-4 mb-4">
           <div className="flex flex-col items-center mb-6">
-            <div className="w-24 h-24 rounded-full bg-amber-100 flex items-center justify-center mb-3 overflow-hidden">
-              {profileImagePreview ? (
-                <img 
-                  src={profileImagePreview}
-                  alt="미리보기"
-                  className="w-full h-full object-cover"
-                  onError={() => {
-                    console.warn("🐛 이미지 로딩 실패! fallback 아이콘 표시");
-                    setProfileImagePreview(null); // fallback svg로 대체되게
-                  }}
-                />
-              ) : (
+            <div className="relative w-24 h-24 rounded-full bg-amber-100 flex items-center justify-center mb-3 overflow-visible">
+              {profileImagePreview && !isImageRemoved ? (
+                  <>
+                    <img
+                      src={profileImagePreview}
+                      alt="프로필 미리보기"
+                      className="w-full h-full object-cover rounded-full"
+                      onError={handleRemoveImage}
+                    />
+                    {/* 🔼 이미지 삭제 버튼 */}
+                    <button
+                      type="button"
+                      onClick={handleRemoveImage}
+                      className="absolute top-0 right-0 transform translate-x-1/4 -translate-y-1/4 bg-white bg-opacity-100 text-red-600 text-xl font-bold rounded-full w-8 h-8 flex items-center justify-center shadow hover:bg-opacity-100 z-50"
+                      aria-label="이미지 삭제"
+                    >
+                      x
+                    </button>
+                  </>
+                ) : (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-12 w-12 text-amber-800"
@@ -320,6 +329,7 @@ function PetRegister() {
                 accept="image/*"
                 onChange={handleProfileImageChange}
                 className="hidden"
+                ref={fileInputRef}
               />
             </label>
           </div>
