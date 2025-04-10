@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.19.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.18.1...v1.19.0) (2025-04-10)
+
+### 🚀 NEW FEATURES
+
+* 마커 클릭 시 반려견 정보 추가 ([ec5d27e](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/ec5d27e1578be8df28a163c6336409dec8fb4a88))
+
 ## [1.18.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.18.0...v1.18.1) (2025-04-10)
 
 ## [1.18.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.17.6...v1.18.0) (2025-04-10)
