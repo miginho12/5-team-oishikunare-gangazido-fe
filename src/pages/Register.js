@@ -15,6 +15,7 @@ function Register() {
   const [emailError, setEmailError] = useState(null);
   const [passwordError, setPasswordError] = useState(null);
   const [nicknameError, setNicknameError] = useState(null);
+  const [profileImageKey, setProfileImageKey] = useState(null);
   //이메일 인증 관련
   const [isEmailVerified, setIsEmailVerified] = useState(false);
   const [showVerificationModal, setShowVerificationModal] = useState(false);
@@ -267,7 +268,7 @@ function Register() {
         user_password: password,
         user_password_confirm: passwordConfirm,
         user_nickname: nickname,
-        profile_image_key: profileImage // null이면 서버에서 이미지 없음으로 처리
+        user_profileImage: profileImage // null이면 서버에서 이미지 없음으로 처리
       };
       
       // auth API 모듈 활용

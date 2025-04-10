@@ -1,5 +1,59 @@
 # CHANGELOG
 
+## [1.22.7](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.22.6...v1.22.7) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* 방금 등록한 마커도 클릭 시 지도 이동 및 확대 ([21d1531](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/21d15313ea4bcc8fc16cfaa265219302a1dfd4b8))
+
+## [1.22.6](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.22.5...v1.22.6) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* 회원가입 시 프로필 이미지 누락 버그 수정 ([0669a40](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/0669a40f16486195e82082854f07887dbbd3dd7d))
+
+## [1.22.5](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.22.4...v1.22.5) (2025-04-10)
+
+### 🎨 STYLES
+
+* 마커 클릭 시 화면 살짝 아래로 움직이도록 변경(모달창 짤림이슈) ([6d7c5f4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/6d7c5f47658f4aa21e262cf95c15279b81f28941))
+
+## [1.22.4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.22.3...v1.22.4) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* user.js 오타 수정 ([b3bbc18](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/b3bbc18d7c70ec44b242bacba9f9f897a4816f99))
+
+## [1.22.3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.22.2...v1.22.3) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* 사용자 프로필 이미지 업로드 버그 수정2 ([582156a](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/582156a588a3c881c2ad92c47d8b9ba8faa502f2))
+
+## [1.22.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.22.1...v1.22.2) (2025-04-10)
+
+### 🎨 STYLES
+
+* 마커 모달창 패딩 줄임, 닫기버튼 크기 키우기 ([a5ded6a](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/a5ded6afc9f6a91bf219a866d536c510b19d1d10))
+
+## [1.22.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.22.0...v1.22.1) (2025-04-10)
+
+### ♻️ REFACTORING
+
+* 이미지 삭제 파일 선택 취소 대신 x버튼 도입 ([4739848](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/4739848e577d6c69dcb8131a511707209f7ac614))
+
+## [1.22.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.21.2...v1.22.0) (2025-04-10)
+
+### 🚀 NEW FEATURES
+
+* 마커 클릭 시 기본이미지 추가, 모달창 디자인 변경 ([7786156](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/7786156b39eaa9afdde1659837110694efe5c688))
+
+## [1.21.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.21.1...v1.21.2) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* 사용자 프로필 이미지 업로드 버그 수정 ([5b1bbe4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/5b1bbe462d1ab623512c4513d6706949e7b93aef))
+
 ## [1.21.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.21.0...v1.21.1) (2025-04-10)
 
 ### 🐛 BUG FIXES

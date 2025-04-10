@@ -229,9 +229,16 @@ function ProfileEdit() {
     try {
       const userData = {
         user_nickname: nickname,
-        profile_image_key: profileImage ? profileImage : null  // user_profile_image가 아닌 profile_image_key 사용
+        user_profile_image: profileImage // null이면 서버에서 이미지 제거로 처리
       };
+
+      // 이미지를 제거하는 경우 명시적으로 표시
+      if (profileImagePreview === null) {
+        userData.removeProfileImage = true;
+      }
       
+      console.log('프로필 업데이트 요청 데이터:', userData);
+
       await updateUserInfo(userData);
       
       setShowProfileModal(false);
