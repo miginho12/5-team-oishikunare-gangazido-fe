@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.23.10](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.23.9...v1.23.10) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* 이메일 전송 오류 해결 ([fcb7838](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/fcb78380fbac6762a0baed3e87376ce10b1b392b))
+
 ## [1.23.9](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.23.8...v1.23.9) (2025-04-10)
 
 ### 🐛 BUG FIXES
