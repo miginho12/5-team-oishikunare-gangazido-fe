@@ -25,7 +25,6 @@ function PetInfo() {
       try {
         const response = await getPetInfo();
         const data = response.data.data;
-
         setPet(data);
         setLoading(false);
       } catch (error) {
@@ -43,16 +42,6 @@ function PetInfo() {
     fetchPetInfo();
   }, [navigate]);
 
-  // 로딩 중이면 로딩 표시
-  if (loading || !pet) {
-    return (
-      <div className="flex flex-col items-center justify-center h-full bg-amber-50">
-        <div className="animate-spin rounded-full h-14 w-14 border-4 border-amber-800 border-t-transparent"></div>
-        <p className="mt-4 text-amber-800 font-medium">반려견 정보를 불러오는 중...</p>
-      </div>
-    );
-  }
-
   if (error) {
     return (
       <div className="flex flex-col items-center justify-center h-full p-4 bg-amber-50">
@@ -68,6 +57,16 @@ function PetInfo() {
           </svg>
           지도로 돌아가기
         </button>
+      </div>
+    );
+  }
+
+  // 로딩 중이면 로딩 표시
+  if (loading || !pet) {
+    return (
+      <div className="flex flex-col items-center justify-center h-full bg-amber-50">
+        <div className="animate-spin rounded-full h-14 w-14 border-4 border-amber-800 border-t-transparent"></div>
+        <p className="mt-4 text-amber-800 font-medium">반려견 정보를 불러오는 중...</p>
       </div>
     );
   }
