@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.21.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.20.2...v1.21.0) (2025-04-10)
+
+### 🚀 NEW FEATURES
+
+* 회원가입, 사용자프로필 수정 이미지 삭제 기능 구현 ([e26b37f](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/e26b37fc00d162d0763df1c7cf37de7165b013d6))
+
 ## [1.20.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.20.1...v1.20.2) (2025-04-10)
 
 ### 🐛 BUG FIXES
