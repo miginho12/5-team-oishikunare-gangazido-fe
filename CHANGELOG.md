@@ -1,5 +1,23 @@
 # CHANGELOG
 
+## [1.22.4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.22.3...v1.22.4) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* user.js 오타 수정 ([b3bbc18](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/b3bbc18d7c70ec44b242bacba9f9f897a4816f99))
+
+## [1.22.3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.22.2...v1.22.3) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* 사용자 프로필 이미지 업로드 버그 수정2 ([582156a](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/582156a588a3c881c2ad92c47d8b9ba8faa502f2))
+
+## [1.22.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.22.1...v1.22.2) (2025-04-10)
+
+### 🎨 STYLES
+
+* 마커 모달창 패딩 줄임, 닫기버튼 크기 키우기 ([a5ded6a](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/a5ded6afc9f6a91bf219a866d536c510b19d1d10))
+
 ## [1.22.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.22.0...v1.22.1) (2025-04-10)
 
 ### ♻️ REFACTORING
