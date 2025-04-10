@@ -113,6 +113,9 @@ function App() {
         console.error("Sentry 사용자 정보 로드 실패:", err);
       }
     };
+    if (!["/login", "/register"].includes(location.pathname)) {
+      fetchUserInfo(); // ✅ 로그인/회원가입에서는 호출 안 함
+    }
 
     fetchUserInfo();
   }, []);
