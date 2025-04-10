@@ -1,5 +1,29 @@
 # CHANGELOG
 
+## [1.21.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.21.1...v1.21.2) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* 사용자 프로필 이미지 업로드 버그 수정 ([5b1bbe4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/5b1bbe462d1ab623512c4513d6706949e7b93aef))
+
+## [1.21.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.21.0...v1.21.1) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* build 오류 해결 ([a5d5bee](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/a5d5bee442a16f837f297137ad8506b61e5cdba9))
+
+## [1.21.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.20.2...v1.21.0) (2025-04-10)
+
+### 🚀 NEW FEATURES
+
+* 회원가입, 사용자프로필 수정 이미지 삭제 기능 구현 ([e26b37f](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/e26b37fc00d162d0763df1c7cf37de7165b013d6))
+
+## [1.20.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.20.1...v1.20.2) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* 반려견 정보 없을 시 마커 클릭 시 에러처리 추가 ([2d4c3a0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/2d4c3a08b32233619b8445c0da6ce54a713ca295))
+
 ## [1.20.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.20.0...v1.20.1) (2025-04-10)
 
 ### 🐛 BUG FIXES

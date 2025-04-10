@@ -56,6 +56,9 @@ export const updateUserInfo = async (userData) => {
       
       const { presignedUrl, fileKey } = presignedResponse.data.data;
       
+      console.log('S3 업로드 전 파일 정보:', file);
+      console.log('presigned URL 응답:', presignedResponse.data);
+
       // 2. S3에 직접 업로드
       await uploadImageToS3(presignedUrl, file, contentType);
       
@@ -66,10 +69,11 @@ export const updateUserInfo = async (userData) => {
       updateData.profile_image_key = null;
     }
     
+    console.log('서버로 보내는 최종 데이터:', updateData);
+    
     // API 호출
     const response = await api.patch("/v1/users/me", updateData);
     
-    // 백엔드에서 이미 CloudFront URL로 변환해서 반환하므로 추가 처리 불필요
     return response;
   } catch (error) {
     console.error('사용자 정보 업데이트 실패:', error);

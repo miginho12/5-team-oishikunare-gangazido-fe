@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getUserInfo, updateUserInfo, deleteUser } from '../api/user';
 
@@ -44,6 +44,7 @@ function ProfileEdit() {
   const [showWithdrawalModal, setShowWithdrawalModal] = useState(false);
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
+  const fileInputRef = useRef(null);
 
   // 컴포넌트 마운트 시 사용자 정보 로드
   useEffect(() => {
@@ -122,8 +123,11 @@ function ProfileEdit() {
         return;
       }
       
+      // 이미지 상태 업데이트
       setProfileImage(file);
       setProfileImagePreview(URL.createObjectURL(file));
+      
+      console.log('이미지 선택됨:', file.name); // 디버깅용
     }
   };
 
@@ -225,7 +229,7 @@ function ProfileEdit() {
     try {
       const userData = {
         user_nickname: nickname,
-        user_profile_image: profileImage
+        profile_image_key: profileImage ? profileImage : null  // user_profile_image가 아닌 profile_image_key 사용
       };
       
       await updateUserInfo(userData);
@@ -300,6 +304,18 @@ function ProfileEdit() {
     }
   };
 
+  // 프로필 이미지 제거 핸들러 
+  const handleRemoveProfileImage = () => {
+    // 이미지는 null로 설정하여 서버에 전송할 때 이미지 제거로 처리되게 함
+    setProfileImage(null);
+    // 미리보기는 null로 설정 (UI에서는 이 경우 기본 SVG 하트가 표시됨)
+    setProfileImagePreview(null);
+    
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
   // 토스트 메시지가 표시되면 3초 후에 자동으로 사라지도록 설정
   useEffect(() => {
     if (showToast) {
@@ -361,47 +377,67 @@ function ProfileEdit() {
       {/* 메인 컨텐츠 */}
       <div className="flex-1 p-4 overflow-y-auto">
         <div className="bg-white rounded-xl shadow-md p-4 mb-4">
-          <div className="flex flex-col items-center mb-6">
-            <div className="w-24 h-24 rounded-full bg-amber-100 flex items-center justify-center mb-3 overflow-hidden">
-            {profileImagePreview ? (
-              <img 
-                src={profileImagePreview} 
-                alt="프로필 이미지"
-                className="w-full h-full object-cover"
-                onError={(e) => {
-                  // 이미지 로드 실패 시 기본 이미지로 대체
-                  e.target.style.display = "none";
-                  // SVG 아이콘 표시
-                  e.target.parentNode.innerHTML = `
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-14 w-14 text-amber-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                      />
-                    </svg>
-                  `;
-                }}
-              />
-            ) : (
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-14 w-14 text-amber-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                />
-              </svg> 
+         <div className="flex flex-col items-center mb-6">
+            <div className="relative">
+              {profileImagePreview && (
+                <button 
+                  type="button"
+                  onClick={handleRemoveProfileImage}
+                  className="absolute -top-2 -right-2 text-gray-700 z-10"
+                  aria-label="프로필 이미지 삭제"
+                >
+                  <span className="text-xl font-medium">×</span>
+                </button>
               )}
+              <div className="w-24 h-24 rounded-full bg-amber-100 flex items-center justify-center mb-3 overflow-hidden">
+                {profileImagePreview ? (
+                  <img 
+                    src={profileImagePreview} 
+                    alt="프로필 이미지"
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      // 이미지 로드 실패 시 기본 이미지로 대체
+                      e.target.style.display = "none";
+                      // SVG 아이콘 표시
+                      e.target.parentNode.innerHTML = `
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-14 w-14 text-amber-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                          />
+                        </svg>
+                      `;
+                    }}
+                  />
+                ) : (
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-14 w-14 text-amber-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                    />
+                  </svg> 
+                )}
+              </div>
             </div>
-            <label htmlFor="profile-upload" className="text-sm text-amber-800 font-medium cursor-pointer">
+            <label 
+              htmlFor="profile-upload" 
+              className="text-sm text-amber-800 font-medium cursor-pointer"
+              onClick={() => console.log('이미지 선택 버튼 클릭됨')}
+            >
               프로필 사진 변경
               <input
                 id="profile-upload"
                 type="file"
                 accept="image/*"
-                onChange={handleProfileImageChange}
+                onChange={(e) => {
+                  console.log('onChange 이벤트 발생', e.target.files);
+                  handleProfileImageChange(e);
+                }}
+                ref={fileInputRef}
                 className="hidden"
               />
             </label>
