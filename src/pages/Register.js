@@ -20,7 +20,7 @@ function Register() {
   const [isEmailVerified, setIsEmailVerified] = useState(false);
   const [showVerificationModal, setShowVerificationModal] = useState(false);
   const [verificationCode, setVerificationCode] = useState('');
-  const [serverVerificationCode, setServerVerificationCode] = useState('');
+  //const [serverVerificationCode, setServerVerificationCode] = useState('');
 
   // 파일 입력 요소에 대한 ref 추가 (component 시작 부분에)
   const fileInputRef = useRef(null);
@@ -108,7 +108,7 @@ function Register() {
       const data = response.data;
       if (data && data.code) {
         setServerVerificationCode(data.code);
-        setShowVerificationModal(true);
+        //setShowVerificationModal(true);
       } else {
         setError('인증 메일 전송에 실패했습니다.');
       }
