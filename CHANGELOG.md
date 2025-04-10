@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## [1.23.4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.23.3...v1.23.4) (2025-04-10)
+
+### 🎨 STYLES
+
+* 커스텀 드롭박스로 변경 ([a87bb9a](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/a87bb9a3becf5e00142b4326283835eaba32424d))
+* 토스트 메시지 가운데로 변경 ([2441e19](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/2441e192a80785fb3ea7144765ac186753389ec8))
+
 ## [1.23.3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.23.2...v1.23.3) (2025-04-10)
 
 ### 🐛 BUG FIXES
