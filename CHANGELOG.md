@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## [1.22.6](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.22.5...v1.22.6) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* 회원가입 시 프로필 이미지 누락 버그 수정 ([0669a40](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/0669a40f16486195e82082854f07887dbbd3dd7d))
+
+## [1.22.5](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.22.4...v1.22.5) (2025-04-10)
+
+### 🎨 STYLES
+
+* 마커 클릭 시 화면 살짝 아래로 움직이도록 변경(모달창 짤림이슈) ([6d7c5f4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/6d7c5f47658f4aa21e262cf95c15279b81f28941))
+
 ## [1.22.4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.22.3...v1.22.4) (2025-04-10)
 
 ### 🐛 BUG FIXES

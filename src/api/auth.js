@@ -67,6 +67,8 @@ export const registerUser = async (userData) => {
     if (profileImageKey !== undefined) {
       signupData.profile_image_key = profileImageKey;
     }
+
+    console.log("signup 데이터: " , signupData);
     
     // 회원가입 API 호출
     const response = await api.post("/v1/users/signup", signupData);
