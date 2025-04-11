@@ -44,6 +44,39 @@ function MapPage() {
     userRef.current = user;
   }, [user]);
 
+  // 마커 모달 창 지도 클릭 시 닫기
+  useEffect(() => {
+    if (!map || !window.kakao || !window.kakao.maps) return;
+  
+    const handleMapClick = () => {
+      // 모든 오버레이 닫기
+      markersRef.current.forEach((m) => {
+        if (m.overlay) {
+          try {
+            m.overlay.setMap(null);
+            m.overlay = null;
+          } catch (e) {
+            console.warn("지도 클릭 시 overlay 닫기 실패:", e);
+          }
+        }
+      });
+    };
+  
+    // 지도에 클릭 이벤트 등록
+    const mapClickListener = window.kakao.maps.event.addListener(
+      map,
+      "click",
+      handleMapClick
+    );
+  
+    // 클린업 함수에서 이벤트 제거
+    return () => {
+      if (mapClickListener) {
+        window.kakao.maps.event.removeListener(map, "click", handleMapClick);
+      }
+    };
+  }, [map]);
+
   // 모달 관련 상태 수정
   const [showModal, setShowModal] = useState(false);
   const [tempMarkerType, setTempMarkerType] = useState("댕플");
@@ -367,6 +400,18 @@ function MapPage() {
           () => {
             if (!kakaoMapInstance) return;
         
+            // 드래그 시 모든 오버레이 닫기
+            markersRef.current.forEach((m) => {
+              if (m.overlay) {
+                try {
+                  m.overlay.setMap(null);
+                  m.overlay = null;
+                } catch (e) {
+                  console.warn("드래그 시 overlay 닫기 실패:", e);
+                }
+              }
+            });
+
             const center = kakaoMapInstance.getCenter();
             const level = kakaoMapInstance.getLevel();
         
