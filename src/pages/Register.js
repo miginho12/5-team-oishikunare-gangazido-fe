@@ -485,12 +485,6 @@ function Register() {
               <p className="text-sm text-amber-600 text-center mb-2">
                 인증 코드 유효 시간: {formatTime(timeLeft)}
               </p>
-              {resendMessage && (
-                <p className="text-sm text-green-600 text-center mb-2">
-                  {resendMessage}
-                </p>
-              )}
-
               <button
                 onClick={() => {
                   if (timeLeft > 0) {
