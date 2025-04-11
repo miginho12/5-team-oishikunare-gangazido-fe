@@ -629,7 +629,7 @@ function PetEdit() {
             className="w-full max-w-sm bg-white bg-opacity-80 border border-amber-800 
                       text-amber-800 p-3 rounded-md shadow-lg text-center animate-fade-in-up mx-4"
           >
-            수정을 완료하였습니다.
+            {toastMessage}
           </div>
         </div>
       )}

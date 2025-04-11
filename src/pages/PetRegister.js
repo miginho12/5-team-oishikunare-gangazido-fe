@@ -505,7 +505,7 @@ function PetRegister() {
             className="w-full max-w-sm bg-white bg-opacity-80 border border-amber-800 
                       text-amber-800 p-3 rounded-md shadow-lg text-center animate-fade-in-up mx-4"
           >
-            등록을 완료하였습니다.
+            {toastMessage}
           </div>
         </div>
       )}
