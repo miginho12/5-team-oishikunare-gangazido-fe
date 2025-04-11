@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.27.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.26.3...v1.27.0) (2025-04-11)
+
+### 🚀 NEW FEATURES
+
+* 등록/수정 완료 시 현재 페이지 조건을 보고 자동 이동되도록 개선(time 조정) ([f2c4b04](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/f2c4b04752d2ef510824a53953d5f03f6837b434))
+
 ## [1.26.3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.26.2...v1.26.3) (2025-04-11)
 
 ### 🐛 BUG FIXES
