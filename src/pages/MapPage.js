@@ -862,8 +862,8 @@ function MapPage() {
           <div class="custom-overlay-animate" style="
             position: relative;
             padding: 12px 12px 12px;
-            background: #ffffff;
-            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.95); /* 투명도 추가 */
+            border-radius: 20px; /* 더 둥글게 */
             box-shadow: 0 6px 16px rgba(0,0,0,0.15);
             width: 220px;
             border: 1px solid #eee;
@@ -1414,8 +1414,8 @@ function MapPage() {
             <div class="custom-overlay-animate" style="
               position: relative;
               padding: 12px 12px 12px;
-              background: #ffffff;
-              border-radius: 16px;
+              background: rgba(255, 255, 255, 0.95); /* 투명도 추가 */
+              border-radius: 20px; /* 더 둥글게 */    
               box-shadow: 0 6px 16px rgba(0,0,0,0.15);
               width: 220px;
               border: 1px solid #eee;
