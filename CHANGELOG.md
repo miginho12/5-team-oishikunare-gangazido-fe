@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.25.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.25.0...v1.25.1) (2025-04-11)
+
+### 🐛 BUG FIXES
+
+* S3 에 이미지 없을 때 예외처리 추가 ([86987fe](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/86987fe411b3c95ebf922e4b6339198ba3c02e14))
+
 ## [1.25.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.24.0...v1.25.0) (2025-04-11)
 
 ### 🚀 NEW FEATURES
