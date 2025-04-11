@@ -47,7 +47,7 @@ function MapPage() {
   // 마커 모달 창 지도 클릭 시 닫기
   useEffect(() => {
     if (!map || !window.kakao || !window.kakao.maps) return;
-  
+
     const handleMapClick = () => {
       // 모든 오버레이 닫기
       markersRef.current.forEach((m) => {
@@ -61,14 +61,14 @@ function MapPage() {
         }
       });
     };
-  
+
     // 지도에 클릭 이벤트 등록
     const mapClickListener = window.kakao.maps.event.addListener(
       map,
       "click",
       handleMapClick
     );
-  
+
     // 클린업 함수에서 이벤트 제거
     return () => {
       if (mapClickListener) {
@@ -104,6 +104,28 @@ function MapPage() {
       moveToCurrentLocation();
     }
   }, [map]);
+
+
+  // 화면 크기 변화 대응: Kakao Map relayout + vh 단위 계산
+  useEffect(() => {
+    const handleResize = () => {
+      // Kakao Map relayout
+      if (map) {
+        map.relayout();
+      }
+
+      // vh 단위 갱신 (iOS 대응)
+      const vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty("--vh", `${vh}px`);
+    };
+
+    // 초기에도 한 번 실행
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [map]);
+
 
   // 카카오맵 API 스크립트 동적 로드 함수
   const loadKakaoMapScript = useCallback(() => {
@@ -399,7 +421,7 @@ function MapPage() {
           "dragend",
           () => {
             if (!kakaoMapInstance) return;
-        
+
             // 드래그 시 모든 오버레이 닫기
             markersRef.current.forEach((m) => {
               if (m.overlay) {
@@ -414,22 +436,24 @@ function MapPage() {
 
             const center = kakaoMapInstance.getCenter();
             const level = kakaoMapInstance.getLevel();
-        
+
             // 상태 업데이트
             setCurrentZoomLevel(level);
             setCenterPosition({
               lat: center.getLat(),
               lng: center.getLng(),
             });
-        
+
+            kakaoMapInstance.relayout();
+
             // ✅ 바다 벗어났는지 확인할 범위
             const bounds = new window.kakao.maps.LatLngBounds(
               new window.kakao.maps.LatLng(30.0, 122.0),
               new window.kakao.maps.LatLng(40.5, 136.5)
             );
-        
+
             const fallbackPosition = new window.kakao.maps.LatLng(33.487171, 126.531713); // 구름스퀘어
-        
+
             if (!bounds.contain(center)) {
               toast.warn("지도를 벗어났어요! 현재 위치로 이동합니다", {
                 position: "bottom-center",
@@ -440,15 +464,15 @@ function MapPage() {
                   border: "1px solid #fcd34d",
                   boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
                   fontWeight: "bold",
-                  whiteSpace: "nowrap",  
-                  maxWidth: "none",         
-                  width: "fit-content",    
-                  padding: "12px 16px",      
-                  fontSize: "14px",         
+                  whiteSpace: "nowrap",
+                  maxWidth: "none",
+                  width: "fit-content",
+                  padding: "12px 16px",
+                  fontSize: "14px",
                 },
                 icon: "🌊",
               });
-        
+
               if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
                   (pos) => {
@@ -477,10 +501,10 @@ function MapPage() {
                   kakaoMapInstance.setLevel(4);
                 }
               }
-        
+
               return;
             }
-        
+
             // 보이는 마커 업데이트는 그 이후에 진행
             updateVisibleMarkers(kakaoMapInstance);
           }
@@ -530,8 +554,8 @@ function MapPage() {
                   filterType === "all"
                     ? true
                     : filterType === "mine"
-                    ? isMine
-                    : markerInfo.type === filterType;
+                      ? isMine
+                      : markerInfo.type === filterType;
 
                 // 👉 필터와 영역 조건 모두 만족하는 경우만 지도에 표시
                 if (inBounds && matchesFilter) {
@@ -745,7 +769,7 @@ function MapPage() {
         tempMarkerType === "댕플"
           ? markerImages.current[0].image
           : markerImages.current[1][tempMarkerSubType] ||
-            markerImages.current[1].image;
+          markerImages.current[1].image;
 
       const marker = new window.kakao.maps.Marker({
         position: center,
@@ -775,7 +799,7 @@ function MapPage() {
           console.error("🐾 반려견 정보 조회 중 오류:", error);
         }
       }
-      
+
       const markerInfo = {
         id: serverMarker.id, // 서버에서 받은 ID
         user_id: user.userId, // 사용자 ID
@@ -807,15 +831,15 @@ function MapPage() {
             map.setLevel(3);
           }
         }, 300);
-  
+
         const { type, subType } = markerInfo;
 
         const emoji =
           tempMarkerType === "댕플"
             ? "🐶"
             : tempMarkerSubType
-            ? MARKER_IMAGES.EMOJI[tempMarkerSubType] || "⚠️"
-            : "⚠️";
+              ? MARKER_IMAGES.EMOJI[tempMarkerSubType] || "⚠️"
+              : "⚠️";
 
         const deleteBtnId = `delete-marker-${markerInfo.id}`;
         const closeBtnId = `close-overlay-${markerInfo.id}`;
@@ -873,9 +897,8 @@ function MapPage() {
               padding: 10px;
               box-shadow: inset 0 0 4px rgba(0,0,0,0.05);
             ">
-              ${
-                petImage
-                  ? `
+              ${petImage
+            ? `
                   <img 
                     src="${petImage}" 
                     alt="${petName}" 
@@ -884,7 +907,7 @@ function MapPage() {
                   />
                   <div style="font-size: 13px; color: #444;">${petName}</div>
                 `
-                  : `
+            : `
                   <img 
                     src="/images/default-pet.png" 
                     alt="기본 이미지" 
@@ -892,13 +915,12 @@ function MapPage() {
                   />
                   <div style="font-size: 12px; color: #bbb;">반려견을 등록하지 않았습니다</div>
                 `
-              }
+          }
             </div>
 
             <!-- 삭제 버튼 -->
-            ${
-              user?.userId == markerInfo.user_id
-                ? `<button id="delete-marker-${markerInfo.id}" style="
+            ${user?.userId == markerInfo.user_id
+            ? `<button id="delete-marker-${markerInfo.id}" style="
               padding: 8px 14px;
               background: #ef4444;
               color: white;
@@ -909,8 +931,8 @@ function MapPage() {
               font-weight: bold;
               box-shadow: 0 2px 4px rgba(0,0,0,0.15);
             ">삭제</button>`
-                : ""
-            }
+            : ""
+          }
           </div>
         `;
 
@@ -1374,7 +1396,7 @@ function MapPage() {
           const emoji =
             type === "댕플" ? "🐶" : MARKER_IMAGES.EMOJI[subType] || "⚠️";
 
-            const infoContent = `
+          const infoContent = `
             <div class="custom-overlay-animate" style="
               position: relative;
               padding: 12px 12px 12px;
@@ -1427,9 +1449,8 @@ function MapPage() {
                 padding: 10px;
                 box-shadow: inset 0 0 4px rgba(0,0,0,0.05);
               ">
-                ${
-                  petImage
-                    ? `
+                ${petImage
+              ? `
                     <img 
                       src="${petImage}" 
                       alt="${petName}" 
@@ -1438,7 +1459,7 @@ function MapPage() {
                     />
                     <div style="font-size: 13px; color: #444;">${petName}</div>
                   `
-                    : `
+              : `
                     <img 
                       src="/images/default-pet.png" 
                       alt="기본 이미지" 
@@ -1446,13 +1467,12 @@ function MapPage() {
                     />
                     <div style="font-size: 12px; color: #bbb;">반려견을 등록하지 않았습니다</div>
                   `
-                }
+            }
               </div>
           
               <!-- 삭제 버튼 -->
-              ${
-                user?.userId == markerInfo.user_id
-                  ? `<button id="delete-marker-${markerInfo.id}" style="
+              ${user?.userId == markerInfo.user_id
+              ? `<button id="delete-marker-${markerInfo.id}" style="
                 padding: 8px 14px;
                 background: #ef4444;
                 color: white;
@@ -1463,8 +1483,8 @@ function MapPage() {
                 font-weight: bold;
                 box-shadow: 0 2px 4px rgba(0,0,0,0.15);
               ">삭제</button>`
-                  : ""
-              }
+              : ""
+            }
             </div>
           `;
 
@@ -2088,11 +2108,10 @@ function MapPage() {
                 }
                 filterMarkersByType(value);
               }}
-              className={`text-xs font-semibold py-2 px-3 rounded-full shadow transition ${
-                filterType === value
+              className={`text-xs font-semibold py-2 px-3 rounded-full shadow transition ${filterType === value
                   ? `${color} text-white`
                   : "bg-white text-gray-600 border border-gray-300"
-              }`}
+                }`}
             >
               {label}
             </button>
@@ -2213,15 +2232,15 @@ function MapPage() {
                 {tempMarkerType === "댕플"
                   ? "🐶"
                   : tempMarkerSubType
-                  ? MARKER_IMAGES.EMOJI[tempMarkerSubType] || "⚠️"
-                  : "⚠️"}
+                    ? MARKER_IMAGES.EMOJI[tempMarkerSubType] || "⚠️"
+                    : "⚠️"}
               </span>
               <h2 className="text-lg font-bold text-gray-800">
                 {tempMarkerType === "댕플"
                   ? "댕플을 찍어멍!"
                   : tempMarkerSubType
-                  ? `${tempMarkerSubType}을 찍어멍!`
-                  : "댕져러스를 찍어멍!"}
+                    ? `${tempMarkerSubType}을 찍어멍!`
+                    : "댕져러스를 찍어멍!"}
               </h2>
             </div>
 
