@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## [1.26.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.26.0...v1.26.1) (2025-04-11)
+
+### 🎨 STYLES
+
+* 마커 클러스터 디자인 변경 ([cadcd60](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/cadcd608a84aae7fe34c4dacdc0cae08b2072d53))
+* 클러스터링 크기 수정 ([656fa89](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/656fa895e5716f1759ba5641615552e938c67a34))
+
 ## [1.26.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.25.3...v1.26.0) (2025-04-11)
 
 ### 🚀 NEW FEATURES
