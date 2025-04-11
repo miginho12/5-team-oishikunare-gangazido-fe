@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## [1.25.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.24.0...v1.25.0) (2025-04-11)
+
+### 🚀 NEW FEATURES
+
+* 이메일 인증 모달 추가 ([4d8ce64](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/4d8ce646ad4a8f31136d742e6116b92dc91ddd57))
+
+### 🐛 BUG FIXES
+
+* eslint 오류 수정 ([4da116d](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/4da116d876bdfca5dbc04f88a55f25351a32f0d9))
+* 주석추가 ([f5076fa](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/f5076fa6db64b2effa43155615a64ae95982ab7e))
+
 ## [1.24.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.23.11...v1.24.0) (2025-04-11)
 
 ### 🚀 NEW FEATURES
