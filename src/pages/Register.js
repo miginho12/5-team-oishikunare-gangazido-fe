@@ -22,7 +22,8 @@ function Register() {
   const [verificationCode, setVerificationCode] = useState('');
   //const [serverVerificationCode, setServerVerificationCode] = useState('');
   const [isSendingCode, setIsSendingCode] = useState(false);
-  const [resendMessage, setResendMessage] = useState(''); //코드 재전송 시 모달 알림
+  //const [resendMessage, setResendMessage] = useState(''); //코드 재전송 시 모달 알림
+  const [showResendModal, setShowResendModal] = useState(false);
 
   /////////인증 코드 유효시간 타이머 
   const [timeLeft, setTimeLeft] = useState(180); // 3분
@@ -143,15 +144,27 @@ function Register() {
   
     try {
       setIsSendingCode(true);
+      setShowVerificationModal(true); // ✅ 모달 즉시 오픈
       const response = await sendEmailVerificationCode(email);
       console.log("인증 이메일 전송 응답:", response);
+
+      const isResend = showVerificationModal; // 이전에 모달이 떴었다면 재전송임
+
+
       setTimeLeft(180); //타이머 리셋
-      setShowVerificationModal(true);
-      setResendMessage('인증 코드가 재전송 되었습니다!');
-      setTimeout(() => setResendMessage(''), 3000);
+      //setShowVerificationModal(true);
+
+
+      if (isResend) {
+        setShowResendModal(true);
+        setTimeout(() => {
+          setShowResendModal(false);
+        }, 2000);
+      }
     } catch (err) {
       console.error('이메일 인증 요청 오류:', err);
       setError('인증 메일 전송 중 문제가 발생했습니다.');
+      setShowVerificationModal(false); // ❌ 실패 시 모달 닫기
     } finally {
       setIsSendingCode(false);
     }
@@ -412,6 +425,14 @@ function Register() {
 
   return (
     <div className="flex flex-col h-full bg-amber-50">
+      {/* ✅ 여기! 모달 위치 */}
+      {showResendModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
+          <div className="bg-white px-6 py-3 rounded-lg shadow-lg">
+            <p className="text-sm font-semibold text-green-700">인증 코드가 재전송되었습니다!</p>
+          </div>
+        </div>
+      )}
       {/* 헤더 - 뒤로가기 버튼 추가 */}
       <header className="bg-white pt-2 pb-0 px-4 shadow-md flex items-center relative">
         <button onClick={goToMap} className="absolute left-4">
