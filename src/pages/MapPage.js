@@ -272,20 +272,28 @@ function MapPage() {
   // 클러스터 스타일 정의
   const CLUSTER_STYLES = {
     mine: {
-      background: "rgba(34, 197, 94, 0.8)", // green-500
-      text: "#fff",
+      background: "rgba(209, 250, 229, 0.85)", // #d1fae5 + 투명도
+      text: "#065f46",
+      border: "#34d399",
+      shadow: "0 4px 12px rgba(16,185,129,0.15)",
     },
     댕플: {
-      background: "rgba(251, 191, 36, 0.8)", // amber-300
-      text: "#fff",
+      background: "rgba(254, 249, 195, 0.85)", // #fef9c3
+      text: "#92400e",
+      border: "#fde68a",
+      shadow: "0 4px 12px rgba(253,224,71,0.2)",
     },
     댕져러스: {
-      background: "rgba(248, 113, 113, 0.8)", // red-400
-      text: "#fff",
+      background: "rgba(254, 226, 226, 0.85)", // #fee2e2
+      text: "#991b1b",
+      border: "#fca5a5",
+      shadow: "0 4px 12px rgba(248,113,113,0.2)",
     },
     all: {
-      background: "rgba(156, 163, 175, 0.8)", // gray-400
-      text: "#fff",
+      background: "rgba(229, 231, 235, 0.85)", // #e5e7eb
+      text: "#374151",
+      border: "#d1d5db",
+      shadow: "0 4px 12px rgba(156,163,175,0.15)",
     },
   };
 
@@ -298,6 +306,8 @@ function MapPage() {
       averageCenter: true,
       minLevel: 5,
       disableClickZoom: false,
+      calculator: [10, 30, 50, 100],
+      texts: (count) => `<span>${count}</span>`, 
       styles: [
         {
           width: "50px",
@@ -306,9 +316,12 @@ function MapPage() {
           color: style.text,
           textAlign: "center",
           lineHeight: "50px",
-          borderRadius: "25px",
-          fontSize: "14px",
+          borderRadius: "50%",
+          fontSize: "15px",
           fontWeight: "bold",
+          border: `2px solid ${style.border}`,
+          boxShadow: style.shadow,
+  
 
           // 모바일 클러스터링 위함
           position: "absolute",
@@ -316,6 +329,7 @@ function MapPage() {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
+          whiteSpace: "nowrap", // 모바일에서 이상하면 뺄 것 
         },
       ],
     });
