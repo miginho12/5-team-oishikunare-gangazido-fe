@@ -397,26 +397,36 @@ function ProfileEdit() {
                 </button>
               )}
               <div className="w-24 h-24 rounded-full bg-amber-100 flex items-center justify-center mb-3 overflow-hidden">
-                {profileImagePreview ? (
-                  <img 
-                    src={profileImagePreview} 
-                    alt="프로필 이미지"
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                      // 이미지 로드 실패 시 기본 이미지로 대체
-                      e.target.style.display = "none";
-                      // SVG 아이콘 표시
-                      e.target.parentNode.innerHTML = `
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-14 w-14 text-amber-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                          />
-                        </svg>
-                      `;
-                    }}
+              {profileImagePreview ? (
+                <img 
+                  src={profileImagePreview} 
+                  alt="프로필 이미지"
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    // 이미지 로드 실패 시 상태 업데이트 추가
+                    console.error("이미지 로드 실패:", profileImagePreview);
+                    
+                    // 프로필 이미지 상태를 null로 설정
+                    setProfileImage(null);
+                    setProfileImagePreview(null);
+                    
+                    // UI 업데이트
+                    e.target.style.display = "none";
+                    e.target.parentNode.innerHTML = `
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-14 w-14 text-amber-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                        />
+                      </svg>
+                    `;
+                    
+                    // 선택적: 사용자에게 알림
+                    setToastMessage("프로필 이미지를 불러올 수 없습니다. 새 이미지를 업로드해주세요.");
+                    setShowToast(true);
+                  }}
                   />
                 ) : (
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-14 w-14 text-amber-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
