@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { uploadPetImage, updatePetInfo, deletePet, getPetInfo } from '../api/pet';
 import Select from 'react-select';
 
@@ -52,6 +52,7 @@ function PetEdit() {
   ];
   
   const fileInputRef = useRef(null);
+  const location = useLocation();
 
   // 최초 로딩 시 기존 반려견 정보 불러오기
   useEffect(() => {
@@ -167,7 +168,6 @@ function PetEdit() {
       });
       setToastMessage('수정을 완료하였습니다.');
       setShowToast(true);
-      setTimeout(() => navigate('/pets'), 2000);
     } catch (error) {
       const errorMsg = error.response?.data?.message;
       handleRegisterError(errorMsg); // 3. 백엔드 에러 메시지 처리
@@ -313,15 +313,18 @@ function PetEdit() {
     }
   };
 
-  // 토스트 메시지가 표시되면 3초 후에 자동으로 사라지도록 설정
+  // 수정 완료 시, 여전히 수정 페이지에 있는 경우 1초 뒤에 /pets로 이동
   useEffect(() => {
-    if (showToast) {
+    if (showToast && toastMessage === '수정을 완료하였습니다.') {
       const timer = setTimeout(() => {
-        setShowToast(false);
-      }, 3000);
+        if (location.pathname === '/pets/edit') {
+          navigate('/pets');
+        }
+      }, 1000);
+
       return () => clearTimeout(timer);
     }
-  }, [showToast]);
+  }, [showToast, toastMessage, location.pathname, navigate]);
 
   // 드롭박스 커스텀 스타일
   const customSelectStyles = {
