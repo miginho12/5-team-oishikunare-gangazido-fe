@@ -6,6 +6,7 @@ function PetEdit() {
   const navigate = useNavigate();
   const [showConfirm, setShowConfirm] = useState(false);
   const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
 
   const [name, setName] = useState('');
   const [breed, setBreed] = useState('');
@@ -123,7 +124,21 @@ function PetEdit() {
   };
 
   const handleUpdatePet = async () => {
-    if (!validateFields()) return; // 1. 프론트 유효성 검사 먼저
+    const isValid = validateFields(); // 1. 프론트 유효성 검사 먼저
+    if (!isValid) {
+      // 🔥 유효성 실패 시 첫 번째 에러 필드에 shake 적용
+      const firstErrorInput = document.querySelector('input.border-red-500, select.border-red-500');
+      if (firstErrorInput) {
+        firstErrorInput.classList.add('shake');
+        setTimeout(() => {
+          firstErrorInput.classList.remove('shake');
+        }, 500);
+      }
+
+      setToastMessage('모든 항목을 올바르게 입력해주세요.');
+      setShowToast(true);
+      return;
+    }
 
     let profileImageKeyToSend;
     if (isImageRemoved) {
@@ -143,6 +158,7 @@ function PetEdit() {
         weight,
         profileImage: profileImageKeyToSend,
       });
+      setToastMessage('수정을 완료하였습니다.');
       setShowToast(true);
       setTimeout(() => navigate('/pets'), 2000);
     } catch (error) {
@@ -152,74 +168,66 @@ function PetEdit() {
   };
 
   // 프론트 자체 유효성 검사
-  const validateFields = () => {
+  const validateFields = (field) => {
     let isValid = true;
-
-    setNameError('');
-    setAgeError('');
-    setWeightError('');
-    setGenderError('');
-    setBreedError('');
-
-    // 이름
-    const nameRegex = /^[가-힣a-zA-Z]+$/;
-    if (!name) {
-      setNameError('반려견의 이름을 입력하세요.');
-      isValid = false;
-    } else if (!nameRegex.test(name)) {
-      setNameError('반려견의 이름은 공백없이 한글 또는 영문만 입력 가능합니다.');
-      isValid = false;
-    } else if (name.length > 10) {
-      setNameError('반려견의 이름은 최대 10자까지 입력 가능합니다.');
-      isValid = false;
+    const fieldsToCheck = field ? [field] : ['name', 'age', 'weight', 'gender', 'breed'];
+  
+    if (fieldsToCheck.includes('name')) {
+      setNameError('');
+      const nameRegex = /^[가-힣a-zA-Z]+$/;
+      if (!name) {
+        setNameError('반려견의 이름을 입력하세요.');
+        isValid = false;
+      } else if (!nameRegex.test(name)) {
+        setNameError('반려견의 이름은 공백없이 한글 또는 영문만 입력 가능합니다.');
+        isValid = false;
+      } else if (name.length > 10) {
+        setNameError('반려견의 이름은 최대 10자까지 입력 가능합니다.');
+        isValid = false;
+      }
     }
-
-    // 나이
-    const ageNum = parseInt(age);
-    if (!age) {
-      setAgeError('반려견의 나이를 입력하세요.');
-      isValid = false;
-    } else if (isNaN(ageNum)) {
-      setAgeError('반려견 나이는 1부터 50사이의 숫자만 입력 가능합니다.');
-      isValid = false;
-    } else if (ageNum <= 0) {
-      setAgeError('반려견 나이는 1부터 50사이의 숫자만 입력 가능합니다.');
-      isValid = false;
-    } else if (ageNum >= 51) {
-      setAgeError('반려견 나이는 1부터 50사이의 숫자만 입력 가능합니다.');
-      isValid = false;
+  
+    if (fieldsToCheck.includes('age')) {
+      setAgeError('');
+      const ageNum = parseInt(age);
+      if (!age) {
+        setAgeError('반려견의 나이를 입력하세요.');
+        isValid = false;
+      } else if (isNaN(ageNum) || ageNum < 1 || ageNum > 50) {
+        setAgeError('반려견 나이는 1부터 50사이의 숫자만 입력 가능합니다.');
+        isValid = false;
+      }
     }
-
-    const trimmed = String(weight).trim();
-    const weightNum = parseFloat(trimmed);
-
-    if (trimmed === '') {
-      setWeightError('반려견의 몸무게를 입력하세요.');
-      isValid = false;
-    } else if (isNaN(weightNum)) {
-      setWeightError('올바른 몸무게 형식을 입력해주세요. (예: 5 또는 5.2)');
-      isValid = false;
-    } else if (weightNum <= 0) {
-      setWeightError('반려견 나이는 1부터 200사이의 숫자만 입력 가능합니다.');
-      isValid = false;
-    } else if (weightNum >= 200) {
-      setWeightError('반려견 나이는 1부터 200사이의 숫자만 입력 가능합니다.');
-      isValid = false;
-    } else {
+  
+    if (fieldsToCheck.includes('weight')) {
       setWeightError('');
+      const trimmed = String(weight).trim();
+      const weightNum = parseFloat(trimmed);
+      if (trimmed === '') {
+        setWeightError('반려견의 몸무게를 입력하세요.');
+        isValid = false;
+      } else if (isNaN(weightNum) || weightNum <= 0 || weightNum >= 200) {
+        setWeightError('반려견 몸무게는 1부터 200사이의 숫자만 입력 가능합니다.');
+        isValid = false;
+      }
     }
-    // 성별
-    if (!gender) {
-      setGenderError('반려견의 성별을 선택하세요.');
-      isValid = false;
+  
+    if (fieldsToCheck.includes('gender')) {
+      setGenderError('');
+      if (!gender) {
+        setGenderError('반려견의 성별을 선택하세요.');
+        isValid = false;
+      }
     }
-
-    // 품종
-    if (!breed) {
-      setBreedError('반려견의 품종을 입력하세요.');
-      isValid = false;
+  
+    if (fieldsToCheck.includes('breed')) {
+      setBreedError('');
+      if (!breed) {
+        setBreedError('반려견의 품종을 입력하세요.');
+        isValid = false;
+      }
     }
-
+  
     return isValid;
   };
 
@@ -380,7 +388,7 @@ function PetEdit() {
             </label>
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-4"> 
             <div className="relative">
               <label className="block text-sm font-medium text-gray-700 mb-1">반려견 이름</label>
               {/* 이름 */}
@@ -390,8 +398,7 @@ function PetEdit() {
                 onChange={(e) => setName(e.target.value)}
                 onBlur={() => handleBlur('name')}
                 placeholder="이름"
-                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
-                required
+                className={`w-full p-3 border ${nameError ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent`}                required
               />
               {touched.name && nameError && (
                 <p className="text-sm text-red-500 mt-1">{nameError}</p>
@@ -404,8 +411,7 @@ function PetEdit() {
                 value={breed}
                 onChange={(e) => setBreed(e.target.value)}
                 onBlur={() => handleBlur('breed')}
-                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
-                required
+                className={`w-full p-3 border ${breedError ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent`}                required
               >
                 <option value="">선택하세요</option>
                 {breedOptions.map((option, index) => (
@@ -434,8 +440,7 @@ function PetEdit() {
                 }}
                 onBlur={() => handleBlur('age')}
                 placeholder="나이"
-                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
-                required
+                className={`w-full p-3 border ${ageError ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent`}                required
                 min="1"
               />
               {touched.age && ageError && (
@@ -458,8 +463,7 @@ function PetEdit() {
                 }}
                 onBlur={() => handleBlur('weight')}
                 placeholder="kg 단위로 입력해주세요"
-                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
-                required
+                className={`w-full p-3 border ${weightError ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent`}                required
                 step="0.1"
                 min="0.1"
               />
@@ -474,8 +478,7 @@ function PetEdit() {
                 value={gender}
                 onChange={(e) => setGender(e.target.value)}
                 onBlur={() => handleBlur('gender')}
-                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
-                required
+                className={`w-full p-3 border ${genderError ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent`}                required
               >
                 <option value="male">수컷</option>
                 <option value="female">암컷</option>
@@ -582,7 +585,7 @@ function PetEdit() {
       {/* 토스트 메시지 */}
       {showToast && (
         <div className="fixed bottom-24 left-0 right-0 mx-auto w-3/5 max-w-xs bg-white bg-opacity-80 border border-amber-800 text-amber-800 p-3 rounded-md shadow-lg text-center z-50 animate-fade-in-up">
-          수정을 완료하였습니다.
+          {toastMessage}
         </div>
       )}
 
