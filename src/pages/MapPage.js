@@ -310,8 +310,8 @@ function MapPage() {
       texts: (count) => `<span>${count}</span>`, 
       styles: [
         {
-          width: "50px",
-          height: "50px",
+          width: "45px",
+          height: "45px",
           background: style.background,
           color: style.text,
           textAlign: "center",
