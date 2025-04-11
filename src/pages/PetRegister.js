@@ -5,6 +5,7 @@ import { uploadPetImage, registerPet } from '../api/pet';
 function PetRegister() {
   const navigate = useNavigate();
   const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
 
   const [name, setName] = useState('');
   const [breed, setBreed] = useState('');
@@ -52,7 +53,20 @@ function PetRegister() {
 
   const handleRegister = async () => {
     const isValid = validateFields();
-    if (!isValid) return;
+    if (!isValid) {
+      const firstErrorInput = document.querySelector('input.border-red-500, select.border-red-500');
+      if (firstErrorInput) {
+        firstErrorInput.classList.add('shake');
+        setTimeout(() => {
+          firstErrorInput.classList.remove('shake');
+        }, 500); // 애니메이션 끝난 뒤 제거
+      }
+
+      // ✅ 안내 메시지 표시
+      setToastMessage('모든 항목을 올바르게 입력해주세요.');
+      setShowToast(true);
+      return;
+    }
   
     try {
       let profileImageKey = null;
@@ -74,6 +88,7 @@ function PetRegister() {
       };
 
       await registerPet(petData);
+      setToastMessage('등록을 완료하였습니다.');
       setShowToast(true);
       setTimeout(() => {
         window.location.href = "/pets";
@@ -342,7 +357,7 @@ function PetRegister() {
                 onChange={(e) => setName(e.target.value)}
                 onBlur={() => handleBlur('name')}
                 placeholder="이름"
-                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
+                className={`w-full p-3 border ${nameError ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent`}
                 required
               />
               {touched.name && nameError && (
@@ -356,7 +371,7 @@ function PetRegister() {
                 value={breed}
                 onChange={(e) => setBreed(e.target.value)}
                 onBlur={() => handleBlur('breed')}
-                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
+                className={`w-full p-3 border ${breedError ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent`}
                 required
               >
                 <option value="">선택하세요</option>
@@ -386,7 +401,7 @@ function PetRegister() {
                 }}
                 onBlur={() => handleBlur('age')}
                 placeholder="나이"
-                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
+                className={`w-full p-3 border ${ageError ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent`}
                 required
                 min="1"
               />
@@ -410,7 +425,7 @@ function PetRegister() {
                 }}
                 onBlur={() => handleBlur('weight')}
                 placeholder="kg 단위로 입력해주세요"
-                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
+                className={`w-full p-3 border ${weightError ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent`}
                 required
                 step="0.1"
                 min="0.1"
@@ -426,7 +441,7 @@ function PetRegister() {
                 value={gender}
                 onChange={(e) => setGender(e.target.value)}
                 onBlur={() => handleBlur('gender')}
-                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
+                className={`w-full p-3 border ${genderError ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent`}
                 required
               >
                 <option value="">선택하세요</option>
@@ -451,7 +466,7 @@ function PetRegister() {
       {/* 토스트 메시지 */}
       {showToast && (
         <div className="fixed bottom-24 left-0 right-0 mx-auto w-3/5 max-w-xs bg-white bg-opacity-80 border border-amber-800 text-amber-800 p-3 rounded-md shadow-lg text-center z-50 animate-fade-in-up">
-          등록을 완료하였습니다.
+          {toastMessage}
         </div>
       )}
 
