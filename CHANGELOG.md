@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.24.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.23.11...v1.24.0) (2025-04-11)
+
+### 🚀 NEW FEATURES
+
+* 마커 모달 창 지도 클릭,드래그 시 창 닫히도록 구현 ([388d9e0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/388d9e0e5ec0fe151e14730d875feac6aaa454fa))
+
 ## [1.23.11](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.23.10...v1.23.11) (2025-04-10)
 
 ### 🐛 BUG FIXES
