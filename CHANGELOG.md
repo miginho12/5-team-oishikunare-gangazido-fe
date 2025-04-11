@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.26.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.26.1...v1.26.2) (2025-04-11)
+
+### 🐛 BUG FIXES
+
+* **map:** resolve map cutoff issue after dragging by calling relayout ([6b1b66c](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/6b1b66cc6eb029beadbf2584fa43bfe9589b89a2))
+
 ## [1.26.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.26.0...v1.26.1) (2025-04-11)
 
 ### 🎨 STYLES
