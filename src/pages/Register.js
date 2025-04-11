@@ -21,6 +21,26 @@ function Register() {
   const [showVerificationModal, setShowVerificationModal] = useState(false);
   const [verificationCode, setVerificationCode] = useState('');
   //const [serverVerificationCode, setServerVerificationCode] = useState('');
+  const [isSendingCode, setIsSendingCode] = useState(false);
+  const [resendMessage, setResendMessage] = useState(''); //코드 재전송 시 모달 알림
+
+  /////////인증 코드 유효시간 타이머 
+  const [timeLeft, setTimeLeft] = useState(180); // 3분
+
+  useEffect(() => {
+    if (showVerificationModal && timeLeft > 0) {
+      const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [showVerificationModal, timeLeft]);
+
+  const formatTime = (seconds) => {
+    const m = String(Math.floor(seconds / 60)).padStart(2, '0');
+    const s = String(seconds % 60).padStart(2, '0');
+    return `${m}:${s}`;
+  };
+
+
 
   // 파일 입력 요소에 대한 ref 추가 (component 시작 부분에)
   const fileInputRef = useRef(null);
@@ -82,8 +102,13 @@ function Register() {
   };
 
   const verifyCode = async () => {
+    if (!verificationCode.trim()) {
+      alert('인증 코드를 입력해 주세요.');
+      return;
+    }
+  
     try {
-      const response = await verifyEmailCode(email, verificationCode); // 백엔드에 인증 요청
+      const response = await verifyEmailCode(email, verificationCode);
       if (response.data && response.data.message === 'verify_email_success') {
         setIsEmailVerified(true);
         setShowVerificationModal(false);
@@ -96,6 +121,7 @@ function Register() {
       alert('인증 코드가 일치하지 않습니다.');
     }
   };
+  
 
   const handleSendVerificationCode = async () => {
     if (!email) {
@@ -103,29 +129,34 @@ function Register() {
       return;
     }
   
-    // 이메일 유효성 체크 먼저 수행
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     if (!emailRegex.test(email)) {
       setEmailError('example@email.com 형식의 올바른 이메일을 입력해주세요.');
       return;
     }
   
-    // 중복 체크도 한번 해줘야 확실함
     const res = await checkEmailDuplicate(email);
     if (res.data?.data?.isDuplicate) {
       setEmailError('이미 사용 중인 이메일입니다.');
       return;
     }
   
-    // 중복 아니고 형식도 OK → 코드 전송
     try {
+      setIsSendingCode(true);
+      const response = await sendEmailVerificationCode(email);
       console.log("인증 이메일 전송 응답:", response);
+      setTimeLeft(180); //타이머 리셋
       setShowVerificationModal(true);
+      setResendMessage('인증 코드가 재전송 되었습니다!');
+      setTimeout(() => setResendMessage(''), 3000);
     } catch (err) {
       console.error('이메일 인증 요청 오류:', err);
       setError('인증 메일 전송 중 문제가 발생했습니다.');
+    } finally {
+      setIsSendingCode(false);
     }
   };
+  
   
   
 
@@ -416,22 +447,36 @@ function Register() {
               <p className="text-sm mb-3">이메일로 전송된 인증 코드를 입력해 주세요.</p>
               <input
                 type="text"
+                inputMode="numeric"
+                maxLength={6}
+                pattern="\d{6}"
                 value={verificationCode}
-                onChange={(e) => setVerificationCode(e.target.value)}
-                placeholder="인증 코드 입력"
-                className="w-full p-2 border border-gray-300 rounded-md mb-4"
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    verifyCode();
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (/^\d*$/.test(value) && value.length <= 6) {
+                    setVerificationCode(value);
                   }
                 }}
+                placeholder="6자리 숫자 입력"
+                className="w-full p-2 border border-gray-300 rounded-md mb-4"
               />
+              <p className="text-xs text-gray-500 text-center mb-2">※ 메일이 보이지 않으면 스팸함을 확인해 주세요.</p>
+              <p className="text-sm text-amber-600 text-center mb-2">
+                인증 코드 유효 시간: {formatTime(timeLeft)}
+              </p>
               <button
-                onClick={handleSendVerificationCode}
+                onClick={() => {
+                  if (timeLeft > 0) {
+                    alert('잠시만 기다려 주세요. 인증 코드는 3분 뒤 재전송 가능합니다.');
+                  } else {
+                    handleSendVerificationCode();
+                  }
+                }}
                 className="text-sm text-amber-600 underline mb-2"
               >
                 인증 코드 재전송
               </button>
+
               <div className="flex justify-between">
                 <button
                   onClick={() => setShowVerificationModal(false)}
@@ -511,9 +556,9 @@ function Register() {
                     type="button"
                     onClick={handleSendVerificationCode}
                     className="whitespace-nowrap bg-amber-800 text-white px-3 py-2 rounded-md text-sm"
-                    disabled={isEmailVerified || loading}
+                    disabled={isEmailVerified || loading || isSendingCode}
                   >
-                    인증
+                    {isSendingCode ? '전송 중...' : '인증'}
                   </button>
                 )}
               </div>
