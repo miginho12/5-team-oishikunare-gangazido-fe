@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.26.3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.26.2...v1.26.3) (2025-04-11)
+
+### 🐛 BUG FIXES
+
+* 커스텀 드롭박스 변경으로 인한 필드 에러 강조 코드 변경 ([f254952](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/f2549521a399614e507a5524b2b0bfdcd96dcadb))
+
 ## [1.26.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.26.1...v1.26.2) (2025-04-11)
 
 ### 🐛 BUG FIXES
