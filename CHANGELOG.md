@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.25.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.25.1...v1.25.2) (2025-04-11)
+
+### 🐛 BUG FIXES
+
+* 모달 바로 오픈 되도록 수정, 재전송 헬텍 오류 수정 ([6f910f0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/6f910f0d1c796bb69b47658451203657b3225baf))
+
 ## [1.25.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.25.0...v1.25.1) (2025-04-11)
 
 ### 🐛 BUG FIXES
