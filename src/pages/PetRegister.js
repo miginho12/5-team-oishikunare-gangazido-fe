@@ -283,17 +283,16 @@ function PetRegister() {
     }
   }, [showToast]);
 
-  // 커스텀 드롭박스
-  // 드롭박스 커스텀 스타일
-  const customSelectStyles = {
+  // 커스텀 드롭박스 (드롭다운 스타일 동적으로 지정할 수 있도록 함수화)
+  const getCustomSelectStyles = (hasError) => ({
     control: (provided, state) => ({
       ...provided,
       minHeight: '3rem',
       borderRadius: '0.375rem',
-      borderColor: state.isFocused ? '#92400e' : '#d1d5db',
+      borderColor: hasError ? '#f87171' : state.isFocused ? '#92400e' : '#d1d5db', // 🔴 에러일 땐 빨간색
       boxShadow: state.isFocused ? '0 0 0 2px rgba(146, 64, 14, 0.4)' : 'none',
       '&:hover': {
-        borderColor: '#92400e',
+        borderColor: hasError ? '#f87171' : '#92400e',
       },
     }),
     menu: (provided) => ({
@@ -303,9 +302,9 @@ function PetRegister() {
     option: (provided, state) => ({
       ...provided,
       backgroundColor: state.isSelected
-        ? 'rgba(146, 64, 14, 0.2)'  // ✅ 선택된 항목 (파란 배경 방지)
+        ? 'rgba(146, 64, 14, 0.2)'
         : state.isFocused
-        ? 'rgba(146, 64, 14, 0.1)'  // ✅ 마우스 올렸을 때
+        ? 'rgba(146, 64, 14, 0.1)'
         : 'white',
       color: '#1f2937',
       cursor: 'pointer',
@@ -317,7 +316,7 @@ function PetRegister() {
       ...provided,
       color: '#1f2937',
     }),
-  };
+  });
 
   return (
     <div className="flex flex-col h-full bg-gray-50">
@@ -414,7 +413,7 @@ function PetRegister() {
                 value={breedOptions.find((option) => option.value === breed)}
                 onChange={(selectedOption) => setBreed(selectedOption.value)}
                 placeholder="품종 선택"
-                styles={customSelectStyles}
+                styles={getCustomSelectStyles(!!breedError)} 
                 isSearchable={false}
               />
               {touched.breed && breedError && (
@@ -478,7 +477,7 @@ function PetRegister() {
                 value={genderOptions.find((option) => option.value === gender)}
                 onChange={(selectedOption) => setGender(selectedOption.value)}
                 placeholder="성별 선택"
-                styles={customSelectStyles}
+                styles={getCustomSelectStyles(!!genderError)}
                 isSearchable={false}
               />
               {touched.gender && genderError && (
