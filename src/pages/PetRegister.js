@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation} from 'react-router-dom';
 import { uploadPetImage, registerPet } from '../api/pet';
 import Select from 'react-select';
 
@@ -18,6 +18,7 @@ function PetRegister() {
   const [isImageRemoved, setIsImageRemoved] = useState(false);
 
   const fileInputRef = useRef(null);
+  const location = useLocation();
 
   const [nameError, setNameError] = useState('');
   const [ageError, setAgeError] = useState('');
@@ -96,9 +97,6 @@ function PetRegister() {
       await registerPet(petData);
       setToastMessage('등록을 완료하였습니다.');
       setShowToast(true);
-      setTimeout(() => {
-        window.location.href = "/pets";
-      }, 2000);
     } catch (error) {
       const errorMsg = error.response?.data?.message;
       handleRegisterError(errorMsg);
@@ -273,15 +271,19 @@ function PetRegister() {
     }
   };
 
-  // 토스트 메시지가 표시되면 3초 후에 자동으로 사라지도록 설정
+  // 등록 완료 시, 여전히 등록 페이지에 있으면 1초 후 자동 이동
   useEffect(() => {
-    if (showToast) {
+    if (showToast && toastMessage === '등록을 완료하였습니다.') {
       const timer = setTimeout(() => {
-        setShowToast(false);
-      }, 3000);
+        // 여전히 이 페이지에 있을 때만 이동
+        if (location.pathname === '/pets/register') {
+          navigate('/pets');
+        }
+      }, 1000);
+  
       return () => clearTimeout(timer);
     }
-  }, [showToast]);
+  }, [showToast, toastMessage, location.pathname, navigate]);
 
   // 커스텀 드롭박스 (드롭다운 스타일 동적으로 지정할 수 있도록 함수화)
   const getCustomSelectStyles = (hasError) => ({
