@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## [1.26.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.26.0...v1.26.1) (2025-04-11)
+
+### 🎨 STYLES
+
+* 마커 클러스터 디자인 변경 ([cadcd60](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/cadcd608a84aae7fe34c4dacdc0cae08b2072d53))
+* 클러스터링 크기 수정 ([656fa89](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/656fa895e5716f1759ba5641615552e938c67a34))
+
+## [1.26.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.25.3...v1.26.0) (2025-04-11)
+
+### 🚀 NEW FEATURES
+
+* 등록 유효성 검사 실패 시 토스트 메시지 및 입력 필드 shake 애니메이션 추가 ([92cd34d](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/92cd34de16a9a94049164039ed2915c62db530f2))
+* 수정 유효성 검사 실패 시 토스트 메시지 및 입력 필드 shake 애니메이션 추가 ([df1aba1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/df1aba129f7d3fd8b7cacf3038418a64613af77a))
+
 ## [1.25.3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.25.2...v1.25.3) (2025-04-11)
 
 ### 🐛 BUG FIXES

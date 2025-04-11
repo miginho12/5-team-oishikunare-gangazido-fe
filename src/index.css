@@ -131,3 +131,17 @@ input, button, a {
     padding-bottom: max(env(safe-area-inset-bottom), 0.5rem);
   }
 }
+
+/* 유효성 검사 실패 시 필드 강조 - 레첼 추가 */
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  50% { transform: translateX(4px); }
+  75% { transform: translateX(-4px); }
+  100% { transform: translateX(0); }
+}
+
+.shake {
+  animation: shake 0.3s ease-in-out;
+  border-color: #f87171 !important; /* Tailwind red-500 */
+}
