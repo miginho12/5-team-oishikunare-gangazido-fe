@@ -44,38 +44,38 @@ function MapPage() {
     userRef.current = user;
   }, [user]);
 
-  // 마커 모달 창 지도 클릭 시 닫기
-  useEffect(() => {
-    if (!map || !window.kakao || !window.kakao.maps) return;
+  // 마커 모달 창 지도 클릭 시 닫기 일단 보류
+  // useEffect(() => {
+  //   if (!map || !window.kakao || !window.kakao.maps) return;
 
-    const handleMapClick = () => {
-      // 모든 오버레이 닫기
-      markersRef.current.forEach((m) => {
-        if (m.overlay) {
-          try {
-            m.overlay.setMap(null);
-            m.overlay = null;
-          } catch (e) {
-            console.warn("지도 클릭 시 overlay 닫기 실패:", e);
-          }
-        }
-      });
-    };
+  //   const handleMapClick = () => {
+  //     // 모든 오버레이 닫기
+  //     markersRef.current.forEach((m) => {
+  //       if (m.overlay) {
+  //         try {
+  //           m.overlay.setMap(null);
+  //           m.overlay = null;
+  //         } catch (e) {
+  //           console.warn("지도 클릭 시 overlay 닫기 실패:", e);
+  //         }
+  //       }
+  //     });
+  //   };
 
-    // 지도에 클릭 이벤트 등록
-    const mapClickListener = window.kakao.maps.event.addListener(
-      map,
-      "click",
-      handleMapClick
-    );
+  //   // 지도에 클릭 이벤트 등록
+  //   const mapClickListener = window.kakao.maps.event.addListener(
+  //     map,
+  //     "click",
+  //     handleMapClick
+  //   );
 
-    // 클린업 함수에서 이벤트 제거
-    return () => {
-      if (mapClickListener) {
-        window.kakao.maps.event.removeListener(map, "click", handleMapClick);
-      }
-    };
-  }, [map]);
+  //   // 클린업 함수에서 이벤트 제거
+  //   return () => {
+  //     if (mapClickListener) {
+  //       window.kakao.maps.event.removeListener(map, "click", handleMapClick);
+  //     }
+  //   };
+  // }, [map]);
 
   // 모달 관련 상태 수정
   const [showModal, setShowModal] = useState(false);
@@ -799,7 +799,7 @@ function MapPage() {
       let petImage = null;
 
       try {
-        const petRes = await getPetInfoByUserId(markerInfo.user_id);
+        const petRes = await getPetInfoByUserId(user.userId);
         petName = petRes.data.name;
         petImage = petRes.data.profileImage;
       } catch (error) {
@@ -807,10 +807,10 @@ function MapPage() {
         const message = error.response?.data?.message;
 
         if (status === 404 && message === "not_found_pet") {
-          console.log("🐾 등록된 반려견이 없는 사용자입니다.");
+          // console.log("🐾 등록된 반려견이 없는 사용자입니다.");
           // petName, petImage는 그대로 null
         } else {
-          console.error("🐾 반려견 정보 조회 중 오류:", error);
+          // console.error("🐾 반려견 정보 조회 중 오류:", error);
         }
       }
 
@@ -825,6 +825,8 @@ function MapPage() {
         type: tempMarkerType,
         subType: tempMarkerSubType,
         nickname,
+        petName,  
+        petImage,
       };
 
       // 클릭 이벤트 (인포윈도우 + 삭제) createMarkerFromModal (방금만든 마커 모달 클릭)
@@ -994,7 +996,7 @@ function MapPage() {
                 alert("삭제 권한이 없거나 로그인되지 않았습니다.");
               }
             };
-          }
+          } 
 
           const closeBtn = document.getElementById(closeBtnId);
           if (closeBtn) {
@@ -1397,15 +1399,14 @@ function MapPage() {
             petName = petRes.data.name;
             petImage = petRes.data.profileImage;
           } catch (error) {
-            const status = error.response?.status;
-            const message = error.response?.data?.message;
+            // const status = error.response?.status;
+            // const message = error.response?.data?.message;
 
-            if (status === 404 && message === "not_found_pet") {
-              console.log("🐾 등록된 반려견이 없는 사용자입니다.");
-              // petName, petImage는 그대로 null
-            } else {
-              console.error("🐾 반려견 정보 조회 중 오류:", error);
-            }
+            // if (status === 404 && message === "not_found_pet") {
+            //   // console.log("🐾 등록된 반려견이 없는 사용자입니다.");
+            // } else {
+            //   // console.error("🐾 반려견 정보 조회 중 오류:", error);
+            // }
           }
           const emoji =
             type === "댕플" ? "🐶" : MARKER_IMAGES.EMOJI[subType] || "⚠️";
@@ -1456,32 +1457,27 @@ function MapPage() {
               </div>
           
               <!-- 반려견 정보 -->
-              <div style="
-                margin-bottom: 14px;
-                background: #f9f9f9;
-                border-radius: 12px;
-                padding: 10px;
-                box-shadow: inset 0 0 4px rgba(0,0,0,0.05);
-              ">
-                ${petImage
-              ? `
-                    <img 
-                      src="${petImage}" 
-                      alt="${petName}" 
-                      onerror="this.onerror=null; this.src='/images/default-pet.png';"
-                      style="width: 72px; height: 72px; border-radius: 14px; object-fit: cover; display: block; margin: 0 auto 8px;"
-                    />
-                    <div style="font-size: 13px; color: #444;">${petName}</div>
-                  `
-              : `
-                    <img 
-                      src="/images/default-pet.png" 
-                      alt="기본 이미지" 
-                      style="width: 72px; height: 72px; border-radius: 14px; object-fit: cover; display: block; margin: 0 auto 8px; opacity: 0.85;"
-                    />
-                    <div style="font-size: 12px; color: #bbb;">반려견을 등록하지 않았습니다</div>
-                  `
-            }
+              <div style="...">
+                ${petName
+                  ? `
+                      <img 
+                        src="${petImage || '/images/default-pet.png'}" 
+                        alt="${petName}" 
+                        onerror="this.onerror=null; this.src='/images/default-pet.png';"
+                        style="width: 72px; height: 72px; border-radius: 14px; object-fit: cover; display: block; margin: 0 auto 8px;"
+                      />
+                      <div style="font-size: 13px; color: #444;">${petName}</div>
+                    `
+                  : `
+                      <img 
+                        src="/images/default-pet.png" 
+                        alt="기본 이미지" 
+                        style="width: 72px; height: 72px; border-radius: 14px; object-fit: cover; display: block; margin: 0 auto 8px; opacity: 0.85;"
+                      />
+                      <div style="font-size: 12px; color: #bbb;">반려견을 등록하지 않았습니다</div>
+                      <br>
+                    `
+                }
               </div>
           
               <!-- 삭제 버튼 -->
@@ -1529,9 +1525,7 @@ function MapPage() {
 
           // ✅ delete 버튼이 나타날 때까지 기다려서 이벤트 등록
           const tryAttachDeleteHandler = () => {
-            const deleteBtn = document.getElementById(
-              `delete-marker-${markerInfo.id}`
-            );
+            const deleteBtn = document.getElementById(`delete-marker-${markerInfo.id}`);
             if (deleteBtn) {
               deleteBtn.onclick = async () => {
                 try {
