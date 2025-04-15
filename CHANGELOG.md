@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.28.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.28.0...v1.28.1) (2025-04-15)
+
+### 🐛 BUG FIXES
+
+* 줌레벨 낮은 상태에서 마커 클릭 시 이동하는 위치 수정 ([4f0758b](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/4f0758b66f798bc6e25c4db70097acaee021f79c))
+
 ## [1.28.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.27.1...v1.28.0) (2025-04-15)
 
 ### 🚀 NEW FEATURES
