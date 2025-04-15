@@ -856,88 +856,92 @@ function MapPage() {
               ? MARKER_IMAGES.EMOJI[tempMarkerSubType] || "⚠️"
               : "⚠️";
 
-        const infoContent = `
-          <div class="custom-overlay-animate" style="
-            position: relative;
-            padding: 12px 12px 12px;
-            background: rgba(255, 255, 255, 0.95); /* 투명도 추가 */
-            border-radius: 20px; /* 더 둥글게 */
-            box-shadow: 0 6px 16px rgba(0,0,0,0.15);
-            width: 220px;
-            border: 1px solid #eee;
-            font-family: 'Arial', sans-serif;
-            font-size: 14px;
-            text-align: center;
-          ">
-            <!-- 헤더 -->
-            <div style="
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              gap: 8px;
+              const infoContent = `
+            <div class="custom-overlay-animate" style="
               position: relative;
-              font-weight: bold;
-              font-size: 15px;
-              margin-bottom: 14px;
-              color: #333;
+              padding: 16px 14px 14px;
+              background: #ffffff;
+              border-radius: 18px;
+              box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+              width: 220px;
+              border: 1px solid #eee;
+              font-family: 'Arial', sans-serif;
+              font-size: 14px;
+              text-align: center;
             ">
-              <span style="font-size: 20px;">${emoji}</span>
-              <span>${type}${subType ? ` - ${subType}` : ""}</span>
-
-              <button id="close-overlay-${markerInfo.id}" style="
+              <!-- 헤더 -->
+              <div style="
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 6px;
+                position: relative;
+                font-weight: bold;
+                font-size: 15px;
+                margin-bottom: 10px;
+                color: #222;
+              ">
+                <span style="font-size: 20px;">${emoji}</span>
+                <span>${type}${subType ? ` - ${subType}` : ""}</span>
+                <button id="close-overlay-${markerInfo.id}" style="
                   position: absolute;
-                  top: -11px;
-                  right: -3px;
+                  top: -10px;
+                  right: -2px;
                   background: transparent;
                   border: none;
-                  font-size: 27px;
+                  font-size: 24px;
                   color: #aaa;
                   cursor: pointer;
                 ">&times;</button>
-            </div>
-
-            <!-- 등록자 -->
-            <div style="margin-bottom: 12px; font-size: 13px; color: #555;">
-              등록자 <strong style="color: #444;">${nickname}</strong>
-            </div>
-
-            <!-- 반려견 정보 -->
-            <!-- 반려견 정보 -->
-            <div style="
-              margin-bottom: 14px;
-              background: #f9f9f9;
-              border-radius: 12px;
-              padding: 10px;
-              box-shadow: inset 0 0 4px rgba(0,0,0,0.05);
-            ">
-              <img 
-                src="${petImage || '/images/default-pet.png'}" 
-                alt="${petName || '기본 이미지'}" 
-                onerror="this.onerror=null; this.src='/images/default-pet.png';"
-                style="width: 72px; height: 72px; border-radius: 14px; object-fit: cover; display: block; margin: 0 auto 8px;"
-              />
-              <div style="font-size: 13px; color: ${petName ? '#444' : '#bbb'};">
-                ${petName || '반려견을 등록하지 않았습니다'}
               </div>
+          
+              <!-- 등록자 -->
+              <div style="margin-bottom: 10px; font-size: 13px; color: #666;">
+                등록자 <strong style="color: #333;">${nickname}</strong>
+              </div>
+          
+              <!-- 반려견 정보 -->
+              <div style="margin-bottom: 12px;">
+                ${
+                  petName
+                    ? `
+                      <img 
+                        src="${petImage || '/images/default-pet.png'}" 
+                        alt="${petName}" 
+                        onerror="this.onerror=null; this.src='/images/default-pet.png';"
+                        style="width: 70px; height: 70px; border-radius: 12px; object-fit: cover; display: block; margin: 0 auto 6px;"
+                      />
+                      <div style="font-size: 13px; color: #333;">${petName}</div>
+                    `
+                    : `
+                      <img 
+                        src="/images/default-pet.png" 
+                        alt="기본 이미지" 
+                        style="width: 70px; height: 70px; border-radius: 12px; object-fit: cover; display: block; margin: 0 auto 6px; opacity: 0.85;"
+                      />
+                      <div style="font-size: 12px; color: #bbb;">반려견이 등록되지 않았어요</div>
+                    `
+                }
+              </div>
+          
+              <!-- 삭제 버튼 -->
+              ${
+                user?.userId == markerInfo.user_id
+                  ? `<button id="delete-marker-${markerInfo.id}" style="
+                      padding: 7px 14px;
+                      background: #f87171;
+                      color: white;
+                      border: none;
+                      border-radius: 8px;
+                      cursor: pointer;
+                      font-size: 13px;
+                      font-weight: 600;
+                      box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+                    ">삭제</button>`
+                  : ""
+              }
             </div>
-
-            <!-- 삭제 버튼 -->
-            ${user?.userId == markerInfo.user_id
-            ? `<button id="delete-marker-${markerInfo.id}" style="
-              padding: 8px 14px;
-              background: #ef4444;
-              color: white;
-              border: none;
-              border-radius: 6px;
-              cursor: pointer;
-              font-size: 14px;
-              font-weight: bold;
-              box-shadow: 0 2px 4px rgba(0,0,0,0.15);
-            ">삭제</button>`
-            : ""
-          }
-          </div>
-        `;
+          `;
 
         const overlay = new window.kakao.maps.CustomOverlay({
           content: infoContent, // 너가 만든 HTML
@@ -1395,13 +1399,13 @@ function MapPage() {
           const emoji =
             type === "댕플" ? "🐶" : MARKER_IMAGES.EMOJI[subType] || "⚠️";
 
-          const infoContent = `
+            const infoContent = `
             <div class="custom-overlay-animate" style="
               position: relative;
-              padding: 12px 12px 12px;
-              background: rgba(255, 255, 255, 0.95); /* 투명도 추가 */
-              border-radius: 20px; /* 더 둥글게 */    
-              box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+              padding: 16px 14px 14px;
+              background: #ffffff;
+              border-radius: 18px;
+              box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
               width: 220px;
               border: 1px solid #eee;
               font-family: 'Arial', sans-serif;
@@ -1413,72 +1417,72 @@ function MapPage() {
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                gap: 8px;
+                gap: 6px;
                 position: relative;
                 font-weight: bold;
                 font-size: 15px;
-                margin-bottom: 14px;
-                color: #333;
+                margin-bottom: 10px;
+                color: #222;
               ">
                 <span style="font-size: 20px;">${emoji}</span>
                 <span>${type}${subType ? ` - ${subType}` : ""}</span>
-          
                 <button id="close-overlay-${markerInfo.id}" style="
                   position: absolute;
-                  top: -11px;
-                  right: -3px;
+                  top: -10px;
+                  right: -2px;
                   background: transparent;
                   border: none;
-                  font-size: 27px;
+                  font-size: 24px;
                   color: #aaa;
                   cursor: pointer;
                 ">&times;</button>
               </div>
           
               <!-- 등록자 -->
-              <div style="margin-bottom: 12px; font-size: 13px; color: #555;">
-                등록자 <strong style="color: #444;">${nickname}</strong>
+              <div style="margin-bottom: 10px; font-size: 13px; color: #666;">
+                등록자 <strong style="color: #333;">${nickname}</strong>
               </div>
           
               <!-- 반려견 정보 -->
-              <div style="...">
-                ${petName
-                  ? `
+              <div style="margin-bottom: 12px;">
+                ${
+                  petName
+                    ? `
                       <img 
                         src="${petImage || '/images/default-pet.png'}" 
                         alt="${petName}" 
                         onerror="this.onerror=null; this.src='/images/default-pet.png';"
-                        style="width: 72px; height: 72px; border-radius: 14px; object-fit: cover; display: block; margin: 0 auto 8px;"
+                        style="width: 70px; height: 70px; border-radius: 12px; object-fit: cover; display: block; margin: 0 auto 6px;"
                       />
-                      <div style="font-size: 13px; color: #444;">${petName}</div>
+                      <div style="font-size: 13px; color: #333;">${petName}</div>
                     `
-                  : `
+                    : `
                       <img 
                         src="/images/default-pet.png" 
                         alt="기본 이미지" 
-                        style="width: 72px; height: 72px; border-radius: 14px; object-fit: cover; display: block; margin: 0 auto 8px; opacity: 0.85;"
+                        style="width: 70px; height: 70px; border-radius: 12px; object-fit: cover; display: block; margin: 0 auto 6px; opacity: 0.85;"
                       />
-                      <div style="font-size: 12px; color: #bbb;">반려견을 등록하지 않았습니다</div>
-                      <br>
+                      <div style="font-size: 12px; color: #bbb;">반려견이 등록되지 않았어요</div>
                     `
                 }
               </div>
           
               <!-- 삭제 버튼 -->
-              ${user?.userId == markerInfo.user_id
-              ? `<button id="delete-marker-${markerInfo.id}" style="
-                padding: 8px 14px;
-                background: #ef4444;
-                color: white;
-                border: none;
-                border-radius: 6px;
-                cursor: pointer;
-                font-size: 14px;
-                font-weight: bold;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.15);
-              ">삭제</button>`
-              : ""
-            }
+              ${
+                user?.userId == markerInfo.user_id
+                  ? `<button id="delete-marker-${markerInfo.id}" style="
+                      padding: 7px 14px;
+                      background: #f87171;
+                      color: white;
+                      border: none;
+                      border-radius: 8px;
+                      cursor: pointer;
+                      font-size: 13px;
+                      font-weight: 600;
+                      box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+                    ">삭제</button>`
+                  : ""
+              }
             </div>
           `;
 
