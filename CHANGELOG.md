@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.28.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.27.1...v1.28.0) (2025-04-15)
+
+### 🚀 NEW FEATURES
+
+* 현재위치 마커 표시 추가 ([1bbeb69](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/1bbeb69f41a78c72fc165a7c5221712d9b9b8c39))
+
 ## [1.27.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.27.0...v1.27.1) (2025-04-15)
 
 ### 🐛 BUG FIXES
