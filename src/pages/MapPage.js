@@ -727,9 +727,8 @@ function MapPage() {
         return;
       }
 
-      console.log("현재 줌 레벨: ", map.getLevel()); // 📌 디버깅용
       const MIN_MARKER_ZOOM_LEVEL = 5;
-      // ✅ 줌 레벨 검사
+      // 줌 레벨 검사
       if (map.getLevel() > MIN_MARKER_ZOOM_LEVEL) {
         toast.warn("지도를 확대하여 정확한 위치에 마커를 찍어주세요!", {
           position: "bottom-center",
@@ -794,24 +793,18 @@ function MapPage() {
       // 서버에서 닉네임 받아오기
       const nicknameRes = await getNicknameByUserId(user.userId);
       const nickname = nicknameRes.data.data.nickname;
-      // 서버에서 강아지 정보 받아오기
+
+      // ✅ 반려견 정보 받아오기
       let petName = null;
       let petImage = null;
-
       try {
+        console.log("🐶 반려견 정보 요청 보내기 전...");
         const petRes = await getPetInfoByUserId(user.userId);
+        console.log("🐶 반려견 응답:", petRes.data);
         petName = petRes.data.name;
         petImage = petRes.data.profileImage;
-      } catch (error) {
-        const status = error.response?.status;
-        const message = error.response?.data?.message;
-
-        if (status === 404 && message === "not_found_pet") {
-          // console.log("🐾 등록된 반려견이 없는 사용자입니다.");
-          // petName, petImage는 그대로 null
-        } else {
-          // console.error("🐾 반려견 정보 조회 중 오류:", error);
-        }
+      } catch (e) {
+        console.warn("🐶 반려견 정보 없음 또는 에러:", e);
       }
 
       const markerInfo = {
@@ -828,9 +821,14 @@ function MapPage() {
         petName,  
         petImage,
       };
+      console.log('markerinfo', markerInfo);
 
-      // 클릭 이벤트 (인포윈도우 + 삭제) createMarkerFromModal (방금만든 마커 모달 클릭)
+      // 상태 업데이트
+      setMarkers((prev) => [...prev, markerInfo]);
+
+      // 클릭 이벤트 (인포윈도우 + 삭제) createMarkerFromModal (방금만든 마커 모달 클릭시)
       window.kakao.maps.event.addListener(marker, "click", async () => {
+        // 기존 오버레이 닫기
         markersRef.current.forEach((m) => {
           if (m.overlay) m.overlay.setMap(null);
         });
@@ -848,7 +846,8 @@ function MapPage() {
           }
         }, 300);
 
-        const { type, subType } = markerInfo;
+        const { type, subType, nickname, petName, petImage } = markerInfo;
+        console.log(nickname, petName, petImage );
 
         const emoji =
           tempMarkerType === "댕플"
@@ -856,9 +855,6 @@ function MapPage() {
             : tempMarkerSubType
               ? MARKER_IMAGES.EMOJI[tempMarkerSubType] || "⚠️"
               : "⚠️";
-
-        const deleteBtnId = `delete-marker-${markerInfo.id}`;
-        const closeBtnId = `close-overlay-${markerInfo.id}`;
 
         const infoContent = `
           <div class="custom-overlay-animate" style="
@@ -906,6 +902,7 @@ function MapPage() {
             </div>
 
             <!-- 반려견 정보 -->
+            <!-- 반려견 정보 -->
             <div style="
               margin-bottom: 14px;
               background: #f9f9f9;
@@ -913,25 +910,15 @@ function MapPage() {
               padding: 10px;
               box-shadow: inset 0 0 4px rgba(0,0,0,0.05);
             ">
-              ${petImage
-            ? `
-                  <img 
-                    src="${petImage}" 
-                    alt="${petName}" 
-                    onerror="this.onerror=null; this.src='/images/default-pet.png';"
-                    style="width: 72px; height: 72px; border-radius: 14px; object-fit: cover; display: block; margin: 0 auto 8px;"
-                  />
-                  <div style="font-size: 13px; color: #444;">${petName}</div>
-                `
-            : `
-                  <img 
-                    src="/images/default-pet.png" 
-                    alt="기본 이미지" 
-                    style="width: 72px; height: 72px; border-radius: 14px; object-fit: cover; display: block; margin: 0 auto 8px; opacity: 0.85;"
-                  />
-                  <div style="font-size: 12px; color: #bbb;">반려견을 등록하지 않았습니다</div>
-                `
-          }
+              <img 
+                src="${petImage || '/images/default-pet.png'}" 
+                alt="${petName || '기본 이미지'}" 
+                onerror="this.onerror=null; this.src='/images/default-pet.png';"
+                style="width: 72px; height: 72px; border-radius: 14px; object-fit: cover; display: block; margin: 0 auto 8px;"
+              />
+              <div style="font-size: 13px; color: ${petName ? '#444' : '#bbb'};">
+                ${petName || '반려견을 등록하지 않았습니다'}
+              </div>
             </div>
 
             <!-- 삭제 버튼 -->
@@ -965,7 +952,7 @@ function MapPage() {
         markerInfo.overlay = overlay;
 
         setTimeout(() => {
-          const deleteBtn = document.getElementById(deleteBtnId);
+          const deleteBtn = document.getElementById(`delete-marker-${markerInfo.id}`);
           if (deleteBtn) {
             deleteBtn.onclick = async () => {
               try {
@@ -998,7 +985,7 @@ function MapPage() {
             };
           } 
 
-          const closeBtn = document.getElementById(closeBtnId);
+          const closeBtn = document.getElementById(`close-overlay-${markerInfo.id}`);
           if (closeBtn) {
             closeBtn.onclick = () => {
               overlay.setMap(null);
@@ -1008,9 +995,6 @@ function MapPage() {
 
         setSelectedMarker(markerInfo);
       });
-
-      // 상태 업데이트
-      setMarkers((prev) => [...prev, markerInfo]);
 
       // 클러스터에 추가
       if (
