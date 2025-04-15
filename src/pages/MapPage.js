@@ -860,9 +860,37 @@ function MapPage() {
           if (m.overlay) m.overlay.setMap(null);
         });
 
+        // 줌 레벨 별로 마커 모달창 뜨는 위치 조절
+        const getLatOffsetByZoom = (zoomLevel) => {
+          // 줌 레벨: 1 (가장 확대됨) ~ 14 (가장 축소됨)
+          // 보통 3~6 사이 사용함
+          switch (zoomLevel) {
+            case 1:
+              return 0.0003;
+            case 2:
+              return 0.0007;
+            case 3:
+              return 0.001;
+            case 4:
+              return 0.0013;
+            case 5:
+              return 0.0016;
+            case 6:
+              return 0.002;
+            case 7:
+            case 8:
+              return 0.0025;
+            default:
+              return 0.003; // 멀리 있는 경우
+          }
+        };
+
         // 마커 클릭 시 지도 이동 및 지도 확대
         const position = marker.getPosition();
-        const adjustedLat = position.getLat() + 0.0015;
+        const zoomLevel = map.getLevel();
+        console.log(zoomLevel);
+        const offset = getLatOffsetByZoom(zoomLevel);
+        const adjustedLat = position.getLat() + offset;
         const adjustedPosition = new window.kakao.maps.LatLng(adjustedLat, position.getLng());
 
         map.panTo(adjustedPosition);
@@ -1526,10 +1554,38 @@ function MapPage() {
           });
 
           // 마커 클릭 시 줌 확대 + 중앙 이동
-          const position = marker.getPosition();
-          const adjustedLat = position.getLat() + 0.0015; // 숫자는 조절 가능
-          const adjustedPosition = new window.kakao.maps.LatLng(adjustedLat, position.getLng());
+          // 줌 레벨 별로 마커 모달창 뜨는 위치 조절
+          const getLatOffsetByZoom = (zoomLevel) => {
+            // 줌 레벨: 1 (가장 확대됨) ~ 14 (가장 축소됨)
+            // 보통 3~6 사이 사용함
+            switch (zoomLevel) {
+              case 1:
+                return 0.0003;
+              case 2:
+                return 0.0007;
+              case 3:
+                return 0.001;
+              case 4:
+                return 0.0013;
+              case 5:
+                return 0.0016;
+              case 6:
+                return 0.002;
+              case 7:
+              case 8:
+                return 0.0025;
+              default:
+                return 0.003; // 멀리 있는 경우
+            }
+          };
 
+          // 마커 클릭 시 지도 이동 및 지도 확대
+          const position = marker.getPosition();
+          const zoomLevel = map.getLevel();
+          console.log(zoomLevel);
+          const offset = getLatOffsetByZoom(zoomLevel);
+          const adjustedLat = position.getLat() + offset;
+          const adjustedPosition = new window.kakao.maps.LatLng(adjustedLat, position.getLng());
           map.panTo(adjustedPosition);
 
           setTimeout(() => {
