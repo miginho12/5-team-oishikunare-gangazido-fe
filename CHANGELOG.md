@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## [1.27.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.27.0...v1.27.1) (2025-04-15)
+
+### 🐛 BUG FIXES
+
+* 마커 등록 시 반려견 정보 안 뜨는 이슈 해결 ([145355a](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/145355a3d054ea722fbacb65f248c167adc56294))
+* 마커 삭제버튼 안 눌리는 것 수정 ([cf4ee2c](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/cf4ee2ccda2b72f3ef221d8c2615788064b9eac2))
+
+### 🎨 STYLES
+
+* 마커 create,fetch 모달 디자인 통일 ([22acfb7](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/22acfb7be11328934753e1c05fcb4704b7b21f24))
+* 마커 클릭 모달 창 radius 키우고 투명도 주기 ([d056ba7](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/d056ba738ab26aa86020cd8a6c5cde68ea155cc8))
+
 ## [1.27.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.26.3...v1.27.0) (2025-04-11)
 
 ### 🚀 NEW FEATURES
