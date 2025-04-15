@@ -24,7 +24,8 @@ function MapPage() {
   const clusterRef = useRef(null);  // 클러스터 객체
   // 첫 페이지 모달
   const [showGuideModal, setShowGuideModal] = useState(true); // 실제로 보일지 여부
-
+  // 현재 위치 상태
+  const currentLocationMarkerRef = useRef(null);
   // 사용자 인증 상태
   const { isAuthenticated, user } = useAuth(); // AuthContext에서 인증 상태 가져오기
   const userRef = useRef(null); // user 최신 값 유지용
@@ -125,6 +126,32 @@ function MapPage() {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, [map]);
+
+  // 현재 위치 마커 렌더 함수
+  const showCurrentLocationMarker = (latitude, longitude) => {
+    const location = new window.kakao.maps.LatLng(latitude, longitude);
+  
+    // 이전 마커가 있다면 제거
+    if (currentLocationMarkerRef.current) {
+      currentLocationMarkerRef.current.setMap(null);
+      currentLocationMarkerRef.current = null;
+    }
+  
+    // 이미지 설정 (파란색 핀 모양)
+    const imageSrc = "/images/geolocation.gif";
+    const imageSize = new window.kakao.maps.Size(50, 50); 
+    const imageOption = { offset: new window.kakao.maps.Point(15, 15) };
+    const markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
+  
+    const marker = new window.kakao.maps.Marker({
+      position: location,
+      image: markerImage,
+      zIndex: 9999,
+    });
+  
+    marker.setMap(map);
+    currentLocationMarkerRef.current = marker;
+  };
 
 
   // 카카오맵 API 스크립트 동적 로드 함수
@@ -1227,6 +1254,9 @@ function MapPage() {
           map.setLevel(4);
         }
         setCenterPosition({ lat: latitude, lng: longitude });
+
+        // 현재 위치 마커 표시
+        showCurrentLocationMarker(latitude, longitude);
 
         // 이동한 위치 기준으로 마커 다시 불러오기!
         console.log("📍 현재 위치로 이동 완료:", latitude, longitude);
