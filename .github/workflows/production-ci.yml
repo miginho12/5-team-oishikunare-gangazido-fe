@@ -1,6 +1,6 @@
 name:
   MAIN CI
-  # develop 브랜치에 push가 될 때마다 이 action이 실행됩니다.
+  # develop 브랜치에 push가 될 때마다 이 action이 실행
 on:
   push:
     branches:
