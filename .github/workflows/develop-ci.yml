@@ -3,11 +3,11 @@ name: DEVELOP CI
 on:
   push:
     branches:
-      - develop
+      - temp/rollback-before-merge
 
 jobs:
   Deploy:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
       - name: Checkout source code
