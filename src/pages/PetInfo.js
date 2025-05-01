@@ -43,7 +43,7 @@ function PetInfo() {
         }
 
         const message = error?.response?.data?.message;
-        console.log("에러 메시지 확인:", message);
+        console.log("전체 에러 응답:", error?.response?.data);
         if (message?.toLowerCase() === "not_found_pet") {
           navigate("/pets/register");
         } else {

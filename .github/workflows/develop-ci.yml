@@ -3,7 +3,7 @@ name: DEVELOP CI
 on:
   push:
     branches:
-      - temp/rollback-before-merge
+      - develop
 
 jobs:
   Deploy:
