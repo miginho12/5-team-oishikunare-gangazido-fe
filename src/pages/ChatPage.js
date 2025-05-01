@@ -6,18 +6,49 @@ import axios from "axios";
 function ChatPage() {
   const navigate = useNavigate();
   const [message, setMessage] = useState("");
-  const [chatMessages, setChatMessages] = useState([
-    {
-      id: 1,
-      text: "안녕하세요! 산책에 관한 질문이 있으신가요?",
-      isUser: false,
-    },
-  ]);
+  const [chatMessages, setChatMessages] = useState(() => {
+    const saved = localStorage.getItem("chatHistory");
+    return saved
+      ? JSON.parse(saved)
+      : [
+          {
+            id: 1,
+            text: "안녕하세요! 산책에 관한 질문이 있으신가요?",
+            isUser: false,
+          },
+        ];
+  });
+
+  useEffect(() => {
+    if (!sessionStorage.getItem("sessionActive")) {
+      sessionStorage.setItem("sessionActive", "true");
+
+      const initial = [
+        {
+          id: 1,
+          text: "안녕하세요! 산책에 관한 질문이 있으신가요?",
+          isUser: false,
+        },
+      ];
+      localStorage.setItem("chatHistory", JSON.stringify(initial));
+      setChatMessages(initial);
+    }
+  }, []);
+
 
   const [isLoading, setIsLoading] = useState(false);
 
   const chatEndRef = useRef(null);
 
+  
+  // ✅ 채팅 내역이 바뀔 때마다 저장
+  useEffect(() => {
+    if (chatMessages && chatMessages.length > 0) {
+      localStorage.setItem("chatHistory", JSON.stringify(chatMessages));
+    }
+  }, [chatMessages]);
+
+  // ✅ 스크롤 맨 아래로
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [chatMessages]);
@@ -62,11 +93,7 @@ function ChatPage() {
       return;
     }
 
-    if (typeof userInput !== "string") {
-      console.warn("userInput is not a string:", userInput);
-      alert("메시지를 입력해주세요!");
-      return;
-    }
+  
     setIsLoading(true);
 
     const newUserMessage = {
@@ -184,15 +211,18 @@ function ChatPage() {
     handleSendMessage(question); // 바로 전송
   };
 
+  //if (chatMessages === null) return null;
+
   return (
-    <div className="flex flex-col h-full bg-gray-50 max-w-full overflow-hidden">
+    <div className="flex flex-col h-full bg-yellow-50 max-w-full overflow-hidden">
       {/* 헤더 */}
       <header className="bg-white pt-2 pb-0 px-4 shadow-md flex items-center justify-center w-full">
-        <div className="flex items-center h-full gap-2">
+        <div className="flex-grow flex justify-center">
           <img
             src="/gangazido-logo-header.png"
             alt="Gangazido Logo Header"
-            className="h-14 w-28 object-cover self-center"
+            className="h-14 w-28 object-cover cursor-pointer"
+            onClick={() => navigate('/map')}
           />
         </div>
       </header>

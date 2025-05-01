@@ -5,10 +5,9 @@ import { useAuth } from "../contexts/AuthContext";
 
 function PetInfo() {
   const navigate = useNavigate();
-  const { isAuthenticated, loading: authLoading } = useAuth();
+  const { isAuthenticated, loading: authLoading, logout } = useAuth();
   console.log(isAuthenticated);
   console.log(authLoading);
-
 
   const [pet, setPet] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -23,15 +22,29 @@ function PetInfo() {
   useEffect(() => {
     const fetchPetInfo = async () => {
       try {
+        // 인증 상태가 아니면 바로 로그인 페이지로 리다이렉트
+        if (!isAuthenticated && !authLoading) {
+          navigate("/login");
+          return;
+        }
+
         const response = await getPetInfo();
         const data = response.data.data;
-
         setPet(data);
         setLoading(false);
       } catch (error) {
         console.error("반려견 정보 가져오기 실패:", error);
+
+        // 인증 오류(401) 처리 - 단순히 로그인 페이지로 리다이렉트
+        if (error.response && error.response.status === 401) {
+          if (logout) logout(); // AuthContext의 logout 함수 호출
+          navigate("/login");
+          return;
+        }
+
         const message = error?.response?.data?.message;
-        if (message === "not_found_pet") {
+        console.log("전체 에러 응답:", error?.response?.data);
+        if (message?.toLowerCase() === "not_found_pet") {
           navigate("/pets/register");
         } else {
           setError("반려견 정보를 불러오는 중 문제가 발생했습니다.");
@@ -41,17 +54,7 @@ function PetInfo() {
     };
 
     fetchPetInfo();
-  }, [navigate]);
-
-  // 로딩 중이면 로딩 표시
-  if (loading || !pet) {
-    return (
-      <div className="flex flex-col items-center justify-center h-full bg-amber-50">
-        <div className="animate-spin rounded-full h-14 w-14 border-4 border-amber-800 border-t-transparent"></div>
-        <p className="mt-4 text-amber-800 font-medium">반려견 정보를 불러오는 중...</p>
-      </div>
-    );
-  }
+  }, [navigate, isAuthenticated, authLoading, logout]);
 
   if (error) {
     return (
@@ -60,14 +63,37 @@ function PetInfo() {
           <p className="font-medium">{error}</p>
         </div>
         <button
-          onClick={() => navigate('/map')}
+          onClick={() => navigate("/map")}
           className="px-6 py-3 bg-amber-800 text-white rounded-full shadow-md hover:bg-amber-700 transition-all duration-300 flex items-center"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-5 w-5 mr-2"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M10 19l-7-7m0 0l7-7m-7 7h18"
+            />
           </svg>
           지도로 돌아가기
         </button>
+      </div>
+    );
+  }
+
+  // 로딩 중이면 로딩 표시
+  if (loading || !pet) {
+    return (
+      <div className="flex flex-col items-center justify-center h-full bg-amber-50">
+        <div className="animate-spin rounded-full h-14 w-14 border-4 border-amber-800 border-t-transparent"></div>
+        <p className="mt-4 text-amber-800 font-medium">
+          반려견 정보를 불러오는 중...
+        </p>
       </div>
     );
   }
@@ -84,16 +110,28 @@ function PetInfo() {
     <div className="flex flex-col h-full bg-amber-50">
       {/* 헤더 */}
       <header className="bg-white pt-2 pb-0 px-4 shadow-md flex items-center relative">
-        <button onClick={() => navigate('/map')} className="absolute left-4">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-amber-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+        <button onClick={() => navigate("/map")} className="absolute left-4">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6 text-amber-800"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M15 19l-7-7 7-7"
+            />
           </svg>
         </button>
         <div className="flex-grow flex justify-center">
           <img
             src="/gangazido-logo-header.png"
             alt="Gangazido Logo Header"
-            className="h-14 w-28 object-cover"
+            className="h-14 w-28 object-cover cursor-pointer"
+            onClick={goToMap}
           />
         </div>
       </header>
@@ -140,22 +178,48 @@ function PetInfo() {
 
           {/* 반려견 이름 및 태그 */}
           <div className="pt-20 pb-6 px-6 text-center">
-            <h2 className="text-2xl font-bold text-gray-800 mb-1">{pet.name}</h2>
-            <p className="text-sm text-gray-500 mb-3">{pet.breed || '믹스견'} · {pet.gender ? "수컷" : "암컷"}</p>
+            <h2 className="text-2xl font-bold text-gray-800 mb-1">
+              {pet.name}
+            </h2>
+            <p className="text-sm text-gray-500 mb-3">
+              {pet.breed || "믹스견"} · {pet.gender ? "수컷" : "암컷"}
+            </p>
 
             <div className="flex justify-center space-x-2 mb-2">
               {pet.neutered && (
                 <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-800">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-3.5 w-3.5 mr-1"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M5 13l4 4L19 7"
+                    />
                   </svg>
                   중성화 완료
                 </span>
               )}
               {pet.vaccinated && (
                 <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-3.5 w-3.5 mr-1"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M5 13l4 4L19 7"
+                    />
                   </svg>
                   예방접종 완료
                 </span>
@@ -167,8 +231,19 @@ function PetInfo() {
         {/* 반려견 기본 정보 카드 */}
         <div className="bg-white rounded-2xl shadow-lg p-6 mb-5">
           <h3 className="text-lg font-semibold text-amber-800 mb-4 flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5 mr-2"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
             </svg>
             기본 정보
           </h3>
@@ -176,14 +251,22 @@ function PetInfo() {
           <div className="grid grid-cols-2 gap-4">
             {/* 나이 */}
             <div className="bg-amber-50 rounded-xl p-4 flex flex-col items-center">
-              <span className="text-xs text-amber-600 font-medium mb-1">나이</span>
-              <span className="text-xl font-bold text-gray-800">{formatAge(pet.age)}</span>
+              <span className="text-xs text-amber-600 font-medium mb-1">
+                나이
+              </span>
+              <span className="text-xl font-bold text-gray-800">
+                {formatAge(pet.age)}
+              </span>
             </div>
 
             {/* 몸무게 */}
             <div className="bg-amber-50 rounded-xl p-4 flex flex-col items-center">
-              <span className="text-xs text-amber-600 font-medium mb-1">몸무게</span>
-              <span className="text-xl font-bold text-gray-800">{pet.weight} kg</span>
+              <span className="text-xs text-amber-600 font-medium mb-1">
+                몸무게
+              </span>
+              <span className="text-xl font-bold text-gray-800">
+                {pet.weight} kg
+              </span>
             </div>
           </div>
 
@@ -191,8 +274,19 @@ function PetInfo() {
             onClick={goToPetEdit}
             className="w-full border border-amber-800 text-amber-800 bg-transparent hover:bg-amber-50 p-3.5 rounded-xl text-center font-medium mt-6 transition-all duration-300 flex items-center justify-center"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5 mr-2"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+              />
             </svg>
             반려견 정보 수정
           </button>
@@ -201,8 +295,19 @@ function PetInfo() {
         {/* 반려견 케어 정보 */}
         <div className="bg-white rounded-2xl shadow-lg p-6 mb-5">
           <h3 className="text-lg font-semibold text-amber-800 mb-4 flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5 mr-2"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+              />
             </svg>
             케어 팁
           </h3>
@@ -229,15 +334,23 @@ function PetInfo() {
             <h4 className="font-medium text-amber-800 mb-2">적정 산책 시간</h4>
             <p className="text-sm text-gray-700">
               {(() => {
-                const retrieverBreeds = ['골든 리트리버', '래브라도 리트리버'];
-                const smallBreeds = ['푸들', '비숑 프리제', '포메라니안', '말티즈'];
-                const mediumBreeds = ['웰시코기', '믹스견', '진돗개'];
-                const largeBreeds = ['보더 콜리', '시베리안 허스키'];
+                const retrieverBreeds = ["골든 리트리버", "래브라도 리트리버"];
+                const smallBreeds = [
+                  "푸들",
+                  "비숑 프리제",
+                  "포메라니안",
+                  "말티즈",
+                ];
+                const mediumBreeds = ["웰시코기", "믹스견", "진돗개"];
+                const largeBreeds = ["보더 콜리", "시베리안 허스키"];
 
                 if (pet.age < 1) {
                   return "1세 미만 강아지는 무리한 산책보다 짧은 놀이 중심의 활동이 적절합니다.";
                 }
-                if (retrieverBreeds.includes(pet.breed) || largeBreeds.includes(pet.breed)) {
+                if (
+                  retrieverBreeds.includes(pet.breed) ||
+                  largeBreeds.includes(pet.breed)
+                ) {
                   return "활동량이 많은 견종으로 하루 1~2시간 정도의 산책을 권장합니다.";
                 } else if (smallBreeds.includes(pet.breed)) {
                   return "소형견은 하루 30분~1시간 정도의 산책이 적당합니다.";

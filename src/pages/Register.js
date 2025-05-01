@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 
 import { useNavigate } from 'react-router-dom';
-import { registerUser, checkEmailDuplicate, checkNicknameDuplicate } from '../api/auth';
+import { registerUser, checkEmailDuplicate, checkNicknameDuplicate, sendEmailVerificationCode, verifyEmailCode } from '../api/auth';
 
 function Register() {
   const navigate = useNavigate();
@@ -15,7 +15,33 @@ function Register() {
   const [emailError, setEmailError] = useState(null);
   const [passwordError, setPasswordError] = useState(null);
   const [nicknameError, setNicknameError] = useState(null);
-  const [removeProfileImage, setRemoveProfileImage] = useState(false);
+  //const [profileImageKey, setProfileImageKey] = useState(null);
+  //이메일 인증 관련
+  const [isEmailVerified, setIsEmailVerified] = useState(false);
+  const [showVerificationModal, setShowVerificationModal] = useState(false);
+  const [verificationCode, setVerificationCode] = useState('');
+  //const [serverVerificationCode, setServerVerificationCode] = useState('');
+  const [isSendingCode, setIsSendingCode] = useState(false);
+  //const [resendMessage, setResendMessage] = useState(''); //코드 재전송 시 모달 알림
+  const [showResendModal, setShowResendModal] = useState(false);
+
+  /////////인증 코드 유효시간 타이머 
+  const [timeLeft, setTimeLeft] = useState(180); // 3분
+
+  useEffect(() => {
+    if (showVerificationModal && timeLeft > 0) {
+      const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [showVerificationModal, timeLeft]);
+
+  const formatTime = (seconds) => {
+    const m = String(Math.floor(seconds / 60)).padStart(2, '0');
+    const s = String(seconds % 60).padStart(2, '0');
+    return `${m}:${s}`;
+  };
+
+
 
   // 파일 입력 요소에 대한 ref 추가 (component 시작 부분에)
   const fileInputRef = useRef(null);
@@ -65,10 +91,87 @@ function Register() {
       }
     } catch (err) {
       console.error('이메일 중복 체크 오류:', err);
+
+      // 429 에러(요청 제한) 처리 추가
+      if (err.response && err.response.status === 429) {
+        setEmailError('요청 횟수가 제한을 초과했습니다. 잠시 후 다시 시도해주세요.');
+        return;
+      }
       // 오류 발생 시 사용자 경험을 위해 일단 진행 가능하도록 허용
       setEmailError(null);
     }
   };
+
+  const verifyCode = async () => {
+    if (!verificationCode.trim()) {
+      alert('인증 코드를 입력해 주세요.');
+      return;
+    }
+  
+    try {
+      const response = await verifyEmailCode(email, verificationCode);
+      if (response.data && response.data.message === 'verify_email_success') {
+        setIsEmailVerified(true);
+        setShowVerificationModal(false);
+        alert('이메일 인증이 완료되었습니다.');
+      } else {
+        alert('인증에 실패했습니다. 다시 시도해주세요.');
+      }
+    } catch (err) {
+      console.error("이메일 인증 오류:", err);
+      alert('인증 코드가 일치하지 않습니다.');
+    }
+  };
+  
+
+  const handleSendVerificationCode = async () => {
+    if (!email) {
+      setEmailError('이메일을 입력해주세요.');
+      return;
+    }
+  
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    if (!emailRegex.test(email)) {
+      setEmailError('example@email.com 형식의 올바른 이메일을 입력해주세요.');
+      return;
+    }
+  
+    const res = await checkEmailDuplicate(email);
+    if (res.data?.data?.isDuplicate) {
+      setEmailError('이미 사용 중인 이메일입니다.');
+      return;
+    }
+  
+    try {
+      setIsSendingCode(true);
+      setShowVerificationModal(true); // ✅ 모달 즉시 오픈
+      const response = await sendEmailVerificationCode(email);
+      console.log("인증 이메일 전송 응답:", response);
+
+      const isResend = showVerificationModal; // 이전에 모달이 떴었다면 재전송임
+
+
+      setTimeLeft(180); //타이머 리셋
+      //setShowVerificationModal(true);
+
+
+      if (isResend) {
+        setShowResendModal(true);
+        setTimeout(() => {
+          setShowResendModal(false);
+        }, 2000);
+      }
+    } catch (err) {
+      console.error('이메일 인증 요청 오류:', err);
+      setError('인증 메일 전송 중 문제가 발생했습니다.');
+      setShowVerificationModal(false); // ❌ 실패 시 모달 닫기
+    } finally {
+      setIsSendingCode(false);
+    }
+  };
+  
+  
+  
 
   // 비밀번호 변경 핸들러
   // 비밀번호 변경 핸들러
@@ -117,8 +220,8 @@ function Register() {
       return;
     }
     
-    if (nickname.length < 2 || nickname.length > 20) {
-      setNicknameError('닉네임은 2~20자 사이여야 합니다.');
+    if (nickname.length > 10) {
+      setNicknameError('닉네임은 10자 이내여야 합니다.');
       return;
     }
     
@@ -140,6 +243,12 @@ function Register() {
       }
     } catch (err) {
       console.error('닉네임 중복 체크 오류:', err);
+
+      // 429 에러(요청 제한) 처리 추가
+      if (err.response && err.response.status === 429) {
+        setNicknameError('요청 횟수가 제한을 초과했습니다. 잠시 후 다시 시도해주세요.');
+        return;
+      }
       // 오류 발생 시 사용자 경험을 위해 일단 진행 가능하도록 허용
       setNicknameError(null);
     }
@@ -166,13 +275,10 @@ function Register() {
       
       setProfileImage(file);
       setProfileImagePreview(URL.createObjectURL(file));
-      setRemoveProfileImage(false);
     } else {
       // ✅ 파일 선택 취소 시
-      ////console.log(...)
       setProfileImage(null);
       setProfileImagePreview(null);
-      setRemoveProfileImage(true);
     }
   
     // ✅ 항상 초기화해서 onChange가 다시 작동하도록
@@ -191,35 +297,33 @@ function Register() {
 
   // 추가: 컴포넌트 상태 추가
   const [profileImagePreview, setProfileImagePreview] = useState(null);
+  
 
   // 상태 로깅용 useEffect만 유지 (디버깅용)
   useEffect(() => {
-    //console.log(...)
-  }, [profileImage, profileImagePreview, removeProfileImage]);
+  }, [profileImage, profileImagePreview]);
 
     // 회원가입 폼 제출 핸들러
     const handleRegister = async (e) => {
       e.preventDefault();
       
+      if (!isEmailVerified) {
+        setError('이메일 인증을 먼저 완료해주세요.');
+        setLoading(false);
+        return;
+      }      
+
       setLoading(true);
       setError(null);
     
     try {
-      ////console.log(...)
-      ////console.log(...)
-      ////console.log(...)
-      ////console.log(...)
-      
       const userData = {
         user_email: email,
         user_password: password,
         user_password_confirm: passwordConfirm,
         user_nickname: nickname,
-        user_profileImage: profileImage,
-        removeProfileImage: removeProfileImage
+        user_profileImage: profileImage // null이면 서버에서 이미지 없음으로 처리
       };
-      
-      //console.log(...)
       
       // auth API 모듈 활용
       const response = await registerUser(userData);
@@ -259,7 +363,7 @@ function Register() {
           } else if (errorCode === 'required_nickname') {
             setError('닉네임은 필수 입력 항목입니다.');
           } else if (errorCode === 'invalid_nickname_length') {
-            setError('닉네임은 2자 이상 20자 이하여야 합니다.');
+            setError('닉네임은 10자 이내여야 합니다.');
           } else if (errorCode === 'duplicate_email') {
             setError('이미 사용 중인 이메일입니다.');
           } else if (errorCode === 'duplicate_nickname') {
@@ -280,6 +384,8 @@ function Register() {
           setError('입력 정보가 유효하지 않습니다. 다시 확인해주세요.');
         } else if (err.response.status === 409) {
           setError('이미 등록된 이메일 또는 닉네임입니다.');
+        } else if (err.response.status === 429) {
+          setError('요청 횟수가 제한을 초과했습니다. 잠시 후 다시 시도해주세요.');
         } else if (err.response.status === 500) {
           setError('서버 내부 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
         } else {
@@ -307,8 +413,26 @@ function Register() {
     navigate('/map');
   };
 
+  // 프로필 이미지 삭제를 위한 함수 추가
+  const handleRemoveProfileImage = () => {
+    setProfileImage(null);  // null로 설정하여 제거 요청
+    setProfileImagePreview(null);
+    
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
   return (
     <div className="flex flex-col h-full bg-amber-50">
+      {/* ✅ 여기! 모달 위치 */}
+      {showResendModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
+          <div className="bg-white px-6 py-3 rounded-lg shadow-lg">
+            <p className="text-sm font-semibold text-green-700">인증 코드가 재전송되었습니다!</p>
+          </div>
+        </div>
+      )}
       {/* 헤더 - 뒤로가기 버튼 추가 */}
       <header className="bg-white pt-2 pb-0 px-4 shadow-md flex items-center relative">
         <button onClick={goToMap} className="absolute left-4">
@@ -320,7 +444,8 @@ function Register() {
           <img
             src="/gangazido-logo-header.png"
             alt="Gangazido Logo Header"
-            className="h-14 w-28 object-cover"
+            className="h-14 w-28 object-cover cursor-pointer"
+            onClick={() => navigate('/map')}
           />
         </div>
       </header>
@@ -334,23 +459,91 @@ function Register() {
             <span className="block sm:inline">{error}</span>
           </div>
         )}
-        
+
+        {showVerificationModal && (
+          
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white rounded-xl shadow-lg p-6 w-80">
+              <h2 className="text-lg font-bold mb-4 text-center text-amber-800">이메일 인증</h2>
+              <p className="text-sm mb-3">이메일로 전송된 인증 코드를 입력해 주세요.</p>
+              <input
+                type="text"
+                inputMode="numeric"
+                maxLength={6}
+                pattern="\d{6}"
+                value={verificationCode}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (/^\d*$/.test(value) && value.length <= 6) {
+                    setVerificationCode(value);
+                  }
+                }}
+                placeholder="6자리 숫자 입력"
+                className="w-full p-2 border border-gray-300 rounded-md mb-4"
+              />
+              <p className="text-xs text-gray-500 text-center mb-2">※ 메일이 보이지 않으면 스팸함을 확인해 주세요.</p>
+              <p className="text-sm text-amber-600 text-center mb-2">
+                인증 코드 유효 시간: {formatTime(timeLeft)}
+              </p>
+              <button
+                onClick={() => {
+                  if (timeLeft > 0) {
+                    alert('잠시만 기다려 주세요. 인증 코드는 3분 뒤 재전송 가능합니다.');
+                  } else {
+                    handleSendVerificationCode();
+                  }
+                }}
+                className="text-sm text-amber-600 underline mb-2"
+              >
+                인증 코드 재전송
+              </button>
+
+              <div className="flex justify-between">
+                <button
+                  onClick={() => setShowVerificationModal(false)}
+                  className="text-gray-600 px-3 py-1 hover:underline"
+                >
+                  닫기
+                </button>
+                <button
+                  onClick={verifyCode}
+                  className="bg-amber-800 text-white px-4 py-1 rounded-md"
+                >
+                  확인
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+                
         {/* 입력 폼 */}
         <div className="bg-white rounded-xl shadow-md p-4 mb-4">
           <div className="flex flex-col items-center mb-6">
-          <div className="w-24 h-24 rounded-full bg-amber-100 flex items-center justify-center mb-3 overflow-hidden">
-            {profileImagePreview ? (
-              <img
-                src={profileImagePreview}
-                alt="프로필 미리보기"
-                className="w-full h-full object-cover"
-              />
-            ) : (
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-amber-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-              </svg>
-            )}
-          </div>
+            <div className="relative">
+              {profileImagePreview && (
+                <button 
+                  type="button"
+                  onClick={handleRemoveProfileImage}
+                  className="absolute -top-2 -right-2 text-gray-700 z-10"
+                  aria-label="프로필 이미지 삭제"
+                >
+                  <span className="text-xl font-medium">×</span>
+                </button>
+              )}
+              <div className="w-24 h-24 rounded-full bg-amber-100 flex items-center justify-center mb-3 overflow-hidden">
+                {profileImagePreview ? (
+                  <img
+                    src={profileImagePreview}
+                    alt="프로필 미리보기"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-amber-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                  </svg>
+                )}
+              </div>
+            </div>
             <label htmlFor="profile-upload" className="text-sm text-amber-800 font-medium cursor-pointer">
               프로필 사진 추가
               <input
@@ -366,19 +559,35 @@ function Register() {
           </div>
 
           <form onSubmit={handleRegister} className="space-y-4">
-            <div className="relative">
-              <label className="block text-sm font-medium text-gray-700 mb-1">이메일</label>
-              <input
-                type="email"
-                placeholder="이메일을 입력하세요"
-                className={`w-full p-3 border ${emailError ? 'border-red-300' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent`}
-                required
-                value={email}
-                onChange={handleEmailChange}
-                onBlur={handleEmailBlur}
-              />
+          <div className="relative">
+  <label className="block text-sm font-medium text-gray-700 mb-1">이메일</label>
+              <div className="flex gap-2">
+                <input
+                  type="email"
+                  placeholder="이메일을 입력하세요"
+                  className={`flex-1 p-3 border ${emailError ? 'border-red-300' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent`}
+                  required
+                  value={email}
+                  onChange={handleEmailChange}
+                  onBlur={handleEmailBlur}
+                  disabled={isEmailVerified}
+                />
+                {!isEmailVerified && (
+                  <button
+                    type="button"
+                    onClick={handleSendVerificationCode}
+                    className="whitespace-nowrap bg-amber-800 text-white px-3 py-2 rounded-md text-sm"
+                    disabled={isEmailVerified || loading || isSendingCode}
+                  >
+                    {isSendingCode ? '전송 중...' : '인증'}
+                  </button>
+                )}
+              </div>
               {emailError && <p className="text-xs text-red-500 mt-1">{emailError}</p>}
+              {isEmailVerified && <p className="text-xs text-green-600 mt-1">✔ 이메일 인증 완료</p>}
             </div>
+
+                                
 
             <div className="relative">
               <label className="block text-sm font-medium text-gray-700 mb-1">비밀번호</label>
@@ -409,7 +618,7 @@ function Register() {
               <label className="block text-sm font-medium text-gray-700 mb-1">닉네임</label>
               <input
                 type="text"
-                placeholder="닉네임을 입력하세요 (2~20자)"
+                placeholder="닉네임을 입력하세요 (10자 이내)"
                 className={`w-full p-3 border ${nicknameError ? 'border-red-300' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent`}
                 required
                 value={nickname}

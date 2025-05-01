@@ -1,5 +1,561 @@
 # CHANGELOG
 
+## [1.28.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.28.0...v1.28.1) (2025-04-15)
+
+### 🐛 BUG FIXES
+
+* 줌레벨 낮은 상태에서 마커 클릭 시 이동하는 위치 수정 ([4f0758b](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/4f0758b66f798bc6e25c4db70097acaee021f79c))
+
+## [1.28.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.27.1...v1.28.0) (2025-04-15)
+
+### 🚀 NEW FEATURES
+
+* 현재위치 마커 표시 추가 ([1bbeb69](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/1bbeb69f41a78c72fc165a7c5221712d9b9b8c39))
+
+## [1.27.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.27.0...v1.27.1) (2025-04-15)
+
+### 🐛 BUG FIXES
+
+* 마커 등록 시 반려견 정보 안 뜨는 이슈 해결 ([145355a](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/145355a3d054ea722fbacb65f248c167adc56294))
+* 마커 삭제버튼 안 눌리는 것 수정 ([cf4ee2c](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/cf4ee2ccda2b72f3ef221d8c2615788064b9eac2))
+
+### 🎨 STYLES
+
+* 마커 create,fetch 모달 디자인 통일 ([22acfb7](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/22acfb7be11328934753e1c05fcb4704b7b21f24))
+* 마커 클릭 모달 창 radius 키우고 투명도 주기 ([d056ba7](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/d056ba738ab26aa86020cd8a6c5cde68ea155cc8))
+
+## [1.27.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.26.3...v1.27.0) (2025-04-11)
+
+### 🚀 NEW FEATURES
+
+* 등록/수정 완료 시 현재 페이지 조건을 보고 자동 이동되도록 개선(time 조정) ([f2c4b04](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/f2c4b04752d2ef510824a53953d5f03f6837b434))
+
+## [1.26.3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.26.2...v1.26.3) (2025-04-11)
+
+### 🐛 BUG FIXES
+
+* 커스텀 드롭박스 변경으로 인한 필드 에러 강조 코드 변경 ([f254952](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/f2549521a399614e507a5524b2b0bfdcd96dcadb))
+
+## [1.26.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.26.1...v1.26.2) (2025-04-11)
+
+### 🐛 BUG FIXES
+
+* **map:** resolve map cutoff issue after dragging by calling relayout ([6b1b66c](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/6b1b66cc6eb029beadbf2584fa43bfe9589b89a2))
+
+## [1.26.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.26.0...v1.26.1) (2025-04-11)
+
+### 🎨 STYLES
+
+* 마커 클러스터 디자인 변경 ([cadcd60](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/cadcd608a84aae7fe34c4dacdc0cae08b2072d53))
+* 클러스터링 크기 수정 ([656fa89](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/656fa895e5716f1759ba5641615552e938c67a34))
+
+## [1.26.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.25.3...v1.26.0) (2025-04-11)
+
+### 🚀 NEW FEATURES
+
+* 등록 유효성 검사 실패 시 토스트 메시지 및 입력 필드 shake 애니메이션 추가 ([92cd34d](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/92cd34de16a9a94049164039ed2915c62db530f2))
+* 수정 유효성 검사 실패 시 토스트 메시지 및 입력 필드 shake 애니메이션 추가 ([df1aba1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/df1aba129f7d3fd8b7cacf3038418a64613af77a))
+
+## [1.25.3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.25.2...v1.25.3) (2025-04-11)
+
+### 🐛 BUG FIXES
+
+* Eslint 오류 수정 ([6061291](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/6061291f9951c3908fedf03e810a22542333d04a))
+
+## [1.25.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.25.1...v1.25.2) (2025-04-11)
+
+### 🐛 BUG FIXES
+
+* 모달 바로 오픈 되도록 수정, 재전송 헬텍 오류 수정 ([6f910f0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/6f910f0d1c796bb69b47658451203657b3225baf))
+
+## [1.25.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.25.0...v1.25.1) (2025-04-11)
+
+### 🐛 BUG FIXES
+
+* S3 에 이미지 없을 때 예외처리 추가 ([86987fe](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/86987fe411b3c95ebf922e4b6339198ba3c02e14))
+
+## [1.25.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.24.0...v1.25.0) (2025-04-11)
+
+### 🚀 NEW FEATURES
+
+* 이메일 인증 모달 추가 ([4d8ce64](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/4d8ce646ad4a8f31136d742e6116b92dc91ddd57))
+
+### 🐛 BUG FIXES
+
+* eslint 오류 수정 ([4da116d](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/4da116d876bdfca5dbc04f88a55f25351a32f0d9))
+* 주석추가 ([f5076fa](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/f5076fa6db64b2effa43155615a64ae95982ab7e))
+
+## [1.24.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.23.11...v1.24.0) (2025-04-11)
+
+### 🚀 NEW FEATURES
+
+* 마커 모달 창 지도 클릭,드래그 시 창 닫히도록 구현 ([388d9e0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/388d9e0e5ec0fe151e14730d875feac6aaa454fa))
+
+## [1.23.11](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.23.10...v1.23.11) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* Axios 대신 api 인스턴스를 사용하는 방식으로 코드 리팩터링 ([f5e35d8](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/f5e35d8c8641619259fb95aac005fc0578666abb))
+
+## [1.23.10](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.23.9...v1.23.10) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* 이메일 전송 오류 해결 ([fcb7838](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/fcb78380fbac6762a0baed3e87376ce10b1b392b))
+
+## [1.23.9](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.23.8...v1.23.9) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* Register.js  안쓰는 코드 제거 ([fa44df4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/fa44df4645aea20c7b9370419f7105a3d5473c23))
+
+## [1.23.8](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.23.7...v1.23.8) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* 인증 이메일 전송 응답확인  로그 추가 ([150779a](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/150779a6f1d727c7af4745c925bb2c0cc137d342))
+
+## [1.23.7](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.23.6...v1.23.7) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* 모바일에서 펫 수정,등록 드롭박스 클릭 시 입력필드(키보드 올라오는 것)방지 ([3e0ea30](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/3e0ea30e352de6964a083ccda034abc190f0abe1))
+
+## [1.23.6](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.23.5...v1.23.6) (2025-04-10)
+
+### 🎨 STYLES
+
+* 커스텀 드롭박스 option 색상 변경 파>갈 ([62c83be](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/62c83be80c7f33f28e9aa52cd3d2a637e7f891f2))
+
+## [1.23.5](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.23.4...v1.23.5) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* cors 설정 추가 ([44720c5](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/44720c5dfd396b7bf92c11f5d28e211fe87d5606))
+
+## [1.23.4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.23.3...v1.23.4) (2025-04-10)
+
+### 🎨 STYLES
+
+* 커스텀 드롭박스로 변경 ([a87bb9a](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/a87bb9a3becf5e00142b4326283835eaba32424d))
+* 토스트 메시지 가운데로 변경 ([2441e19](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/2441e192a80785fb3ea7144765ac186753389ec8))
+
+## [1.23.3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.23.2...v1.23.3) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* eslint 오류 해결 ([e39660b](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/e39660bde8ce9d218e1623816d43aed8e15cccdc))
+
+## [1.23.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.23.1...v1.23.2) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* eslint 오류 수정 (안쓰는 코드 삭제) ([d28c7e0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/d28c7e0b792be18ffdda7e7def986ee38968b807))
+
+## [1.23.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.23.0...v1.23.1) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* register.js eslint 오류 수정 ([62b8a62](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/62b8a6233b8ca506ab9996efaba62fa60a0c74c8))
+
+## [1.23.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.22.7...v1.23.0) (2025-04-10)
+
+### 🚀 NEW FEATURES
+
+* 회원가입페이지 이메일 인증 기능 추가 ([207e300](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/207e3004ee9e174ef0ea33ca098d6b433b29ab68))
+
+## [1.22.7](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.22.6...v1.22.7) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* 방금 등록한 마커도 클릭 시 지도 이동 및 확대 ([21d1531](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/21d15313ea4bcc8fc16cfaa265219302a1dfd4b8))
+
+## [1.22.6](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.22.5...v1.22.6) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* 회원가입 시 프로필 이미지 누락 버그 수정 ([0669a40](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/0669a40f16486195e82082854f07887dbbd3dd7d))
+
+## [1.22.5](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.22.4...v1.22.5) (2025-04-10)
+
+### 🎨 STYLES
+
+* 마커 클릭 시 화면 살짝 아래로 움직이도록 변경(모달창 짤림이슈) ([6d7c5f4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/6d7c5f47658f4aa21e262cf95c15279b81f28941))
+
+## [1.22.4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.22.3...v1.22.4) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* user.js 오타 수정 ([b3bbc18](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/b3bbc18d7c70ec44b242bacba9f9f897a4816f99))
+
+## [1.22.3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.22.2...v1.22.3) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* 사용자 프로필 이미지 업로드 버그 수정2 ([582156a](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/582156a588a3c881c2ad92c47d8b9ba8faa502f2))
+
+## [1.22.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.22.1...v1.22.2) (2025-04-10)
+
+### 🎨 STYLES
+
+* 마커 모달창 패딩 줄임, 닫기버튼 크기 키우기 ([a5ded6a](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/a5ded6afc9f6a91bf219a866d536c510b19d1d10))
+
+## [1.22.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.22.0...v1.22.1) (2025-04-10)
+
+### ♻️ REFACTORING
+
+* 이미지 삭제 파일 선택 취소 대신 x버튼 도입 ([4739848](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/4739848e577d6c69dcb8131a511707209f7ac614))
+
+## [1.22.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.21.2...v1.22.0) (2025-04-10)
+
+### 🚀 NEW FEATURES
+
+* 마커 클릭 시 기본이미지 추가, 모달창 디자인 변경 ([7786156](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/7786156b39eaa9afdde1659837110694efe5c688))
+
+## [1.21.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.21.1...v1.21.2) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* 사용자 프로필 이미지 업로드 버그 수정 ([5b1bbe4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/5b1bbe462d1ab623512c4513d6706949e7b93aef))
+
+## [1.21.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.21.0...v1.21.1) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* build 오류 해결 ([a5d5bee](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/a5d5bee442a16f837f297137ad8506b61e5cdba9))
+
+## [1.21.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.20.2...v1.21.0) (2025-04-10)
+
+### 🚀 NEW FEATURES
+
+* 회원가입, 사용자프로필 수정 이미지 삭제 기능 구현 ([e26b37f](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/e26b37fc00d162d0763df1c7cf37de7165b013d6))
+
+## [1.20.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.20.1...v1.20.2) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* 반려견 정보 없을 시 마커 클릭 시 에러처리 추가 ([2d4c3a0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/2d4c3a08b32233619b8445c0da6ce54a713ca295))
+
+## [1.20.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.20.0...v1.20.1) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* 마커 등록시 user.userId 수정 ([498484c](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/498484cd92bf49c6b35807626d1aafff2b71bfbd))
+
+## [1.20.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.19.2...v1.20.0) (2025-04-10)
+
+### 🚀 NEW FEATURES
+
+* 반려견  수정 페이지 이미지 삭제용 X 버튼 추가 ([d718886](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/d71888688ae1865432bb3665c8d23cd7783eae59))
+
+### 🎨 STYLES
+
+* 마커 클릭 시 모달창 내 디자인 변경 ([dd5bbcd](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/dd5bbcde9b8b56ed8d2dd1af12bc3d0342855dd5))
+
+## [1.19.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.19.1...v1.19.2) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* README.md ([7c55e24](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/7c55e24bb552ae37512fa814323bccbc6d5f7a71))
+
+## [1.19.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.19.0...v1.19.1) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* 프론트 반려견 정보 요청 경로 수정 ([8e2ed74](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/8e2ed7460fcffe90a5a9bcfa39e9f5ba3ab30321))
+
+## [1.19.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.18.1...v1.19.0) (2025-04-10)
+
+### 🚀 NEW FEATURES
+
+* 마커 클릭 시 반려견 정보 추가 ([ec5d27e](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/ec5d27e1578be8df28a163c6336409dec8fb4a88))
+
+## [1.18.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.18.0...v1.18.1) (2025-04-10)
+
+## [1.18.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.17.6...v1.18.0) (2025-04-10)
+
+### 🚀 NEW FEATURES
+
+* 마커 등록자 닉네임 보이도록 추가 ([ae2c687](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/ae2c687f4a32f4158bad5ac8000823e1cd6a9d7c))
+
+## [1.17.6](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.17.5...v1.17.6) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* s3 이미지가 없어졌을 때 사용자 프로필 이미지 예외처리 수정 ([2f12ec1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/2f12ec1953f0609844d0c392160d3ae04352d5d0))
+
+## [1.17.5](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.17.4...v1.17.5) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* 파일 선택창 취소 시 이미지 삭제 처리 ([b957846](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/b957846dd517d4f4690fa7d20b9f45cd629f160b))
+
+## [1.17.4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.17.3...v1.17.4) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* 반려견 정보 조회 실패 시 무한 로딩 문제 수정 ([70ba9ef](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/70ba9ef24403d55b002a63ebeebc3aff708b910d))
+
+## [1.17.3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.17.2...v1.17.3) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* 기존 이미지 유지/삭제 로직 안정화 및 미리보기 연동 개선(S3 키 추출) ([15bef85](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/15bef8545f034e9c74bf73989e7e3da0913b5b3b))
+
+## [1.17.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.17.1...v1.17.2) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* github logo  error in ProfilePage.js ([693289b](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/693289bcd6022f6bb34b2bccb2d058b07dc1beac))
+
+## [1.17.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.17.0...v1.17.1) (2025-04-10)
+
+### 🐛 BUG FIXES
+
+* eslint error ([d91131e](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/d91131e9e6c7dc13927ed9dc5582e8c7beaf584b))
+
+## [1.17.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.16.0...v1.17.0) (2025-04-10)
+
+### 🚀 NEW FEATURES
+
+* Fix unexpected page display on session expiration ([3d46b0c](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/3d46b0c9a277d7b149fce364364afa4e10bebbf9))
+* **header:** navigate to map view on logo click ([bbfa5e8](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/bbfa5e85d78e430345b44e4b97c51bfee7189b73))
+
+### 🐛 BUG FIXES
+
+* add file tree to README.md ([f09c9e6](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/f09c9e60a5d16bd1d034332805cb453b9d330a50))
+
+## [1.16.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.15.1...v1.16.0) (2025-04-10)
+
+### 🚀 NEW FEATURES
+
+* 지도 범위 벗어날 시 현재위치or구름스퀘어로 강제 이동 ([4a1456b](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/4a1456be97d8fbacdcf84abd1a2cd2a51bafc483))
+
+## [1.15.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.15.0...v1.15.1) (2025-04-09)
+
+### 🐛 BUG FIXES
+
+* 반려견 수정 페이지 이미지 처리 로직 개선 ([0b5ebd5](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/0b5ebd550d2ac9b9f5422624f9fa662879bebbc2))
+
+## [1.15.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.14.0...v1.15.0) (2025-04-09)
+
+### 🚀 NEW FEATURES
+
+* 마커 등록 RateLimit 1분 15회 추가 ([60d5c6f](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/60d5c6f295c9a1203a1a7b1d1b9244b370020a8d))
+
+## [1.14.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.13.3...v1.14.0) (2025-04-09)
+
+### 🚀 NEW FEATURES
+
+* 회원가입, 로그인, 회원정보수정 api too many request 429 에러 예외처리 추가 ([b8b7a57](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/b8b7a57333ac0b9b7e4f2c166d27ecc1f6da8172))
+
+## [1.13.3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.13.2...v1.13.3) (2025-04-09)
+
+### 🐛 BUG FIXES
+
+* 반려견 수정 페이지 이미지 미리보기 및 삭제 로직 변경 ([2728b5c](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/2728b5ce2726da629e63b1cfac5157618f9a0b2b))
+
+## [1.13.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.13.1...v1.13.2) (2025-04-09)
+
+### 🐛 BUG FIXES
+
+* 반려견 수정 페이지 이미지 미리보기 및 삭제 로직 안정화 ([45ba4be](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/45ba4be1507efc44d0ed7d44f5ec9e954a4932f0))
+
+## [1.13.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.13.0...v1.13.1) (2025-04-09)
+
+### 🐛 BUG FIXES
+
+* 채팅페이지 배경색상 변경 ([9c6ce74](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/9c6ce74ebeac8803735ef578dbc193835a5077f8))
+
+## [1.13.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.12.3...v1.13.0) (2025-04-09)
+
+### 🚀 NEW FEATURES
+
+* 같은사용자, 같은종류 마커 거리 제한30m ([93d468c](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/93d468c44ba505c626d85a5b4d21d51ac88e3dc6))
+
+## [1.12.3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.12.2...v1.12.3) (2025-04-09)
+
+### 🐛 BUG FIXES
+
+* 회원가입 닉네임 길이 헬퍼텍스트 수정 ([b685824](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/b6858246a5e6a58583f70e576dba10d1aa886b0f))
+
+## [1.12.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.12.1...v1.12.2) (2025-04-09)
+
+### 🐛 BUG FIXES
+
+* 반려견 수정시 이미지 유지 및 삭제 로직 안정화 ([5e66637](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/5e666371251d9e3bb4706946364fc7fb5560ad49))
+
+## [1.12.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.12.0...v1.12.1) (2025-04-08)
+
+### 🐛 BUG FIXES
+
+* 파일창 2번 오류 해결 ([4090bc0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/4090bc009c31b4ddee90e0a0d9e138558091d8e1))
+
+## [1.12.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.11.2...v1.12.0) (2025-04-08)
+
+### 🚀 NEW FEATURES
+
+* 프로필 이미지 클릭 시 초기화 후 파일 선택창 열리는 기능 추가 ([032dae2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/032dae260d808393df493e4f4623773677ef1452))
+
+## [1.11.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.11.1...v1.11.2) (2025-04-08)
+
+### 🐛 BUG FIXES
+
+* s3 url이라 수정 페이지 미리보기, 파일 삭제 안되는 오류 ([e225054](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/e225054295e2658e93449e188e0a4603116e384b))
+
+## [1.11.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.11.0...v1.11.1) (2025-04-08)
+
+### 🐛 BUG FIXES
+
+* 수정 페이지 이미지 삭제 시 미리보기도 사라지게 구현 ([e91bf68](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/e91bf68ac3ce95b4a53a835458775ee41835457c))
+
+## [1.11.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.10.6...v1.11.0) (2025-04-08)
+
+### 🚀 NEW FEATURES
+
+* 회원가입, 프로필 이미지 저장 방식 변경 ([a768dbf](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/a768dbf68231680a4ff3dc97ad4ba368157c41b4))
+
+### 🐛 BUG FIXES
+
+* 이미지 업로드 관련 로그 추가 ([bc8c1bd](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/bc8c1bd81536b57fe09504a07272386b9f42733a))
+
+## [1.10.6](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.10.5...v1.10.6) (2025-04-08)
+
+### 🐛 BUG FIXES
+
+* OriginalProfileImageKey 삭제 ([205805f](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/205805f5ced7438a144a7bf266ad1662c497d9eb))
+
+## [1.10.5](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.10.4...v1.10.5) (2025-04-08)
+
+### 🐛 BUG FIXES
+
+* 수정 삭제 처리 로직 꼬임 해결 ([1bfa7c8](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/1bfa7c8abe45c8bd914782ecb8f56042d7812358))
+
+## [1.10.4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.10.3...v1.10.4) (2025-04-08)
+
+### 🐛 BUG FIXES
+
+* 수정 파일 선택 취소 시 미리보기, 상태 초기화 누락 문제 ([481d5e6](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/481d5e6e3cf5706848ca428868b8cbaa6e15193e))
+
+## [1.10.3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.10.2...v1.10.3) (2025-04-08)
+
+### 🐛 BUG FIXES
+
+* 반려견 등록/ 수정 몸무게 최대 세자리숫자만 입력 가능하도록 수정 ([5e3c14c](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/5e3c14c0bab8a95242dc45d256ed2613041cf3a0))
+* 반려견정보 등록/수정 이름 헬퍼텍스트 공백 알림 추가 ([7848179](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/784817998e1bca3a2affa2ef3016b22d0ca8ef12))
+
+## [1.10.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.10.1...v1.10.2) (2025-04-08)
+
+### 🐛 BUG FIXES
+
+* 반려견 등록/ 수정 몸무게 최대 세자리숫자만 입력 가능하도록 수정 ([67aaf29](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/67aaf293a94d06587ec3b433a845d63ee4a64ed9))
+
+## [1.10.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.10.0...v1.10.1) (2025-04-08)
+
+### 🐛 BUG FIXES
+
+* 수정 페이지 이미지 삭제 구현 ([041df8e](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/041df8e83bc785a8c8238b8abe20eaf43ced9d4a))
+
+## [1.10.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.9.1...v1.10.0) (2025-04-08)
+
+### 🚀 NEW FEATURES
+
+* 몸무게 소숫점 두 자리 이상 입력 방지 기능 추가 ([6c1e3dd](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/6c1e3dd0e401f20cc6adfbbad58861d83d8156e5))
+* 소숫점 둘째자리 이상 입력 방지 ([b2ed193](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/b2ed193294c01b879f88b34e7c1a839593878d42))
+* 소숫점 둘째자리 이상 입력 방지 ([42368af](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/42368af012ebae3be18dd9448584b08c6d09bea8))
+
+### 🐛 BUG FIXES
+
+* 반려견 나이 두자리 숫자만 입력 가능하도록 수정 ([a68b1f5](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/a68b1f5138bd2c7be2613ab7bc0f2ed181e9f75c))
+* 반려견정보 수정, 등록 헬퍼텍스트 수정 ([978350b](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/978350b2d7c73ebd73afb45848cd7c2f0fad563c))
+
+## [1.9.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.9.0...v1.9.1) (2025-04-08)
+
+### 🐛 BUG FIXES
+
+* 반려견 나이 두자리 숫자만 입력 가능하도록 수정 ([77fdca2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/77fdca246ae483830b2446447f00f3730155414d))
+
+## [1.9.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.8.3...v1.9.0) (2025-04-08)
+
+### 🚀 NEW FEATURES
+
+* 몸무게 소숫점 두 자리 이상 입력 방지 기능 추가 ([af8f495](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/af8f495ac91bf4aa9d2fc9acdab19cd2b79b87f1))
+* 소숫점 둘째자리 이상 입력 방지 ([6b681d6](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/6b681d628b66a3fe10c1fbef1fe16a9a101c8dc7))
+* 소숫점 둘째자리 이상 입력 방지 ([1f96f85](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/1f96f85128bd380182cbf2d40e4b5fb25471634b))
+
+## [1.8.3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.8.2...v1.8.3) (2025-04-08)
+
+### 🐛 BUG FIXES
+
+* CloudFront URL 환경변수 적용 ([4ee689d](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/4ee689d47ba53127df9373339baf08c24e2e0a3e))
+
+## [1.8.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.8.1...v1.8.2) (2025-04-08)
+
+### 🐛 BUG FIXES
+
+* cloudfront 경로 수정 ([f05f2dd](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/f05f2dd52ba06ec9764a2e0b504a77beb1d2556b))
+
+## [1.8.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.8.0...v1.8.1) (2025-04-08)
+
+### 🐛 BUG FIXES
+
+* cloudfront url ([97358b3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/97358b35fa695739003727942f4499afc051910d))
+* Decoding ([6db7b42](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/6db7b4264f0d49828b3fa2ffcb5df2188ba2271d))
+* Decoding ([9329379](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/932937920df7fe3ef4893b27e0747b551dace52f))
+* Develop ([54e2bd8](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/54e2bd8c3e308eb823552543f7ebab997b453870))
+* Develop ([97e9318](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/97e9318c93a4a23bab78e4091d2173fdf30c6918))
+* version ([ccdd936](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/ccdd9368894435e72e87b0d917e1f1628efaf7ca))
+* version ([6d12563](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/6d1256305f200ef64ad2b29c4f95030035cbfcca))
+* yml update ([a9fddd0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/a9fddd0ed4b5951da83153dec2f0e9bd7f750d0b))
+* yml update ([dbd17ea](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/dbd17eac09166224624ff91eb35c1a152c75e5e6))
+* 프로필 이미지 경로 수정 ([0380a44](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/0380a44c18966ee985e7d4cf0d8cb601e1526ceb))
+* 프로필 이미지 경로 수정 ([e8179ae](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/e8179ae427bc9f42a4a9efde49601b82c18843cf))
+
+## [1.5.20](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.5.19...v1.5.20) (2025-04-07)
+
+### 🐛 BUG FIXES
+
+* cloudfront url ([97358b3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/97358b35fa695739003727942f4499afc051910d))
+* fix base-url ([eae357c](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/eae357c7430c42a714c6fcf51cce73f9fb584b40))
+* kakaomap ([22ab0cc](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/22ab0ccd5ee4be87cad8a331237aaa55df46747d))
+* version ([ccdd936](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/ccdd9368894435e72e87b0d917e1f1628efaf7ca))
+* version ([6d12563](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/6d1256305f200ef64ad2b29c4f95030035cbfcca))
+* yml update ([a9fddd0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/a9fddd0ed4b5951da83153dec2f0e9bd7f750d0b))
+* yml update ([dbd17ea](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/dbd17eac09166224624ff91eb35c1a152c75e5e6))
+
+## [1.5.20](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.5.19...v1.5.20) (2025-04-07)
+
+### 🐛 BUG FIXES
+
+* cloudfront url ([97358b3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/97358b35fa695739003727942f4499afc051910d))
+* fix base-url ([eae357c](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/eae357c7430c42a714c6fcf51cce73f9fb584b40))
+* kakaomap ([22ab0cc](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/22ab0ccd5ee4be87cad8a331237aaa55df46747d))
+* version ([6d12563](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/6d1256305f200ef64ad2b29c4f95030035cbfcca))
+* yml update ([a9fddd0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/a9fddd0ed4b5951da83153dec2f0e9bd7f750d0b))
+* yml update ([dbd17ea](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/dbd17eac09166224624ff91eb35c1a152c75e5e6))
+
+## [1.5.20](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.5.19...v1.5.20) (2025-04-07)
+
+### 🐛 BUG FIXES
+
+* cloudfront url ([97358b3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/97358b35fa695739003727942f4499afc051910d))
+* fix base-url ([eae357c](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/eae357c7430c42a714c6fcf51cce73f9fb584b40))
+* kakaomap ([22ab0cc](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/22ab0ccd5ee4be87cad8a331237aaa55df46747d))
+* yml update ([a9fddd0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/a9fddd0ed4b5951da83153dec2f0e9bd7f750d0b))
+* yml update ([dbd17ea](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/dbd17eac09166224624ff91eb35c1a152c75e5e6))
+
+## [1.5.19](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.5.18...v1.5.19) (2025-04-05)
+
+### 🐛 BUG FIXES
+
+* sentry main&develop update ([8619055](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/8619055487c4214a3e2150a164ed23680609f405))
+
+## [1.5.18](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.5.17...v1.5.18) (2025-04-05)
+
+### 🐛 BUG FIXES
+
+* develop deployment ([6367cb2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/6367cb2ad0b4d8efa740f4762c9b622aec8ffb90))
+
 ## [1.5.17](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.5.16...v1.5.17) (2025-04-05)
 
 ### 🐛 BUG FIXES
@@ -6774,273 +7330,273 @@
 
 ### 📚 DOCUMENTATION
 
-* 로컬마커 주석 삭제 ([cd305ba](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/cd305baaf5d2d3aaeee8db246a39b772f1ebbd77))
-* 마커 관련 주석 수정 ([a7cc7cd](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/a7cc7cd52bf384ad7dded92c54ca8171174b3676))
+- 로컬마커 주석 삭제 ([cd305ba](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/cd305baaf5d2d3aaeee8db246a39b772f1ebbd77))
+- 마커 관련 주석 수정 ([a7cc7cd](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/a7cc7cd52bf384ad7dded92c54ca8171174b3676))
 
 ### 🚀 NEW FEATURES
 
-* Add Auth Contexts ([58e33e8](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/58e33e8c0b0a5e9519efa86aabc4986dddd61210))
-* Feat/user와 병합, user_id 통해 마 커 삭제, 등록 구현 ([8cf6a4d](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/8cf6a4dcece49846ab25af9be4b4737ce0ee4efe))
-* Main CI ([3a24f40](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/3a24f408f2a6b0e1ffb43212c582be89eb65ea2e))
-* MapPage.js 충돌 해결 ([e651a13](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/e651a13976fde73029a767f0b1a62cded5cd5276))
-* user api fe-be ([c8e78a7](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/c8e78a71ff7f3063ea7b3870a83f78da2843e68d))
-* 로그인 안 하고, 다른 유저 마커 삭제시 alert 처리 ([3017d4d](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/3017d4df3fd7de4a7f00507e7da24282f312e27c))
-* 마커 등록 시 크로스헤어 변경(찍히는 위치변경 필요) ([18917fa](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/18917fadf36e46e87301e3754595a7c1e8369bc0))
-* 마커 디자인 변경, 찍히는 위치 수정 ([18fd641](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/18fd6416b43d9ce5b2cf4196fe2362a5be2522c9))
-* 마커 디자인 추가 변경, 마커추가 바도 변경 ([54a2b6f](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/54a2b6f3229681cf2b3c5d5034958e367bc0103a))
-* 마커 클릭, 클러스터링 가능 ([e6aa242](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/e6aa242c796b92c422ea1cb2a0b8be978fdc110d))
-* 마커 클릭, 클러스터링 기능 ([d128533](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/d12853369657fb1c02a2e3582ce6bf8162a9d658))
-* 마커, 마커 배경 수정 ([62e005d](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/62e005dfea943ea6539d16c753e4864fa8b6af40))
-* 반려견 등록, 수정 helpertext & 조회 성별 에러 수정 ([c2fa784](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/c2fa784e741ffc84fc11347799863c75d7899cb1))
-* 반려견 등록, 조회, 수정, 삭제 백 연동(프로필 제외, 확인 못함) ([df8abf9](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/df8abf9cfe64328663896b033bf1ebd3fe5ea647))
-* 반려견 품종 드롭박스 변경 ([c5e72e9](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/c5e72e9d1a9b9e6da9d8e65a2677e32a56f5daf1))
-* 반려견 프로필 경로 수정 ([add7cba](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/add7cba8c7a2889b5e9948ee7fa43fc08b9bf797))
-* 반려견 프로필(조회, 등록, 수정) 백 연동 완료 ([6504e5d](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/6504e5df0d1b9898094fbb7f5a4988c1d2ca5605))
-* 반려견 프백 연동 완료 (프사 제외) & 정보 없을 시 등록 페이지 구현 ([a1120ce](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/a1120ce729706636c62614e611a1bac08c23381c))
-* 배포 환경 설정 ([aeb9ca5](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/aeb9ca5f517a2273ee35c14ddfa817ebf842accb))
-* 백에서 마커 정보 받아오기, 타입별로 이모지 다르게 출력 ([9092482](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/9092482b6575f4d7d2a8b0a8126e0f29ec0e9e3f))
-* 세션 user_id 기반 마커 삭제, 등록 연동 완료 ([eddf15f](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/eddf15f9e921d40399a859cb2aee8fa57ade9d21))
-* 일단 돌아가도록 수정 ([064160e](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/064160e03be3984a1ac597e8ba97deadf7aceb29))
-* 제리 브랜치 생성 ([1c11313](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/1c113130e529f820c04f20d1c92cbebc00dca999))
-* 확대,축소 시에 위도 경도 보이는 것 주석처리 ([c0438f5](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/c0438f556f66ebfcf8d3b602f5f432f1b4a4d799))
+- Add Auth Contexts ([58e33e8](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/58e33e8c0b0a5e9519efa86aabc4986dddd61210))
+- Feat/user와 병합, user_id 통해 마 커 삭제, 등록 구현 ([8cf6a4d](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/8cf6a4dcece49846ab25af9be4b4737ce0ee4efe))
+- Main CI ([3a24f40](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/3a24f408f2a6b0e1ffb43212c582be89eb65ea2e))
+- MapPage.js 충돌 해결 ([e651a13](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/e651a13976fde73029a767f0b1a62cded5cd5276))
+- user api fe-be ([c8e78a7](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/c8e78a71ff7f3063ea7b3870a83f78da2843e68d))
+- 로그인 안 하고, 다른 유저 마커 삭제시 alert 처리 ([3017d4d](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/3017d4df3fd7de4a7f00507e7da24282f312e27c))
+- 마커 등록 시 크로스헤어 변경(찍히는 위치변경 필요) ([18917fa](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/18917fadf36e46e87301e3754595a7c1e8369bc0))
+- 마커 디자인 변경, 찍히는 위치 수정 ([18fd641](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/18fd6416b43d9ce5b2cf4196fe2362a5be2522c9))
+- 마커 디자인 추가 변경, 마커추가 바도 변경 ([54a2b6f](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/54a2b6f3229681cf2b3c5d5034958e367bc0103a))
+- 마커 클릭, 클러스터링 가능 ([e6aa242](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/e6aa242c796b92c422ea1cb2a0b8be978fdc110d))
+- 마커 클릭, 클러스터링 기능 ([d128533](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/d12853369657fb1c02a2e3582ce6bf8162a9d658))
+- 마커, 마커 배경 수정 ([62e005d](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/62e005dfea943ea6539d16c753e4864fa8b6af40))
+- 반려견 등록, 수정 helpertext & 조회 성별 에러 수정 ([c2fa784](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/c2fa784e741ffc84fc11347799863c75d7899cb1))
+- 반려견 등록, 조회, 수정, 삭제 백 연동(프로필 제외, 확인 못함) ([df8abf9](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/df8abf9cfe64328663896b033bf1ebd3fe5ea647))
+- 반려견 품종 드롭박스 변경 ([c5e72e9](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/c5e72e9d1a9b9e6da9d8e65a2677e32a56f5daf1))
+- 반려견 프로필 경로 수정 ([add7cba](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/add7cba8c7a2889b5e9948ee7fa43fc08b9bf797))
+- 반려견 프로필(조회, 등록, 수정) 백 연동 완료 ([6504e5d](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/6504e5df0d1b9898094fbb7f5a4988c1d2ca5605))
+- 반려견 프백 연동 완료 (프사 제외) & 정보 없을 시 등록 페이지 구현 ([a1120ce](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/a1120ce729706636c62614e611a1bac08c23381c))
+- 배포 환경 설정 ([aeb9ca5](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/aeb9ca5f517a2273ee35c14ddfa817ebf842accb))
+- 백에서 마커 정보 받아오기, 타입별로 이모지 다르게 출력 ([9092482](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/9092482b6575f4d7d2a8b0a8126e0f29ec0e9e3f))
+- 세션 user_id 기반 마커 삭제, 등록 연동 완료 ([eddf15f](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/eddf15f9e921d40399a859cb2aee8fa57ade9d21))
+- 일단 돌아가도록 수정 ([064160e](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/064160e03be3984a1ac597e8ba97deadf7aceb29))
+- 제리 브랜치 생성 ([1c11313](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/1c113130e529f820c04f20d1c92cbebc00dca999))
+- 확대,축소 시에 위도 경도 보이는 것 주석처리 ([c0438f5](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/c0438f556f66ebfcf8d3b602f5f432f1b4a4d799))
 
 ### 🐛 BUG FIXES
 
-* add auth into navigation bar ([cecd3e4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/cecd3e42c17f8b1e6cea4c15e38eb56344d2ef04))
-* add back button ([b2b7fc4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/b2b7fc4420f9e3365f7ceca69d75f418fc4d86bb))
-* alert 한글로 번역 ([77a88a6](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/77a88a6525a99e57c8ce8451a4b51bb3327d87c8))
-* API키 env관리 ([9a28117](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/9a281175568308690186b4914b69e759c829f559))
-* edit css & register profile image error ([1b2436b](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/1b2436b7c7b0e02f8292bad4003a97a683eacf42))
-* edit media query ([4d968e7](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/4d968e737da3d4f75a873986b70797d654f53dbf))
-* edit page routing ([4062e4d](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/4062e4ddaa25a17700d599ac5a89591720658991))
-* env setting ([0d9daf3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/0d9daf355f68bca3edd3a9cabbc205b314f8faa8))
-* env setting ([b271dc6](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/b271dc6d6dd4f0a2157cdde39dd77a9a931d917d))
-* eslint error ([3930272](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/393027236c53e3bf7cfcede4e941ad46c2832f05))
-* gldgld ([4dc8341](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/4dc83417397dd48ee913731b2111e0605c5f73c6))
-* gpt응답 예쁘게 수정! ([c54f779](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/c54f779186a6fb0441fce4b490fbb9f219678ace))
-* llm-chat 연동 및 코드 수정 ([23138a5](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/23138a57c430cac818c9d59163c3b68b721d60f5))
-* user api signout ([9d4a2f1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/9d4a2f17478eb6c8436f2aca6cc66b886ccb73e5))
-* 로그인 예외처리 메세지 일부 수정 ([caccc5b](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/caccc5b07b0556cb95ac621a82c94fe9929d6c39))
-* 로그인, 비밀번호 수정 페이지 에러 메세지 영어에서 한글로 수정 ([c27e400](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/c27e4003175e92c02c62f6fc874ac3518fe85a45))
-* 마커 등록 offset 수정(찍히는위치 수정 ([ae4d470](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/ae4d47012b04196ce579c4af993c7eaf32760f75))
-* 여니가 삭제한 deprecated 복구 ([35819f4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/35819f4a65af915167f514621dac7ee9cfa05449))
-* 채팅창 오류 해결 ([7588437](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/75884371f82c1b67c5f7b39ddf73e213c25da4ff))
-* 필터 적용 후 움직이면 필터 해제되는 버그 해결 ([ac9f62f](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/ac9f62f67bfb54905428b4489d9fbfec1f8b1785))
+- add auth into navigation bar ([cecd3e4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/cecd3e42c17f8b1e6cea4c15e38eb56344d2ef04))
+- add back button ([b2b7fc4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/b2b7fc4420f9e3365f7ceca69d75f418fc4d86bb))
+- alert 한글로 번역 ([77a88a6](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/77a88a6525a99e57c8ce8451a4b51bb3327d87c8))
+- API키 env관리 ([9a28117](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/9a281175568308690186b4914b69e759c829f559))
+- edit css & register profile image error ([1b2436b](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/1b2436b7c7b0e02f8292bad4003a97a683eacf42))
+- edit media query ([4d968e7](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/4d968e737da3d4f75a873986b70797d654f53dbf))
+- edit page routing ([4062e4d](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/4062e4ddaa25a17700d599ac5a89591720658991))
+- env setting ([0d9daf3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/0d9daf355f68bca3edd3a9cabbc205b314f8faa8))
+- env setting ([b271dc6](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/b271dc6d6dd4f0a2157cdde39dd77a9a931d917d))
+- eslint error ([3930272](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/393027236c53e3bf7cfcede4e941ad46c2832f05))
+- gldgld ([4dc8341](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/4dc83417397dd48ee913731b2111e0605c5f73c6))
+- gpt응답 예쁘게 수정! ([c54f779](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/c54f779186a6fb0441fce4b490fbb9f219678ace))
+- llm-chat 연동 및 코드 수정 ([23138a5](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/23138a57c430cac818c9d59163c3b68b721d60f5))
+- user api signout ([9d4a2f1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/9d4a2f17478eb6c8436f2aca6cc66b886ccb73e5))
+- 로그인 예외처리 메세지 일부 수정 ([caccc5b](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/caccc5b07b0556cb95ac621a82c94fe9929d6c39))
+- 로그인, 비밀번호 수정 페이지 에러 메세지 영어에서 한글로 수정 ([c27e400](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/c27e4003175e92c02c62f6fc874ac3518fe85a45))
+- 마커 등록 offset 수정(찍히는위치 수정 ([ae4d470](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/ae4d47012b04196ce579c4af993c7eaf32760f75))
+- 여니가 삭제한 deprecated 복구 ([35819f4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/35819f4a65af915167f514621dac7ee9cfa05449))
+- 채팅창 오류 해결 ([7588437](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/75884371f82c1b67c5f7b39ddf73e213c25da4ff))
+- 필터 적용 후 움직이면 필터 해제되는 버그 해결 ([ac9f62f](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/ac9f62f67bfb54905428b4489d9fbfec1f8b1785))
 
 ## [1.4.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.3.8...v1.4.0) (2025-03-27)
 
 ### 📚 DOCUMENTATION
 
-* 로컬마커 주석 삭제 ([cd305ba](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/cd305baaf5d2d3aaeee8db246a39b772f1ebbd77))
-* 마커 관련 주석 수정 ([a7cc7cd](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/a7cc7cd52bf384ad7dded92c54ca8171174b3676))
+- 로컬마커 주석 삭제 ([cd305ba](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/cd305baaf5d2d3aaeee8db246a39b772f1ebbd77))
+- 마커 관련 주석 수정 ([a7cc7cd](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/a7cc7cd52bf384ad7dded92c54ca8171174b3676))
 
 ### 🚀 NEW FEATURES
 
-* Add Auth Contexts ([58e33e8](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/58e33e8c0b0a5e9519efa86aabc4986dddd61210))
-* Feat/user와 병합, user_id 통해 마 커 삭제, 등록 구현 ([8cf6a4d](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/8cf6a4dcece49846ab25af9be4b4737ce0ee4efe))
-* Main CI ([3a24f40](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/3a24f408f2a6b0e1ffb43212c582be89eb65ea2e))
-* MapPage.js 충돌 해결 ([e651a13](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/e651a13976fde73029a767f0b1a62cded5cd5276))
-* user api fe-be ([c8e78a7](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/c8e78a71ff7f3063ea7b3870a83f78da2843e68d))
-* 로그인 안 하고, 다른 유저 마커 삭제시 alert 처리 ([3017d4d](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/3017d4df3fd7de4a7f00507e7da24282f312e27c))
-* 마커 등록 시 크로스헤어 변경(찍히는 위치변경 필요) ([18917fa](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/18917fadf36e46e87301e3754595a7c1e8369bc0))
-* 마커 디자인 변경, 찍히는 위치 수정 ([18fd641](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/18fd6416b43d9ce5b2cf4196fe2362a5be2522c9))
-* 마커 디자인 추가 변경, 마커추가 바도 변경 ([54a2b6f](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/54a2b6f3229681cf2b3c5d5034958e367bc0103a))
-* 마커 클릭, 클러스터링 가능 ([e6aa242](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/e6aa242c796b92c422ea1cb2a0b8be978fdc110d))
-* 마커 클릭, 클러스터링 기능 ([d128533](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/d12853369657fb1c02a2e3582ce6bf8162a9d658))
-* 마커, 마커 배경 수정 ([62e005d](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/62e005dfea943ea6539d16c753e4864fa8b6af40))
-* 반려견 등록, 수정 helpertext & 조회 성별 에러 수정 ([c2fa784](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/c2fa784e741ffc84fc11347799863c75d7899cb1))
-* 반려견 등록, 조회, 수정, 삭제 백 연동(프로필 제외, 확인 못함) ([df8abf9](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/df8abf9cfe64328663896b033bf1ebd3fe5ea647))
-* 반려견 품종 드롭박스 변경 ([c5e72e9](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/c5e72e9d1a9b9e6da9d8e65a2677e32a56f5daf1))
-* 반려견 프로필(조회, 등록, 수정) 백 연동 완료 ([6504e5d](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/6504e5df0d1b9898094fbb7f5a4988c1d2ca5605))
-* 반려견 프백 연동 완료 (프사 제외) & 정보 없을 시 등록 페이지 구현 ([a1120ce](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/a1120ce729706636c62614e611a1bac08c23381c))
-* 배포 환경 설정 ([aeb9ca5](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/aeb9ca5f517a2273ee35c14ddfa817ebf842accb))
-* 백에서 마커 정보 받아오기, 타입별로 이모지 다르게 출력 ([9092482](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/9092482b6575f4d7d2a8b0a8126e0f29ec0e9e3f))
-* 세션 user_id 기반 마커 삭제, 등록 연동 완료 ([eddf15f](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/eddf15f9e921d40399a859cb2aee8fa57ade9d21))
-* 일단 돌아가도록 수정 ([064160e](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/064160e03be3984a1ac597e8ba97deadf7aceb29))
-* 제리 브랜치 생성 ([1c11313](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/1c113130e529f820c04f20d1c92cbebc00dca999))
-* 확대,축소 시에 위도 경도 보이는 것 주석처리 ([c0438f5](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/c0438f556f66ebfcf8d3b602f5f432f1b4a4d799))
+- Add Auth Contexts ([58e33e8](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/58e33e8c0b0a5e9519efa86aabc4986dddd61210))
+- Feat/user와 병합, user_id 통해 마 커 삭제, 등록 구현 ([8cf6a4d](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/8cf6a4dcece49846ab25af9be4b4737ce0ee4efe))
+- Main CI ([3a24f40](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/3a24f408f2a6b0e1ffb43212c582be89eb65ea2e))
+- MapPage.js 충돌 해결 ([e651a13](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/e651a13976fde73029a767f0b1a62cded5cd5276))
+- user api fe-be ([c8e78a7](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/c8e78a71ff7f3063ea7b3870a83f78da2843e68d))
+- 로그인 안 하고, 다른 유저 마커 삭제시 alert 처리 ([3017d4d](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/3017d4df3fd7de4a7f00507e7da24282f312e27c))
+- 마커 등록 시 크로스헤어 변경(찍히는 위치변경 필요) ([18917fa](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/18917fadf36e46e87301e3754595a7c1e8369bc0))
+- 마커 디자인 변경, 찍히는 위치 수정 ([18fd641](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/18fd6416b43d9ce5b2cf4196fe2362a5be2522c9))
+- 마커 디자인 추가 변경, 마커추가 바도 변경 ([54a2b6f](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/54a2b6f3229681cf2b3c5d5034958e367bc0103a))
+- 마커 클릭, 클러스터링 가능 ([e6aa242](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/e6aa242c796b92c422ea1cb2a0b8be978fdc110d))
+- 마커 클릭, 클러스터링 기능 ([d128533](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/d12853369657fb1c02a2e3582ce6bf8162a9d658))
+- 마커, 마커 배경 수정 ([62e005d](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/62e005dfea943ea6539d16c753e4864fa8b6af40))
+- 반려견 등록, 수정 helpertext & 조회 성별 에러 수정 ([c2fa784](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/c2fa784e741ffc84fc11347799863c75d7899cb1))
+- 반려견 등록, 조회, 수정, 삭제 백 연동(프로필 제외, 확인 못함) ([df8abf9](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/df8abf9cfe64328663896b033bf1ebd3fe5ea647))
+- 반려견 품종 드롭박스 변경 ([c5e72e9](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/c5e72e9d1a9b9e6da9d8e65a2677e32a56f5daf1))
+- 반려견 프로필(조회, 등록, 수정) 백 연동 완료 ([6504e5d](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/6504e5df0d1b9898094fbb7f5a4988c1d2ca5605))
+- 반려견 프백 연동 완료 (프사 제외) & 정보 없을 시 등록 페이지 구현 ([a1120ce](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/a1120ce729706636c62614e611a1bac08c23381c))
+- 배포 환경 설정 ([aeb9ca5](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/aeb9ca5f517a2273ee35c14ddfa817ebf842accb))
+- 백에서 마커 정보 받아오기, 타입별로 이모지 다르게 출력 ([9092482](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/9092482b6575f4d7d2a8b0a8126e0f29ec0e9e3f))
+- 세션 user_id 기반 마커 삭제, 등록 연동 완료 ([eddf15f](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/eddf15f9e921d40399a859cb2aee8fa57ade9d21))
+- 일단 돌아가도록 수정 ([064160e](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/064160e03be3984a1ac597e8ba97deadf7aceb29))
+- 제리 브랜치 생성 ([1c11313](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/1c113130e529f820c04f20d1c92cbebc00dca999))
+- 확대,축소 시에 위도 경도 보이는 것 주석처리 ([c0438f5](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/c0438f556f66ebfcf8d3b602f5f432f1b4a4d799))
 
 ### 🐛 BUG FIXES
 
-* add auth into navigation bar ([cecd3e4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/cecd3e42c17f8b1e6cea4c15e38eb56344d2ef04))
-* add back button ([b2b7fc4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/b2b7fc4420f9e3365f7ceca69d75f418fc4d86bb))
-* alert 한글로 번역 ([77a88a6](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/77a88a6525a99e57c8ce8451a4b51bb3327d87c8))
-* API키 env관리 ([9a28117](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/9a281175568308690186b4914b69e759c829f559))
-* edit css & register profile image error ([1b2436b](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/1b2436b7c7b0e02f8292bad4003a97a683eacf42))
-* edit media query ([4d968e7](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/4d968e737da3d4f75a873986b70797d654f53dbf))
-* edit page routing ([4062e4d](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/4062e4ddaa25a17700d599ac5a89591720658991))
-* env setting ([0d9daf3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/0d9daf355f68bca3edd3a9cabbc205b314f8faa8))
-* env setting ([b271dc6](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/b271dc6d6dd4f0a2157cdde39dd77a9a931d917d))
-* eslint error ([3930272](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/393027236c53e3bf7cfcede4e941ad46c2832f05))
-* gldgld ([4dc8341](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/4dc83417397dd48ee913731b2111e0605c5f73c6))
-* gpt응답 예쁘게 수정! ([c54f779](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/c54f779186a6fb0441fce4b490fbb9f219678ace))
-* llm-chat 연동 및 코드 수정 ([23138a5](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/23138a57c430cac818c9d59163c3b68b721d60f5))
-* user api signout ([9d4a2f1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/9d4a2f17478eb6c8436f2aca6cc66b886ccb73e5))
-* 로그인 예외처리 메세지 일부 수정 ([caccc5b](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/caccc5b07b0556cb95ac621a82c94fe9929d6c39))
-* 로그인, 비밀번호 수정 페이지 에러 메세지 영어에서 한글로 수정 ([c27e400](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/c27e4003175e92c02c62f6fc874ac3518fe85a45))
-* 마커 등록 offset 수정(찍히는위치 수정 ([ae4d470](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/ae4d47012b04196ce579c4af993c7eaf32760f75))
-* 여니가 삭제한 deprecated 복구 ([35819f4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/35819f4a65af915167f514621dac7ee9cfa05449))
-* 채팅창 오류 해결 ([7588437](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/75884371f82c1b67c5f7b39ddf73e213c25da4ff))
-* 필터 적용 후 움직이면 필터 해제되는 버그 해결 ([ac9f62f](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/ac9f62f67bfb54905428b4489d9fbfec1f8b1785))
+- add auth into navigation bar ([cecd3e4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/cecd3e42c17f8b1e6cea4c15e38eb56344d2ef04))
+- add back button ([b2b7fc4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/b2b7fc4420f9e3365f7ceca69d75f418fc4d86bb))
+- alert 한글로 번역 ([77a88a6](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/77a88a6525a99e57c8ce8451a4b51bb3327d87c8))
+- API키 env관리 ([9a28117](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/9a281175568308690186b4914b69e759c829f559))
+- edit css & register profile image error ([1b2436b](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/1b2436b7c7b0e02f8292bad4003a97a683eacf42))
+- edit media query ([4d968e7](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/4d968e737da3d4f75a873986b70797d654f53dbf))
+- edit page routing ([4062e4d](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/4062e4ddaa25a17700d599ac5a89591720658991))
+- env setting ([0d9daf3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/0d9daf355f68bca3edd3a9cabbc205b314f8faa8))
+- env setting ([b271dc6](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/b271dc6d6dd4f0a2157cdde39dd77a9a931d917d))
+- eslint error ([3930272](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/393027236c53e3bf7cfcede4e941ad46c2832f05))
+- gldgld ([4dc8341](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/4dc83417397dd48ee913731b2111e0605c5f73c6))
+- gpt응답 예쁘게 수정! ([c54f779](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/c54f779186a6fb0441fce4b490fbb9f219678ace))
+- llm-chat 연동 및 코드 수정 ([23138a5](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/23138a57c430cac818c9d59163c3b68b721d60f5))
+- user api signout ([9d4a2f1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/9d4a2f17478eb6c8436f2aca6cc66b886ccb73e5))
+- 로그인 예외처리 메세지 일부 수정 ([caccc5b](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/caccc5b07b0556cb95ac621a82c94fe9929d6c39))
+- 로그인, 비밀번호 수정 페이지 에러 메세지 영어에서 한글로 수정 ([c27e400](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/c27e4003175e92c02c62f6fc874ac3518fe85a45))
+- 마커 등록 offset 수정(찍히는위치 수정 ([ae4d470](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/ae4d47012b04196ce579c4af993c7eaf32760f75))
+- 여니가 삭제한 deprecated 복구 ([35819f4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/35819f4a65af915167f514621dac7ee9cfa05449))
+- 채팅창 오류 해결 ([7588437](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/75884371f82c1b67c5f7b39ddf73e213c25da4ff))
+- 필터 적용 후 움직이면 필터 해제되는 버그 해결 ([ac9f62f](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/ac9f62f67bfb54905428b4489d9fbfec1f8b1785))
 
 ## [1.3.8](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.3.7...v1.3.8) (2025-03-25)
 
 ### 🐛 BUG FIXES
 
-* Kakao map api update ([b4a2814](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/b4a2814e231ecff5c626ecbe2d16fd5768981677))
+- Kakao map api update ([b4a2814](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/b4a2814e231ecff5c626ecbe2d16fd5768981677))
 
 ## [1.3.7](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.3.6...v1.3.7) (2025-03-25)
 
 ### 🐛 BUG FIXES
 
-* Kakao map api update ([c73d5a9](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/c73d5a93d46e0e8f73c890504d27b6747a2a838c))
+- Kakao map api update ([c73d5a9](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/c73d5a93d46e0e8f73c890504d27b6747a2a838c))
 
 ## [1.3.6](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.3.5...v1.3.6) (2025-03-25)
 
 ### 🐛 BUG FIXES
 
-* Kakao map api update ([79c4d55](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/79c4d5538b85483543cab38493bd91b7d1087d24))
+- Kakao map api update ([79c4d55](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/79c4d5538b85483543cab38493bd91b7d1087d24))
 
 ## [1.3.5](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.3.4...v1.3.5) (2025-03-25)
 
 ### 🐛 BUG FIXES
 
-* Kakao map api update ([2333ba2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/2333ba2bcb0788f14b8e36d4a82dc0959239f597))
+- Kakao map api update ([2333ba2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/2333ba2bcb0788f14b8e36d4a82dc0959239f597))
 
 ## [1.3.4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.3.3...v1.3.4) (2025-03-25)
 
 ### 🐛 BUG FIXES
 
-* Kakao map api update ([9a2be26](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/9a2be263f1d5c9400c62d6178b28c650c2f97553))
+- Kakao map api update ([9a2be26](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/9a2be263f1d5c9400c62d6178b28c650c2f97553))
 
 ## [1.3.3](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.3.2...v1.3.3) (2025-03-25)
 
 ### 🐛 BUG FIXES
 
-* Kakao map api update ([c9c6f8b](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/c9c6f8b8c534b8b443dfd7d50370b97587537b6d))
+- Kakao map api update ([c9c6f8b](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/c9c6f8b8c534b8b443dfd7d50370b97587537b6d))
 
 ## [1.3.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.3.1...v1.3.2) (2025-03-25)
 
 ### 🐛 BUG FIXES
 
-* Kakao map api update ([0ae31c1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/0ae31c1392dc5d14b455de763663c66bb2dd9aff))
+- Kakao map api update ([0ae31c1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/0ae31c1392dc5d14b455de763663c66bb2dd9aff))
 
 ## [1.3.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.3.0...v1.3.1) (2025-03-25)
 
 ### 🐛 BUG FIXES
 
-* Kakao map api update ([d909de1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/d909de1487229fd2fb9850468343c752ce35b8b6))
+- Kakao map api update ([d909de1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/d909de1487229fd2fb9850468343c752ce35b8b6))
 
 ## [1.3.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.2.0...v1.3.0) (2025-03-24)
 
 ### 🚀 NEW FEATURES
 
-* add kakao map api ([ecfee71](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/ecfee71022ee1e2101b483a0612bb89809ec71fe))
-* add layout ([39dfbd7](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/39dfbd72cf16f3cf9410a4a27420be1e3b3a1c37))
-* add petEdit & petRegister ([11b28ed](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/11b28ed725adcfaf7e12e14b85b2652995606b13))
-* edit kakao map api marker ([32a980a](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/32a980a7f00be749c2e42d4f65fe4632284faf34))
-* edit kakao map api marker ([d8e3689](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/d8e3689f3fddf775051f1c0710bef6d2172d291c))
-* S3 upload ([b37f0b0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/b37f0b0d49d9e87305509cdc1ab8ede25f0980ef))
-* S3 upload ([82ed714](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/82ed714087f379a164076a1b308bebf211baae81))
-* S3 upload ([bdff76b](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/bdff76be1d1ae80ab0fc118919639a0994d6e383))
-* S3 upload ([2738fbb](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/2738fbbdcf72203ac23698db78dcf876c70ebe72))
-* S3 upload ([2675363](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/26753636c469cb3be8ca2b66934383e3a63e490b))
-* sementic update ([c7b29ea](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/c7b29ea7594282248c793187c71e4a75a808e806))
-* sementic update ([b6e1612](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/b6e1612bec8f37423cca3b1ec1ccf99043071da5))
-* sementic update ([4e7849d](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/4e7849d52d18d3f1d672ebc8715f1cb43edc4de3))
-* set up API modules for backend integration ([233a76d](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/233a76d973486ceb526a0dc4c8e3ef7ae6036008))
-* 새로운 기능 추가 및 UI 개선 ([3de44f5](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/3de44f53561390597f1ab8cfac523f42844d312b))
-* 새로운 기능 추가 및 UI 개선 ([4ca56de](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/4ca56de5f04177ab30f036aa80898890c3d58c04))
-* 야호 ([bf4c6c2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/bf4c6c26bd2d8ec1972873d751074cc4e63bfbc8))
+- add kakao map api ([ecfee71](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/ecfee71022ee1e2101b483a0612bb89809ec71fe))
+- add layout ([39dfbd7](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/39dfbd72cf16f3cf9410a4a27420be1e3b3a1c37))
+- add petEdit & petRegister ([11b28ed](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/11b28ed725adcfaf7e12e14b85b2652995606b13))
+- edit kakao map api marker ([32a980a](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/32a980a7f00be749c2e42d4f65fe4632284faf34))
+- edit kakao map api marker ([d8e3689](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/d8e3689f3fddf775051f1c0710bef6d2172d291c))
+- S3 upload ([b37f0b0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/b37f0b0d49d9e87305509cdc1ab8ede25f0980ef))
+- S3 upload ([82ed714](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/82ed714087f379a164076a1b308bebf211baae81))
+- S3 upload ([bdff76b](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/bdff76be1d1ae80ab0fc118919639a0994d6e383))
+- S3 upload ([2738fbb](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/2738fbbdcf72203ac23698db78dcf876c70ebe72))
+- S3 upload ([2675363](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/26753636c469cb3be8ca2b66934383e3a63e490b))
+- sementic update ([c7b29ea](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/c7b29ea7594282248c793187c71e4a75a808e806))
+- sementic update ([b6e1612](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/b6e1612bec8f37423cca3b1ec1ccf99043071da5))
+- sementic update ([4e7849d](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/4e7849d52d18d3f1d672ebc8715f1cb43edc4de3))
+- set up API modules for backend integration ([233a76d](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/233a76d973486ceb526a0dc4c8e3ef7ae6036008))
+- 새로운 기능 추가 및 UI 개선 ([3de44f5](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/3de44f53561390597f1ab8cfac523f42844d312b))
+- 새로운 기능 추가 및 UI 개선 ([4ca56de](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/4ca56de5f04177ab30f036aa80898890c3d58c04))
+- 야호 ([bf4c6c2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/bf4c6c26bd2d8ec1972873d751074cc4e63bfbc8))
 
 ### 🐛 BUG FIXES
 
-* edit .env ([90c4623](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/90c46234d5f13a54a5851c0d28dacaa9d38c7161))
-* edit & delete page routing ([6be7c80](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/6be7c80107ce3f6566ad767a9e0a1cd7a6cc9854))
-* edit & delete page routing ([92e5e90](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/92e5e900e6ba10f6d62c6eb2ba3ad8f784a41a2f))
-* edit login & register ([dc615e4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/dc615e4dc404c34807d11900486554090a54c02a))
-* edit marker ([70c492c](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/70c492ca2fb55c152bf450e0916dccf4d104d6ee))
-* edit marker ([42380a4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/42380a45ff7f9283ca41494bed4447b292dfb6e5))
-* edit marker ([05997f4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/05997f4302f4910203ad8ccb14b1823cebb8367d))
-* edit marker ([3d6925a](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/3d6925a5ce393e538b5471bcb5b4bbfe58e32b46))
-* edit marker ([53ac157](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/53ac1572ef3f9cc9c9378fd194b33e7bf29fc3fe))
-* edit marker ([9a4e44d](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/9a4e44dfe23945bdc57f02bdf18140a5cd644001))
-* edit marker ([92addab](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/92addabefaad03e73d1854ca80e202177323fcac))
-* edit marker ([3714181](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/3714181e12ff7c2bc9d83b8e73d9b086b7f5a446))
-* edit marker, navigation bar ([1e34155](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/1e34155484374d2d45d13173b127bb4401b94739))
-* edit navigation bar ([35e1643](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/35e1643ae76cb91fc29c49e71a1be87140b5d692))
-* edit navigation bar button width ([422a32d](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/422a32dc41bfd5155c99e98fc15379b53f32364b))
-* edit README.md ([346dac6](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/346dac6f8fe70c2d91e7c1beae59e4fc5dc2cb94))
-* MapPage ([baac238](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/baac23825f67311eaca56c87874bb73fb664d016))
-* merge conflict resolved between main and feat/map ([208c35c](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/208c35c8b81fbdc2cdaf37397f73940405cb9cb8))
-* remove .env from tracking ([32cea7b](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/32cea7bca1b7a15ef7b917c913b1148404b6719f))
-* 기존 기능 개선 및 UI 개선 ([cc8a8fe](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/cc8a8fef43a0929d8db082999bea9bf379e8dd90))
-* 야호 ([8ef32cf](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/8ef32cf5517a9b339837edf084c3ee987be7e936))
+- edit .env ([90c4623](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/90c46234d5f13a54a5851c0d28dacaa9d38c7161))
+- edit & delete page routing ([6be7c80](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/6be7c80107ce3f6566ad767a9e0a1cd7a6cc9854))
+- edit & delete page routing ([92e5e90](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/92e5e900e6ba10f6d62c6eb2ba3ad8f784a41a2f))
+- edit login & register ([dc615e4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/dc615e4dc404c34807d11900486554090a54c02a))
+- edit marker ([70c492c](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/70c492ca2fb55c152bf450e0916dccf4d104d6ee))
+- edit marker ([42380a4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/42380a45ff7f9283ca41494bed4447b292dfb6e5))
+- edit marker ([05997f4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/05997f4302f4910203ad8ccb14b1823cebb8367d))
+- edit marker ([3d6925a](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/3d6925a5ce393e538b5471bcb5b4bbfe58e32b46))
+- edit marker ([53ac157](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/53ac1572ef3f9cc9c9378fd194b33e7bf29fc3fe))
+- edit marker ([9a4e44d](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/9a4e44dfe23945bdc57f02bdf18140a5cd644001))
+- edit marker ([92addab](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/92addabefaad03e73d1854ca80e202177323fcac))
+- edit marker ([3714181](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/3714181e12ff7c2bc9d83b8e73d9b086b7f5a446))
+- edit marker, navigation bar ([1e34155](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/1e34155484374d2d45d13173b127bb4401b94739))
+- edit navigation bar ([35e1643](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/35e1643ae76cb91fc29c49e71a1be87140b5d692))
+- edit navigation bar button width ([422a32d](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/422a32dc41bfd5155c99e98fc15379b53f32364b))
+- edit README.md ([346dac6](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/346dac6f8fe70c2d91e7c1beae59e4fc5dc2cb94))
+- MapPage ([baac238](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/baac23825f67311eaca56c87874bb73fb664d016))
+- merge conflict resolved between main and feat/map ([208c35c](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/208c35c8b81fbdc2cdaf37397f73940405cb9cb8))
+- remove .env from tracking ([32cea7b](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/32cea7bca1b7a15ef7b917c913b1148404b6719f))
+- 기존 기능 개선 및 UI 개선 ([cc8a8fe](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/cc8a8fef43a0929d8db082999bea9bf379e8dd90))
+- 야호 ([8ef32cf](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/8ef32cf5517a9b339837edf084c3ee987be7e936))
 
 ## [1.2.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.1.1...v1.2.0) (2025-03-18)
 
 ### 🚀 NEW FEATURES
 
-* edit kakao map api marker ([9afcd4c](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/9afcd4c2fea818ed56f2ef91350a7c7db96b3797))
+- edit kakao map api marker ([9afcd4c](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/9afcd4c2fea818ed56f2ef91350a7c7db96b3797))
 
 ### 🐛 BUG FIXES
 
-* remove .env from tracking ([df5adbc](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/df5adbc01c36e44328bdcd3d4cef4b8fdde53e9f))
+- remove .env from tracking ([df5adbc](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/df5adbc01c36e44328bdcd3d4cef4b8fdde53e9f))
 
 ## [1.1.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.1.0...v1.1.1) (2025-03-18)
 
 ### 🐛 BUG FIXES
 
-* remove .env from tracking ([c177472](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/c1774729d7db9396a45f9990d1d2aa2e55192611))
+- remove .env from tracking ([c177472](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/c1774729d7db9396a45f9990d1d2aa2e55192611))
 
 ## [1.1.0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.0.0...v1.1.0) (2025-03-18)
 
 ### 🚀 NEW FEATURES
 
-* sementic update ([d99d3a5](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/d99d3a532633e38436702fe82229ddcd76226cb1))
+- sementic update ([d99d3a5](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/d99d3a532633e38436702fe82229ddcd76226cb1))
 
 ## 1.0.0 (2025-03-18)
 
 ### 🚀 NEW FEATURES
 
-* add kakao map api ([ee0b14a](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/ee0b14af24554593f5bfe2a52c1c87e649f683b3))
-* add layout ([15034c9](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/15034c92f0bfeeae1a7d39b35270ea192f3b22d9))
-* add petEdit & petRegister ([557f2ab](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/557f2abec12e6c4ff09f75aeaae462935b6db94f))
-* edit kakao map api marker ([9cfcf72](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/9cfcf727d07389d303e28c03d81f3713e31121a7))
-* S3 upload ([bb34cbc](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/bb34cbc9f3f638e27152d06912d1f57350ca9d17))
-* S3 upload ([1d17198](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/1d17198c65fd73b4c0af5aa38ecd997b85662341))
-* S3 upload ([b014f11](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/b014f11f9d963e9a0267585c3cfa0c4ffe79a9dd))
-* S3 upload ([09c8692](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/09c8692b017257dbdcc71273cc410ae299588535))
-* S3 upload ([15a9c20](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/15a9c206aa93934609439cd24c5bbf04315006fc))
-* S3 upload ([3b9cfd0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/3b9cfd09e4b83c73c9932218641779049678c1df))
-* sementic update ([a7364c6](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/a7364c6720d4c77d985111a2f1f06d81f39adfd7))
-* sementic update ([4055aa4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/4055aa45cad282f0b8609a9ea5aa33c9b31d1045))
-* 야호 ([7222f86](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/7222f86cbd94e37b456ef6e211ffd7497c2b4931))
+- add kakao map api ([ee0b14a](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/ee0b14af24554593f5bfe2a52c1c87e649f683b3))
+- add layout ([15034c9](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/15034c92f0bfeeae1a7d39b35270ea192f3b22d9))
+- add petEdit & petRegister ([557f2ab](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/557f2abec12e6c4ff09f75aeaae462935b6db94f))
+- edit kakao map api marker ([9cfcf72](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/9cfcf727d07389d303e28c03d81f3713e31121a7))
+- S3 upload ([bb34cbc](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/bb34cbc9f3f638e27152d06912d1f57350ca9d17))
+- S3 upload ([1d17198](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/1d17198c65fd73b4c0af5aa38ecd997b85662341))
+- S3 upload ([b014f11](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/b014f11f9d963e9a0267585c3cfa0c4ffe79a9dd))
+- S3 upload ([09c8692](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/09c8692b017257dbdcc71273cc410ae299588535))
+- S3 upload ([15a9c20](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/15a9c206aa93934609439cd24c5bbf04315006fc))
+- S3 upload ([3b9cfd0](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/3b9cfd09e4b83c73c9932218641779049678c1df))
+- sementic update ([a7364c6](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/a7364c6720d4c77d985111a2f1f06d81f39adfd7))
+- sementic update ([4055aa4](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/4055aa45cad282f0b8609a9ea5aa33c9b31d1045))
+- 야호 ([7222f86](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/7222f86cbd94e37b456ef6e211ffd7497c2b4931))
 
 ### 🐛 BUG FIXES
 
-* 야호 ([4b2ef0c](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/4b2ef0c57fe005a74a1874d5320950933e0f6a47))
+- 야호 ([4b2ef0c](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/4b2ef0c57fe005a74a1874d5320950933e0f6a47))
 
 ## [1.2.0](https://github.com/miginho12/5-team-oishikunare-gangazido-fe/compare/v1.1.1...v1.2.0) (2025-03-17)
 
 ### 🚀 NEW FEATURES
 
-* add petEdit & petRegister ([557f2ab](https://github.com/miginho12/5-team-oishikunare-gangazido-fe/commit/557f2abec12e6c4ff09f75aeaae462935b6db94f))
+- add petEdit & petRegister ([557f2ab](https://github.com/miginho12/5-team-oishikunare-gangazido-fe/commit/557f2abec12e6c4ff09f75aeaae462935b6db94f))
 
 ## [1.1.1](https://github.com/miginho12/5-team-oishikunare-gangazido-fe/compare/v1.1.0...v1.1.1) (2025-03-14)
 
 ### 🐛 BUG FIXES
 
-* 야호 ([4b2ef0c](https://github.com/miginho12/5-team-oishikunare-gangazido-fe/commit/4b2ef0c57fe005a74a1874d5320950933e0f6a47))
+- 야호 ([4b2ef0c](https://github.com/miginho12/5-team-oishikunare-gangazido-fe/commit/4b2ef0c57fe005a74a1874d5320950933e0f6a47))
 
 ## [1.1.0](https://github.com/miginho12/5-team-oishikunare-gangazido-fe/compare/v1.0.0...v1.1.0) (2025-03-14)
 
 ### 🚀 NEW FEATURES
 
-* 야호 ([7222f86](https://github.com/miginho12/5-team-oishikunare-gangazido-fe/commit/7222f86cbd94e37b456ef6e211ffd7497c2b4931))
+- 야호 ([7222f86](https://github.com/miginho12/5-team-oishikunare-gangazido-fe/commit/7222f86cbd94e37b456ef6e211ffd7497c2b4931))
 
 ## 1.0.0 (2025-03-14)
 
 ### 🚀 NEW FEATURES
 
-* add layout ([15034c9](https://github.com/miginho12/5-team-oishikunare-gangazido-fe/commit/15034c92f0bfeeae1a7d39b35270ea192f3b22d9))
+- add layout ([15034c9](https://github.com/miginho12/5-team-oishikunare-gangazido-fe/commit/15034c92f0bfeeae1a7d39b35270ea192f3b22d9))

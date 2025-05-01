@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { uploadPetImage, updatePetInfo, deletePet, getPetInfo } from '../api/pet';
+import Select from 'react-select';
 
 function PetEdit() {
   const navigate = useNavigate();
   const [showConfirm, setShowConfirm] = useState(false);
   const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
 
   const [name, setName] = useState('');
   const [breed, setBreed] = useState('');
@@ -14,7 +16,6 @@ function PetEdit() {
   const [weight, setWeight] = useState('');
   const [profileImage, setProfileImage] = useState(null);
   const [profileImagePreview, setProfileImagePreview] = useState(null);
-  const [originalProfileImageKey, setOriginalProfileImageKey] = useState(null);
   const [isImageRemoved, setIsImageRemoved] = useState(false);
 
   const [nameError, setNameError] = useState('');
@@ -31,19 +32,27 @@ function PetEdit() {
   });
 
   const breedOptions = [
-    '푸들',
-    '비숑 프리제',
-    '포메라니안',
-    '말티즈',
-    '웰시코기',
-    '골든 리트리버',
-    '래브라도 리트리버',
-    '보더 콜리',
-    '시베리안 허스키',
-    '진돗개',
-    '믹스견',
-    '기타',
+    { value: '푸들', label: '푸들' },
+    { value: '비숑 프리제', label: '비숑 프리제' },
+    { value: '포메라니안', label: '포메라니안' },
+    { value: '말티즈', label: '말티즈' },
+    { value: '웰시코기', label: '웰시코기' },
+    { value: '골든 리트리버', label: '골든 리트리버' },
+    { value: '래브라도 리트리버', label: '래브라도 리트리버' },
+    { value: '보더 콜리', label: '보더 콜리' },
+    { value: '시베리안 허스키', label: '시베리안 허스키' },
+    { value: '진돗개', label: '진돗개' },
+    { value: '믹스견', label: '믹스견' },
+    { value: '기타', label: '기타' },
   ];
+
+  const genderOptions = [
+    { value: 'male', label: '수컷' },
+    { value: 'female', label: '암컷' },
+  ];
+  
+  const fileInputRef = useRef(null);
+  const location = useLocation();
 
   // 최초 로딩 시 기존 반려견 정보 불러오기
   useEffect(() => {
@@ -52,21 +61,23 @@ function PetEdit() {
         const res = await getPetInfo();
         if (res?.data?.message === 'get_pet_success') {
           const data = res.data.data;
-          ////console.log(...) // 추가 로그
-
           setName(data.name);
           setBreed(data.breed);
           setAge(data.age);
           setGender(data.gender ? 'male' : 'female');
           setWeight(data.weight);
 
-          // 🔥 CloudFront 미리보기 설정
+          // ✅ CloudFront 전체 URL로 온 경우 → key 추출
           if (data.profileImage && typeof data.profileImage === 'string') {
-            setProfileImage(data.profileImage);               
-            setOriginalProfileImageKey(data.profileImage);    
-            setProfileImagePreview(data.profileImage);        
-            
-            ////console.log(...)
+            const isFullUrl = data.profileImage.includes('cloudfront.net');
+            const s3Key = isFullUrl
+              ? data.profileImage.split('.net/')[1].split('?')[0] // 키만 추출
+              : data.profileImage;
+            setProfileImage(s3Key); // 🔄 key만 저장
+            setProfileImagePreview(data.profileImage); // 🔄 전체 URL은 preview 용도
+            setIsImageRemoved(false);
+
+            console.log('✅ 기존 이미지 로드됨:', s3Key);
           }
         }
       } catch (err) {
@@ -98,43 +109,53 @@ function PetEdit() {
     setShowConfirm(false);
   };
 
-  const fileInputRef = useRef(); // 👈 input ref 선언
-
   const handleProfileImageChange = (e) => {
-    const file = e.target.files?.[0];
+    // ✅ 새 이미지 선택한 경우
+    const file = e.target.files[0];
+    const tempUrl = URL.createObjectURL(file);
+    setProfileImage(file);
+    setProfileImagePreview(tempUrl);
+    setIsImageRemoved(false);
+    console.log('✅ 새 이미지 선택됨');
 
-    if (file) {
-      // ✅ 새 파일 선택 시
-      setProfileImage(file);
-      setProfileImagePreview(URL.createObjectURL(file));
-      setIsImageRemoved(false);
-    } else {
-      // ✅ 파일 선택 취소 시
-      ////console.log(...)
-      setProfileImage(null);
-      setProfileImagePreview(null);
-      setIsImageRemoved(true);
-    }
-
-    // ✅ 항상 초기화해서 onChange가 다시 작동하도록
+    // ✅ 동일 파일 재선택 위해 input 초기화
     if (fileInputRef.current) {
-      fileInputRef.current.value = "";
+      fileInputRef.current.value = '';
     }
+  };
+
+  // 이미지 X 버튼 클릭 시 삭제 처리 함수
+  const handleRemoveImage = () => {
+    setProfileImage(null);
+    setProfileImagePreview(null);
+    setIsImageRemoved(true);
   };
 
   const handleUpdatePet = async () => {
     const isValid = validateFields(); // 1. 프론트 유효성 검사 먼저
-    if (!isValid) return;
+    if (!isValid) {
+      // 🔥 유효성 실패 시 첫 번째 에러 필드에 shake 적용
+      const firstErrorInput = document.querySelector('input.border-red-500, select.border-red-500');
+      if (firstErrorInput) {
+        firstErrorInput.classList.add('shake');
+        setTimeout(() => {
+          firstErrorInput.classList.remove('shake');
+        }, 500);
+      }
+
+      setToastMessage('모든 항목을 올바르게 입력해주세요.');
+      setShowToast(true);
+      return;
+    }
 
     let profileImageKeyToSend;
-
-    if (profileImage instanceof File) {
-      profileImageKeyToSend = await uploadPetImage(profileImage); // 새 이미지 업로드
-    } else if (isImageRemoved) {
-      profileImageKeyToSend = null; // 이미지 삭제 요청
-    } else if (typeof originalProfileImageKey === 'string') {
-      profileImageKeyToSend = undefined; // 기존 이미지 유지 → append 안 함
-    }
+    if (isImageRemoved) {
+      profileImageKeyToSend = null; // 삭제
+    } else if (profileImage instanceof File) {
+      profileImageKeyToSend = await uploadPetImage(profileImage); // 새로 업로드
+    } else if (typeof profileImage === 'string') {
+      profileImageKeyToSend = profileImage; // 기존 유지
+    } 
 
     try {
       await updatePetInfo({
@@ -145,10 +166,8 @@ function PetEdit() {
         weight,
         profileImage: profileImageKeyToSend,
       });
-
-
+      setToastMessage('수정을 완료하였습니다.');
       setShowToast(true);
-      setTimeout(() => navigate('/pets'), 2000);
     } catch (error) {
       const errorMsg = error.response?.data?.message;
       handleRegisterError(errorMsg); // 3. 백엔드 에러 메시지 처리
@@ -156,74 +175,66 @@ function PetEdit() {
   };
 
   // 프론트 자체 유효성 검사
-  const validateFields = () => {
+  const validateFields = (field) => {
     let isValid = true;
-
-    setNameError('');
-    setAgeError('');
-    setWeightError('');
-    setGenderError('');
-    setBreedError('');
-
-    // 이름
-    const nameRegex = /^[가-힣a-zA-Z]+$/;
-    if (!name) {
-      setNameError('반려견의 이름을 입력하세요.');
-      isValid = false;
-    } else if (!nameRegex.test(name)) {
-      setNameError('반려견의 이름은 한글 또는 영문만 입력 가능합니다.');
-      isValid = false;
-    } else if (name.length > 10) {
-      setNameError('반려견의 이름은 최대 10자까지 입력 가능합니다.');
-      isValid = false;
+    const fieldsToCheck = field ? [field] : ['name', 'age', 'weight', 'gender', 'breed'];
+  
+    if (fieldsToCheck.includes('name')) {
+      setNameError('');
+      const nameRegex = /^[가-힣a-zA-Z]+$/;
+      if (!name) {
+        setNameError('반려견의 이름을 입력하세요.');
+        isValid = false;
+      } else if (!nameRegex.test(name)) {
+        setNameError('반려견의 이름은 공백없이 한글 또는 영문만 입력 가능합니다.');
+        isValid = false;
+      } else if (name.length > 10) {
+        setNameError('반려견의 이름은 최대 10자까지 입력 가능합니다.');
+        isValid = false;
+      }
     }
-
-    // 나이
-    const ageNum = parseInt(age);
-    if (!age) {
-      setAgeError('반려견의 나이를 입력하세요.');
-      isValid = false;
-    } else if (isNaN(ageNum)) {
-      setAgeError('반려견의 나이는 숫자로 입력해주세요.');
-      isValid = false;
-    } else if (ageNum <= 0) {
-      setAgeError('반려견의 나이는 1살 이상이어야 해요.');
-      isValid = false;
-    } else if (ageNum >= 51) {
-      setAgeError('입력값이 너무 큽니다. 올바른 나이를 입력해주세요.');
-      isValid = false;
+  
+    if (fieldsToCheck.includes('age')) {
+      setAgeError('');
+      const ageNum = parseInt(age);
+      if (!age) {
+        setAgeError('반려견의 나이를 입력하세요.');
+        isValid = false;
+      } else if (isNaN(ageNum) || ageNum < 1 || ageNum > 50) {
+        setAgeError('반려견 나이는 1부터 50사이의 숫자만 입력 가능합니다.');
+        isValid = false;
+      }
     }
-
-    const trimmed = String(weight).trim();
-    const weightNum = parseFloat(trimmed);
-
-    if (trimmed === '') {
-      setWeightError('반려견의 몸무게를 입력하세요.');
-      isValid = false;
-    } else if (isNaN(weightNum)) {
-      setWeightError('올바른 몸무게 형식을 입력해주세요. (예: 5 또는 5.2)');
-      isValid = false;
-    } else if (weightNum <= 0) {
-      setWeightError('반려견의 몸무게는 0kg 이상이어야 해요.');
-      isValid = false;
-    } else if (weightNum >= 200) {
-      setWeightError('입력값이 너무 큽니다. 올바른 몸무게를 입력해주세요.');
-      isValid = false;
-    } else {
+  
+    if (fieldsToCheck.includes('weight')) {
       setWeightError('');
+      const trimmed = String(weight).trim();
+      const weightNum = parseFloat(trimmed);
+      if (trimmed === '') {
+        setWeightError('반려견의 몸무게를 입력하세요.');
+        isValid = false;
+      } else if (isNaN(weightNum) || weightNum <= 0 || weightNum >= 200) {
+        setWeightError('반려견 몸무게는 1부터 200사이의 숫자만 입력 가능합니다.');
+        isValid = false;
+      }
     }
-    // 성별
-    if (!gender) {
-      setGenderError('반려견의 성별을 선택하세요.');
-      isValid = false;
+  
+    if (fieldsToCheck.includes('gender')) {
+      setGenderError('');
+      if (!gender) {
+        setGenderError('반려견의 성별을 선택하세요.');
+        isValid = false;
+      }
     }
-
-    // 품종
-    if (!breed) {
-      setBreedError('반려견의 품종을 입력하세요.');
-      isValid = false;
+  
+    if (fieldsToCheck.includes('breed')) {
+      setBreedError('');
+      if (!breed) {
+        setBreedError('반려견의 품종을 입력하세요.');
+        isValid = false;
+      }
     }
-
+  
     return isValid;
   };
 
@@ -245,7 +256,7 @@ function PetEdit() {
         setNameError('반려견의 이름을 입력하세요.');
         break;
       case 'invalid_pet_name_format':
-        setNameError('반려견의 이름은 한글 또는 영문만 입력 가능합니다.');
+        setNameError('반려견의 이름은 공백없이 한글 또는 영문만 입력 가능합니다.');
         break;
       case 'invalid_pet_name_length':
         setNameError('반려견의 이름은 최대 10자까지 입력 가능합니다.');
@@ -302,15 +313,53 @@ function PetEdit() {
     }
   };
 
-  // 토스트 메시지가 표시되면 3초 후에 자동으로 사라지도록 설정
+  // 수정 완료 시, 여전히 수정 페이지에 있는 경우 1초 뒤에 /pets로 이동
   useEffect(() => {
-    if (showToast) {
+    if (showToast && toastMessage === '수정을 완료하였습니다.') {
       const timer = setTimeout(() => {
-        setShowToast(false);
-      }, 3000);
+        if (location.pathname === '/pets/edit') {
+          navigate('/pets');
+        }
+      }, 1000);
+
       return () => clearTimeout(timer);
     }
-  }, [showToast]);
+  }, [showToast, toastMessage, location.pathname, navigate]);
+
+  // 드롭박스 커스텀 스타일
+  const customSelectStyles = {
+    control: (provided, state) => ({
+      ...provided,
+      minHeight: '3rem',
+      borderRadius: '0.375rem',
+      borderColor: state.isFocused ? '#92400e' : '#d1d5db',
+      boxShadow: state.isFocused ? '0 0 0 2px rgba(146, 64, 14, 0.4)' : 'none',
+      '&:hover': {
+        borderColor: '#92400e',
+      },
+    }),
+    menu: (provided) => ({
+      ...provided,
+      zIndex: 50,
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      backgroundColor: state.isSelected
+        ? 'rgba(146, 64, 14, 0.2)'  // ✅ 선택된 항목 (파란 배경 방지)
+        : state.isFocused
+        ? 'rgba(146, 64, 14, 0.1)'  // ✅ 마우스 올렸을 때
+        : 'white',
+      color: '#1f2937',
+      cursor: 'pointer',
+      ':active': {
+        backgroundColor: 'rgba(146, 64, 14, 0.3)',
+      },
+    }),
+    singleValue: (provided) => ({
+      ...provided,
+      color: '#1f2937',
+    }),
+  };
 
   return (
     <div className="flex flex-col h-full bg-gray-50">
@@ -325,7 +374,8 @@ function PetEdit() {
           <img
             src="/gangazido-logo-header.png"
             alt="Gangazido Logo Header"
-            className="h-14 w-28 object-cover"
+            className="h-14 w-28 object-cover cursor-pointer"
+            onClick={() => navigate('/map')}
           />
         </div>
       </header>
@@ -334,17 +384,25 @@ function PetEdit() {
       <div className="flex-1 p-4 overflow-y-auto">
         <div className="bg-white rounded-xl shadow-md p-4 mb-4">
           <div className="flex flex-col items-center mb-6">
-            <div className="w-24 h-24 rounded-full bg-amber-100 flex items-center justify-center mb-3 overflow-hidden">
-              {profileImagePreview ? (
-                <img
-                  src={profileImagePreview}
-                  alt="프로필 미리보기"
-                  className="w-full h-full object-cover"
-                  onError={() => {
-                    console.warn("🐛 이미지 로딩 실패! fallback 아이콘 표시");
-                    setProfileImagePreview(null); // fallback svg로 대체되게
-                  }}
-                />
+            <div className="relative w-24 h-24 rounded-full bg-amber-100 flex items-center justify-center mb-3 overflow-visible">
+              {profileImagePreview && !isImageRemoved ? (
+                <>
+                  <img
+                    src={profileImagePreview}
+                    alt="프로필 미리보기"
+                    className="w-full h-full object-cover rounded-full"
+                    onError={handleRemoveImage}
+                  />
+                  {/* ✅ 이미지 위 오른쪽 상단에 X 버튼 */}
+                  <button
+                    type="button"
+                    onClick={handleRemoveImage}
+                    className="absolute top-0 right-0 transform translate-x-1/4 -translate-y-1/4 bg-white bg-opacity-100 text-red-600 text-xl font-bold rounded-full w-8 h-8 flex items-center justify-center shadow hover:bg-opacity-100 z-50"
+                    aria-label="이미지 삭제"
+                  >
+                    x
+                  </button>
+                </>
               ) : (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -362,7 +420,6 @@ function PetEdit() {
                 </svg>
               )}
             </div>
-
             <label htmlFor="pet-profile-upload" className="text-sm text-amber-800 font-medium cursor-pointer">
               프로필 사진 변경
               <input
@@ -376,7 +433,7 @@ function PetEdit() {
             </label>
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-4"> 
             <div className="relative">
               <label className="block text-sm font-medium text-gray-700 mb-1">반려견 이름</label>
               {/* 이름 */}
@@ -386,8 +443,7 @@ function PetEdit() {
                 onChange={(e) => setName(e.target.value)}
                 onBlur={() => handleBlur('name')}
                 placeholder="이름"
-                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
-                required
+                className={`w-full p-3 border ${nameError ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent`}                required
               />
               {touched.name && nameError && (
                 <p className="text-sm text-red-500 mt-1">{nameError}</p>
@@ -396,20 +452,16 @@ function PetEdit() {
 
             <div className="relative">
               <label className="block text-sm font-medium text-gray-700 mb-1">품종</label>
-              <select
-                value={breed}
-                onChange={(e) => setBreed(e.target.value)}
-                onBlur={() => handleBlur('breed')}
-                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
-                required
-              >
-                <option value="">선택하세요</option>
-                {breedOptions.map((option, index) => (
-                  <option key={index} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </select>
+              <Select
+                options={breedOptions}
+                value={breedOptions.find((option) => option.value === breed)}
+                onChange={(selectedOption) => setBreed(selectedOption.value)}
+                placeholder="품종 선택"
+                className="react-select-container"
+                classNamePrefix="react-select"
+                styles={customSelectStyles}
+                isSearchable={false}
+              />
               {touched.breed && breedError && (
                 <p className="text-sm text-red-500 mt-1">{breedError}</p>
               )}
@@ -420,11 +472,17 @@ function PetEdit() {
               <input
                 type="number"
                 value={age}
-                onChange={(e) => setAge(e.target.value)}
+                onChange={(e) => {
+                  const value = e.target.value;
+              
+                  // 정수만 입력 허용 + 2자리까지만
+                  if (/^\d{0,2}$/.test(value)) {
+                    setAge(value);
+                  }
+                }}
                 onBlur={() => handleBlur('age')}
                 placeholder="나이"
-                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
-                required
+                className={`w-full p-3 border ${ageError ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent`}                required
                 min="1"
               />
               {touched.age && ageError && (
@@ -437,11 +495,17 @@ function PetEdit() {
               <input
                 type="number"
                 value={weight}
-                onChange={(e) => setWeight(e.target.value)}
+                onChange={(e) => {
+                  const value = e.target.value;
+                
+                  // 정수 1~3자리 + 선택적으로 소숫점 1자리까지 허용
+                  if (/^\d{0,3}(\.\d{0,1})?$/.test(value)) {
+                    setWeight(value);
+                  }
+                }}
                 onBlur={() => handleBlur('weight')}
                 placeholder="kg 단위로 입력해주세요"
-                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
-                required
+                className={`w-full p-3 border ${weightError ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent`}                required
                 step="0.1"
                 min="0.1"
               />
@@ -452,16 +516,14 @@ function PetEdit() {
 
             <div className="relative">
               <label className="block text-sm font-medium text-gray-700 mb-1">성별</label>
-              <select
-                value={gender}
-                onChange={(e) => setGender(e.target.value)}
-                onBlur={() => handleBlur('gender')}
-                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-800 focus:border-transparent"
-                required
-              >
-                <option value="male">수컷</option>
-                <option value="female">암컷</option>
-              </select>
+              <Select
+                options={genderOptions}
+                value={genderOptions.find((option) => option.value === gender)}
+                onChange={(selectedOption) => setGender(selectedOption.value)}
+                placeholder="성별 선택"
+                styles={customSelectStyles}
+                isSearchable={false}
+              />
               {touched.gender && genderError && (
                 <p className="text-sm text-red-500 mt-1">{genderError}</p>
               )}
@@ -563,8 +625,15 @@ function PetEdit() {
 
       {/* 토스트 메시지 */}
       {showToast && (
-        <div className="fixed bottom-24 left-0 right-0 mx-auto w-3/5 max-w-xs bg-white bg-opacity-80 border border-amber-800 text-amber-800 p-3 rounded-md shadow-lg text-center z-50 animate-fade-in-up">
-          수정을 완료하였습니다.
+        <div
+          className="fixed bottom-24 inset-x-0 flex justify-center z-50"
+        >
+          <div
+            className="w-full max-w-sm bg-white bg-opacity-80 border border-amber-800 
+                      text-amber-800 p-3 rounded-md shadow-lg text-center animate-fade-in-up mx-4"
+          >
+            {toastMessage}
+          </div>
         </div>
       )}
 
