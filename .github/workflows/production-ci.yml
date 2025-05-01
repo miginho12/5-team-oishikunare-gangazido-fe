@@ -73,8 +73,9 @@ jobs:
         uses: getsentry/action-release@v1
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          SENTRY_ORG: kakao-tech-bootcamp
+          SENTRY_ORG: ktb-2nd
           SENTRY_PROJECT: gangazido
+          SENTRY_URL: https://sentry.yimtaejong.com
           SENTRY_RELEASE: ${{ github.sha }}
         with:
           environment: production
