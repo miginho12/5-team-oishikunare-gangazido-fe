@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## [1.28.2](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.28.1...v1.28.2) (2025-05-01)
+
+### 🐛 BUG FIXES
+
+* Error Message toLowerCase ([1464cce](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/1464cce542cddceb834e096e036d374cab3e7c30))
+* rollback ([5e4a856](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/5e4a8567a3fdd97519da93b13ca8ef2e1726c915))
+* rollback ([82703de](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/82703debc6ddd36b972b4aa57226f3ddd2450fb8))
+* rollback test ([3a7e30e](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/3a7e30e21d20ad7fcf9394511bda390dd24305fe))
+* 롤백 적용 완료 브랜치 병합 ([7c3626b](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/7c3626b436b19cd53e86693d3458cea8be874121))
+* 센트리 토큰 변경 ([c2d8a0e](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/commit/c2d8a0e823799c781ae4f12fadb5da734980522e))
+
 ## [1.28.1](https://github.com/100-hours-a-week/5-team-oishikunare-gangazido-fe/compare/v1.28.0...v1.28.1) (2025-04-15)
 
 ### 🐛 BUG FIXES
